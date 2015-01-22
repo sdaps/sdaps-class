@@ -17,11 +17,5 @@ all: sdapsbase.pdf test.pdf
 
 
 clean:
-	-rm sdapsbase.sty
-	-rm test.pdf
-	-rm test.aux
-	-rm sdapsbase.log
-	-rm test.log
-	-rm test.fdb_latexmk
-	-rm sdapsbase.pdf
+	-rm `cat .gitignore`
 
