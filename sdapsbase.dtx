@@ -112,8 +112,7 @@
 %
 %    \begin{macrocode}
 
-\cs_generate_variant:Nn \tl_if_eq:nnTF { VnTF }
-\cs_generate_variant:Nn \tl_if_eq_p:NN { Vn }
+\cs_generate_variant:Nn \tl_if_eq:nnTF { Vn }
 \cs_generate_variant:Nn \tl_set:Nn { Nv }
 \cs_generate_variant:Nn \msg_error:nnn { nnV }
 
@@ -203,11 +202,8 @@
 % Exit first context with passed in identifier
 \cs_new_protected:Nn \sdaps_context_end:n
 {
-  % The weird thing is that \tl_if_eq_p:Vn does not seem to work
-  % inside the \bool_until_do?
   \__sdaps_test_context_id:n { #1 }
 
-  %\bool_until_do:nn { \tl_if_eq_p:Vn \g__sdaps_current_context_id_tl { #1 } } {
   \bool_until_do:nn { \l__sdaps_tmp_bool } {
     \sdaps_context_end:
 
@@ -220,7 +216,6 @@
 {
   \__sdaps_test_context_id:n { sdaps_local_scope }
 
-  %\bool_until_do:nn { \tl_if_eq_p:Vn \g__sdaps_current_context_id_tl { sdaps_local_scope } } {
   \bool_until_do:nn { \l__sdaps_tmp_bool } {
     \__sdaps_context_end:
 
