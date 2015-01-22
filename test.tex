@@ -1,0 +1,387 @@
+\documentclass{scrartcl}
+
+\usepackage{sdapsbase}
+\usepackage{hyperref}
+\usepackage{ifthen}
+
+\usepackage{tabularx}
+
+\usepackage{multicol}
+
+\ExplSyntaxOn
+
+\bool_new:N \l_sdaps_checkbox_pdf_form_bool
+\bool_new:N \l_sdaps_checkbox_default_bool
+\tl_new:N \l_sdaps_checkbox_checkboxsymbol_tl
+
+\keys_define:nn { sdaps / checkbox / overlay / form }
+{
+  pdf_form         .bool_set:N  = \l_sdaps_checkbox_pdf_form_bool,
+  pdf_form         .initial:n   = false,
+
+  default          .bool_set:N  = \l_sdaps_checkbox_default_bool,
+  default          .initial:n   = false,
+
+  checkboxsymbol   .tl_set:N  = \l_sdaps_checkbox_checkboxsymbol_tl,
+  checkboxsymbol   .initial:n   = 8,
+}
+
+\cs_new_protected:Nn \sdaps_overlay_checkbox_form:
+{
+  \keys_set_known:nV { sdaps / checkbox / overlay / form } { \l_sdaps_checkbox_unknown_tl } %
+
+  \bool_if:NT \l_sdaps_checkbox_pdf_form_bool {
+    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l__sdaps_x, \l__sdaps_y) + 0.5*(\l__sdaps_width, -\l__sdaps_height)$) {
+      \CheckBox[name=\l_sdaps_checkbox_var_tl,bordersep=0,borderwidth=0pt,checkboxsymbol=\l_sdaps_checkbox_checkboxsymbol_tl,bordercolor=,backgroundcolor=,checked=\bool_if:nTF\l_sdaps_checkbox_default_bool{true}{false},height=\l_sdaps_checkbox_height_dim,width=\l_sdaps_checkbox_width_dim]{\ignorespaces}
+    };
+  }
+}
+\seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_checkbox_form:
+
+
+\cs_new_protected:Nn \sdaps_overlay_text_form:
+{
+  \keys_set_known:nV { sdaps / checkbox / overlay / form } { \l_sdaps_checkbox_unknown_tl } %
+
+  %\l_sdaps_checkbox_var_tl
+%  \sdaps_overlay_minipage:nnn {t} {2bp} {\TextField[name=textbox\int_use:N\g__sdaps_textbox_num_int,bordersep=0pt,borderwidth=0pt,bordercolor=,backgroundcolor=,multiline=true,height=\textheight,width=\textwidth]{\ignorespaces}}
+}
+
+
+
+\sdaps_overrides_init:n{
+  *={
+      *={},
+      var1={box},
+      var2={height=5mm},
+      var2&1={width=6mm},
+  },
+  asdf={
+      *={},
+      var1={box},
+      var2={height=2mm},
+      var2&1={width=10mm},
+  },
+  blub={
+      *={},
+      var1={ellipse},
+      var2={ellipse,height=7mm},
+      var2&1={ellipse,width=7mm},
+  },
+}
+
+\ExplSyntaxOff
+
+
+\begin{document}
+
+\begin{Form}
+
+%\MakeCheckField{3.5mm}{3.5mm}
+%\CheckBox[radio=true,bordercolor=0 0 0,checkboxsymbol=H]{field}
+%\CheckBox[radio=true,bordercolor=0 0 0,checkboxsymbol=H,value=true]{asdfb}
+
+%\LayoutCheckField{label}{field}
+
+
+%%\def\eq@check{4}
+%%\def\eq@circle{l}
+%%\def\eq@cross{8}
+%%\def\eq@diamond{u}
+%%\def\eq@square{n}
+%%\def\eq@star{H}
+%%\def\eq@straightcross{5}
+
+%\ChoiceMenu[radio=true,bordercolor=,backgroundcolor=,radiosymbol=8]{label}{a,b,c,d}
+
+\ExplSyntaxOn
+
+\sdaps_info_write:x{Duplex=False}%
+\sdaps_info_write:x{Pages=4}%
+\pgfpoint{\paperwidth}{\paperheight}
+\pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+\sdaps_info_write:x{PageSize=\l__sdaps_width, \l__sdaps_height}
+\sdaps_info_write:x{Style=code128}%
+\sdaps_info_write:x{CheckMode=checkcorrect}%
+
+\sdaps_info_write:x{QObject-Choice=asdf}%
+
+Not Forced:
+\sdaps_checkbox:nn{var0}{1}
+\sdaps_checkbox:nn{var1}{1}
+\sdaps_checkbox:nn{var2}{1}
+\sdaps_checkbox:nn{var2}{2}
+
+\par
+
+\__sdaps_set_qid:n{asdf}
+
+Not forced, qid=asdf:
+\sdaps_checkbox:nn{var0}{1}
+\sdaps_checkbox:nn{var1}{1}
+\sdaps_checkbox:nn{var2}{1}
+\sdaps_checkbox:nn{var2}{2}
+
+\par
+
+\__sdaps_set_qid:n{blub}
+
+Not forced, qid=blub:\par
+\sdaps_checkbox:nn{var0}{1}
+\sdaps_checkbox:nn{var1}{1}
+\sdaps_checkbox:nn{var2}{1}
+\sdaps_checkbox:nn{var2}{2}
+
+\par
+
+\noindent
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,draw_check=true,height=10mm} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,centered_text={X},height=10mm} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,fill=black} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,draw_check=true,centered_text={X}} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t1,pdf_form} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t2,default=true,pdf_form} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t3,default=true,checkboxsymbol=H,pdf_form} \newline
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,ellipse,draw_check=true,height=10mm} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,ellipse,centered_text={X}} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,ellipse,fill=black} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,ellipse,draw_check=true,centered_text={X}} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t4,ellipse,pdf_form} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t5,ellipse,default=true,pdf_form} 
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_checkbox_force:n{writepos,var=t6,ellipse,default=true,checkboxsymbol=H,pdf_form} \newline
+
+\par
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_hcoffin:nn { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ coffin. } ~ asdf
+
+\par
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstretch:nnnn{2mm}{5mm}{70mm}{1} \newline
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+
+\__sdaps_textbox_hstretch:nnnn{2mm}{5mm}{70mm}{1}
+\par
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\par
+\noindent
+
+\let\hcoffin\__sdaps_textbox_hcoffin:nn
+\let\hstretch\__sdaps_textbox_hstretch:nnnn
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_info_write:x{Answer-Choice=asdf}
+\sdaps_info_write:x{Answer-Choice=asdf}
+
+\ExplSyntaxOff
+\hcoffin {3bp} { This hcoffin } should have the same baseline as on the outside and
+the other \hcoffin {3bp} { hcoffin } which should be on the left edge due to the justified layout.
+\hcoffin {3bp} { Another coffin }  \hcoffin {3bp} { fun!}.
+And in a formula $ f(x) = \frac{1}{c\,\hcoffin{3bp}{coffin}} \hstretch{2mm}{5mm}{70mm}{1} $
+\ExplSyntaxOn
+
+\par
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+
+\noindent\__sdaps_textbox_vcoffin:nnn {\linewidth} {1bp} {
+\noindent\begin{tabularx}{\linewidth}{l|l|X}
+adsf  lkasjd lksj flkjsfd & blub & gah \\
+\hline
+asdf & & \\
+\end{tabularx}
+}
+
+
+\par
+
+\sdaps_info_write:x{Answer-Choice=last on page}
+asdf \__sdaps_textbox_hcoffin:nn {1bp} {
+\noindent\begin{tabularx}{0.7\linewidth}{l|l|X}
+adsf  lkasjd lksj fflkjsfd & blub & gah \\
+\hline
+adsf  lkasjd lksj flkjsfd & blub & gah \\
+\hline
+asdf & & \\
+\end{tabularx}
+} blub
+
+
+
+
+\newpage
+
+\sdaps_info_write:x{QObject-Choice=blubber}%
+
+\noindent asdf
+
+\begin{multicols}{2}
+\parskip=1em
+
+\ExplSyntaxOff
+TEX provides two alternatives to the normal paragraph shape. One is parshape which allows the lines in a paragraph to have arbitrary indentations (from the left margin) and lengths. The number specifies how many shape dimensions are present. Each shape dimension consists of gtwo dimensions: an indentation and a lenMgth\par
+\ExplSyntaxOn
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\ExplSyntaxOff
+This is some texgt. This is some text. This is some text. This is sogme text.
+\ExplSyntaxOn
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\ExplSyntaxOff
+
+\vspace{-\parskip}\noindent
+This is some text. This is some text. This is some text. This is sogme text. \par
+
+\ExplSyntaxOn
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\ExplSyntaxOff
+\vspace{-\parskip}\noindent
+This is some texgt. This is some text. This is some text. This is sogme text.
+
+
+This is some texgt. This is some text. This is some text. This is sogme text.
+\ExplSyntaxOn
+
+\parskip=0em
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+\ExplSyntaxOff
+This is some texgt. This is some text. This is some text. This is sogme text.
+\ExplSyntaxOn
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\ExplSyntaxOff
+This is some text. This is someg text. This is some text. This is sogme text.
+\ExplSyntaxOn
+
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+\ExplSyntaxOff
+This is some texgt. This is some text. This is some text. This is sogme text.
+\ExplSyntaxOn
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+\__sdaps_textbox_vhstretch:n { 4cm }
+
+%\sdaps_info_write:x{Answer-Choice=asdf}
+%\__sdaps_textbox_vhstretch:n { 4cm }
+
+\end{multicols}
+
+\newpage
+\section{context\ testing}
+
+\cs_generate_variant:Nn \tl_to_str:n { f }
+
+\tl_new:N \g_test_tl
+
+\sdaps_context_set:n {a=b,c=d,e}
+
+\sdaps_context_put:nn {single} {}
+\sdaps_context_put:nn {key} {value}
+\sdaps_context_put:nn {key} {new, value}
+
+\sdaps_context_put:nn {level} {outer}
+
+\sdaps_context_to_gtl:N \g_test_tl
+outer:~ \tl_to_str:N \g_test_tl \newline
+\tl_to_str:f {\sdaps_context_item:n {key}}
+
+\sdaps_context_begin:n {test}
+    \sdaps_context_put:nn {level} {test 0}
+
+    \sdaps_context_begin:
+        \sdaps_context_put:nn {level} {test 1}
+
+        \sdaps_context_begin:
+            \sdaps_context_put:nn {level} {test 2}
+
+            \sdaps_context_to_gtl:N \g_test_tl
+            2:~\tl_to_str:N \g_test_tl \newline
+
+        \sdaps_context_end:
+
+        \sdaps_context_to_gtl:N \g_test_tl
+        1:~\tl_to_str:N \g_test_tl \newline
+
+% Ends all contexts except outer one
+\sdaps_context_end:n {test}
+
+\sdaps_context_to_gtl:N \g_test_tl
+outer:~\tl_to_str:N \g_test_tl \newline
+
+\group_begin:
+  \sdaps_context_begin_local:
+  \sdaps_context_clear:
+  \sdaps_context_to_gtl:N \g_test_tl
+  local ~ cleared:~\tl_to_str:N \g_test_tl \newline
+\group_end:
+
+\sdaps_context_to_gtl:N \g_test_tl
+outer~after~local:~\tl_to_str:N \g_test_tl \newline
+\sdaps_context_item:n {key}
+
+
+\ExplSyntaxOff
+
+%\ExplSyntaxOn
+%\tl_new:N \asdf
+%\__sdaps_checkbox_info:N \asdf
+%\sdaps_info_write:x{\asdf}
+%\ExplSyntaxOff
+
+
+%\Submit{asdf}
+
+\end{Form}
+\end{document}

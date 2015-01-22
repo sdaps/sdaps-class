@@ -1,0 +1,14 @@
+*.pdf
+*.out
+*.sty
+*.ind
+*.aux
+*.log
+*.hd
+*.sdaps
+*latexmk
+*.ilg
+*.fls
+*.glo
+*.idx
+*.fls

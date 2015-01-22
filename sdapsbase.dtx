@@ -1,0 +1,979 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2015 by Benjamin Berg <benjamin@sipsolutions.net>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Benjamin Berg.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{sdapsbase.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{sdapsbase}
+%<*package>
+    [2015/01/14 v0.1 Initial version of SDAPS base package]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{sdapsbase}[2015/01/14]
+%\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{sdapsbase.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.1}{2015/01/14}{Initial version}
+%
+% \GetFileInfo{sdapsbase.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+% 
+%
+% \title{The \textsf{sdapsbase} package\thanks{This document
+%   corresponds to \textsf{sdapsbase}~\fileversion, dated \filedate.}}
+% \author{Benjamin Berg \\ \texttt{benjamin@sipsolutions.net}}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% Put text here.
+%
+% \section{Usage}
+%
+% Put text here.
+%
+% \StopEventually{\PrintChanges\PrintIndex}
+%
+% \section{Implementation}
+%
+% This package uses the \LaTeX3 language internally, so we need to enable it.
+%    \begin{macrocode}
+% We need at least 2011-08-23 for \keys_set_known:nnN
+\RequirePackage{expl3}[2011/08/23]
+\RequirePackage{xparse}
+\ExplSyntaxOn
+%    \end{macrocode}
+%
+% And we need a number of other packages.
+%    \begin{macrocode}
+\ExplSyntaxOff
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\ExplSyntaxOn
+%    \end{macrocode}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \subsection{Context Handling}
+%
+% When creating complex questionnaires we need a mechnism to handle the current
+% context. By choice this mechanism works in global scope as items inside a
+% nested environment (e.g. multicol) need to have an effect on items outside
+% the environment. Because of this, we implement our own context, which works
+% similar to TeX groups containing local definitions.
+%
+%    \begin{macrocode}
+
+\cs_generate_variant:Nn \tl_if_eq:nnTF { VnTF }
+\cs_generate_variant:Nn \tl_if_eq_p:NN { Vn }
+\cs_generate_variant:Nn \tl_set:Nn { Nv }
+\cs_generate_variant:Nn \msg_error:nnn { nnV }
+
+\prop_new:N \g__sdaps_current_context_prop
+\tl_new:N \g__sdaps_current_context_id_tl
+
+\tl_new:N \g__sdaps_current_context_tl
+
+\seq_new:N \g__sdaps_context_ids_seq
+\seq_new:N \g__sdaps_contexts_seq
+
+
+\cs_new_protected:Nn \sdaps_context_to_gtl:N
+{
+  \tl_gclear:N #1
+  \prop_map_inline:Nn \g__sdaps_current_context_prop {
+    % Could we remove some of the braces in the TL?
+    \tl_if_in:nnTF { \tex_undefined:D } { ##2 } {
+      \tl_gput_right:Nn #1 {,{##1}}
+    } {
+      \tl_gput_right:Nn #1 {,{##1}={##2}}
+    }
+  }
+  % Remove leading comma again
+  \tl_gremove_once:Nn #1 {,}
+}
+
+
+% Create new context using given identifier
+\cs_new_protected:Nn \sdaps_context_begin:n
+{
+  % We need to serialize the current context and save it away.
+
+  \group_begin:
+    % TODO: Call pre begin hooks
+
+    % Serialize the current context
+    \sdaps_context_to_gtl:N \g__sdaps_current_context_tl
+    % Stuff it away in our sequence
+    \seq_gput_left:NV \g__sdaps_contexts_seq \g__sdaps_current_context_tl
+    \seq_gput_left:NV \g__sdaps_context_ids_seq \g__sdaps_current_context_id_tl
+
+    \tl_gset:Nn \g__sdaps_current_context_id_tl { #1 }
+
+    % TODO: Call Post begin hooks
+  \group_end:
+}
+
+\msg_new:nnn { sdapsbase } { context_end_none_left } { There ~ is ~ no ~ context ~ to ~ end ~ left! }
+\msg_new:nnn { sdapsbase } { context_end_broken } { The ~ current ~ context ~ with ~ id ~ #1 ~ may ~ not ~ be ~ ended ~ here. }
+
+\cs_new_protected:Nn \__sdaps_context_end:
+{
+  \seq_if_empty:NTF \g__sdaps_context_ids_seq {
+    \msg_error:nn { sdapsbase } { context_end_none_left } {}
+  } {
+
+    \group_begin:
+    % TODO: Pre context end hook
+
+    \sdaps_context_clear:
+    \seq_gpop_left:NN \g__sdaps_contexts_seq \g__sdaps_current_context_tl
+    \seq_gpop_left:NN \g__sdaps_context_ids_seq \l__sdaps_tmp_tl
+
+    % Unpack context token list
+    \sdaps_context_set:V \g__sdaps_current_context_tl
+
+    \tl_gclear:N \g__sdaps_current_context_tl
+    \tl_gset:NV \g__sdaps_current_context_id_tl \l__sdaps_tmp_tl
+
+    % TODO: Post context end hook
+    \group_end:
+  }
+}
+
+\bool_new:N \l__sdaps_tmp_bool
+
+\cs_new_protected:Nn \__sdaps_test_context_id:n
+{
+  \tl_if_eq:VnTF \g__sdaps_current_context_id_tl { #1 } {
+    \bool_set:Nn \l__sdaps_tmp_bool \c_true_bool
+  } {
+    \bool_set:Nn \l__sdaps_tmp_bool \c_false_bool
+  }
+}
+
+% Exit first context with passed in identifier
+\cs_new_protected:Nn \sdaps_context_end:n
+{
+  % The weird thing is that \tl_if_eq_p:Vn does not seem to work
+  % inside the \bool_until_do?
+  \__sdaps_test_context_id:n { #1 }
+
+  %\bool_until_do:nn { \tl_if_eq_p:Vn \g__sdaps_current_context_id_tl { #1 } } {
+  \bool_until_do:nn { \l__sdaps_tmp_bool } {
+    \sdaps_context_end:
+
+    \__sdaps_test_context_id:n { #1 }
+  }
+  \sdaps_context_end:
+}
+
+\cs_new_protected:Nn \__sdaps_context_end_local_scope:
+{
+  \__sdaps_test_context_id:n { sdaps_local_scope }
+
+  %\bool_until_do:nn { \tl_if_eq_p:Vn \g__sdaps_current_context_id_tl { sdaps_local_scope } } {
+  \bool_until_do:nn { \l__sdaps_tmp_bool } {
+    \__sdaps_context_end:
+
+    \__sdaps_test_context_id:n { sdaps_local_scope }
+  }
+  \__sdaps_context_end:
+}
+
+% Exit current context
+\cs_new_protected:Nn \sdaps_context_end:
+{
+  % Ensure the current context is not a local group
+  \tl_if_eq:VnTF \g__sdaps_current_context_id_tl { sdaps_local_scope } {
+    \msg_error:nnV { sdapsbase } { context_end_broken } \g__sdaps_current_context_id_tl
+  } {}
+
+  \__sdaps_context_end:
+}
+
+% Create new context using an empty name
+\cs_new_protected:Nn \sdaps_context_begin:
+{
+  \sdaps_context_begin:n {}
+}
+
+% Create a new sibbling for the current context
+% This simply exits the current context and creates a new
+% context with the same identifier.
+\cs_new_protected:Nn \sdaps_context_sibbling:
+{
+}
+
+\cs_new_protected:Nn \sdaps_context_begin_local:
+{
+  % Create a new context which will automatically be destroyed at the end of
+  % the current TeX group.
+  \sdaps_context_begin:n { sdaps_local_scope }
+  \group_insert_after:N \__sdaps_context_end_local_scope:
+}
+
+\cs_new_protected:Nn \sdaps_context_put:n
+{
+  \sdaps_context_put:nn { #1 } {\tex_undefined:D}
+}
+
+\msg_new:nnn { sdapsbase } { context_key_broken } { Keys ~ may ~ not ~ contain ~ any ~ special ~ tokens! ~ However ~ the ~ key ~ #1 ~ does ~ contain ~ tokens ~ that ~ are ~ not ~ permissible! }
+% Directly set a certain key
+\cs_new_protected:Nn \sdaps_context_put:nn
+{
+  % TODO: How can I ensure that {} are not contained?
+  % Though it would not be that bad actually.
+  \tl_if_in:nnTF {#1} {,} {
+    \msg_error:nnn { sdapsbase } { context_key_broken } {#1}
+  } {
+  }
+
+  \tl_if_in:nnTF {#1} {=} {
+    \msg_error:nnn { sdapsbase } { context_key_broken } {#1}
+  } {
+  }
+
+  \prop_gput:Nnn \g__sdaps_current_context_prop { #1 } { #2 }
+}
+
+% Set a set of keys using comma separated list of key/value pairs
+\cs_new_protected:Nn \sdaps_context_set:n
+{
+  \keyval_parse:NNn \sdaps_context_put:n \sdaps_context_put:nn { #1 }
+}
+\cs_generate_variant:Nn \sdaps_context_set:n {V}
+
+\cs_new_protected:Nn \sdaps_context_item:n
+{
+  \tl_set:No \l__sdaps_tmp_tl {\prop_item:Nn \g__sdaps_current_context_prop {#1}}
+  \tl_use:N \l__sdaps_tmp_tl
+}
+
+\cs_new_protected:Nn \sdaps_context_clear:
+{
+  \prop_clear:N \g__sdaps_current_context_prop
+}
+
+\cs_new_protected:Nn \sdaps_context_map:N
+{
+  \prop_map:NN \g__sdaps_current_context_prop #1
+}
+
+
+%    \end{macrocode}
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \subsection{Data handling and override specification}
+%
+% Often it is useful to set certain flags for specific checkboxes. As the
+% checkbox may only be generated internally by SDAPS it is impossible to pass
+% a flag to it directly. Because of this \textsf{sdapsbase} has some mechanisms
+% to maintain a tree with options.
+%
+% \begin{verbatim}
+% \sdaps_overrides_init:n{*={
+%   *={},
+%   checkbox2={ellipse},
+%   checkbox3,1={width=6mm},
+% }}
+% \end{verbatim}
+%
+%    \begin{macrocode}
+
+\cs_generate_variant:Nn \keyval_parse:NNn { NNV }
+
+\seq_new:N \g__sdaps_checkbox_overlays_seq
+\seq_new:N \g__sdaps_textbox_overlays_seq
+
+
+\prop_new:N \g__sdaps_id_to_overrides_prop
+\prop_new:N \g__sdaps_overrides_prop
+\prop_new:N \g__sdaps_id_overrides_prop
+
+\cs_new_protected:Nn \__sdaps_questionnaire_overrides_set:nn
+{
+  \str_if_eq_x:nnTF { #1 } { * } {
+    \__sdaps_parse_overrides:n{ #2 }
+  } {
+    \prop_put:Nnn \g__sdaps_id_to_overrides_prop { #1 } { #2 }
+  }
+}
+
+\cs_new_protected:Nn \sdaps_overrides_init:n
+{
+  \keyval_parse:NNn \use_none:n \__sdaps_questionnaire_overrides_set:nn { #1 }
+}
+
+
+\cs_new_protected:Nn \__sdaps_overrides_set:nn
+{
+  \prop_gput:Nnn \g__sdaps_overrides_prop { #1 } { #2 }
+}
+
+\cs_new_protected:Nn \__sdaps_id_overrides_set:nn
+{
+  \prop_gput:Nnn \g__sdaps_id_overrides_prop { #1 } { #2 }
+}
+
+\cs_new_protected:Nn \__sdaps_parse_overrides:n
+{
+  \prop_clear:N \g__sdaps_overrides_prop
+  \keyval_parse:NNn \use_none:n \__sdaps_overrides_set:nn { #1 }
+}
+
+\tl_new:N \l__sdaps_set_qid_tl
+\cs_new_protected:Nn \__sdaps_set_qid:n
+{
+  \prop_gclear:N \g__sdaps_id_overrides_prop
+  \prop_get:NnNTF \g__sdaps_id_to_overrides_prop { #1 } \l__sdaps_set_qid_tl {
+    \keyval_parse:NNV \use_none:n \__sdaps_id_overrides_set:nn \l__sdaps_set_qid_tl
+  } {
+    % Nothing to do
+  }
+}
+
+
+
+\cs_new_protected:Nn \__sdaps_append_override_options:Nnn
+{
+  % Global definition
+  % First generic for all items
+  \prop_get:NnNTF \g__sdaps_overrides_prop { * } \l__sdaps_tmp_tl {
+    \tl_put_right:Nn #1 {,}
+    \tl_put_right:NV #1 \l__sdaps_tmp_tl
+  } {
+    % Nothing to do
+  }
+  \tl_if_empty:nF { #2 } {
+    % Items with same variable name
+    \prop_get:NnNTF \g__sdaps_overrides_prop { #2 } \l__sdaps_tmp_tl {
+      \tl_put_right:Nn #1 {,}
+      \tl_put_right:NV #1 \l__sdaps_tmp_tl
+    } {
+      % Nothing to do
+    }
+    \tl_if_empty:nF { #3 } {
+      % Items with same variable name and value
+      \prop_get:NnNTF \g__sdaps_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+        \tl_put_right:Nn #1 {,}
+        \tl_put_right:NV #1 \l__sdaps_tmp_tl
+      } {
+        % Nothing to do
+      }
+    }
+  }
+
+
+  % Local (questionnaire ID specific) definition
+  % First generic for all items
+  \prop_get:NnNTF \g__sdaps_id_overrides_prop { * } \l__sdaps_tmp_tl {
+    \tl_put_right:Nn #1 {,}
+    \tl_put_right:NV #1 \l__sdaps_tmp_tl
+  } {
+    % Nothing to do
+  }
+  \tl_if_empty:nF { #2 } {
+    % Items with same variable name
+    \prop_get:NnNTF \g__sdaps_id_overrides_prop { #2 } \l__sdaps_tmp_tl {
+      \tl_put_right:Nn #1 {,}
+      \tl_put_right:NV #1 \l__sdaps_tmp_tl
+    } {
+      % Nothing to do
+    }
+    \tl_if_empty:nF { #3 } {
+      % Items with same variable name and value
+      \prop_get:NnNTF \g__sdaps_id_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+        \tl_put_right:Nn #1 {,}
+        \tl_put_right:NV #1 \l__sdaps_tmp_tl
+      } {
+        % Nothing to do
+      }
+    }
+  }
+}
+
+%    \end{macrocode}
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% First we define constants and global variables for later use.
+%    \begin{macrocode}
+\dim_new:N \g_sdaps_linewidth_dim
+\g_sdaps_linewidth_dim=1bp
+\tl_new:N \g__sdaps_checkbox_last_info_tl
+
+\int_new:N \g__sdaps_checkbox_num_int
+\int_set:Nn \g__sdaps_checkbox_num_int 0
+
+
+\int_new:N \g__sdaps_textbox_num_int
+\int_set:Nn \g__sdaps_textbox_num_int 0
+
+
+\dim_new:N \l__sdaps_x_dim
+\dim_new:N \l__sdaps_y_dim
+\dim_new:N \l__sdaps_width_dim
+\dim_new:N \l__sdaps_height_dim
+
+\tl_new:N \l__sdaps_tmp_tl %
+\dim_new:N \l__sdaps_tmp_dim %
+
+\iow_new:N \g_sdaps_infofile_iow
+\iow_open:Nn \g_sdaps_infofile_iow { \c_job_name_tl . sdaps }
+
+
+%    \end{macrocode}
+%
+% Set some options at the beginning of the document.
+%    \begin{macrocode}
+\AtBeginDocument{}
+%    \end{macrocode}
+%
+% \subsection{Definition for keyword parameters}
+%
+%    \begin{macrocode}
+
+
+\dim_new:N \l_sdaps_width_dim
+\dim_new:N \l_sdaps_height_dim
+
+
+\dim_new:N \l_sdaps_checkbox_linewidth_dim
+\dim_new:N \l_sdaps_checkbox_width_dim
+\dim_new:N \l_sdaps_checkbox_height_dim
+\tl_new:N \l_sdaps_checkbox_form_tl
+\tl_new:N \l_sdaps_checkbox_fill_tl
+\tl_new:N \l_sdaps_checkbox_var_tl
+\tl_new:N \l_sdaps_checkbox_value_tl
+\tl_new:N \l_sdaps_checkbox_unknown_tl
+\bool_new:N \l_sdaps_checkbox_draw_check_bool
+
+\bool_new:N \l_sdaps_checkbox_calcpos_bool
+\bool_new:N \l_sdaps_checkbox_storepos_bool
+\bool_new:N \l_sdaps_checkbox_writepos_bool
+
+
+% Internal overlays
+\tl_new:N \l_sdaps_overlay_centered_text_tl
+\tl_new:N \l_sdaps_overlay_minipage_text_tl
+\tl_new:N \l_sdaps_overlay_minipage_pos_tl
+\dim_new:N \l_sdaps_overlay_minipage_pad_dim
+
+
+\keys_define:nn { sdaps / checkbox }
+{
+  linewidth    .dim_set:N   = \l_sdaps_checkbox_linewidth_dim,
+  linewidth    .initial:n   = 1bp,
+  width        .dim_set:N   = \l_sdaps_checkbox_width_dim,
+  width        .initial:n   = 3.5mm,
+  height       .dim_set:N   = \l_sdaps_checkbox_height_dim,
+  height       .initial:n   = 3.5mm,
+  form         .tl_set:N    = \l_sdaps_checkbox_form_tl,
+  form         .initial:n   = { box },
+  var          .tl_set:N    = \l_sdaps_checkbox_var_tl,
+  value        .tl_set:N    = \l_sdaps_checkbox_value_tl,
+
+  fill         .tl_set:N    = \l_sdaps_checkbox_fill_tl,
+  fill         .initial:n   = { white },
+
+  draw_check   .bool_set:N  = \l_sdaps_checkbox_draw_check_bool,
+  draw_check   .initial:n   = false,
+
+  % Simple node overlay
+  centered_text  .tl_set:N    = \l_sdaps_overlay_centered_text_tl,
+  centered_text  .initial:n   = {},
+
+  % minipage overlay
+  text         .tl_set:N    = \l_sdaps_overlay_minipage_text_tl,
+  text         .initial:n   = {},
+  text_align   .tl_set:N    = \l_sdaps_overlay_minipage_pos_tl,
+  text_align   .initial:n   = {c},
+  text_padding .dim_set:N   = \l_sdaps_overlay_minipage_pad_dim,
+  text_padding .initial:n   = {2bp},
+
+
+  storepos     .bool_set:N  = \l_sdaps_checkbox_storepos_bool,
+  storepos     .default:n   = true,
+  storepos     .initial:n   = false,
+
+  writepos     .bool_set:N  = \l_sdaps_checkbox_writepos_bool,
+  writepos     .default:n   = true,
+  writepos     .initial:n   = false,
+
+  ellipse    .meta:n  = { form=ellipse },
+  box        .meta:n  = { form=box },
+}
+%    \end{macrocode}
+%
+% \subsection{Checkboxes}
+%
+%
+%    \begin{macrocode}
+
+\cs_new_protected:Nn \__sdaps_checkbox_internal:
+{
+  %
+  % XXX: Unset l__sdaps_checkbox_storepos_bool if output file is closed
+  %
+  \bool_set_false:N \l_sdaps_checkbox_calcpos_bool
+    \bool_if:NT \l_sdaps_checkbox_storepos_bool {
+      \bool_set_true:N \l_sdaps_checkbox_calcpos_bool
+    }
+    \bool_if:NT \l_sdaps_checkbox_writepos_bool {
+      \bool_set_true:N \l_sdaps_checkbox_calcpos_bool
+    }
+  \mbox{
+    \bool_if:NTF \l_sdaps_checkbox_calcpos_bool {
+      \label{checkbox\int_use:N\g__sdaps_checkbox_num_int}
+      \tl_set:Nn \l__sdaps_tmp_tl {remember~picture}
+    } {
+      \tl_clear:N \l__sdaps_tmp_tl
+    }
+
+    \tikz[baseline={max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex+0.5\l_sdaps_checkbox_linewidth_dim)},\tl_to_str:N\l__sdaps_tmp_tl]{%
+      \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} {box} {
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0) rectangle +(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim);%
+      }
+      \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} { ellipse } {
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] ($(0.5\l_sdaps_checkbox_linewidth_dim, 0) + (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim)$) circle [x~radius=0.5\l_sdaps_checkbox_width_dim, y~radius=0.5\l_sdaps_checkbox_height_dim];%
+      }
+
+      \bool_if:NT \l_sdaps_checkbox_calcpos_bool {
+        \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+        \pgfsys@getposition{\pgfpictureid}{\@sdaps@checkboxpos}
+        \pgfpointadd{\@sdaps@checkboxpos}{
+          \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{\l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim}}
+        }
+        \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+        \pgfpoint{\l_sdaps_checkbox_width_dim+\l_sdaps_checkbox_linewidth_dim}{\l_sdaps_checkbox_height_dim+\l_sdaps_checkbox_linewidth_dim}
+        \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+
+        \bool_if:NT \l_sdaps_checkbox_storepos_bool {
+          \tl_gset:Nx\g__sdaps_checkbox_info_tl{Box=Checkbox, \getpagerefnumber{checkbox\int_use:N\g__sdaps_checkbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
+        }
+        \bool_if:NT \l_sdaps_checkbox_writepos_bool {
+          \sdaps_info_write:x{Box=Checkbox, \getpagerefnumber{checkbox\int_use:N\g__sdaps_checkbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
+        }
+      }
+
+      % For the overlay we actually position the nodes relative to the checkbox
+      % and not abslute on the page.
+      \pgfpoint{0}{\l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim}
+      \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+
+      % Use overlay so that nothing happens if a node is larger than the checkbox
+      \begin{scope}[overlay]
+        \seq_map_inline:Nn \g__sdaps_checkbox_overlays_seq {##1}
+      \end{scope}
+    }
+  }
+  \bool_if:NT \l_sdaps_checkbox_calcpos_bool {%
+    \int_gincr:N\g__sdaps_checkbox_num_int%
+  }%
+}
+
+
+\cs_new_protected:Nn \sdaps_checkbox_force:n
+{
+  \group_begin:
+
+    \keys_set_known:nnN { sdaps / checkbox } { #1 } \l_sdaps_checkbox_unknown_tl
+    \__sdaps_checkbox_internal:
+
+  \group_end:
+  \ignorespaces
+}
+
+\cs_new_protected:Nn \sdaps_checkbox:nn
+{
+  \group_begin:%
+
+    \tl_set:Nn \l_sdaps_checkbox_unknown_tl {}
+
+    \__sdaps_append_override_options:Nnn \l_sdaps_checkbox_unknown_tl { #1 } { #2 }
+
+    \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_checkbox_unknown_tl \l_sdaps_checkbox_unknown_tl
+
+    \__sdaps_checkbox_internal:
+  \group_end:%
+  \ignorespaces
+}
+
+
+\cs_new_protected:Nn \sdaps_overlay_check:
+{
+  \bool_if:NTF \l_sdaps_checkbox_draw_check_bool {
+    \begin{scope}[decoration={random~steps,segment~length=4pt,amplitude=1pt}]
+      \draw[line~width=\l_sdaps_checkbox_linewidth_dim, decorate] ($(0, 0) - (2pt,2pt)$) -- (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) -- ($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim) + (2pt,2pt)$);%
+      \draw[line~width=\l_sdaps_checkbox_linewidth_dim, decorate] ($(0, \l_sdaps_checkbox_height_dim) + (-2pt,2pt)$) -- (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) -- ($(\l_sdaps_checkbox_width_dim, 0) + (2pt,-2pt)$);%
+    \end{scope}
+  } {}
+}
+\seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_check:
+
+
+\cs_new_protected:Nn \sdaps_overlay_centered:
+{
+  \tl_if_empty:NTF \l_sdaps_overlay_centered_text_tl {} {
+    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l__sdaps_x, \l__sdaps_y) + 0.5*(\l__sdaps_width, -\l__sdaps_height)$) {
+      \l_sdaps_overlay_centered_text_tl
+    };
+  }
+}
+\seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_centered:
+\seq_put_left:Nn \g__sdaps_textbox_overlays_seq \sdaps_overlay_centered:
+
+
+\cs_new_protected:Nn \sdaps_overlay_minipage:
+{
+  \tl_if_empty:NTF \l_sdaps_overlay_minipage_text_tl {} {
+    \dim_set:Nn \l_sdaps_width_dim { \l__sdaps_width - 2\l_sdaps_overlay_minipage_pad_dim }
+    \dim_set:Nn \l_sdaps_height_dim { \l__sdaps_height - 2\l_sdaps_overlay_minipage_pad_dim }
+
+    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l__sdaps_x, \l__sdaps_y) + 0.5*(\l__sdaps_width, -\l__sdaps_height)$) {
+      \begin{minipage}[t][\l_sdaps_height_dim][\l_sdaps_overlay_minipage_pos_tl]{\l_sdaps_width_dim}
+        % Hm, is this sane?
+        \tex_let:D \textheight\l_sdaps_height_dim
+        \l_sdaps_overlay_minipage_text_tl
+      \end{minipage}
+    };
+  }
+}
+\seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_minipage:
+\seq_put_left:Nn \g__sdaps_textbox_overlays_seq \sdaps_overlay_minipage:
+
+
+
+
+\cs_new_protected:Nn \__sdaps_checkbox_info:N
+{
+  \tl_gset:Nx #1 \g__sdaps_checkbox_info_tl
+}
+
+\cs_new_protected:Nn \sdaps_info_write:n
+{
+  \iow_now:Nn \g_sdaps_infofile_iow { #1 }
+}
+
+\cs_new_protected:Nn \sdaps_info_write:x
+{
+  \iow_now:Nx \g_sdaps_infofile_iow { #1 }
+}
+
+%\let\checkbox\sdaps_checkbox_force:n
+
+%    \end{macrocode}
+%
+
+
+% \subsection{Textboxes}
+%
+%
+%    \begin{macrocode}
+
+\dim_new:N \l__sdaps_textbox_dp_dim
+\dim_new:N \l__sdaps_textbox_ht_dim
+\dim_new:N \l__sdaps_textbox_wd_dim
+\dim_new:N \l__sdaps_textbox_pad_dim
+
+
+\msg_new:nnn { sdapsbase } { textbox_wrong_mode } { Impossible~to~layout~a~#1~textbox~in~#2~mode. }
+
+\cs_new_protected:Nn \__sdaps_textbox_vhstretch:n
+{
+%    \end{macrocode}
+%
+% At first we need to ensure that we are currently neither in inner nor math mode.
+% The scaling feature simply does not work in either of these two modes.
+%
+%    \begin{macrocode}
+  \if_mode_math:
+    \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { math }
+  \fi
+
+  \if_mode_inner:
+    \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { inner }
+  \fi
+%    \end{macrocode}
+%
+% If the mode is currently horizontal, then we switch back to vertical mode by
+% ending the current paragraph. \textbackslash widowpenalty is inserted so that
+% no page break will happen usually. If the user desires a page break, then she
+% can simply use \textbackslash par directly.
+%
+%    \begin{macrocode}
+  \if_mode_horizontal:
+    % TODO: Make configurable/section by default penalty?
+    \tex_par:D
+    \tex_penalty:D \tex_widowpenalty:D
+  \fi
+
+  \group_begin:%
+
+%    \end{macrocode}
+%
+% First we define the height and depth of the box that will be set. Setting the
+% height works by inserting a rule into the first box and adding a negative
+% skip afterwards. The depth is compensated by simply telling LaTeX what the
+% previous depth was.
+%
+% Note that we need to add nobreak/nointerlineskip everywhere so that we
+% don't insert extra spacing and no page break will happen.
+%
+% The first box has a defined height and stores the current position for the
+% frame code later on. Then two cleaders follow which simply implement the
+% required stretching (cleaders are used to prevent page breaking, I do not
+% know whether this is sane, but it seems to work just fine). After this the
+% box containing the main drawing code is placed last. We simply use a vbox
+% with right aligned content.
+%
+%
+%    \begin{macrocode}
+    % TODO: Make this configurable
+    \dim_set:Nn \l__sdaps_textbox_dp_dim { 0.5ex }
+    \dim_set:Nn \l__sdaps_textbox_ht_dim { 1.7ex }
+
+    \vbox:n {
+      \noindent
+      \leftskip=0pt
+      \rightskip=0pt plus 1fill
+      \tex_vrule:D height \l__sdaps_textbox_ht_dim depth 0pt width 0pt
+      \pgfsys@markposition{textboxtop\int_use:N\g__sdaps_textbox_num_int}
+    }
+
+    \tex_penalty:D 10000
+    \tex_prevdepth:D=-1000pt
+
+    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#1 - \l__sdaps_textbox_ht_dim}
+
+    \tex_penalty:D 10000
+    \tex_prevdepth:D=-1000pt
+
+    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{\stretch{1}}
+
+    \tex_penalty:D 10000
+    \tex_prevdepth:D=-1000pt
+
+    \vbox:n {
+      \noindent
+      \leftskip=0pt plus 1fill
+      \rightskip=0pt
+      \label{textbox\int_use:N\g__sdaps_textbox_num_int}
+      \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
+        \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+        \pgfsys@getposition{textboxtop\int_use:N\g__sdaps_textbox_num_int}{\@sdaps@textboxtoppos}
+        \pgfpointadd{\@sdaps@textboxtoppos}{
+          \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{\l__sdaps_textbox_ht_dim}}
+        }
+        \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+
+        \pgfsys@getposition{\pgfpictureid}{\@sdaps@textboxbottompos}
+        \pgfpointdiff{\@sdaps@textboxtoppos}{\@sdaps@textboxbottompos}
+
+        % Is there a more elegant way to multiply the height with -1?
+        \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+        % Add the minimum height (i.e. depth below the last baseline) to the
+        % overall height.
+        \pgfpoint{\l__sdaps_width}{-\l__sdaps_height + \l__sdaps_textbox_ht_dim}
+        \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+
+        % Draw the rectangle
+        \draw[line~width=1bp] ($(\l__sdaps_x, \l__sdaps_y) + 0.5 * (1bp, -1bp)$) rectangle +($(\l__sdaps_width, -\l__sdaps_height) - (1bp, -1bp)$);
+
+        \begin{scope}
+          \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
+        \end{scope}
+
+        \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
+      \end{tikzpicture}
+    }
+    \tex_prevdepth:D=\l__sdaps_textbox_dp_dim
+
+    \int_gincr:N\g__sdaps_textbox_num_int
+
+  \group_end:
+}
+
+
+\cs_new_protected:Nn \__sdaps_textbox_hstretch:nnnn
+{
+  \group_begin:
+
+    % Place a vrule to make space for the top/bottom padding
+    \tex_vrule:D depth #1 height #2 width 0pt \nobreak
+    \pgfsys@markposition{textboxstart\int_use:N\g__sdaps_textbox_num_int} \nobreak
+    \label{textbox\int_use:N\g__sdaps_textbox_num_int} \nobreak
+
+    \skip_horizontal:n { #3 + \stretch{#4} } \nobreak
+
+    % The textbox (rendered on the background)
+    \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
+      \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+      \pgfsys@getposition{textboxstart\int_use:N\g__sdaps_textbox_num_int}{\@sdaps@textboxpos}
+      % The position here is the position of the baseline.
+      % So move up by height (param 2) to get the correct vertical position.
+      \pgfpointadd{\@sdaps@textboxpos}{
+        \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{#2}}
+      }
+      \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+
+      \pgfsys@getposition{\pgfpictureid}{\@sdaps@textboxendpos}
+      % Calculate width and add the height to it
+      \pgfpointadd{
+        \pgfpointdiff{\@sdaps@textboxpos}{\@sdaps@textboxendpos}
+      }{\pgfpoint{0pt}{#1 + #2}}
+      \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+
+      % Draw the rectangle
+      \draw[line~width=1bp,fill=white] ($(\l__sdaps_x, \l__sdaps_y) + 0.5 * (1bp, -1bp)$) rectangle +($(\l__sdaps_width, -\l__sdaps_height) - (1bp, -1bp)$);
+
+      \begin{scope}
+        \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
+      \end{scope}
+
+      \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}
+    \end{tikzpicture}
+
+    \int_gincr:N\g__sdaps_textbox_num_int
+
+  \group_end:
+}
+
+\cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:
+{
+  \dim_set:Nn \l__sdaps_textbox_ht_dim { \coffin_ht:N \l__sdaps_textbox_coffin + \coffin_dp:N \l__sdaps_textbox_coffin }
+  \dim_set:Nn \l__sdaps_textbox_wd_dim { \coffin_wd:N \l__sdaps_textbox_coffin }
+
+  \hcoffin_set:Nn \l_tmpa_coffin {
+    \label{textbox\int_use:N\g__sdaps_textbox_num_int}\nobreak
+    % The textbox (rendered on the background)
+    \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
+      \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+      \pgfsys@getposition{\pgfpictureid}{\@sdaps@textboxpos}
+      % The position here is the position of the baseline.
+      % So move up by ht_dim to get the correct vertical position
+      \pgfpointadd{\@sdaps@textboxpos}{\@sdaps@pageorigin}
+      \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+
+      \pgfpoint{\l__sdaps_textbox_wd_dim + 2\l__sdaps_textbox_pad_dim}{\l__sdaps_textbox_ht_dim + 2\l__sdaps_textbox_pad_dim}
+      \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+
+      % Draw the rectangle
+      \draw[line~width=1bp] ($(\l__sdaps_x, \l__sdaps_y) + (0.5bp, -0.5bp)$) rectangle +($(\l__sdaps_width, -\l__sdaps_height) - (1bp, -1bp)$);
+
+      \begin{scope}
+          \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
+      \end{scope}
+
+      \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
+    \end{tikzpicture}
+    \skip_horizontal:n { \l__sdaps_textbox_pad_dim }
+    \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
+  }
+
+  \hcoffin_set:Nn \l_tmpb_coffin {
+    \skip_horizontal:n { \l__sdaps_textbox_pad_dim }
+    \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
+  }
+
+  \coffin_join:NnnNnnnn \l__sdaps_textbox_coffin { l } { t } \l_tmpa_coffin { r } { b } { 0pt } { 0pt }
+  \coffin_join:NnnNnnnn \l__sdaps_textbox_coffin { r } { b } \l_tmpb_coffin { l } { t } { 0pt } { 0pt }
+
+  \int_gincr:N\g__sdaps_textbox_num_int
+}
+
+\coffin_new:N \l__sdaps_textbox_coffin
+\cs_new_protected:Nn \__sdaps_textbox_hcoffin:nn
+{
+  \group_begin:
+
+    \hcoffin_set:Nn \l__sdaps_textbox_coffin { \tl_trim_spaces:n { #2 } }
+
+    \dim_set:Nn \l__sdaps_textbox_pad_dim {#1}
+
+    \__sdaps_textbox_prepare_coffin:
+
+    \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
+
+  \group_end:
+}
+
+\cs_new_protected:Nn \__sdaps_textbox_vcoffin:nnn
+{
+  \group_begin:
+
+    \dim_set:Nn \l__sdaps_textbox_pad_dim { #2 }
+    \dim_set:Nn \l__sdaps_textbox_wd_dim { #1 - 2\l__sdaps_textbox_pad_dim }
+
+    \vcoffin_set:Nnn \l__sdaps_textbox_coffin { \l__sdaps_textbox_wd_dim } { \tl_trim_spaces:n { #3 }}
+
+    \__sdaps_textbox_prepare_coffin:
+
+    \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
+
+  \group_end:
+}
+
+
+%    \end{macrocode}
+%
+
+% \Finale
+\endinput
