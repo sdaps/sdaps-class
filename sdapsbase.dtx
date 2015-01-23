@@ -167,7 +167,7 @@
 \cs_new_protected:Nn \__sdaps_context_end:
 {
   \seq_if_empty:NTF \g__sdaps_context_ids_seq {
-    \msg_error:nn { sdapsbase } { context_end_none_left } {}
+    \msg_error:nn { sdapsbase } { context_end_none_left }
   } {
 
     \group_begin:
@@ -374,10 +374,8 @@
 \cs_new_protected:Nn \__sdaps_set_qid:n
 {
   \prop_gclear:N \g__sdaps_id_overrides_prop
-  \prop_get:NnNTF \g__sdaps_id_to_overrides_prop { #1 } \l__sdaps_set_qid_tl {
+  \prop_get:NnNT \g__sdaps_id_to_overrides_prop { #1 } \l__sdaps_set_qid_tl {
     \keyval_parse:NNV \use_none:n \__sdaps_id_overrides_set:nn \l__sdaps_set_qid_tl
-  } {
-    % Nothing to do
   }
 }
 
@@ -395,19 +393,15 @@
   }
   \tl_if_empty:nF { #2 } {
     % Items with same variable name
-    \prop_get:NnNTF \g__sdaps_overrides_prop { #2 } \l__sdaps_tmp_tl {
+    \prop_get:NnNT \g__sdaps_overrides_prop { #2 } \l__sdaps_tmp_tl {
       \tl_put_right:Nn #1 {,}
       \tl_put_right:NV #1 \l__sdaps_tmp_tl
-    } {
-      % Nothing to do
     }
     \tl_if_empty:nF { #3 } {
       % Items with same variable name and value
-      \prop_get:NnNTF \g__sdaps_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+      \prop_get:NnNT \g__sdaps_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
         \tl_put_right:Nn #1 {,}
         \tl_put_right:NV #1 \l__sdaps_tmp_tl
-      } {
-        % Nothing to do
       }
     }
   }
@@ -415,27 +409,21 @@
 
   % Local (questionnaire ID specific) definition
   % First generic for all items
-  \prop_get:NnNTF \g__sdaps_id_overrides_prop { * } \l__sdaps_tmp_tl {
+  \prop_get:NnNT \g__sdaps_id_overrides_prop { * } \l__sdaps_tmp_tl {
     \tl_put_right:Nn #1 {,}
     \tl_put_right:NV #1 \l__sdaps_tmp_tl
-  } {
-    % Nothing to do
   }
   \tl_if_empty:nF { #2 } {
     % Items with same variable name
-    \prop_get:NnNTF \g__sdaps_id_overrides_prop { #2 } \l__sdaps_tmp_tl {
+    \prop_get:NnNT \g__sdaps_id_overrides_prop { #2 } \l__sdaps_tmp_tl {
       \tl_put_right:Nn #1 {,}
       \tl_put_right:NV #1 \l__sdaps_tmp_tl
-    } {
-      % Nothing to do
     }
     \tl_if_empty:nF { #3 } {
       % Items with same variable name and value
-      \prop_get:NnNTF \g__sdaps_id_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+      \prop_get:NnNT \g__sdaps_id_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
         \tl_put_right:Nn #1 {,}
         \tl_put_right:NV #1 \l__sdaps_tmp_tl
-      } {
-        % Nothing to do
       }
     }
   }
@@ -654,19 +642,19 @@
 
 \cs_new_protected:Nn \sdaps_overlay_check:
 {
-  \bool_if:NTF \l_sdaps_checkbox_draw_check_bool {
+  \bool_if:NT \l_sdaps_checkbox_draw_check_bool {
     \begin{scope}[decoration={random~steps,segment~length=4pt,amplitude=1pt}]
       \draw[line~width=\l_sdaps_checkbox_linewidth_dim, decorate] ($(0, 0) - (2pt,2pt)$) -- (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) -- ($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim) + (2pt,2pt)$);%
       \draw[line~width=\l_sdaps_checkbox_linewidth_dim, decorate] ($(0, \l_sdaps_checkbox_height_dim) + (-2pt,2pt)$) -- (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) -- ($(\l_sdaps_checkbox_width_dim, 0) + (2pt,-2pt)$);%
     \end{scope}
-  } {}
+  }
 }
 \seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_check:
 
 
 \cs_new_protected:Nn \sdaps_overlay_centered:
 {
-  \tl_if_empty:NTF \l_sdaps_overlay_centered_text_tl {} {
+  \tl_if_empty:NF \l_sdaps_overlay_centered_text_tl {
     \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l__sdaps_x, \l__sdaps_y) + 0.5*(\l__sdaps_width, -\l__sdaps_height)$) {
       \l_sdaps_overlay_centered_text_tl
     };
@@ -678,7 +666,7 @@
 
 \cs_new_protected:Nn \sdaps_overlay_minipage:
 {
-  \tl_if_empty:NTF \l_sdaps_overlay_minipage_text_tl {} {
+  \tl_if_empty:NF \l_sdaps_overlay_minipage_text_tl {
     \dim_set:Nn \l_sdaps_width_dim { \l__sdaps_width - 2\l_sdaps_overlay_minipage_pad_dim }
     \dim_set:Nn \l_sdaps_height_dim { \l__sdaps_height - 2\l_sdaps_overlay_minipage_pad_dim }
 
