@@ -8,7 +8,17 @@
 
 \usepackage{multicol}
 
+\usepackage{scrpage2}
+
 \ExplSyntaxOn
+
+%% headers and footers
+\pagestyle{scrheadings}
+
+\clearscrheadings
+  %\chead[\@author\\\@title]{\@author\\\@title}
+  \cfoot{\sdaps_page_end:}
+
 
 \bool_new:N \l_sdaps_checkbox_pdf_form_bool
 \bool_new:N \l_sdaps_checkbox_default_bool
@@ -75,6 +85,11 @@
 
 \begin{document}
 
+\ExplSyntaxOn
+\sdaps_begin:
+
+\ExplSyntaxOff
+
 \begin{Form}
 
 %\MakeCheckField{3.5mm}{3.5mm}
@@ -97,7 +112,6 @@
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Duplex=False}%
-\sdaps_info_write:x{Pages=4}%
 \pgfpoint{\paperwidth}{\paperheight}
 \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
 \sdaps_info_write:x{PageSize=\l__sdaps_width, \l__sdaps_height}
@@ -207,13 +221,20 @@ And in a formula $ f(x) = \frac{1}{c\,\hcoffin{3bp}{coffin}} \hstretch{2mm}{5mm}
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 
-\noindent\__sdaps_textbox_vcoffin:nnn {\linewidth} {1bp} {
+\let \vcoffin \__sdaps_textbox_vcoffin:nnn
+
+\ExplSyntaxOff
+\noindent asdf \vcoffin {0.8\linewidth} {3bp} {
 \noindent\begin{tabularx}{\linewidth}{l|l|X}
 adsf  lkasjd lksj flkjsfd & blub & gah \\
 \hline
 asdf & & \\
 \end{tabularx}
+
+This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
+This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
 }
+\ExplSyntaxOn
 
 
 \par
@@ -333,7 +354,6 @@ This is some texgt. This is some text. This is some text. This is sogme text.
 
 \sdaps_context_to_gtl:N \g_test_tl
 outer:~ \tl_to_str:N \g_test_tl \newline
-\tl_to_str:f {\sdaps_context_item:n {key}}
 
 \sdaps_context_begin:n {test}
     \sdaps_context_put:nn {level} {test 0}
@@ -367,10 +387,7 @@ outer:~\tl_to_str:N \g_test_tl \newline
 
 \sdaps_context_to_gtl:N \g_test_tl
 outer~after~local:~\tl_to_str:N \g_test_tl \newline
-\sdaps_context_item:n {key}
 
-
-\ExplSyntaxOff
 
 %\ExplSyntaxOn
 %\tl_new:N \asdf
@@ -382,4 +399,12 @@ outer~after~local:~\tl_to_str:N \g_test_tl \newline
 %\Submit{asdf}
 
 \end{Form}
+
+\ExplSyntaxOn
+
+\sdaps_end:
+
+
+\ExplSyntaxOff
+
 \end{document}

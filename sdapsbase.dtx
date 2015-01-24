@@ -93,11 +93,28 @@
 % And we need a number of other packages.
 %    \begin{macrocode}
 \ExplSyntaxOff
+
+\input{code128}
+
+\RequirePackage{qrcode}
+
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathmorphing}
 \ExplSyntaxOn
+
+
+% Define aliases for code128 functions, and generate variants
+\tex_let:D \code_render:n \code
+\cs_generate_variant:Nn \code_render:n { x, V }
+
+\cs_new_protected:Nn \qrcode_render:nn {
+  \qrcode[#1] {#2}
+}
+\cs_generate_variant:Nn \qrcode_render:nn { nx, nV }
+
+
 %    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,6 +130,8 @@
 %    \begin{macrocode}
 
 \cs_generate_variant:Nn \tl_if_eq:nnTF { Vn }
+\cs_generate_variant:Nn \int_if_odd:nTF { V }
+\cs_generate_variant:Nn \int_if_odd:nF { V }
 \cs_generate_variant:Nn \tl_set:Nn { Nv }
 \cs_generate_variant:Nn \msg_error:nnn { nnV }
 
@@ -286,12 +305,6 @@
   \keyval_parse:NNn \sdaps_context_put:n \sdaps_context_put:nn { #1 }
 }
 \cs_generate_variant:Nn \sdaps_context_set:n {V}
-
-\cs_new_protected:Nn \sdaps_context_item:n
-{
-  \tl_set:No \l__sdaps_tmp_tl {\prop_item:Nn \g__sdaps_current_context_prop {#1}}
-  \tl_use:N \l__sdaps_tmp_tl
-}
 
 \cs_new_protected:Nn \sdaps_context_clear:
 {
@@ -564,7 +577,6 @@
     }
   \mbox{
     \bool_if:NTF \l_sdaps_checkbox_calcpos_bool {
-      \label{checkbox\int_use:N\g__sdaps_checkbox_num_int}
       \tl_set:Nn \l__sdaps_tmp_tl {remember~picture}
     } {
       \tl_clear:N \l__sdaps_tmp_tl
@@ -592,7 +604,7 @@
           \tl_gset:Nx\g__sdaps_checkbox_info_tl{Box=Checkbox, \getpagerefnumber{checkbox\int_use:N\g__sdaps_checkbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
         }
         \bool_if:NT \l_sdaps_checkbox_writepos_bool {
-          \sdaps_info_write:x{Box=Checkbox, \getpagerefnumber{checkbox\int_use:N\g__sdaps_checkbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
+          \sdaps_info_write_x:x{Box=Checkbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
         }
       }
 
@@ -607,9 +619,9 @@
       \end{scope}
     }
   }
-  \bool_if:NT \l_sdaps_checkbox_calcpos_bool {%
-    \int_gincr:N\g__sdaps_checkbox_num_int%
-  }%
+  \bool_if:NT \l_sdaps_checkbox_calcpos_bool {
+    \int_gincr:N\g__sdaps_checkbox_num_int
+  }
 }
 
 
@@ -692,13 +704,16 @@
 
 \cs_new_protected:Nn \sdaps_info_write:n
 {
-  \iow_now:Nn \g_sdaps_infofile_iow { #1 }
+  \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
 }
+\cs_generate_variant:Nn \sdaps_info_write:n { x }
 
-\cs_new_protected:Nn \sdaps_info_write:x
+\cs_new_protected:Nn \sdaps_info_write_x:n
 {
-  \iow_now:Nx \g_sdaps_infofile_iow { #1 }
+  \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
 }
+\cs_generate_variant:Nn \sdaps_info_write_x:n { x }
+
 
 %\let\checkbox\sdaps_checkbox_force:n
 
@@ -729,11 +744,11 @@
 %    \begin{macrocode}
   \if_mode_math:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { math }
-  \fi
+  \fi:
 
   \if_mode_inner:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { inner }
-  \fi
+  \fi:
 %    \end{macrocode}
 %
 % If the mode is currently horizontal, then we switch back to vertical mode by
@@ -746,7 +761,7 @@
     % TODO: Make configurable/section by default penalty?
     \tex_par:D
     \tex_penalty:D \tex_widowpenalty:D
-  \fi
+  \fi:
 
   \group_begin:%
 
@@ -798,7 +813,6 @@
       \noindent
       \leftskip=0pt plus 1fill
       \rightskip=0pt
-      \label{textbox\int_use:N\g__sdaps_textbox_num_int}
       \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
         \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
         \pgfsys@getposition{textboxtop\int_use:N\g__sdaps_textbox_num_int}{\@sdaps@textboxtoppos}
@@ -824,7 +838,7 @@
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
         \end{scope}
 
-        \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
+        \sdaps_info_write_x:x{Box=Textbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
       \end{tikzpicture}
     }
     \tex_prevdepth:D=\l__sdaps_textbox_dp_dim
@@ -842,7 +856,6 @@
     % Place a vrule to make space for the top/bottom padding
     \tex_vrule:D depth #1 height #2 width 0pt \nobreak
     \pgfsys@markposition{textboxstart\int_use:N\g__sdaps_textbox_num_int} \nobreak
-    \label{textbox\int_use:N\g__sdaps_textbox_num_int} \nobreak
 
     \skip_horizontal:n { #3 + \stretch{#4} } \nobreak
 
@@ -871,7 +884,7 @@
         \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
       \end{scope}
 
-      \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}
+      \sdaps_info_write_x:x{Box=Textbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}
     \end{tikzpicture}
 
     \int_gincr:N\g__sdaps_textbox_num_int
@@ -885,7 +898,6 @@
   \dim_set:Nn \l__sdaps_textbox_wd_dim { \coffin_wd:N \l__sdaps_textbox_coffin }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \label{textbox\int_use:N\g__sdaps_textbox_num_int}\nobreak
     % The textbox (rendered on the background)
     \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
       \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
@@ -905,7 +917,7 @@
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
       \end{scope}
 
-      \sdaps_info_write:x{Box=Textbox, \getpagerefnumber{textbox\int_use:N\g__sdaps_textbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
+      \sdaps_info_write_x:x{Box=Textbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
     \end{tikzpicture}
     \skip_horizontal:n { \l__sdaps_textbox_pad_dim }
     \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
@@ -954,7 +966,412 @@
   \group_end:
 }
 
+%    \end{macrocode}
+%
+%
+% \subsection{Page Marking}
+%
+% SDAPS depends on certain markings on every page. The following function
+% implement drawing these marks.
+%
+%    \begin{macrocode}
 
+\int_new:N \g_sdaps_page_int
+\int_set:Nn \g_sdaps_page_int { 0 }
+
+\bool_new:N \g_sdaps_twoside_bool
+\bool_set:Nn \g_sdaps_twoside_bool \c_false_bool
+
+
+
+\tl_new:N \g_sdaps_style_tl
+\dim_new:N \g_sdaps_edge_left_margin_dim
+\dim_new:N \g_sdaps_edge_right_margin_dim
+\dim_new:N \g_sdaps_edge_top_margin_dim
+\dim_new:N \g_sdaps_edge_bottom_margin_dim
+\dim_new:N \g_sdaps_edge_marker_linewidth_dim
+\dim_new:N \g_sdaps_edge_marker_length_dim
+
+\dim_new:N \g_sdaps_classic_boxpad_dim
+\dim_new:N \g_sdaps_classic_boxsize_dim
+
+
+\tl_set:Nn \g_sdaps_style_tl { code128 }
+\dim_set:Nn \g_sdaps_edge_left_margin_dim { 10mm }
+\dim_set:Nn \g_sdaps_edge_right_margin_dim { 10mm }
+\dim_set:Nn \g_sdaps_edge_top_margin_dim { 12mm }
+\dim_set:Nn \g_sdaps_edge_bottom_margin_dim { 12mm }
+\dim_set:Nn \g_sdaps_edge_marker_linewidth_dim { 1bp }
+\dim_set:Nn \g_sdaps_edge_marker_length_dim { 20mm }
+
+\dim_set:Nn \g_sdaps_classic_boxpad_dim { 3mm }
+\dim_set:Nn \g_sdaps_classic_boxsize_dim { 3.5mm }
+
+
+\tl_new:N \g_sdaps_questionnaire_id_tl
+\tl_set:Nn \g_sdaps_questionnaire_id_tl { }
+
+\tl_new:N \g_sdaps_questionnaire_id_label_tl
+\tl_set:Nn \g_sdaps_questionnaire_id_label_tl { }
+
+
+\tl_new:N \g_sdaps_survey_id_tl
+\tl_set:Nn \g_sdaps_survey_id_tl { 32498923 }
+
+\tl_new:N \g_sdaps_global_id_tl
+\tl_set:Nn \g_sdaps_global_id_tl { }
+
+\tl_new:N \g_sdaps_global_id_label_tl
+\tl_set:Nn \g_sdaps_global_id_label_tl { }
+
+
+
+
+% Settings for code128 barcodes (used in code128 style, who would have thought?)
+\dim_new:N \c_sdaps_barcode_height_dim
+\dim_set:Nn \c_sdaps_barcode_height_dim {6.5mm}
+% This is the same as the default
+\dim_new:N \c_sdaps_barcode_bar_width_dim
+\dim_set:Nn \c_sdaps_barcode_bar_width_dim {0.33mm}
+% Same as default. Barwidth is decreased for printing by this value.
+\dim_new:N \c_sdaps_barcode_bcorr_dim
+\dim_set:Nn \c_sdaps_barcode_bcorr_dim {0.020mm}
+
+% The padding on the left/right of a barcode. This is the distance that the
+% barcodes will be printed from the cornermarks
+% Choosen to be the same as the barcode height. Note that the Code-128
+% standard requires a quiet zone of max(10*modulesize, ~6.4mm).
+\dim_new:N \c_sdaps_barcode_hpad_dim
+\dim_set:Nn \c_sdaps_barcode_hpad_dim {6.5mm}
+
+% This needs to be smaller than 6.5mm because otherwise the content is too close.
+% We set it so that it forms a golden ratio 6.5mm*(sqrt(5/4)-0.5). This means
+% we have about 4.5mm padding to the content.
+\dim_new:N \c_sdaps_barcode_vpad_dim
+\dim_set:Nn \c_sdaps_barcode_vpad_dim {4.02mm}
+
+
+\cs_new_protected:Nn \sdaps_draw_codes:
+{
+  \group_begin:
+    \begin{scope}[line~width=\g_sdaps_edge_marker_linewidth_dim, shift={(current~page.south~west)}]
+      \str_if_eq:VnT \g_sdaps_style_tl { qr } {
+        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
+          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
+            \node(barcode)[anchor=south~west,outer~sep=0,inner~sep=0]{
+              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g_sdaps_questionnaire_id_tl
+            };
+          \end{scope}
+        }
+
+        % We unconditionally print this barcode, it is required for the recognition
+        % process.
+        \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
+          \pgfmathsetbasenumberlength{4}
+          \pgfmathdectobase{\paddedpage}{\thepage}{10}% Yes, padding to 4 chars the hard way
+          \node(barcode)[anchor=south~east,outer~sep=0,inner~sep=0]{
+            \qrcode_render:nx {version=2,level=H,padding,height=10mm} {\tl_use:N\g_sdaps_survey_id_tl\paddedpage}
+          };
+        \end{scope}
+
+        \tl_if_empty:VF \g_sdaps_global_id_tl {
+          \begin{scope}[shift={($(\paperwidth/2-\g_sdaps_edge_right_margin_dim/2+\g_sdaps_edge_left_margin_dim/2, \g_sdaps_edge_bottom_margin_dim)$)}]
+            \node(barcode)[anchor=south,outer~sep=0,inner~sep=0]{
+              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g_sdaps_global_id_tl
+            };
+          \end{scope}
+        }
+      }
+
+      \str_if_eq:VnT \g_sdaps_style_tl { code128 } {
+        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
+          % TODO: do not hardcode the font!
+          \ttfamily\footnotesize
+
+          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (\c_sdaps_barcode_hpad_dim, \c_sdaps_barcode_vpad_dim)$)}]
+            \node(barcode)[anchor=south~west,outer~sep=0,inner~sep=0]{
+              \X = \c_sdaps_barcode_bar_width_dim
+              \bcorr = \c_sdaps_barcode_bcorr_dim
+              \barheight = \c_sdaps_barcode_height_dim
+              \code_render:V \g_sdaps_questionnaire_id_tl
+            };
+            \node[below=1mm~of~barcode,distance=0,anchor=north,outer~sep=0,inner~sep=0]{
+              \tl_if_empty:VTF \g_sdaps_questionnaire_id_label_tl {
+                \tl_use:N \g_sdaps_questionnaire_id_tl
+              } {
+                \tl_use:N \g_sdaps_questionnaire_id_label_tl
+              }
+            };
+          \end{scope}
+        }
+
+        % We unconditionally print this barcode, it is required for the recognition
+        % process.
+        \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-\c_sdaps_barcode_hpad_dim, \c_sdaps_barcode_vpad_dim)$)}]
+          \pgfmathsetbasenumberlength{4}
+          \pgfmathdectobase{\paddedpage}{\thepage}{10}% Yes, padding to 4 chars the hard way
+          \node(barcode)[anchor=south~east,outer~sep=0,inner~sep=0]{
+            \X = \c_sdaps_barcode_bar_width_dim
+            \bcorr = \c_sdaps_barcode_bcorr_dim
+            \barheight = \c_sdaps_barcode_height_dim
+            \code_render:x {\tl_use:N\g_sdaps_survey_id_tl \paddedpage}
+          };
+          \node[below=1mm~of~barcode,distance=0,anchor=north,outer~sep=0,inner~sep=0]{
+            % TODO: do not hardcode the font!
+            \ttfamily\footnotesize
+
+            \tl_use:N\g_sdaps_survey_id_tl\,\paddedpage
+          };
+        \end{scope}
+
+        \tl_if_empty:VF \g_sdaps_global_id_tl {
+          \begin{scope}[shift={($(\paperwidth/2-\g_sdaps_edge_right_margin_dim/2+\g_sdaps_edge_left_margin_dim/2, 0) + (0, \g_sdaps_edge_bottom_margin_dim) + (0, \c_sdaps_barcode_vpad_dim)$)}]
+            \node(barcode)[anchor=south,outer~sep=0,inner~sep=0]{
+              \X = \c_sdaps_barcode_bar_width_dim
+              \bcorr = \c_sdaps_barcode_bcorr_dim
+              \barheight = \c_sdaps_barcode_height_dim
+              \code_render:V \g_sdaps_global_id_tl
+            };
+            \node[below=1mm~of~barcode,distance=0,anchor=north,outer~sep=0,inner~sep=0]{
+              % TODO: do not hardcode the font!
+              \ttfamily\footnotesize
+
+              \tl_if_empty:VTF \g_sdaps_global_id_label_tl {
+                \tl_use:N \g_sdaps_global_id_tl
+              } {
+                \tl_use:N \g_sdaps_global_id_label_tl
+              }
+            };
+          \end{scope}
+        }
+      }
+
+      \str_if_eq:VnT \g_sdaps_style_tl { classic } {
+        % TODO: This is non-working! And should be rewritten.
+        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
+          \if@PrintSurveyId
+            \def\@questionnaire_id_shift{\g_sdaps_classic_boxpad_dim+\codeboxheight}
+          \else:
+            \def\@questionnaire_id_shift{0pt}
+          \fi:
+          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (\g_sdaps_classic_boxsize_dim, \@questionnaire_id_shift)$)}]
+            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
+            \@tempcnta=\value{questionnaireid}
+            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
+              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
+              {
+                \ifodd \@tempcnta
+                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
+                \fi:
+                \global\divide\@tempcnta by 2
+              }
+            \end{scope}
+          \end{scope}
+          \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (-\thecodeboxlength\codeboxstep, 0) + (-\g_sdaps_classic_boxsize_dim, \@questionnaire_id_shift)$)}]
+            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
+            \@tempcnta=\value{questionnaireid}
+            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
+              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
+              {
+                \ifodd \@tempcnta
+                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
+                \fi:
+                \global\divide\@tempcnta by 2
+              }
+            \end{scope}
+          \end{scope}
+          \begin{scope}[shift={($(current~page.south) + (0, \g_sdaps_edge_bottom_margin_dim) + (0, \g_sdaps_classic_boxpad_dim) + (0 ,\@questionnaire_id_shift) + (0, 0.5\codeboxheight)$)}]
+            \pgfmathsetbasenumberlength{5}\pgfmathdectoBase{\@temphexa}{\value{questionnaireid}}{10}
+            \node{\usekomafont{questionnaireidfont}{\translate{questionnaireid} \@temphexa}};
+          \end{scope}
+        \fi:
+        \if@PrintSurveyId
+          % survey-id
+          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (\g_sdaps_classic_boxsize_dim, 0)$)}]
+            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
+            \@tempcnta=\value{surveyidmshw}
+            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
+              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
+              {
+                \ifodd \@tempcnta
+                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
+                \fi:
+                \global\divide\@tempcnta by 2
+              }
+            \end{scope}
+          \end{scope}
+          \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (-\thecodeboxlength\codeboxstep, 0) + (-\g_sdaps_classic_boxsize_dim, 0)$)}]
+            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
+            \@tempcnta=\value{surveyidlshw}
+            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
+              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
+              {
+                \ifodd \@tempcnta
+                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
+                \fi:
+                \global\divide\@tempcnta by 2
+              }
+            \end{scope}
+          \end{scope}
+          \begin{scope}[shift={($(current~page.south) + (0, \g_sdaps_edge_bottom_margin_dim) + (0, \g_sdaps_classic_boxpad_dim) + (0, 0.5\codeboxheight)$)}]
+            \pgfmathsetbasenumberlength{4}\pgfmathdectoBase{\@temphexa}{\value{surveyidlshw}}{16}
+            \pgfmathsetbasenumberlength{4}\pgfmathdectoBase{\@temphexb}{\value{surveyidmshw}}{16}
+            \node{\usekomafont{surveyidfont}{\translate{surveyid} \@temphexb\@temphexa}};
+          \end{scope}
+        }
+      }
+    \end{scope}%
+  \group_end:
+}
+
+\msg_new:nnn { sdapsbase } { classic_too_many_pages } { You\ cannot\ have\ more\ than\ six\ pages\ with\ the\ classic\ style. }
+\msg_new:nnn { sdapsbase } { odd_page_count } { You\ have\ an\ odd\ number\ of\ pages,\ this\ does\ not\ work\ in\ duplex\ mode! }
+
+% This needs to be called once for each page!
+\cs_new_protected:Nn \sdaps_page_end: {
+  \group_begin:
+
+    \int_gincr:N\g_sdaps_page_int%
+
+    \normalfont%
+
+    \begin{tikzpicture}[remember~picture,overlay]%
+
+      %---------------------------------------------------------------------------
+      % corner marks and corner boxes in classic mode
+      %---------------------------------------------------------------------------
+      \begin{scope}[line~width=\g_sdaps_edge_marker_linewidth_dim, line~join=miter]
+        \begin{scope}[shift={($(current~page.north~west) + (\g_sdaps_edge_left_margin_dim, -\g_sdaps_edge_top_margin_dim)$)}]
+          \draw (0,-\g_sdaps_edge_marker_length_dim) -- (0, 0) -- (\g_sdaps_edge_marker_length_dim,0);
+
+          \str_if_eq:VnT \g_sdaps_style_tl { classic } {
+            % TODO: Is the filled/non-filled mapping still correct?
+            \int_case:nnTF \g_sdaps_page_int {
+              { 1 } { \draw }
+              { 2 } { \fill }
+              { 3 } { \fill }
+              { 4 } { \fill }
+              { 5 } { \fill }
+              { 6 } { \draw }
+            } {
+              (\g_sdaps_classic_boxpad_dim, -\g_sdaps_classic_boxpad_dim) rectangle +(\g_sdaps_classic_boxsize_dim,-\g_sdaps_classic_boxsize_dim);
+            } {
+              % Error out (first time)
+              \msg_error:nn { sdapsbase } { classic_too_many_pages }
+            }
+          }
+        \end{scope}
+        \begin{scope}[shift={($(current~page.north~east) + (-\g_sdaps_edge_right_margin_dim, -\g_sdaps_edge_top_margin_dim)$)}]
+          \draw (0,-\g_sdaps_edge_marker_length_dim) -- (0,0) -- (-\g_sdaps_edge_marker_length_dim,0);
+
+          \str_if_eq:VnT \g_sdaps_style_tl { classic } {
+            % TODO: Is the filled/non-filled mapping still correct?
+            \int_case:nnT \g_sdaps_page_int {
+              { 1 } { \fill }
+              { 2 } { \fill }
+              { 3 } { \draw }
+              { 4 } { \draw }
+              { 5 } { \draw }
+              { 6 } { \draw }
+            } {
+              (-\g_sdaps_classic_boxpad_dim, -\g_sdaps_classic_boxpad_dim) rectangle +(-\g_sdaps_classic_boxsize_dim,-\g_sdaps_classic_boxsize_dim);
+            }
+          }
+        \end{scope}
+        \begin{scope}[shift={($(current~page.south~west) + (\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
+          \draw (0,\g_sdaps_edge_marker_length_dim) -- (0, 0) -- (\g_sdaps_edge_marker_length_dim,0);
+
+          \str_if_eq:VnT \g_sdaps_style_tl { classic } {
+            % TODO: Is the filled/non-filled mapping still correct?
+            \int_case:nnT \g_sdaps_page_int {
+              { 1 } { \fill }
+              { 2 } { \draw }
+              { 3 } { \fill }
+              { 4 } { \fill }
+              { 5 } { \draw }
+              { 6 } { \draw }
+            } {
+              (\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) rectangle +(\g_sdaps_classic_boxsize_dim,\g_sdaps_classic_boxsize_dim);
+            }
+          }
+        \end{scope}
+        \begin{scope}[shift={($(current~page.south~east) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
+          \draw (0,\g_sdaps_edge_marker_length_dim) -- (0mm, 0mm) -- (-\g_sdaps_edge_marker_length_dim,0);
+
+          \str_if_eq:VnT \g_sdaps_style_tl { classic } {
+            % TODO: Is the filled/non-filled mapping still correct?
+            \int_case:nnT \g_sdaps_page_int {
+              { 1 } { \fill }
+              { 2 } { \draw }
+              { 3 } { \fill }
+              { 4 } { \draw }
+              { 5 } { \draw }
+              { 6 } { \fill }
+            } {
+              (-\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) rectangle +(-\g_sdaps_classic_boxsize_dim,\g_sdaps_classic_boxsize_dim);
+            }
+          }
+        \end{scope}
+      \end{scope}
+
+      %---------------------------------------------------------------------------
+      % barcodes/qr codes
+      %---------------------------------------------------------------------------
+      \bool_if:NTF \g__sdaps_last_page_bool {
+
+        \sdaps_info_write:x{Pages=\int_use:N\g_sdaps_page_int}%
+
+        \int_compare:nNnTF { \g_sdaps_page_int } = { 1 } {
+          % if we have a one page document, just always stamp the last
+          % page. This means that SDAPS can fall back to simplex mode
+          % automatically.
+          \sdaps_draw_codes:
+        } {
+
+          \int_if_odd:VTF \g_sdaps_page_int {
+            \msg_error:nn { sdapsbase } { odd_page_count }
+          } {
+            % questionnaire-id
+            \sdaps_draw_codes:
+          }
+        }
+
+        % TODO: Check whether the page count is as expected?
+      }
+
+
+      \bool_if:NTF \g_sdaps_twoside_bool {
+        \int_if_odd:VF \g_sdaps_page_int {
+          \sdaps_draw_codes:
+        }
+      } {
+        \sdaps_draw_codes:
+      }
+
+      %---------------------------------------------------------------------------
+      % watermark for non final mode
+      %---------------------------------------------------------------------------
+      \bool_if:NT \g__sdaps_draft_bool {
+        \node [rotate=60,scale=10,text~opacity=0.2,color=red]
+           at (current~page.center) {\textsc{\translate{draft}}};
+      }
+    \end{tikzpicture}
+
+  \group_end:
+}
+
+
+\cs_new_protected:Nn \sdaps_begin: {
+  \bool_gset:Nn \g__sdaps_last_page_bool \c_false_bool
+  \int_gset:Nn \g_sdaps_page_int { 0 }
+}
+
+\cs_new_protected:Nn \sdaps_end: {
+  \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
+}
+
+
+%
 %    \end{macrocode}
 %
 
