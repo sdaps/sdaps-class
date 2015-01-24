@@ -1319,8 +1319,6 @@
       %---------------------------------------------------------------------------
       \bool_if:NTF \g__sdaps_last_page_bool {
 
-        \sdaps_info_write:x{Pages=\int_use:N\g_sdaps_page_int}%
-
         \int_compare:nNnTF { \g_sdaps_page_int } = { 1 } {
           % if we have a one page document, just always stamp the last
           % page. This means that SDAPS can fall back to simplex mode
@@ -1366,6 +1364,8 @@
 }
 
 \cs_new_protected:Nn \sdaps_end: {
+  \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}%
+
   \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
 }
 
