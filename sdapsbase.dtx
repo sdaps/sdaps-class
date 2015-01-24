@@ -1360,11 +1360,22 @@
 
 \cs_new_protected:Nn \sdaps_begin: {
   \bool_gset:Nn \g__sdaps_last_page_bool \c_false_bool
+
+  % TODO: We really want to make sure nobody modifies the values after \sdaps_begin:
+  \sdaps_info_write:x{Duplex=\bool_if:NTF \g_sdaps_twoside_bool {true} {false}}
+  \pgfpoint{\paperwidth}{\paperheight}
+  \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+  \sdaps_info_write:x{
+    PageSize=\l__sdaps_width, \l__sdaps_height
+  }
+  \sdaps_info_write:x{Style=\g_sdaps_style_tl}
+  \sdaps_info_write:x{CheckMode=checkcorrect}
+
   \int_gset:Nn \g_sdaps_page_int { 0 }
 }
 
 \cs_new_protected:Nn \sdaps_end: {
-  \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}%
+  \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}
 
   \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
 }
