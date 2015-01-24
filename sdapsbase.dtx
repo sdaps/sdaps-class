@@ -1337,15 +1337,14 @@
         }
 
         % TODO: Check whether the page count is as expected?
-      }
-
-
-      \bool_if:NTF \g_sdaps_twoside_bool {
-        \int_if_odd:VF \g_sdaps_page_int {
+      } {
+        \bool_if:NTF \g_sdaps_twoside_bool {
+          \int_if_odd:VF \g_sdaps_page_int {
+            \sdaps_draw_codes:
+          }
+        } {
           \sdaps_draw_codes:
         }
-      } {
-        \sdaps_draw_codes:
       }
 
       %---------------------------------------------------------------------------
