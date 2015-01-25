@@ -1361,6 +1361,21 @@
 }
 
 
+%    \end{macrocode}
+%
+% \subsection{Starting/Ending an SDAPS context}
+%
+% These need to be used to begin rendering into an SDAPS context and finishing
+% everything off.
+%
+% Note that this base class does not automatically call \textbackslash sdaps\_page\_end: for
+% you, so if you are using this class directly you will need to make sure that
+% this handler is called after all form elements on a page. An easy of doing
+% this is to call it from inside the page footer.
+%
+%
+%    %\begin{macrocode}
+
 \cs_new_protected:Nn \sdaps_begin: {
   \bool_gset:Nn \g__sdaps_last_page_bool \c_false_bool
 
