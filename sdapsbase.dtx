@@ -134,6 +134,8 @@
 \cs_generate_variant:Nn \int_if_odd:nF { V }
 \cs_generate_variant:Nn \tl_set:Nn { Nv }
 \cs_generate_variant:Nn \msg_error:nnn { nnV }
+\cs_generate_variant:Nn \exp_not:n { f }
+
 
 \prop_new:N \g__sdaps_current_context_prop
 \tl_new:N \g__sdaps_current_context_id_tl
@@ -469,7 +471,8 @@
 \dim_new:N \l__sdaps_height_dim
 
 \tl_new:N \l__sdaps_tmp_tl %
-\dim_new:N \l__sdaps_tmp_dim %
+\dim_new:N \l__sdaps_tmpa_dim %
+\dim_new:N \l__sdaps_tmpb_dim %
 
 \iow_new:N \g_sdaps_infofile_iow
 \iow_open:Nn \g_sdaps_infofile_iow { \c_job_name_tl . sdaps }
@@ -502,7 +505,6 @@
 \bool_new:N \l_sdaps_checkbox_draw_check_bool
 
 \bool_new:N \l_sdaps_checkbox_calcpos_bool
-\bool_new:N \l_sdaps_checkbox_storepos_bool
 \bool_new:N \l_sdaps_checkbox_writepos_bool
 
 
@@ -545,10 +547,6 @@
   text_padding .initial:n   = {2bp},
 
 
-  storepos     .bool_set:N  = \l_sdaps_checkbox_storepos_bool,
-  storepos     .default:n   = true,
-  storepos     .initial:n   = false,
-
   writepos     .bool_set:N  = \l_sdaps_checkbox_writepos_bool,
   writepos     .default:n   = true,
   writepos     .initial:n   = false,
@@ -565,46 +563,38 @@
 
 \cs_new_protected:Nn \__sdaps_checkbox_internal:
 {
-  %
-  % XXX: Unset l__sdaps_checkbox_storepos_bool if output file is closed
-  %
-  \bool_set_false:N \l_sdaps_checkbox_calcpos_bool
-    \bool_if:NT \l_sdaps_checkbox_storepos_bool {
-      \bool_set_true:N \l_sdaps_checkbox_calcpos_bool
-    }
-    \bool_if:NT \l_sdaps_checkbox_writepos_bool {
-      \bool_set_true:N \l_sdaps_checkbox_calcpos_bool
-    }
   \mbox{
-    \bool_if:NTF \l_sdaps_checkbox_calcpos_bool {
-      \tl_set:Nn \l__sdaps_tmp_tl {remember~picture}
-    } {
-      \tl_clear:N \l__sdaps_tmp_tl
-    }
-
-    \tikz[baseline={max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex+0.5\l_sdaps_checkbox_linewidth_dim)},\tl_to_str:N\l__sdaps_tmp_tl]{%
+    \pdfsavepos
+    \tikz[baseline={max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex+0.5\l_sdaps_checkbox_linewidth_dim)}]{%
       \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} {box} {
         \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0) rectangle +(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim);%
       }
       \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} { ellipse } {
         \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] ($(0.5\l_sdaps_checkbox_linewidth_dim, 0) + (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim)$) circle [x~radius=0.5\l_sdaps_checkbox_width_dim, y~radius=0.5\l_sdaps_checkbox_height_dim];%
       }
+      %\node[coordinate] at (0pt, 0pt) {\pdfsavepos};
 
-      \bool_if:NT \l_sdaps_checkbox_calcpos_bool {
+      \bool_if:NT \l_sdaps_checkbox_writepos_bool {
+        % Position of page and baseline offset
         \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
-        \pgfsys@getposition{\pgfpictureid}{\@sdaps@checkboxpos}
-        \pgfpointadd{\@sdaps@checkboxpos}{
-          \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{\l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim}}
-        }
         \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+        \dim_set:Nn \l__sdaps_tmpa_dim {\l__sdaps_x}
+        \dim_set:Nn \l__sdaps_tmpb_dim {\l__sdaps_y + \l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim}
+
+        % Size
         \pgfpoint{\l_sdaps_checkbox_width_dim+\l_sdaps_checkbox_linewidth_dim}{\l_sdaps_checkbox_height_dim+\l_sdaps_checkbox_linewidth_dim}
         \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
 
-        \bool_if:NT \l_sdaps_checkbox_storepos_bool {
-          \tl_gset:Nx\g__sdaps_checkbox_info_tl{Box=Checkbox, \getpagerefnumber{checkbox\int_use:N\g__sdaps_checkbox_num_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
-        }
-        \bool_if:NT \l_sdaps_checkbox_writepos_bool {
-          \sdaps_info_write_x:x{Box=Checkbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height, \tl_to_str:N\l_sdaps_checkbox_form_tl}
+        % pdflast[xy]pos is the PDF position of the baseline at the start of the box
+        % excluding the page origin offset.
+        \sdaps_info_write_x:x{
+          Box=Checkbox,
+          \exp_not:n{\int_use:N\g_sdaps_page_int},
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpa_dim + \the\pdflastxpos sp} },
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpb_dim + \the\pdflastypos sp} },
+          \l__sdaps_width,
+          \l__sdaps_height,
+          \tl_to_str:N\l_sdaps_checkbox_form_tl
         }
       }
 
