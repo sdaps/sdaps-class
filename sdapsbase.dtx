@@ -577,9 +577,12 @@
       \bool_if:NT \l_sdaps_checkbox_writepos_bool {
         % Position of page and baseline offset
         \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
-        \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+        \pgfpointadd{\@sdaps@pageorigin}{
+          \pgfpoint{0}{\l_sdaps_checkbox_height_dim - max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex+0.5\l_sdaps_checkbox_linewidth_dim)}
+        }
+          \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
         \dim_set:Nn \l__sdaps_tmpa_dim {\l__sdaps_x}
-        \dim_set:Nn \l__sdaps_tmpb_dim {\l__sdaps_y + \l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim}
+        \dim_set:Nn \l__sdaps_tmpb_dim {\l__sdaps_y}
 
         % Size
         \pgfpoint{\l_sdaps_checkbox_width_dim+\l_sdaps_checkbox_linewidth_dim}{\l_sdaps_checkbox_height_dim+\l_sdaps_checkbox_linewidth_dim}
@@ -884,33 +887,48 @@
 
 \cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:
 {
-  \dim_set:Nn \l__sdaps_textbox_ht_dim { \coffin_ht:N \l__sdaps_textbox_coffin + \coffin_dp:N \l__sdaps_textbox_coffin }
+  \dim_set:Nn \l__sdaps_textbox_ht_dim { \coffin_ht:N \l__sdaps_textbox_coffin }
+  \dim_set:Nn \l__sdaps_textbox_dp_dim { \coffin_dp:N \l__sdaps_textbox_coffin }
   \dim_set:Nn \l__sdaps_textbox_wd_dim { \coffin_wd:N \l__sdaps_textbox_coffin }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
+    \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
+
+    \pdfsavepos
+
+    % Position of page and baseline offset
+    \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+    \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
+    \dim_set:Nn \l__sdaps_tmpa_dim {\l__sdaps_x}
+    \dim_set:Nn \l__sdaps_tmpb_dim {\l__sdaps_y}
+
+    % Size
+    \pgfpoint
+      {\l__sdaps_textbox_wd_dim + 2\l__sdaps_textbox_pad_dim}
+      {\l__sdaps_textbox_ht_dim + \l__sdaps_textbox_dp_dim + 2\l__sdaps_textbox_pad_dim}
+    \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
+
+    % pdflast[xy]pos is the PDF position of the baseline at the start of the box
+    % excluding the page origin offset.
+    \sdaps_info_write_x:x{
+      Box=Textbox,
+      \exp_not:n{\int_use:N\g_sdaps_page_int},
+      \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpa_dim + \the\pdflastxpos sp} },
+      \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpb_dim + \the\pdflastypos sp} },
+      \l__sdaps_width,
+      \l__sdaps_height
+    }
+
     % The textbox (rendered on the background)
-    \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
-      \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
-      \pgfsys@getposition{\pgfpictureid}{\@sdaps@textboxpos}
-      % The position here is the position of the baseline.
-      % So move up by ht_dim to get the correct vertical position
-      \pgfpointadd{\@sdaps@textboxpos}{\@sdaps@pageorigin}
-      \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
-
-      \pgfpoint{\l__sdaps_textbox_wd_dim + 2\l__sdaps_textbox_pad_dim}{\l__sdaps_textbox_ht_dim + 2\l__sdaps_textbox_pad_dim}
-      \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
-
+    \begin{tikzpicture}[overlay]
       % Draw the rectangle
-      \draw[line~width=1bp] ($(\l__sdaps_x, \l__sdaps_y) + (0.5bp, -0.5bp)$) rectangle +($(\l__sdaps_width, -\l__sdaps_height) - (1bp, -1bp)$);
+      \draw[line~width=1bp] ($(0, 0) + (0.5bp, -0.5bp)$) rectangle +($(\l__sdaps_width, -\l__sdaps_height) - (1bp, -1bp)$);
 
       \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
       \end{scope}
-
-      \sdaps_info_write_x:x{Box=Textbox, \exp_not:n{\int_use:N\g_sdaps_page_int}, \l__sdaps_x, \l__sdaps_y, \l__sdaps_width, \l__sdaps_height}%
     \end{tikzpicture}
     \skip_horizontal:n { \l__sdaps_textbox_pad_dim }
-    \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
   }
 
   \hcoffin_set:Nn \l_tmpb_coffin {
@@ -1358,7 +1376,8 @@
 % These need to be used to begin rendering into an SDAPS context and finishing
 % everything off.
 %
-% Note that this base class does not automatically call \textbackslash sdaps\_page\_end: for
+% Note that this base package does not automatically call
+% \textbackslash sdaps\_page\_end: for
 % you, so if you are using this class directly you will need to make sure that
 % this handler is called after all form elements on a page. An easy of doing
 % this is to call it from inside the page footer.
