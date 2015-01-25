@@ -176,7 +176,7 @@ Not forced, qid=blub:\par
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_hcoffin:nn { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ coffin. } ~ asdf
+\__sdaps_textbox_hbox:nn { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ box. } ~ asdf
 
 \par
 
@@ -194,7 +194,7 @@ This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstret
 \par
 \noindent
 
-\let\hcoffin\__sdaps_textbox_hcoffin:nn
+\let\hbox\__sdaps_textbox_hbox:nn
 \let\hstretch\__sdaps_textbox_hstretch:nnnn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
@@ -204,20 +204,20 @@ This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstret
 \sdaps_info_write:x{Answer-Choice=asdf}
 
 \ExplSyntaxOff
-\hcoffin {3bp} { This hcoffin } should have the same baseline as on the outside and
-the other \hcoffin {3bp} { hcoffin } which should be on the left edge due to the justified layout.
-\hcoffin {3bp} { Another coffin }  \hcoffin {3bp} { fun!}.
-And in a formula $ f(x) = \frac{1}{c\,\hcoffin{3bp}{coffin}} \hstretch{2mm}{5mm}{70mm}{1} $
+\hbox {3bp} { This hbox } should have the same baseline as on the outside and
+the other \hbox {3bp} { hbox } which should be on the left edge due to the justified layout.
+\hbox {3bp} { Another box }  \hbox {3bp} { fun!}.
+And in a formula $ f(x) = \frac{1}{c\,\hbox{3bp}{box}} \hstretch{2mm}{5mm}{70mm}{1} $
 \ExplSyntaxOn
 
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 
-\let \vcoffin \__sdaps_textbox_vcoffin:nnn
+\let \vbox \__sdaps_textbox_vbox:nnn
 
 \ExplSyntaxOff
-\noindent asdf \vcoffin {0.8\linewidth} {3bp} {
+\noindent asdf \vbox {0.8\linewidth} {3bp} {
 \noindent\begin{tabularx}{\linewidth}{l|l|X}
 adsf  lkasjd lksj flkjsfd & blub & gah \\
 \hline
@@ -233,7 +233,7 @@ This is a paragraph with more text. This is a paragraph with more text. This is 
 \par
 
 \sdaps_info_write:x{Answer-Choice=last on page}
-asdf \__sdaps_textbox_hcoffin:nn {1bp} {
+asdf \__sdaps_textbox_hbox:nn {1bp} {
 \noindent\begin{tabularx}{0.7\linewidth}{l|l|X}
 adsf  lkasjd lksj fflkjsfd & blub & gah \\
 \hline

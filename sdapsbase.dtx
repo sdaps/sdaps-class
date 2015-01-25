@@ -935,7 +935,7 @@
 }
 
 \coffin_new:N \l__sdaps_textbox_coffin
-\cs_new_protected:Nn \__sdaps_textbox_hcoffin:nn
+\cs_new_protected:Nn \__sdaps_textbox_hbox:nn
 {
   \group_begin:
 
@@ -950,7 +950,7 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \__sdaps_textbox_vcoffin:nnn
+\cs_new_protected:Nn \__sdaps_textbox_vbox:nnn
 {
   \group_begin:
 
@@ -979,7 +979,10 @@
 \int_new:N \g_sdaps_page_int
 \int_set:Nn \g_sdaps_page_int { 0 }
 
+\bool_new:N \g__sdaps_draft_bool
 \bool_new:N \g_sdaps_twoside_bool
+
+\bool_set:Nn \g_sdaps_draft_bool \c_true_bool
 \bool_set:Nn \g_sdaps_twoside_bool \c_false_bool
 
 
