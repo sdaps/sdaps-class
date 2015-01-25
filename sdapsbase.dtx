@@ -1348,9 +1348,9 @@
       %---------------------------------------------------------------------------
       % watermark for non final mode
       %---------------------------------------------------------------------------
-      \bool_if:NT \g__sdaps_draft_bool {
+      \bool_if:NT \g_sdaps_draft_bool {
         \node [rotate=60,scale=10,text~opacity=0.2,color=red]
-           at (current~page.center) {\textsc{\translate{draft}}};
+           at (current~page.center) {\textsc{draft}};
       }
     \end{tikzpicture}
 
