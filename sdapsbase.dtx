@@ -896,11 +896,8 @@
 
     \pdfsavepos
 
-    % Position of page and baseline offset
-    \pgfsys@getposition{pgfpageorigin}{\@sdaps@pageorigin}
+    \pgfpoint{0}{0}
     \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
-    \dim_set:Nn \l__sdaps_tmpa_dim {\l__sdaps_x}
-    \dim_set:Nn \l__sdaps_tmpb_dim {\l__sdaps_y}
 
     % Size
     \pgfpoint
@@ -908,13 +905,13 @@
       {\l__sdaps_textbox_ht_dim + \l__sdaps_textbox_dp_dim + 2\l__sdaps_textbox_pad_dim}
     \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
 
-    % pdflast[xy]pos is the PDF position of the baseline at the start of the box
-    % excluding the page origin offset.
+    % pdflast[xy]pos is the PDF position of the top left corner excluding the
+    % origin
     \sdaps_info_write_x:x{
       Box=Textbox,
       \exp_not:n{\int_use:N\g_sdaps_page_int},
-      \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpa_dim + \the\pdflastxpos sp} },
-      \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l__sdaps_tmpb_dim + \the\pdflastypos sp} },
+      \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
+      \exp_not:n{\dim_eval:n {\voffset + \the\pdflastypos sp}},
       \l__sdaps_width,
       \l__sdaps_height
     }
@@ -1390,10 +1387,8 @@
 
   % TODO: We really want to make sure nobody modifies the values after \sdaps_begin:
   \sdaps_info_write:x{Duplex=\bool_if:NTF \g_sdaps_twoside_bool {true} {false}}
-  \pgfpoint{\paperwidth}{\paperheight}
-  \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
   \sdaps_info_write:x{
-    PageSize=\l__sdaps_width, \l__sdaps_height
+    PageSize=\the\paperwidth, \the\paperheight
   }
   \sdaps_info_write:x{Style=\g_sdaps_style_tl}
   \sdaps_info_write:x{CheckMode=checkcorrect}
