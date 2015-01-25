@@ -194,7 +194,7 @@ This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstret
 \par
 \noindent
 
-\let\hbox\__sdaps_textbox_hbox:nn
+\let\sdapshbox\__sdaps_textbox_hbox:nn
 \let\hstretch\__sdaps_textbox_hstretch:nnnn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
@@ -204,20 +204,20 @@ This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstret
 \sdaps_info_write:x{Answer-Choice=asdf}
 
 \ExplSyntaxOff
-\hbox {3bp} { This hbox } should have the same baseline as on the outside and
+\sdapshbox {3bp} { This hbox } should have the same baseline as on the outside and
 the other \hbox {3bp} { hbox } which should be on the left edge due to the justified layout.
-\hbox {3bp} { Another box }  \hbox {3bp} { fun!}.
-And in a formula $ f(x) = \frac{1}{c\,\hbox{3bp}{box}} \hstretch{2mm}{5mm}{70mm}{1} $
+\sdapshbox {3bp} { Another box }  \sdapshbox {3bp} { fun!}.
+And in a formula $ f(x) = \frac{1}{c\,\sdapshbox{3bp}{box}} \hstretch{2mm}{5mm}{70mm}{1} $
 \ExplSyntaxOn
 
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 
-\let \vbox \__sdaps_textbox_vbox:nnn
+\let \sdapsvbox \__sdaps_textbox_vbox:nnn
 
 \ExplSyntaxOff
-\noindent asdf \vbox {0.8\linewidth} {3bp} {
+\noindent asdf \sdapsvbox {0.8\linewidth} {3bp} {
 \noindent\begin{tabularx}{\linewidth}{l|l|X}
 adsf  lkasjd lksj flkjsfd & blub & gah \\
 \hline
