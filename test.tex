@@ -41,7 +41,7 @@
   \keys_set_known:nV { sdaps / checkbox / overlay / form } { \l_sdaps_checkbox_unknown_tl } %
 
   \bool_if:NT \l_sdaps_checkbox_pdf_form_bool {
-    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l__sdaps_x, \l__sdaps_y) + 0.5*(\l__sdaps_width, -\l__sdaps_height)$) {
+    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
       \CheckBox[name=\l_sdaps_checkbox_var_tl,bordersep=0,borderwidth=0pt,checkboxsymbol=\l_sdaps_checkbox_checkboxsymbol_tl,bordercolor=,backgroundcolor=,checked=\bool_if:nTF\l_sdaps_checkbox_default_bool{true}{false},height=\l_sdaps_checkbox_height_dim,width=\l_sdaps_checkbox_width_dim]{\ignorespaces}
     };
   }
