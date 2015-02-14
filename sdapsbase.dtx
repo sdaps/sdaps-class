@@ -130,6 +130,7 @@
 %    \begin{macrocode}
 
 \cs_generate_variant:Nn \tl_if_eq:nnTF { Vn }
+\cs_generate_variant:Nn \tl_if_eq:nnT { Vn }
 \cs_generate_variant:Nn \int_if_odd:nTF { V }
 \cs_generate_variant:Nn \int_if_odd:nF { V }
 \cs_generate_variant:Nn \tl_set:Nn { Nv }
@@ -300,6 +301,7 @@
 
   \prop_gput:Nnn \g__sdaps_current_context_prop { #1 } { #2 }
 }
+\cs_generate_variant:Nn \sdaps_context_put:nn { nV }
 
 % Set a set of keys using comma separated list of key/value pairs
 \cs_new_protected:Nn \sdaps_context_set:n
@@ -307,6 +309,19 @@
   \keyval_parse:NNn \sdaps_context_put:n \sdaps_context_put:nn { #1 }
 }
 \cs_generate_variant:Nn \sdaps_context_set:n {V}
+
+\cs_new_protected:Nn \sdaps_context_get:nN
+{
+  \prop_get:NnN \g__sdaps_current_context_prop { #1 } #2
+}
+
+\cs_new_protected:Nn \sdaps_context_append:nn
+{
+  \sdaps_context_get:nN { #1 } \l__sdaps_tmp_tl
+  \tl_put_right:Nn \l__sdaps_tmp_tl {,}
+  \tl_put_right:Nn \l__sdaps_tmp_tl { #2 }
+  \sdaps_context_put:nV { #1 } \l__sdaps_tmp_tl
+}
 
 \cs_new_protected:Nn \sdaps_context_clear:
 {
@@ -316,6 +331,14 @@
 \cs_new_protected:Nn \sdaps_context_map:N
 {
   \prop_map:NN \g__sdaps_current_context_prop #1
+}
+
+\cs_new_protected:Nn \__sdaps_get_defaults:Nn
+{
+  \prop_get:NnN \g__sdaps_current_context_prop { #2 } #1
+  \tl_if_eq:VnT #1 { \q_no_value } {
+    \tl_set:Nn #1 {}
+  }
 }
 
 
@@ -646,6 +669,7 @@
 
     \tl_set:Nn \l_sdaps_checkbox_unknown_tl {}
 
+    \__sdaps_get_defaults:Nn  \l_sdaps_checkbox_unknown_tl { checkbox }
     \__sdaps_append_override_options:Nnn \l_sdaps_checkbox_unknown_tl { #1 } { #2 }
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_checkbox_unknown_tl \l_sdaps_checkbox_unknown_tl

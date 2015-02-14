@@ -70,9 +70,6 @@
 \sdaps_overrides_init:n{
   *={
       *={},
-      var1={box},
-      var2={height=5mm},
-      var2&1={width=6mm},
   },
   asdf={
       var1={box},
@@ -148,6 +145,40 @@ Not forced, qid=blub:\par
 \par
 
 \noindent
+
+
+\__sdaps_set_qid:n{NONE}
+
+Testing\ context (force ellipse):\par
+\sdaps_context_set:n {checkbox={ellipse}}
+
+\sdaps_checkbox:nn{var0}{1}
+\sdaps_context_begin:
+\sdaps_context_append:nn { checkbox } {height=1.5em}
+
+\sdaps_checkbox:nn{var1}{1}
+
+\sdaps_context_end:
+
+\sdaps_checkbox:nn{var2}{1}
+\sdaps_checkbox:nn{var2}{2}
+
+\par
+
+\noindent
+
+force box:\par
+\sdaps_context_set:n {checkbox={box}}
+\sdaps_checkbox:nn{var0}{1}
+\sdaps_checkbox:nn{var1}{1}
+\sdaps_checkbox:nn{var2}{1}
+\sdaps_checkbox:nn{var2}{2}
+
+\par
+
+\noindent
+
+
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 \sdaps_checkbox_force:n{writepos,draw_check=true,height=10mm} 
