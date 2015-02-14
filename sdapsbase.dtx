@@ -802,7 +802,7 @@
 
 \cs_new_protected:Nn \__sdaps_textbox_prepare:n
 {
-  \tl_set:Nn \l_sdaps_p_unknown_tl {}
+  \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
   \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
   \__sdaps_append_from_context:nN { textbox } \l_sdaps_parse_unknown_tl
@@ -1107,7 +1107,7 @@
 \bool_new:N \g__sdaps_draft_bool
 \bool_new:N \g_sdaps_twoside_bool
 
-\bool_set:Nn \g_sdaps_draft_bool \c_true_bool
+\bool_set:Nn \g__sdaps_draft_bool \c_true_bool
 \bool_set:Nn \g_sdaps_twoside_bool \c_false_bool
 
 
@@ -1476,7 +1476,7 @@
       %---------------------------------------------------------------------------
       % watermark for non final mode
       %---------------------------------------------------------------------------
-      \bool_if:NT \g_sdaps_draft_bool {
+      \bool_if:NT \g__sdaps_draft_bool {
         \node [rotate=60,scale=10,text~opacity=0.2,color=red]
            at (current~page.center) {\textsc{draft}};
       }
@@ -1501,6 +1501,8 @@
 %
 %
 %    %\begin{macrocode}
+
+\bool_new:N \g__sdaps_last_page_bool
 
 \cs_new_protected:Nn \sdaps_begin: {
   \bool_gset:Nn \g__sdaps_last_page_bool \c_false_bool
