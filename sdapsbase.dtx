@@ -1006,7 +1006,7 @@
   \dim_set:Nn \l__sdaps_textbox_wd_dim { \coffin_wd:N \l__sdaps_textbox_coffin }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
+    \tex_vrule:D depth 0pt height \dim_eval:n { \l__sdaps_textbox_ht_dim + \l__sdaps_textbox_pad_dim } width 0pt
 
     \pdfsavepos
 
@@ -1020,7 +1020,7 @@
         Box=Textbox,
         \exp_not:n{\int_use:N\g_sdaps_page_int},
         \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
-        \exp_not:n{\dim_eval:n {\voffset + \the\pdflastypos sp}},
+        \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
         \dim_use:N \l_sdaps_width_dim,
         \dim_use:N \l_sdaps_height_dim
       }
@@ -1032,7 +1032,7 @@
     % The textbox (rendered on the background)
     \begin{tikzpicture}[overlay]
       % Draw the rectangle
-      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(0, 0) + (0.5\l_sdaps_textbox_linewidth_dim, -0.5\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(0, \l__sdaps_textbox_ht_dim) + (0, \l__sdaps_textbox_pad_dim) + (0.5\l_sdaps_textbox_linewidth_dim, -0.5\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
@@ -1046,8 +1046,11 @@
     \tex_vrule:D depth \l__sdaps_textbox_pad_dim height 0pt width 0pt
   }
 
-  \coffin_join:NnnNnnnn \l__sdaps_textbox_coffin { l } { t } \l_tmpa_coffin { r } { b } { 0pt } { 0pt }
-  \coffin_join:NnnNnnnn \l__sdaps_textbox_coffin { r } { b } \l_tmpb_coffin { l } { t } { 0pt } { 0pt }
+  \coffin_join:NnnNnnnn \l_tmpa_coffin { r } { H } \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
+  \coffin_join:NnnNnnnn \l_tmpa_coffin { r } { b } \l_tmpb_coffin { l } { t } { 0pt } { 0pt }
+
+  \coffin_set_eq:NN \l__sdaps_textbox_coffin \l_tmpa_coffin
+
 
   \int_gincr:N\g__sdaps_textbox_num_int
 }
