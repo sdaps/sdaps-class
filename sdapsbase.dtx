@@ -539,8 +539,9 @@
 \tl_new:N \l_sdaps_checkbox_fill_tl
 \tl_new:N \l_sdaps_checkbox_var_tl
 \tl_new:N \l_sdaps_checkbox_value_tl
-\tl_new:N \l_sdaps_checkbox_unknown_tl
 \bool_new:N \l_sdaps_checkbox_draw_check_bool
+
+\tl_new:N \l_sdaps_parse_unknown_tl
 
 \bool_new:N \l_sdaps_checkbox_calcpos_bool
 \bool_new:N \l_sdaps_checkbox_writepos_bool
@@ -656,7 +657,7 @@
 {
   \group_begin:
 
-    \keys_set_known:nnN { sdaps / checkbox } { #1 } \l_sdaps_checkbox_unknown_tl
+    \keys_set_known:nnN { sdaps / checkbox } { #1 } \l_sdaps_parse_unknown_tl
     \__sdaps_checkbox_internal:
 
   \group_end:
@@ -667,12 +668,12 @@
 {
   \group_begin:%
 
-    \tl_set:Nn \l_sdaps_checkbox_unknown_tl {}
+    \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
-    \__sdaps_get_defaults:Nn  \l_sdaps_checkbox_unknown_tl { checkbox }
-    \__sdaps_append_override_options:Nnn \l_sdaps_checkbox_unknown_tl { #1 } { #2 }
+    \__sdaps_get_defaults:Nn  \l_sdaps_parse_unknown_tl { checkbox }
+    \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { #2 }
 
-    \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_checkbox_unknown_tl \l_sdaps_checkbox_unknown_tl
+    \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 
     \__sdaps_checkbox_internal:
   \group_end:%
@@ -735,6 +736,42 @@
 %
 %    \begin{macrocode}
 
+\dim_new:N  \l_sdaps_textbox_linewidth_dim
+\tl_new:N   \l_sdaps_textbox_var_tl
+\tl_new:N   \l_sdaps_textbox_fill_tl
+\bool_new:N \l_sdaps_textbox_writepos_tl
+
+
+\keys_define:nn { sdaps / textbox }
+{
+  linewidth    .dim_set:N   = \l_sdaps_textbox_linewidth_dim,
+  linewidth    .initial:n   = 1bp,
+  var          .tl_set:N    = \l_sdaps_textbox_var_tl,
+
+  fill         .tl_set:N    = \l_sdaps_textbox_fill_tl,
+  fill         .initial:n   = { white },
+
+  % Simple node overlay
+  centered_text  .tl_set:N    = \l_sdaps_overlay_centered_text_tl,
+  centered_text  .initial:n   = {},
+
+  % minipage overlay
+  text         .tl_set:N    = \l_sdaps_overlay_minipage_text_tl,
+  text         .initial:n   = {},
+  text_align   .tl_set:N    = \l_sdaps_overlay_minipage_pos_tl,
+  text_align   .initial:n   = {c},
+  text_padding .dim_set:N   = \l_sdaps_overlay_minipage_pad_dim,
+  text_padding .initial:n   = {2bp},
+
+
+  writepos     .bool_set:N  = \l_sdaps_textbox_writepos_bool,
+  writepos     .default:n   = true,
+  writepos     .initial:n   = false,
+}
+
+
+
+
 \dim_new:N \l__sdaps_textbox_dp_dim
 \dim_new:N \l__sdaps_textbox_ht_dim
 \dim_new:N \l__sdaps_textbox_wd_dim
@@ -743,7 +780,17 @@
 
 \msg_new:nnn { sdapsbase } { textbox_wrong_mode } { Impossible~to~layout~a~#1~textbox~in~#2~mode. }
 
-\cs_new_protected:Nn \__sdaps_textbox_vhstretch:n
+\cs_new_protected:Nn \__sdaps_textbox_prepare:n
+{
+  \tl_set:Nn \l_sdaps_p_unknown_tl {}
+
+  \__sdaps_get_defaults:Nn  \l_sdaps_parse_unknown_tl { textbox }
+  \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { }
+
+  \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
+}
+
+\cs_new_protected:Nn \__sdaps_textbox_vhstretch:nn
 {
 %    \end{macrocode}
 %
@@ -773,6 +820,8 @@
   \fi:
 
   \group_begin:%
+
+    \__sdaps_textbox_prepare:n { #1 }
 
 %    \end{macrocode}
 %
@@ -808,7 +857,7 @@
     \tex_penalty:D 10000
     \tex_prevdepth:D=-1000pt
 
-    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#1 - \l__sdaps_textbox_ht_dim}
+    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#2 - \l__sdaps_textbox_ht_dim}
 
     \tex_penalty:D 10000
     \tex_prevdepth:D=-1000pt
@@ -845,19 +894,21 @@
         \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_height}
 
         % Draw the rectangle
-        \draw[line~width=1bp] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (1bp, -1bp)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (1bp, -1bp)$);
+        \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
         \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
         \end{scope}
 
-        \sdaps_info_write_x:x {
-          Box=Textbox,
-          \exp_not:n{\int_use:N\g_sdaps_page_int},
-          \dim_use:N \l_sdaps_x_dim,
-          \dim_use:N \l_sdaps_y_dim,
-          \dim_use:N \l_sdaps_width_dim,
-          \dim_use:N \l_sdaps_height_dim
+        \bool_if:NT \l_sdaps_textbox_writepos_bool {
+          \sdaps_info_write_x:x {
+            Box=Textbox,
+            \exp_not:n{\int_use:N\g_sdaps_page_int},
+            \dim_use:N \l_sdaps_x_dim,
+            \dim_use:N \l_sdaps_y_dim,
+            \dim_use:N \l_sdaps_width_dim,
+            \dim_use:N \l_sdaps_height_dim
+          }
         }
       \end{tikzpicture}
     }
@@ -869,15 +920,17 @@
 }
 
 
-\cs_new_protected:Nn \__sdaps_textbox_hstretch:nnnn
+\cs_new_protected:Nn \__sdaps_textbox_hstretch:nnnnn
 {
   \group_begin:
 
+    \__sdaps_textbox_prepare:n { #1 }
+
     % Place a vrule to make space for the top/bottom padding
-    \tex_vrule:D depth #1 height #2 width 0pt \nobreak
+    \tex_vrule:D depth #2 height #3 width 0pt \nobreak
     \pgfsys@markposition{textboxstart\int_use:N\g__sdaps_textbox_num_int} \nobreak
 
-    \skip_horizontal:n { #3 + \stretch{#4} } \nobreak
+    \skip_horizontal:n { #4 + \stretch{#5} } \nobreak
 
     % The textbox (rendered on the background)
     \begin{tikzpicture}[remember~picture,overlay,shift=(current~page.south~west)]
@@ -886,7 +939,7 @@
       % The position here is the position of the baseline.
       % So move up by height (param 2) to get the correct vertical position.
       \pgfpointadd{\@sdaps@textboxpos}{
-        \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{#2}}
+        \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{#3}}
       }
       \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
       \dim_set:Nn \l_sdaps_x_dim {\l__sdaps_x}
@@ -896,25 +949,27 @@
       % Calculate width and add the height to it
       \pgfpointadd{
         \pgfpointdiff{\@sdaps@textboxpos}{\@sdaps@textboxendpos}
-      }{\pgfpoint{0pt}{#1 + #2}}
+      }{\pgfpoint{0pt}{#2 + #3}}
       \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
       \dim_set:Nn \l_sdaps_width_dim {\l__sdaps_width}
       \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_height}
 
       % Draw the rectangle
-      \draw[line~width=1bp,fill=white] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (1bp, -1bp)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (1bp, -1bp)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
         \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
       \end{scope}
 
-      \sdaps_info_write_x:x {
-        Box=Textbox,
-        \exp_not:n{\int_use:N\g_sdaps_page_int},
-        \dim_use:N \l_sdaps_x_dim,
-        \dim_use:N \l_sdaps_y_dim,
-        \dim_use:N \l_sdaps_width_dim,
-        \dim_use:N \l_sdaps_height_dim
+      \bool_if:NT \l_sdaps_textbox_writepos_bool {
+        \sdaps_info_write_x:x {
+          Box=Textbox,
+          \exp_not:n{\int_use:N\g_sdaps_page_int},
+          \dim_use:N \l_sdaps_x_dim,
+          \dim_use:N \l_sdaps_y_dim,
+          \dim_use:N \l_sdaps_width_dim,
+          \dim_use:N \l_sdaps_height_dim
+        }
       }
     \end{tikzpicture}
 
@@ -939,13 +994,15 @@
 
     % pdflast[xy]pos is the PDF position of the top left corner excluding the
     % origin
-    \sdaps_info_write_x:x{
-      Box=Textbox,
-      \exp_not:n{\int_use:N\g_sdaps_page_int},
-      \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
-      \exp_not:n{\dim_eval:n {\voffset + \the\pdflastypos sp}},
-      \dim_use:N \l_sdaps_width_dim,
-      \dim_use:N \l_sdaps_height_dim
+    \bool_if:NT \l_sdaps_textbox_writepos_bool {
+      \sdaps_info_write_x:x{
+        Box=Textbox,
+        \exp_not:n{\int_use:N\g_sdaps_page_int},
+        \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
+        \exp_not:n{\dim_eval:n {\voffset + \the\pdflastypos sp}},
+        \dim_use:N \l_sdaps_width_dim,
+        \dim_use:N \l_sdaps_height_dim
+      }
     }
 
     \dim_set:Nn \l_sdaps_x_dim { 0pt }
@@ -954,7 +1011,7 @@
     % The textbox (rendered on the background)
     \begin{tikzpicture}[overlay]
       % Draw the rectangle
-      \draw[line~width=1bp] ($(0, 0) + (0.5bp, -0.5bp)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (1bp, -1bp)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(0, 0) + (0.5\l_sdaps_textbox_linewidth_dim, -0.5\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
@@ -975,13 +1032,15 @@
 }
 
 \coffin_new:N \l__sdaps_textbox_coffin
-\cs_new_protected:Nn \__sdaps_textbox_hbox:nn
+\cs_new_protected:Nn \__sdaps_textbox_hbox:nnn
 {
   \group_begin:
 
-    \hcoffin_set:Nn \l__sdaps_textbox_coffin { \tl_trim_spaces:n { #2 } }
+    \__sdaps_textbox_prepare:n { #1 }
 
-    \dim_set:Nn \l__sdaps_textbox_pad_dim {#1}
+    \hcoffin_set:Nn \l__sdaps_textbox_coffin { \tl_trim_spaces:n { #3 } }
+
+    \dim_set:Nn \l__sdaps_textbox_pad_dim { #2 }
 
     \__sdaps_textbox_prepare_coffin:
 
@@ -990,14 +1049,16 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \__sdaps_textbox_vbox:nnn
+\cs_new_protected:Nn \__sdaps_textbox_vbox:nnnn
 {
   \group_begin:
 
-    \dim_set:Nn \l__sdaps_textbox_pad_dim { #2 }
-    \dim_set:Nn \l__sdaps_textbox_wd_dim { #1 - 2\l__sdaps_textbox_pad_dim }
+    \__sdaps_textbox_prepare:n { #1 }
 
-    \vcoffin_set:Nnn \l__sdaps_textbox_coffin { \l__sdaps_textbox_wd_dim } { \tl_trim_spaces:n { #3 }}
+    \dim_set:Nn \l__sdaps_textbox_pad_dim { #3 }
+    \dim_set:Nn \l__sdaps_textbox_wd_dim { #2 - 2\l__sdaps_textbox_pad_dim }
+
+    \vcoffin_set:Nnn \l__sdaps_textbox_coffin { \l__sdaps_textbox_wd_dim } { \tl_trim_spaces:n { #4 }}
 
     \__sdaps_textbox_prepare_coffin:
 
