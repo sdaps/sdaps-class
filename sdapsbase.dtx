@@ -131,6 +131,7 @@
 
 \cs_generate_variant:Nn \tl_if_eq:nnTF { Vn }
 \cs_generate_variant:Nn \tl_if_eq:nnT { Vn }
+\cs_generate_variant:Nn \tl_if_eq:nnF { Vn }
 \cs_generate_variant:Nn \int_if_odd:nTF { V }
 \cs_generate_variant:Nn \int_if_odd:nF { V }
 \cs_generate_variant:Nn \tl_set:Nn { Nv }
@@ -318,9 +319,13 @@
 \cs_new_protected:Nn \sdaps_context_append:nn
 {
   \sdaps_context_get:nN { #1 } \l__sdaps_tmp_tl
-  \tl_put_right:Nn \l__sdaps_tmp_tl {,}
-  \tl_put_right:Nn \l__sdaps_tmp_tl { #2 }
-  \sdaps_context_put:nV { #1 } \l__sdaps_tmp_tl
+  \tl_if_eq:VnTF \l__sdaps_tmp_tl { \q_no_value } {
+    \sdaps_context_put:nn { #1 } { #2 }
+  } {
+    \tl_put_right:Nn \l__sdaps_tmp_tl {,}
+    \tl_put_right:Nn \l__sdaps_tmp_tl { #2 }
+    \sdaps_context_put:nV { #1 } \l__sdaps_tmp_tl
+  }
 }
 
 \cs_new_protected:Nn \sdaps_context_clear:
@@ -333,11 +338,25 @@
   \prop_map:NN \g__sdaps_current_context_prop #1
 }
 
-\cs_new_protected:Nn \__sdaps_get_defaults:Nn
+\cs_new_protected:Nn \__sdaps_get:Nn
+{
+  \prop_get:NnN \g__sdaps_current_context_prop { #2 } #1
+}
+
+\cs_new_protected:Nn \__sdaps_get_empty:Nn
 {
   \prop_get:NnN \g__sdaps_current_context_prop { #2 } #1
   \tl_if_eq:VnT #1 { \q_no_value } {
     \tl_set:Nn #1 {}
+  }
+}
+
+\cs_new_protected:Nn \__sdaps_append_from_context:nN
+{
+  \prop_get:NnN \g__sdaps_current_context_prop { #1 } \l__sdaps_tmp_tl
+  \tl_if_eq:VnF \l__sdaps_tmp_tl { \q_no_value } {
+    \tl_put_right:Nn #2 {,}
+    \tl_put_right:NV #2 {\l__sdaps_tmp_tl}
   }
 }
 
@@ -670,7 +689,8 @@
 
     \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
-    \__sdaps_get_defaults:Nn  \l_sdaps_parse_unknown_tl { checkbox }
+    \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
+    \__sdaps_append_from_context:nN { checkbox } \l_sdaps_parse_unknown_tl
     \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { #2 }
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
@@ -784,7 +804,8 @@
 {
   \tl_set:Nn \l_sdaps_p_unknown_tl {}
 
-  \__sdaps_get_defaults:Nn  \l_sdaps_parse_unknown_tl { textbox }
+  \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
+  \__sdaps_append_from_context:nN { textbox } \l_sdaps_parse_unknown_tl
   \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { }
 
   \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
