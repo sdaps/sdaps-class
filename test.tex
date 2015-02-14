@@ -182,39 +182,6 @@ force box:\par
 % Enable writing here
 \sdaps_context_set:n{*={writepos}}
 
-
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,draw_check=true,height=10mm} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,centered_text={X},height=10mm} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,fill=black} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,draw_check=true,centered_text={X}} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t1,pdf_form} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t2,default=true,pdf_form} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t3,default=true,checkboxsymbol=H,pdf_form} \newline
-
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,ellipse,draw_check=true,height=10mm} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,ellipse,centered_text={X}} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,ellipse,fill=black} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,ellipse,draw_check=true,centered_text={X}} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t4,ellipse,pdf_form} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t5,ellipse,default=true,pdf_form} 
-\sdaps_info_write:x{Answer-Choice=asdf}
-\sdaps_checkbox_force:n{writepos,var=t6,ellipse,default=true,checkboxsymbol=H,pdf_form} \newline
-
-\par
-
 \sdaps_info_write:x{Answer-Choice=asdf}
 \sdaps_textbox_hbox:nnn { text } { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ box. } ~ asdf
 
@@ -370,64 +337,7 @@ This is some texgt. This is some text. This is some text. This is sogme text.
 
 \end{multicols}
 
-\newpage
-\section{context\ testing}
-
-\cs_generate_variant:Nn \tl_to_str:n { f }
-
-\tl_new:N \g_test_tl
-
-\sdaps_context_set:n {a=b,c=d,e}
-
-\sdaps_context_put:nn {single} {}
-\sdaps_context_put:nn {key} {value}
-\sdaps_context_put:nn {key} {new, value}
-
-\sdaps_context_put:nn {level} {outer}
-
-\sdaps_context_to_gtl:N \g_test_tl
-outer:~ \tl_to_str:N \g_test_tl \newline
-
-\sdaps_context_begin:n {test}
-    \sdaps_context_put:nn {level} {test 0}
-
-    \sdaps_context_begin:
-        \sdaps_context_put:nn {level} {test 1}
-
-        \sdaps_context_begin:
-            \sdaps_context_put:nn {level} {test 2}
-
-            \sdaps_context_to_gtl:N \g_test_tl
-            2:~\tl_to_str:N \g_test_tl \newline
-
-        \sdaps_context_end:
-
-        \sdaps_context_to_gtl:N \g_test_tl
-        1:~\tl_to_str:N \g_test_tl \newline
-
-% Ends all contexts except outer one
-\sdaps_context_end:n {test}
-
-\sdaps_context_to_gtl:N \g_test_tl
-outer:~\tl_to_str:N \g_test_tl \newline
-
-\group_begin:
-  \sdaps_context_begin_local:
-  \sdaps_context_clear:
-  \sdaps_context_to_gtl:N \g_test_tl
-  local ~ cleared:~\tl_to_str:N \g_test_tl \newline
-\group_end:
-
-\sdaps_context_to_gtl:N \g_test_tl
-outer~after~local:~\tl_to_str:N \g_test_tl \newline
-
-
-%\ExplSyntaxOn
-%\tl_new:N \asdf
-%\sdaps_checkbox_info:N \asdf
-%\sdaps_info_write:x{\asdf}
-%\ExplSyntaxOff
-
+\cleardoublepage
 
 %\Submit{asdf}
 

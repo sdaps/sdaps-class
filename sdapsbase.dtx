@@ -86,7 +86,7 @@
 %    \begin{macrocode}
 % We need at least 2011-08-23 for \keys_set_known:nnN
 \RequirePackage{expl3}[2011/08/23]
-\RequirePackage{xparse}
+%\RequirePackage{xparse}
 \ExplSyntaxOn
 %    \end{macrocode}
 %
@@ -557,6 +557,7 @@
 \tl_new:N \l_sdaps_checkbox_form_tl
 \tl_new:N \l_sdaps_checkbox_fill_tl
 \tl_new:N \l_sdaps_checkbox_var_tl
+\tl_new:N \l_sdaps_checkbox_var_prefix_tl
 \tl_new:N \l_sdaps_checkbox_value_tl
 \bool_new:N \l_sdaps_checkbox_draw_check_bool
 
@@ -583,7 +584,7 @@
   height       .initial:n   = 3.5mm,
   form         .tl_set:N    = \l_sdaps_checkbox_form_tl,
   form         .initial:n   = { box },
-  var          .tl_set:N    = \l_sdaps_checkbox_var_tl,
+  prefix       .tl_set:N    = \l_sdaps_checkbox_var_prefix_tl,
   value        .tl_set:N    = \l_sdaps_checkbox_value_tl,
 
   fill         .tl_set:N    = \l_sdaps_checkbox_fill_tl,
@@ -619,7 +620,7 @@
 %
 %    \begin{macrocode}
 
-\cs_new_protected:Nn \__sdaps_checkbox_internal:
+\cs_new_protected:Nn \__sdaps_checkbox_internal:nn
 {
   \mbox{
     \pdfsavepos
@@ -672,17 +673,6 @@
 }
 
 
-\cs_new_protected:Nn \sdaps_checkbox_force:n
-{
-  \group_begin:
-
-    \keys_set_known:nnN { sdaps / checkbox } { #1 } \l_sdaps_parse_unknown_tl
-    \__sdaps_checkbox_internal:
-
-  \group_end:
-  \ignorespaces
-}
-
 \cs_new_protected:Nn \sdaps_checkbox:nn
 {
   \group_begin:%
@@ -695,7 +685,7 @@
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 
-    \__sdaps_checkbox_internal:
+    \__sdaps_checkbox_internal:nn { #1 } { #2 }
   \group_end:%
   \ignorespaces
 }
@@ -758,6 +748,7 @@
 
 \dim_new:N  \l_sdaps_textbox_linewidth_dim
 \tl_new:N   \l_sdaps_textbox_var_tl
+\tl_new:N   \l_sdaps_textbox_var_prefix_tl
 \tl_new:N   \l_sdaps_textbox_fill_tl
 \bool_new:N \l_sdaps_textbox_writepos_tl
 
@@ -766,7 +757,7 @@
 {
   linewidth    .dim_set:N   = \l_sdaps_textbox_linewidth_dim,
   linewidth    .initial:n   = 1bp,
-  var          .tl_set:N    = \l_sdaps_textbox_var_tl,
+  prefix       .tl_set:N    = \l_sdaps_textbox_var_prefix_tl,
 
   fill         .tl_set:N    = \l_sdaps_textbox_fill_tl,
   fill         .initial:n   = { white },
@@ -1522,6 +1513,13 @@
   \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}
 
   \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
+
+  % Empty vbox, so that an empty page will not be supressed by LaTeX
+  % FIXME: Does this always work? Should we force a new page after this?
+  %        Should the class enforce the correct page count by using
+  %        cleardoublepage internally?
+  \par\tex_prevdepth:D=-1000pt
+  \vbox:n {}
 }
 
 
