@@ -216,26 +216,26 @@ force box:\par
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_hbox:nnn { text } { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ box. } ~ asdf
+\sdaps_textbox_hbox:nnn { text } { 3pt }  { Hello, ~ this ~ is ~ some ~ text ~ in ~ a ~ box. } ~ asdf
 
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \__sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{70mm}{1} \newline
+This ~ is ~ a ~ test ~ for ~ a ~ stretching ~ textbox: ~ \sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{70mm}{1} \newline
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 
-\__sdaps_textbox_hstretch:nnnnn { text } {2mm}{5mm}{70mm}{1}
+\sdaps_textbox_hstretch:nnnnn { text } {2mm}{5mm}{70mm}{1}
 \par
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn { text } { 4cm }
+\sdaps_textbox_vhstretch:nn { text } { 4cm }
 
 \par
 \noindent
 
-\let\sdapshbox\__sdaps_textbox_hbox:nnn
-\let\hstretch\__sdaps_textbox_hstretch:nnnnn
+\let\sdapshbox\sdaps_textbox_hbox:nnn
+\let\hstretch\sdaps_textbox_hstretch:nnnnn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 \sdaps_info_write:x{Answer-Choice=asdf}
@@ -254,7 +254,7 @@ And in a formula $ f(x) = \frac{1}{c\,\sdapshbox{text}{3bp}{box}} \hstretch{text
 
 \sdaps_info_write:x{Answer-Choice=asdf}
 
-\let \sdapsvbox \__sdaps_textbox_vbox:nnnn
+\let \sdapsvbox \sdaps_textbox_vbox:nnnn
 
 \ExplSyntaxOff
 \noindent asdf \sdapsvbox {text} {0.8\linewidth} {3bp} {
@@ -273,7 +273,7 @@ This is a paragraph with more text. This is a paragraph with more text. This is 
 \par
 
 \sdaps_info_write:x{Answer-Choice=last on page}
-asdf \__sdaps_textbox_hbox:nnn {text} {1bp} {
+asdf \sdaps_textbox_hbox:nnn {text} {1bp} {
 \noindent\begin{tabularx}{0.7\linewidth}{l|l|X}
 adsf  lkasjd lksj fflkjsfd & blub & gah \\
 \hline
@@ -300,14 +300,14 @@ TEX provides two alternatives to the normal paragraph shape. One is parshape whi
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 \ExplSyntaxOff
 This is some texgt. This is some text. This is some text. This is sogme text.
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 \ExplSyntaxOff
 
@@ -317,7 +317,7 @@ This is some text. This is some text. This is some text. This is sogme text. \pa
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 \ExplSyntaxOff
 \vspace{-\parskip}\noindent
@@ -328,13 +328,13 @@ This is some texgt. This is some text. This is some text. This is sogme text.
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 \ExplSyntaxOff
 This is some texgt. This is some text. This is some text. This is sogme text.
 \ExplSyntaxOn
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 \ExplSyntaxOff
 This is some text. This is someg text. This is some text. This is sogme text.
@@ -342,31 +342,31 @@ This is some text. This is someg text. This is some text. This is sogme text.
 
 
 \sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 \ExplSyntaxOff
 This is some texgt. This is some text. This is some text. This is sogme text.
 \ExplSyntaxOn
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-\__sdaps_textbox_vhstretch:nn {text} { 4cm }
+\sdaps_textbox_vhstretch:nn {text} { 4cm }
 
 %\sdaps_info_write:x{Answer-Choice=asdf}
-%\__sdaps_textbox_vhstretch:n { 4cm }
+%\sdaps_textbox_vhstretch:n { 4cm }
 
 \end{multicols}
 
@@ -424,7 +424,7 @@ outer~after~local:~\tl_to_str:N \g_test_tl \newline
 
 %\ExplSyntaxOn
 %\tl_new:N \asdf
-%\__sdaps_checkbox_info:N \asdf
+%\sdaps_checkbox_info:N \asdf
 %\sdaps_info_write:x{\asdf}
 %\ExplSyntaxOff
 
