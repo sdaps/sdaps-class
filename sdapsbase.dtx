@@ -400,11 +400,9 @@
 {
   % Global definition
   % First generic for all items
-  \prop_get:NnNTF \g__sdaps_overrides_prop { * } \l__sdaps_tmp_tl {
+  \prop_get:NnNT \g__sdaps_overrides_prop { * } \l__sdaps_tmp_tl {
     \tl_put_right:Nn #1 {,}
     \tl_put_right:NV #1 \l__sdaps_tmp_tl
-  } {
-    % Nothing to do
   }
   \tl_if_empty:nF { #2 } {
     % Items with same variable name
@@ -474,8 +472,28 @@
 \dim_new:N \l__sdaps_tmpa_dim %
 \dim_new:N \l__sdaps_tmpb_dim %
 
+%    \end{macrocode}
+%
+% We need to be able to output data into the .sdaps file. On startup this
+% output is enabled by default.
+%
+%    \begin{macrocode}
+
 \iow_new:N \g_sdaps_infofile_iow
 \iow_open:Nn \g_sdaps_infofile_iow { \c_job_name_tl . sdaps }
+
+
+\cs_new_protected:Nn \sdaps_info_write:n
+{
+  \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
+}
+\cs_generate_variant:Nn \sdaps_info_write:n { x }
+
+\cs_new_protected:Nn \sdaps_info_write_x:n
+{
+  \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
+}
+\cs_generate_variant:Nn \sdaps_info_write_x:n { x }
 
 
 %    \end{macrocode}
@@ -680,25 +698,6 @@
 \seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_minipage:
 \seq_put_left:Nn \g__sdaps_textbox_overlays_seq \sdaps_overlay_minipage:
 
-
-
-
-\cs_new_protected:Nn \__sdaps_checkbox_info:N
-{
-  \tl_gset:Nx #1 \g__sdaps_checkbox_info_tl
-}
-
-\cs_new_protected:Nn \sdaps_info_write:n
-{
-  \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
-}
-\cs_generate_variant:Nn \sdaps_info_write:n { x }
-
-\cs_new_protected:Nn \sdaps_info_write_x:n
-{
-  \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
-}
-\cs_generate_variant:Nn \sdaps_info_write_x:n { x }
 
 
 %\let\checkbox\sdaps_checkbox_force:n
