@@ -2,6 +2,7 @@
 *.out
 sdapsbase.sty
 sdapslayout.sty
+sdapspdf.sty
 *.ind
 *.aux
 *.log

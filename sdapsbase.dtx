@@ -566,6 +566,7 @@
     }
   }
 }
+\cs_generate_variant:Nn \__sdaps_append_override_options:Nnn  { NVn }
 
 %    \end{macrocode}
 %
@@ -587,7 +588,7 @@
 \int_new:N \g__sdaps_textbox_num_int
 \int_set:Nn \g__sdaps_textbox_num_int 0
 
-
+\tl_new:N \l__sdaps_var_tl
 \dim_new:N \l_sdaps_x_dim
 \dim_new:N \l_sdaps_y_dim
 \dim_new:N \l_sdaps_width_dim
@@ -765,7 +766,7 @@
 
     \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
     \__sdaps_append_from_context:nN { checkbox } \l_sdaps_parse_unknown_tl
-    \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { #2 }
+    \__sdaps_append_override_options:NVn \l_sdaps_parse_unknown_tl \l__sdaps_var_tl { #2 }
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 
@@ -879,9 +880,11 @@
 {
   \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
+  \sdaps_generate_var:nN { #1 } \l__sdaps_var_tl
+
   \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
   \__sdaps_append_from_context:nN { textbox } \l_sdaps_parse_unknown_tl
-  \__sdaps_append_override_options:Nnn \l_sdaps_parse_unknown_tl { #1 } { }
+  \__sdaps_append_override_options:NVn \l_sdaps_parse_unknown_tl \l__sdaps_var_tl { }
 
   \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 }
@@ -1004,7 +1007,7 @@
             \dim_use:N \l_sdaps_y_dim,
             \dim_use:N \l_sdaps_width_dim,
             \dim_use:N \l_sdaps_height_dim,
-            #1,
+            \tl_use:N \l__sdaps_var_tl,
           }
         }
       \end{tikzpicture}
@@ -1066,7 +1069,7 @@
           \dim_use:N \l_sdaps_y_dim,
           \dim_use:N \l_sdaps_width_dim,
           \dim_use:N \l_sdaps_height_dim,
-          #1,
+          \tl_use:N \l__sdaps_var_tl,
         }
       }
     \end{tikzpicture}
@@ -1076,7 +1079,7 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:n
+\cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:
 {
   \dim_set:Nn \l__sdaps_textbox_ht_dim { \coffin_ht:N \l__sdaps_textbox_coffin }
   \dim_set:Nn \l__sdaps_textbox_dp_dim { \coffin_dp:N \l__sdaps_textbox_coffin }
@@ -1100,7 +1103,7 @@
         \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
         \dim_use:N \l_sdaps_width_dim,
         \dim_use:N \l_sdaps_height_dim,
-        #1,
+        \tl_use:N \l__sdaps_var_tl,
       }
     }
 
@@ -1144,7 +1147,7 @@
 
     \dim_set:Nn \l__sdaps_textbox_pad_dim { #2 }
 
-    \__sdaps_textbox_prepare_coffin:n { #1 }
+    \__sdaps_textbox_prepare_coffin:
 
     \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
 
@@ -1162,7 +1165,7 @@
 
     \vcoffin_set:Nnn \l__sdaps_textbox_coffin { \l__sdaps_textbox_wd_dim } { \tl_trim_spaces:n { #4 }}
 
-    \__sdaps_textbox_prepare_coffin:n { #1 }
+    \__sdaps_textbox_prepare_coffin:
 
     \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
 

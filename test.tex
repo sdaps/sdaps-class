@@ -1,7 +1,7 @@
 \documentclass{scrartcl}
 
 \usepackage{sdapslayout}
-\usepackage{hyperref}
+\usepackage{sdapspdf}
 \usepackage{ifthen}
 
 \usepackage{tabularx}
@@ -20,58 +20,12 @@
   \cfoot{\sdaps_page_end:}
 
 
-\bool_new:N \l_sdaps_checkbox_pdf_form_bool
-\bool_new:N \l_sdaps_checkbox_default_bool
-\tl_new:N \l_sdaps_checkbox_checkboxsymbol_tl
-
-\keys_define:nn { sdaps / checkbox / overlay / form }
-{
-  pdf_form         .bool_set:N  = \l_sdaps_checkbox_pdf_form_bool,
-  pdf_form         .initial:n   = false,
-
-  default          .bool_set:N  = \l_sdaps_checkbox_default_bool,
-  default          .initial:n   = false,
-
-  checkboxsymbol   .tl_set:N  = \l_sdaps_checkbox_checkboxsymbol_tl,
-  checkboxsymbol   .initial:n   = 8,
-}
-
-\cs_new_protected:Nn \sdaps_overlay_checkbox_form:
-{
-  \keys_set_known:nV { sdaps / checkbox / overlay / form } { \l_sdaps_parse_unknown_tl } %
-
-  \bool_if:NT \l_sdaps_checkbox_pdf_form_bool {
-    \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
-      \CheckBox[name=\l_sdaps_checkbox_var_tl,bordersep=0,borderwidth=0pt,checkboxsymbol=\l_sdaps_checkbox_checkboxsymbol_tl,bordercolor=,backgroundcolor=,checked=\bool_if:nTF\l_sdaps_checkbox_default_bool{true}{false},height=\l_sdaps_checkbox_height_dim,width=\l_sdaps_checkbox_width_dim]{\ignorespaces}
-    };
-  }
-}
-\seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \sdaps_overlay_checkbox_form:
-
-
-\cs_new_protected:Nn \sdaps_overlay_text_form:
-{
-  \keys_set_known:nV { sdaps / checkbox / overlay / form } { \l_sdaps_parse_unknown_tl } %
-
-    \node[anchor=center,inner~sep=2pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
-      \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_width_dim - 4pt }
-      \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_height_dim - 4pt }
-
-      \TextField[name=textbox\int_use:N\g__sdaps_textbox_num_int,bordersep=0pt,borderwidth=0pt,bordercolor=,backgroundcolor=,multiline=true,height=\l_sdaps_height_dim,width=\l_sdaps_width_dim]{\ignorespaces}
-    };
-
-  %\l_sdaps_checkbox_var_tl
-%  \sdaps_overlay_minipage:nnn {t} {2bp} {\TextField[name=textbox\int_use:N\g__sdaps_textbox_num_int,bordersep=0pt,borderwidth=0pt,bordercolor=,backgroundcolor=,multiline=true,height=\textheight,width=\textwidth]{\ignorespaces}}
-}
-\seq_put_left:Nn \g__sdaps_textbox_overlays_seq \sdaps_overlay_text_form:
-
-
-
 \sdaps_overrides_init:n{
   *={
       *={},
+      tool_letter_latex={default=true}
   },
-  asdf={
+  adsf={
       var1={box},
       var2={height=2mm},
       var2&1={width=10mm},
@@ -116,6 +70,7 @@
 
 % Enable writing here
 \sdaps_context_set:n{*={writepos}}
+\sdaps_context_append:nn{*} {pdf_form=true}
 
 \sdaps_qobject_begin:nnn {header} {Head} {This is a heading}
 
@@ -152,7 +107,7 @@
 
 %\sdaps_qobject_end:n {header}
 
-%\sdaps_context_set:n{*={}}
+\sdaps_context_set:n{*={pdf_form=true}}
 
 \newpage
 asdf
