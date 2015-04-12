@@ -438,12 +438,18 @@
 {
   \sdaps_context_get:nN { var } \l__sdaps_tmpa_tl
 
-  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
-    \tl_set:Nn #2 { #1 }
+  \tl_if_empty:nTF { #1 } {
+    % If no variable name is given in the last step, then just leave it out,
+    % there is pretty much no way it is going to be unique this way.
+    \tl_set:Nn #2 {}
   } {
-    \tl_put_right:Nn \l__sdaps_tmpa_tl {_}
-    \tl_put_right:Nn \l__sdaps_tmpa_tl {#1}
-    \tl_set:NV #2 \l__sdaps_tmpa_tl
+    \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+      \tl_set:Nn #2 { #1 }
+    } {
+      \tl_put_right:Nn \l__sdaps_tmpa_tl {_}
+      \tl_put_right:Nn \l__sdaps_tmpa_tl {#1}
+      \tl_set:NV #2 \l__sdaps_tmpa_tl
+    }
   }
 }
 
