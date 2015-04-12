@@ -1,6 +1,7 @@
 *.pdf
 *.out
 sdapsbase.sty
+sdapslayout.sty
 *.ind
 *.aux
 *.log

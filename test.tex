@@ -1,6 +1,6 @@
 \documentclass{scrartcl}
 
-\usepackage{sdapsbase}
+\usepackage{sdapslayout}
 \usepackage{hyperref}
 \usepackage{ifthen}
 
@@ -113,6 +113,50 @@
 %\ChoiceMenu[radio=true,bordercolor=,backgroundcolor=,radiosymbol=8]{label}{a,b,c,d}
 
 \ExplSyntaxOn
+
+% Enable writing here
+\sdaps_context_set:n{*={writepos}}
+
+\sdaps_qobject_begin:nnn {header} {Head} {This is a heading}
+
+\ExplSyntaxOff
+
+\begin{choicearray}[horizontal,var=tool]{Which of these tool do you
+    think is appropriate for the following tasks (multiple answers are
+    allowed)}
+  \choice[var=latex,text=LaTeX]{\LaTeX}
+  \choice[var=lo]{LibreOffice}
+  \choice[var=msword]{Microsoft Word}
+
+  \question[var=letter]{Writing Letters \LaTeX}
+  \question[var=scratch]{Printing scratch paper}
+  \question[var=papers]{Writing papers}
+  \question[var=surveys]{Creating surveys}
+\end{choicearray}
+
+\begin{choicearray}[vertical,var=tool]{Which of these tool do you
+    think is appropriate for the following tasks (multiple answers are
+    allowed)}
+  \choice[var=latex,text=LaTeX]{\LaTeX}
+  \choice[var=lo]{LibreOffice}
+  \choice[var=msword]{Microsoft Word}
+
+  \question[var=letter]{Writing Letters}
+  \question[var=scratch]{Printing scratch paper}
+  \question[var=papers]{Writing papers}
+  \question[var=surveys]{Creating surveys}
+\end{choicearray}
+
+
+\ExplSyntaxOn
+
+%\sdaps_qobject_end:n {header}
+
+%\sdaps_context_set:n{*={}}
+
+\newpage
+asdf
+\newpage
 
 \sdaps_info_write:x{QObject-Choice=asdf}%
 

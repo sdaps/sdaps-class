@@ -1,0 +1,359 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2014 by Henry Menke <henrimenke@gmail.com>
+% Copyright (C) 2015 by Benjamin Berg <benjamin@sipsolutions.net>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Benjamin Berg.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{sdapslayout.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{sdapslayout}
+%<*package>
+    [2015/04/10 v0.1 Initial version of SDAPS layout package]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{sdapslayout}[2015/04/10]
+%\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{sdapslayout.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.1}{2015/01/14}{Initial version}
+%
+% \GetFileInfo{sdapslayout.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+% 
+%
+% \title{The \textsf{sdapslayout} package\thanks{This document
+%   corresponds to \textsf{sdapslayout}~\fileversion, dated \filedate.}}
+% \author{Benjamin Berg \\ \texttt{benjamin@sipsolutions.net}}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% Put text here.
+%
+% \section{Usage}
+%
+% Put text here.
+%
+% \StopEventually{\PrintChanges\PrintIndex}
+%
+% \section{Implementation}
+%
+% This package uses the \LaTeX3 language internally, so we need to enable it.
+%    \begin{macrocode}
+% We need at least 2011-08-23 for \keys_set_known:nnN
+\RequirePackage{expl3}[2011/08/23]
+%\RequirePackage{xparse}
+\ExplSyntaxOn
+%    \end{macrocode}
+%
+% And we need a number of other packages.
+%    \begin{macrocode}
+\ExplSyntaxOff
+
+\RequirePackage{sdapsbase}
+\RequirePackage{xparse}
+\RequirePackage{booktabs}
+
+
+\ExplSyntaxOn
+
+%    \end{macrocode}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \subsection{Choice Question Layout}
+%
+% \subsubsection{Choice Question Matrix Layout}
+%
+% The following macros provide the funcitonality to layout choice questions in
+% a matrix like fashion.
+%
+%    \begin{macrocode}
+
+
+\bool_new:N \l_sdaps_choicearray_horizontal_bool
+\bool_new:N \l_sdaps_choicearray_vertical_bool
+\tl_new:N \l_sdaps_choicearray_var_tl
+\tl_new:N \l_sdaps_choicearray_text_tl
+\tl_new:N \l_sdaps_choice_var_tl
+\tl_new:N \l_sdaps_choice_text_tl
+\tl_new:N \l_sdaps_question_var_tl
+\tl_new:N \l_sdaps_question_text_tl
+\seq_new:N \g_sdaps_choices_seq
+\seq_new:N \g_sdaps_choices_var_seq
+\seq_new:N \g_sdaps_choices_text_seq
+\seq_new:N \g_sdaps_questions_seq
+\seq_new:N \g_sdaps_questions_text_seq
+
+\keys_define:nn { sdaps / choicearray }
+{
+  horizontal .bool_set:N = \l_sdaps_choicearray_horizontal_bool,
+  horizontal .default:n  = true,
+  vertical   .bool_set:N = \l_sdaps_choicearray_vertical_bool,
+  vertial    .default:n  = true,
+  var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
+  text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
+}
+
+\keys_define:nn { sdaps / choicearray / choice }
+{
+  var        .tl_set:N   = \l_sdaps_choice_var_tl,
+  text       .tl_set:N   = \l_sdaps_choice_text_tl,
+}
+
+\keys_define:nn { sdaps / choicearray / question }
+{
+  var        .tl_set:N   = \l_sdaps_question_var_tl,
+  text       .tl_set:N   = \l_sdaps_question_text_tl,
+}
+
+\cs_new_protected:Npn \_sdaps_choicearray_preprocess:nn #1#2
+{
+  \group_begin:
+
+    \tl_if_empty:nF { #1 } {
+      \keys_set:nn { sdaps / choicearray } { #1 }
+    }
+
+   \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
+     \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
+    } {
+     \sdaps_qobject_begin:nnV { choicearray } { Head } \l_sdaps_choicearray_text_tl
+    }
+
+   \tl_if_empty:NF \l_sdaps_choicearray_var_tl {
+     \sdaps_context_append:nVn { var } \l_sdaps_choicearray_var_tl { _ }
+    }
+
+  \group_end:
+}
+
+\cs_new_protected:Npn \_sdaps_choicearray_postprocess:nn #1#2
+{
+  \group_begin:
+
+    \tl_if_empty:nF { #1 } {
+      \keys_set:nn { sdaps / choicearray } { #1 }
+    }
+
+    \bool_if:NT \l_sdaps_choicearray_horizontal_bool {
+      \_sdaps_choicearray_typset_horizontal:
+    }
+
+    \bool_if:NT \l_sdaps_choicearray_vertical_bool {
+      \_sdaps_choicearray_typset_vertical:
+    }
+
+   \sdaps_qobject_end:n { choicearray }
+
+  \group_end:
+}
+
+\cs_new_protected:Npn \_sdaps_choicearray_process_choice:nn #1#2
+{
+  \group_begin:
+
+    \tl_if_empty:nF { #1 } {
+      \keys_set:nn { sdaps / choicearray / choice } { #1 }
+    }
+
+   \seq_gput_right:Nn \g_sdaps_choices_seq { #2 }
+   \seq_gput_right:Nx \g_sdaps_choices_var_seq { \l_sdaps_choice_var_tl }
+
+   \tl_if_empty:NTF \l_sdaps_choice_text_tl {
+     \seq_gput_right:Nn \g_sdaps_choices_text_seq { #2 }
+    } {
+     \seq_gput_right:NV \g_sdaps_choices_text_seq { \l_sdaps_choice_text_tl }
+    }
+
+  \group_end:
+}
+
+\cs_new_protected:Npn \_sdaps_choicearray_process_question:nn #1#2
+{
+  \group_begin:
+
+    \tl_if_empty:nF { #1 } {
+      \keys_set:nn { sdaps / choicearray / question } { #1 }
+     }
+
+    \tl_if_empty:NTF \l_sdaps_question_text_tl {
+      \sdaps_qobject_begin:nnn { choicearray_question } { Choice } { #2 }
+    } {
+      \sdaps_qobject_begin:nnV { choicearray_question } { Choice } \l_sdaps_Question_text_tl
+    }
+
+   \tl_if_empty:NF \l_sdaps_question_var_tl {
+     \sdaps_context_append:nVn { var } \l_sdaps_question_var_tl { _ }
+    }
+
+    \sdaps_context_put:nn { question_text } { #2 }
+    \seq_gput_right:Nn \g_sdaps_questions_text_seq { #2 }
+
+    \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
+      \sdaps_answer:f {\seq_item:Nn \g_sdaps_choices_text_seq { ##1 }}
+      }
+
+    \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
+    \seq_gput_right:NV \g_sdaps_questions_seq { \l__sdaps_tmpa_tl }
+
+    \sdaps_qobject_end:n { choicearray_question }
+
+  \group_end:
+}
+
+\cs_new_protected:Nn \_sdaps_choicearray_typset_horizontal:
+{
+  \group_begin:
+
+    % Local context so that we can modify at will
+    \sdaps_context_begin_local:
+
+    \tl_clear:N \l_tmpa_tl
+    \tl_clear:N \l_tmpb_tl
+    \seq_map_inline:Nn \g_sdaps_choices_var_seq {
+      \tl_put_right:Nn \l_tmpa_tl { c }
+      \tl_put_right:Nn \l_tmpb_tl { & \sdaps_checkbox:nn{##1}{} }
+     }
+
+    \exp_args:Nnx
+    \begin{tabular}{ { r \tl_use:N \l_tmpa_tl} }
+      & \seq_use:Nn \g_sdaps_choices_seq { & } \\
+      \seq_map_inline:Nn \g_sdaps_questions_seq {
+        % Just overwrite the current context
+        \sdaps_context_set:n { ##1 }
+        \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
+
+        \tl_use:N \l__sdaps_tmpa_tl \tl_use:N \l_tmpb_tl \\
+      }
+    \end{tabular}
+
+  \group_end:
+}
+
+\cs_new_protected:Nn \_sdaps_choicearray_typset_vertical_int:n
+{
+  \seq_map_inline:Nn \g_sdaps_questions_seq {
+    \sdaps_context_set:n { ##1 }
+    & \sdaps_checkbox:nn{#1}{}
+  }
+}
+\cs_generate_variant:Nn \_sdaps_choicearray_typset_vertical_int:n {f}
+
+\cs_new_protected:Nn \_sdaps_choicearray_typset_vertical:
+{
+  \group_begin:
+
+    % Local context so that we can modify at will
+    \sdaps_context_begin_local:
+
+    \tl_clear:N \l_tmpa_tl
+    \tl_clear:N \l_tmpb_tl
+    \seq_map_inline:Nn \g_sdaps_questions_text_seq {
+      \tl_put_right:Nn \l_tmpa_tl { c }
+      \tl_put_right:Nn \l_tmpb_tl { & ##1 }
+     }
+
+    \exp_args:Nnx
+    \begin{tabular} { { r \tl_use:N \l_tmpa_tl } }
+      \tl_use:N \l_tmpb_tl \\
+      \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
+        \seq_item:Nn \g_sdaps_choices_seq { ##1 }
+        \_sdaps_choicearray_typset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
+        \\
+      }
+    \end{tabular}
+
+  \group_end:
+}
+
+%
+%    \end{macrocode}
+%
+%
+%
+% \subsection{Export user facing environments}
+%
+%    \begin{macrocode}
+%
+
+
+\NewDocumentEnvironment { choicearray } { o m }
+{
+  \group_begin:
+
+    \_sdaps_choicearray_preprocess:nn { #1 } { #2 }
+    % Clear the variables
+    \seq_gclear:N \g_sdaps_choices_seq
+    \seq_gclear:N \g_sdaps_choices_var_seq
+    \seq_gclear:N \g_sdaps_questions_seq
+    \seq_gclear:N \g_sdaps_questions_text_seq
+
+    % Define new commands
+    \NewDocumentCommand \choice { o m } {
+      \_sdaps_choicearray_process_choice:nn { ##1 } { ##2 }
+    }
+    \NewDocumentCommand \question { o m } {
+      \_sdaps_choicearray_process_question:nn { ##1 } { ##2 }
+    }
+}
+{
+    % Process keys
+    \_sdaps_choicearray_postprocess:nn { #1 } { #2 }
+
+  \group_end:
+}
+
+\ExplSyntaxOff
+
+%
+%    \end{macrocode}
+%
+
+% \Finale
+\endinput

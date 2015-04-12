@@ -139,6 +139,12 @@
 \cs_generate_variant:Nn \exp_not:n { f }
 
 
+\tl_new:N \l__sdaps_tmpa_tl
+\tl_new:N \l__sdaps_tmpb_tl
+
+\dim_new:N \l__sdaps_tmpa_dim %
+\dim_new:N \l__sdaps_tmpb_dim %
+
 \prop_new:N \g__sdaps_current_context_prop
 \tl_new:N \g__sdaps_current_context_id_tl
 
@@ -148,19 +154,19 @@
 \seq_new:N \g__sdaps_contexts_seq
 
 
-\cs_new_protected:Nn \sdaps_context_to_gtl:N
+\cs_new_protected:Nn \sdaps_context_to_tl:N
 {
-  \tl_gclear:N #1
+  \tl_clear:N #1
   \prop_map_inline:Nn \g__sdaps_current_context_prop {
     % Could we remove some of the braces in the TL?
     \tl_if_in:nnTF { \tex_undefined:D } { ##2 } {
-      \tl_gput_right:Nn #1 {,{##1}}
+      \tl_put_right:Nn #1 {,{##1}}
     } {
-      \tl_gput_right:Nn #1 {,{##1}={##2}}
+      \tl_put_right:Nn #1 {,{##1}={##2}}
     }
   }
   % Remove leading comma again
-  \tl_gremove_once:Nn #1 {,}
+  \tl_remove_once:Nn #1 {,}
 }
 
 
@@ -173,7 +179,8 @@
     % TODO: Call pre begin hooks
 
     % Serialize the current context
-    \sdaps_context_to_gtl:N \g__sdaps_current_context_tl
+    \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
+    \tl_gset:NV \g__sdaps_current_context_tl \l__sdaps_tmpa_tl
     % Stuff it away in our sequence
     \seq_gput_left:NV \g__sdaps_contexts_seq \g__sdaps_current_context_tl
     \seq_gput_left:NV \g__sdaps_context_ids_seq \g__sdaps_current_context_id_tl
@@ -198,13 +205,13 @@
 
     \sdaps_context_clear:
     \seq_gpop_left:NN \g__sdaps_contexts_seq \g__sdaps_current_context_tl
-    \seq_gpop_left:NN \g__sdaps_context_ids_seq \l__sdaps_tmp_tl
+    \seq_gpop_left:NN \g__sdaps_context_ids_seq \l__sdaps_tmpa_tl
 
     % Unpack context token list
     \sdaps_context_set:V \g__sdaps_current_context_tl
 
     \tl_gclear:N \g__sdaps_current_context_tl
-    \tl_gset:NV \g__sdaps_current_context_id_tl \l__sdaps_tmp_tl
+    \tl_gset:NV \g__sdaps_current_context_id_tl \l__sdaps_tmpa_tl
 
     % TODO: Post context end hook
     \group_end:
@@ -264,13 +271,6 @@
   \sdaps_context_begin:n {}
 }
 
-% Create a new sibbling for the current context
-% This simply exits the current context and creates a new
-% context with the same identifier.
-\cs_new_protected:Nn \sdaps_context_sibbling:
-{
-}
-
 \cs_new_protected:Nn \sdaps_context_begin_local:
 {
   % Create a new context which will automatically be destroyed at the end of
@@ -316,16 +316,23 @@
   \prop_get:NnN \g__sdaps_current_context_prop { #1 } #2
 }
 
-\cs_new_protected:Nn \sdaps_context_append:nn
+\cs_new_protected:Nn \sdaps_context_append:nnn
 {
-  \sdaps_context_get:nN { #1 } \l__sdaps_tmp_tl
-  \tl_if_eq:VnTF \l__sdaps_tmp_tl { \q_no_value } {
+  \sdaps_context_get:nN { #1 } \l__sdaps_tmpa_tl
+  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
     \sdaps_context_put:nn { #1 } { #2 }
   } {
-    \tl_put_right:Nn \l__sdaps_tmp_tl {,}
-    \tl_put_right:Nn \l__sdaps_tmp_tl { #2 }
-    \sdaps_context_put:nV { #1 } \l__sdaps_tmp_tl
+    \tl_put_right:Nn \l__sdaps_tmpa_tl { #3 }
+    \tl_put_right:Nn \l__sdaps_tmpa_tl { #2 }
+    \sdaps_context_put:nV { #1 } \l__sdaps_tmpa_tl
   }
+}
+\cs_generate_variant:Nn \sdaps_context_append:nnn { nVn }
+
+
+\cs_new_protected:Nn \sdaps_context_append:nn
+{
+  \sdaps_context_append:nnn { #1 } { #2 } { , }
 }
 
 \cs_new_protected:Nn \sdaps_context_clear:
@@ -353,19 +360,94 @@
 
 \cs_new_protected:Nn \__sdaps_append_from_context:nN
 {
-  \prop_get:NnN \g__sdaps_current_context_prop { #1 } \l__sdaps_tmp_tl
-  \tl_if_eq:VnF \l__sdaps_tmp_tl { \q_no_value } {
+  \prop_get:NnN \g__sdaps_current_context_prop { #1 } \l__sdaps_tmpa_tl
+  \tl_if_eq:VnF \l__sdaps_tmpa_tl { \q_no_value } {
     \tl_put_right:Nn #2 {,}
-    \tl_put_right:NV #2 {\l__sdaps_tmp_tl}
+    \tl_put_right:NV #2 {\l__sdaps_tmpa_tl}
   }
 }
 
 
 %    \end{macrocode}
 %
+% \subsection{Defining Question and Headings}
 %
+% SDAPS needs to know about questions and headings/sections. Internally SDAPS
+% uses the context management system to number these correctly and assign the
+% variable names including the variable name concatenation automatically.
 %
+% Note that the infrastructure present here will not prevent you from nesting
+% questions, and SDAPS should actually handle this case just fine (ever wanted
+% to put a question inside a textbox?).
 %
+% It is important to keep these balanced. Please note that the SDAPS class does
+% not use TeX groups here, so you could for example start a context inside a
+% table and end it outside of it.
+%
+%    \begin{macrocode}
+
+\seq_new:N \g__sdaps_qobject_id_seq
+\int_new:N \g__sdaps_qobject_id_int
+\int_gzero:N \g__sdaps_qobject_id_int
+
+\cs_new_protected:Nn \sdaps_qobject_begin:nnn
+{
+  \int_gincr:N \g__sdaps_qobject_id_int
+  \seq_gput_right:NV \g__sdaps_qobject_id_seq \g__sdaps_qobject_id_int
+  \int_gzero:N \g__sdaps_qobject_id_int
+
+  \tl_set:Nx \l__sdaps_tmpa_tl { \seq_use:Nn \g__sdaps_qobject_id_seq {.} }
+
+  \sdaps_context_begin:n {#1}
+    \sdaps_context_put:nV {id} \l__sdaps_tmpa_tl
+    \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpa_tl. ~ \exp_not:n{#3}}
+}
+\cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV }
+
+
+\cs_new_protected:Nn \sdaps_qobject_end:n
+{
+  \sdaps_context_end:n {#1}
+  \seq_gpop_right:NN \g__sdaps_qobject_id_seq \l__sdaps_tmpa_tl
+  \int_gset:NV \g__sdaps_qobject_id_int \l__sdaps_tmpa_tl
+}
+
+\cs_new_protected:Nn \sdaps_qobject_begin:nn
+{
+  \sdaps_qobject_end:n { unnamed_qobject } { #1 } { #2 }
+}
+
+\cs_new_protected:Nn \sdaps_qobject_end:
+{
+  \sdaps_qobject_end:n { unnamed_qobject }
+}
+
+
+\cs_new_protected:Nn \sdaps_answer:n
+{
+  \sdaps_context_get:nN { id } \l__sdaps_tmpa_tl
+
+  \sdaps_info_write:x {
+     Answer[\tl_use:N \l__sdaps_tmpa_tl]=\exp_not:n { #1 }
+  }
+}
+\cs_generate_variant:Nn \sdaps_answer:n { o }
+\cs_generate_variant:Nn \sdaps_answer:n { f }
+
+\cs_new_protected:Nn \sdaps_generate_var:nN
+{
+  \sdaps_context_get:nN { var } \l__sdaps_tmpa_tl
+
+  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+    \tl_set:Nn #2 { #1 }
+  } {
+    \tl_put_right:Nn \l__sdaps_tmpa_tl {_}
+    \tl_put_right:Nn \l__sdaps_tmpa_tl {#1}
+    \tl_set:NV #2 \l__sdaps_tmpa_tl
+  }
+}
+
+%    \end{macrocode}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -387,6 +469,7 @@
 %    \begin{macrocode}
 
 \cs_generate_variant:Nn \keyval_parse:NNn { NNV }
+\cs_generate_variant:Nn \int_gset:Nn { NV }
 
 \seq_new:N \g__sdaps_checkbox_overlays_seq
 \seq_new:N \g__sdaps_textbox_overlays_seq
@@ -442,21 +525,21 @@
 {
   % Global definition
   % First generic for all items
-  \prop_get:NnNT \g__sdaps_overrides_prop { * } \l__sdaps_tmp_tl {
+  \prop_get:NnNT \g__sdaps_overrides_prop { * } \l__sdaps_tmpa_tl {
     \tl_put_right:Nn #1 {,}
-    \tl_put_right:NV #1 \l__sdaps_tmp_tl
+    \tl_put_right:NV #1 \l__sdaps_tmpa_tl
   }
   \tl_if_empty:nF { #2 } {
     % Items with same variable name
-    \prop_get:NnNT \g__sdaps_overrides_prop { #2 } \l__sdaps_tmp_tl {
+    \prop_get:NnNT \g__sdaps_overrides_prop { #2 } \l__sdaps_tmpa_tl {
       \tl_put_right:Nn #1 {,}
-      \tl_put_right:NV #1 \l__sdaps_tmp_tl
+      \tl_put_right:NV #1 \l__sdaps_tmpa_tl
     }
     \tl_if_empty:nF { #3 } {
       % Items with same variable name and value
-      \prop_get:NnNT \g__sdaps_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+      \prop_get:NnNT \g__sdaps_overrides_prop { #2&#3 } \l__sdaps_tmpa_tl {
         \tl_put_right:Nn #1 {,}
-        \tl_put_right:NV #1 \l__sdaps_tmp_tl
+        \tl_put_right:NV #1 \l__sdaps_tmpa_tl
       }
     }
   }
@@ -464,21 +547,21 @@
 
   % Local (questionnaire ID specific) definition
   % First generic for all items
-  \prop_get:NnNT \g__sdaps_id_overrides_prop { * } \l__sdaps_tmp_tl {
+  \prop_get:NnNT \g__sdaps_id_overrides_prop { * } \l__sdaps_tmpa_tl {
     \tl_put_right:Nn #1 {,}
-    \tl_put_right:NV #1 \l__sdaps_tmp_tl
+    \tl_put_right:NV #1 \l__sdaps_tmpa_tl
   }
   \tl_if_empty:nF { #2 } {
     % Items with same variable name
-    \prop_get:NnNT \g__sdaps_id_overrides_prop { #2 } \l__sdaps_tmp_tl {
+    \prop_get:NnNT \g__sdaps_id_overrides_prop { #2 } \l__sdaps_tmpa_tl {
       \tl_put_right:Nn #1 {,}
-      \tl_put_right:NV #1 \l__sdaps_tmp_tl
+      \tl_put_right:NV #1 \l__sdaps_tmpa_tl
     }
     \tl_if_empty:nF { #3 } {
       % Items with same variable name and value
-      \prop_get:NnNT \g__sdaps_id_overrides_prop { #2&#3 } \l__sdaps_tmp_tl {
+      \prop_get:NnNT \g__sdaps_id_overrides_prop { #2&#3 } \l__sdaps_tmpa_tl {
         \tl_put_right:Nn #1 {,}
-        \tl_put_right:NV #1 \l__sdaps_tmp_tl
+        \tl_put_right:NV #1 \l__sdaps_tmpa_tl
       }
     }
   }
@@ -509,10 +592,6 @@
 \dim_new:N \l_sdaps_y_dim
 \dim_new:N \l_sdaps_width_dim
 \dim_new:N \l_sdaps_height_dim
-
-\tl_new:N \l__sdaps_tmp_tl %
-\dim_new:N \l__sdaps_tmpa_dim %
-\dim_new:N \l__sdaps_tmpb_dim %
 
 %    \end{macrocode}
 %
@@ -636,14 +715,16 @@
     \bool_if:NT \l_sdaps_checkbox_writepos_bool {
       % pdflast[xy]pos is the PDF position of the baseline at the start of the box
       % excluding the page origin offset.
+      \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
       \sdaps_info_write_x:x{
-        Box=Checkbox,
+        Box[\l__sdaps_tmpa_tl]=Checkbox,
         \exp_not:n{\int_use:N\g_sdaps_page_int},
         \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_x_dim + \the\pdflastxpos sp} },
         \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_y_dim + \the\pdflastypos sp} },
         \dim_use:N \l_sdaps_width_dim,
         \dim_use:N \l_sdaps_height_dim,
-        \tl_to_str:N\l_sdaps_checkbox_form_tl
+        \tl_to_str:N\l_sdaps_checkbox_form_tl,
+        #1,#2
       }
     }
 
@@ -671,11 +752,14 @@
     \int_gincr:N\g__sdaps_checkbox_num_int
   }
 }
+\cs_generate_variant:Nn \__sdaps_checkbox_internal:nn { Vn }
 
 
 \cs_new_protected:Nn \sdaps_checkbox:nn
 {
   \group_begin:%
+
+    \sdaps_generate_var:nN { #1 } \l__sdaps_var_tl
 
     \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
@@ -685,7 +769,7 @@
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 
-    \__sdaps_checkbox_internal:nn { #1 } { #2 }
+    \__sdaps_checkbox_internal:Vn \l__sdaps_var_tl { #2 }
   \group_end:%
   \ignorespaces
 }
@@ -919,7 +1003,8 @@
             \dim_use:N \l_sdaps_x_dim,
             \dim_use:N \l_sdaps_y_dim,
             \dim_use:N \l_sdaps_width_dim,
-            \dim_use:N \l_sdaps_height_dim
+            \dim_use:N \l_sdaps_height_dim,
+            #1,
           }
         }
       \end{tikzpicture}
@@ -980,7 +1065,8 @@
           \dim_use:N \l_sdaps_x_dim,
           \dim_use:N \l_sdaps_y_dim,
           \dim_use:N \l_sdaps_width_dim,
-          \dim_use:N \l_sdaps_height_dim
+          \dim_use:N \l_sdaps_height_dim,
+          #1,
         }
       }
     \end{tikzpicture}
@@ -990,7 +1076,7 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:
+\cs_new_protected:Nn \__sdaps_textbox_prepare_coffin:n
 {
   \dim_set:Nn \l__sdaps_textbox_ht_dim { \coffin_ht:N \l__sdaps_textbox_coffin }
   \dim_set:Nn \l__sdaps_textbox_dp_dim { \coffin_dp:N \l__sdaps_textbox_coffin }
@@ -1013,7 +1099,8 @@
         \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
         \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
         \dim_use:N \l_sdaps_width_dim,
-        \dim_use:N \l_sdaps_height_dim
+        \dim_use:N \l_sdaps_height_dim,
+        #1,
       }
     }
 
@@ -1057,7 +1144,7 @@
 
     \dim_set:Nn \l__sdaps_textbox_pad_dim { #2 }
 
-    \__sdaps_textbox_prepare_coffin:
+    \__sdaps_textbox_prepare_coffin:n { #1 }
 
     \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
 
@@ -1075,7 +1162,7 @@
 
     \vcoffin_set:Nnn \l__sdaps_textbox_coffin { \l__sdaps_textbox_wd_dim } { \tl_trim_spaces:n { #4 }}
 
-    \__sdaps_textbox_prepare_coffin:
+    \__sdaps_textbox_prepare_coffin:n { #1 }
 
     \coffin_typeset:Nnnnn \l__sdaps_textbox_coffin { l } { H } { 0pt } { 0pt }
 
