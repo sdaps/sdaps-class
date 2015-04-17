@@ -1,5 +1,5 @@
 
-PHONEY: all
+all: sdapsbase.pdf sdapslayout.pdf sdapspdf.pdf test.pdf
 
 sdapsbase.sty: sdapsbase.dtx sdapsbase.ins
 	-rm sdapsbase.sty
@@ -25,9 +25,6 @@ sdapspdf.pdf: sdapspdf.sty sdapspdf.dtx
 test.pdf: sdapslayout.sty sdapspdf.sty test.tex
 	latexmk -pdf test.tex
 	#latexmk -xelatex test.tex
-
-
-all: sdapsbase.pdf sdapslayout.pdf sdapspdf.pdf test.pdf
 
 
 clean:
