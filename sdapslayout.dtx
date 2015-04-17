@@ -119,6 +119,11 @@
 \bool_new:N \l_sdaps_choicearray_vertical_bool
 \tl_new:N \l_sdaps_choicearray_var_tl
 \tl_new:N \l_sdaps_choicearray_text_tl
+\tl_new:N \l_sdaps_choicearray_rowheadstyle_tl
+\tl_new:N \l_sdaps_choicearray_rowheadcol_tl
+\tl_new:N \l_sdaps_choicearray_colheadstyle_tl
+\tl_new:N \l_sdaps_choicearray_itemstyle_tl
+\tl_new:N \l_sdaps_choicearray_column_tl
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -137,6 +142,16 @@
   vertial    .default:n  = true,
   var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
   text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
+  rowheadstyle  .tl_set:N   = \l_sdaps_choicearray_rowheadstyle_tl,
+  rowheadstyle  .initial:n  = {\relax},
+  rowheadcol    .tl_set:N   = \l_sdaps__choicearray_rowheadcol_tl,
+  rowheadcol    .initial:n  = { r },
+  colheadstyle  .tl_set:N   = \l_sdaps_choicearray_colheadstyle_tl,
+  colheadstyle  .initial:n  = {\relax},
+  itemstyle     .tl_set:N   = \l_sdaps_choicearray_itemstyle_tl,
+  itemstyle     .initial:n  = {\relax},
+  column        .tl_set:N   = \l_sdaps_choicearray_column_tl,
+  column        .initial:n  = { c },
 }
 
 \keys_define:nn { sdaps / choicearray / choice }
@@ -256,19 +271,19 @@
     \tl_clear:N \l_tmpa_tl
     \tl_clear:N \l_tmpb_tl
     \seq_map_inline:Nn \g_sdaps_choices_var_seq {
-      \tl_put_right:Nn \l_tmpa_tl { c }
-      \tl_put_right:Nn \l_tmpb_tl { & \sdaps_checkbox:nn{##1}{} }
+      \tl_put_right:Nn \l_tmpa_tl { \l_sdaps_choicearray_column_tl }
+      \tl_put_right:Nn \l_tmpb_tl { & { \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn{##1}{} } } }
      }
 
     \exp_args:Nnx
-    \begin{tabular}{ { r \tl_use:N \l_tmpa_tl} }
-      & \seq_use:Nn \g_sdaps_choices_seq { & } \\
+    \begin{tabular}{ { \tl_use:N \l_sdaps__choicearray_rowheadcol_tl \tl_use:N \l_tmpa_tl} }
+      \seq_map_inline:Nn \g_sdaps_choices_seq { & { \l_sdaps_choicearray_colheadstyle_tl { ##1 } } } \\
       \seq_map_inline:Nn \g_sdaps_questions_seq {
         % Just overwrite the current context
         \sdaps_context_set:n { ##1 }
         \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
 
-        \tl_use:N \l__sdaps_tmpa_tl \tl_use:N \l_tmpb_tl \\
+        { \l_sdaps_choicearray_rowheadstyle_tl { \tl_use:N \l__sdaps_tmpa_tl } } \tl_use:N \l_tmpb_tl \\
       }
     \end{tabular}
 
@@ -279,7 +294,7 @@
 {
   \seq_map_inline:Nn \g_sdaps_questions_seq {
     \sdaps_context_set:n { ##1 }
-    & \sdaps_checkbox:nn{#1}{}
+    & { \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn{#1}{} } }
   }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_typset_vertical_int:n {f}
@@ -294,15 +309,16 @@
     \tl_clear:N \l_tmpa_tl
     \tl_clear:N \l_tmpb_tl
     \seq_map_inline:Nn \g_sdaps_questions_text_seq {
-      \tl_put_right:Nn \l_tmpa_tl { c }
-      \tl_put_right:Nn \l_tmpb_tl { & ##1 }
+      \tl_set:Nn \l_tmpc_tl { \l_sdaps_choicearray_column_tl }
+      \tl_put_right:NV \l_tmpa_tl \l_tmpc_tl
+      \tl_put_right:Nn \l_tmpb_tl { & { \l_sdaps_choicearray_colheadstyle_tl { ##1 } } }
      }
 
     \exp_args:Nnx
-    \begin{tabular} { { r \tl_use:N \l_tmpa_tl } }
+    \begin{tabular} { { \tl_use:N \l_sdaps__choicearray_rowheadcol_tl \tl_use:N \l_tmpa_tl } }
       \tl_use:N \l_tmpb_tl \\
       \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
-        \seq_item:Nn \g_sdaps_choices_seq { ##1 }
+        { \l_sdaps_choicearray_rowheadstyle_tl { \seq_item:Nn \g_sdaps_choices_seq { ##1 } } }
         \_sdaps_choicearray_typset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
         \\
       }
