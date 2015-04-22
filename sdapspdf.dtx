@@ -146,7 +146,7 @@
 
   \bool_if:NT \l__sdaps_pdf_form_bool {
     \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
-      \CheckBox[name=\l_sdaps_checkbox_var_tl,bordersep=0,borderwidth=0pt,checkboxsymbol=\l__sdaps_pdf_checkboxsymbol_tl,bordercolor=,backgroundcolor=,checked=\bool_if:nTF\l__sdaps_pdf_checkbox_default_bool{true}{false},height=\l_sdaps_checkbox_height_dim,width=\l_sdaps_checkbox_width_dim]{\ignorespaces}
+      \CheckBox[name=\l_sdaps_var_tl,bordersep=0,borderwidth=0pt,checkboxsymbol=\l__sdaps_pdf_checkboxsymbol_tl,bordercolor=,backgroundcolor=,checked=\bool_if:nTF\l__sdaps_pdf_checkbox_default_bool{true}{false},height=\l_sdaps_checkbox_height_dim,width=\l_sdaps_checkbox_width_dim]{\ignorespaces}
     };
   }
 }
@@ -162,7 +162,7 @@
       \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_width_dim - 4pt }
       \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_height_dim - 4pt }
 
-      \TextField[name=textbox\int_use:N\g__sdaps_textbox_num_int,bordersep=0pt,borderwidth=0pt,bordercolor=,backgroundcolor=,multiline=true,height=\l_sdaps_height_dim,width=\l_sdaps_width_dim]{\ignorespaces}
+      \TextField[name=\l_sdaps_var_tl,bordersep=0pt,borderwidth=0pt,bordercolor=,backgroundcolor=,multiline=true,height=\l_sdaps_height_dim,width=\l_sdaps_width_dim]{\ignorespaces}
     };
   }
 }
