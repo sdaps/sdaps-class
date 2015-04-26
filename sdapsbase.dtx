@@ -159,7 +159,7 @@
   \tl_clear:N #1
   \prop_map_inline:Nn \g__sdaps_current_context_prop {
     % Could we remove some of the braces in the TL?
-    \tl_if_in:nnTF { \tex_undefined:D } { ##2 } {
+    \tl_if_eq:nnTF { \undefined } { ##2 } {
       \tl_put_right:Nn #1 {,{##1}}
     } {
       \tl_put_right:Nn #1 {,{##1}={##2}}
@@ -277,7 +277,7 @@
 
 \cs_new_protected:Nn \sdaps_context_put:n
 {
-  \sdaps_context_put:nn { #1 } {\tex_undefined:D}
+  \sdaps_context_put:nn { #1 } { \undefined }
 }
 
 \msg_new:nnn { sdapsbase } { context_key_broken } { Keys ~ may ~ not ~ contain ~ any ~ special ~ tokens! ~ However ~ the ~ key ~ #1 ~ does ~ contain ~ tokens ~ that ~ are ~ not ~ permissible! }
