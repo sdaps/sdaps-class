@@ -176,8 +176,6 @@
   % We need to serialize the current context and save it away.
 
   \group_begin:
-    % TODO: Call pre begin hooks
-
     % Serialize the current context
     \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
     \tl_gset:NV \g__sdaps_current_context_tl \l__sdaps_tmpa_tl
@@ -186,8 +184,6 @@
     \seq_gput_left:NV \g__sdaps_context_ids_seq \g__sdaps_current_context_id_tl
 
     \tl_gset:Nn \g__sdaps_current_context_id_tl { #1 }
-
-    % TODO: Call Post begin hooks
   \group_end:
 }
 
@@ -337,7 +333,7 @@
 
 \cs_new_protected:Nn \sdaps_context_clear:
 {
-  \prop_clear:N \g__sdaps_current_context_prop
+  \prop_gclear:N \g__sdaps_current_context_prop
 }
 
 \cs_new_protected:Nn \sdaps_context_map:N
@@ -512,7 +508,7 @@
 
 \cs_new_protected:Nn \__sdaps_parse_overrides:n
 {
-  \prop_clear:N \g__sdaps_overrides_prop
+  \prop_gclear:N \g__sdaps_overrides_prop
   \keyval_parse:NNn \use_none:n \__sdaps_overrides_set:nn { #1 }
 }
 
