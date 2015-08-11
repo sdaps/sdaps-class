@@ -1,0 +1,709 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2015 by Benjamin Berg <benjamin@sipsolutions.net>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Benjamin Berg.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{sdapsclassic.dtx}
+%</driver>
+%<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<class>\ProvidesClass{sdapsclassic}
+%<*class>
+    [2015/08/02 v0.1 Initial version of SDAPS classic class]
+%</class>
+%
+%<*driver>
+\documentclass{ltxdoc}
+%\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \DocInput{sdapsclassic.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.1}{2015/01/14}{Initial version}
+%
+% \GetFileInfo{sdapsclassic.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+% 
+%
+% \title{The \textsf{sdapsclassic} package\thanks{This document
+%   corresponds to \textsf{sdapsclassic}~\fileversion, dated \filedate.}}
+% \author{Benjamin Berg \\ \texttt{benjamin@sipsolutions.net}}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% Put text here.
+%
+% \section{Usage}
+%
+% Put text here.
+%
+% \StopEventually{\PrintChanges\PrintIndex}
+%
+% \section{Implementation}
+%
+% This package uses the \LaTeX3 language internally, so we need to enable it.
+%    \begin{macrocode}
+% We need at least 2011-08-23 for \keys_set_known:nnN
+\RequirePackage{expl3}[2011/08/23]
+%\RequirePackage{xparse}
+\ExplSyntaxOn
+
+\RequirePackage{sdapsbase}
+\RequirePackage{xparse}
+
+% We use verbatim to grab the content of the questionnaire envorinment into a
+% temporary file. This way we can input it multiple times for repeating the
+% the content.
+
+\RequirePackage{verbatim}
+
+
+%    \end{macrocode}
+% Now a lot of LaTeX 2e stuff that is basically just a copy of the old class.
+% Would be nicer to redo this with xparse, but what the heck.
+%    \begin{macrocode}
+
+\RequirePackage{scrkbase}
+\RequirePackage{xargs}
+
+
+%-------------------------------------------------------------------------------
+% option processing
+%-------------------------------------------------------------------------------
+% enable stamps
+\newif\if@STAMP\@STAMPfalse
+\DeclareOption{stamp}{\@STAMPtrue}
+\DeclareOption{nostamp}{\@STAMPfalse}
+
+% enable pagemarks
+\newif\if@PAGEMARK\@PAGEMARKfalse
+\DeclareOption{pagemark}{\@PAGEMARKtrue}
+\DeclareOption{nopagemark}{\@PAGEMARKfalse}
+
+% Whether sdaps should print the questionnaire id
+\newif\if@PrintQuestionnaireId\@PrintQuestionnaireIdfalse
+\DeclareOption{no_print_questionnaire_id}{\@PrintQuestionnaireIdfalse}
+\DeclareOption{print_questionnaire_id}{\@PrintQuestionnaireIdtrue}
+
+% Whether sdaps should print the questionnaire id
+\newif\if@PrintSurveyId\@PrintSurveyIdtrue
+\DeclareOption{no_print_survey_id}{\@PrintSurveyIdfalse}
+\DeclareOption{print_survey_id}{\@PrintSurveyIdtrue}
+
+% pass unknown options to scrartcl
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
+
+\newif\if@sdaps@draft\@sdaps@drafttrue
+\DeclareOption{final}{\@sdaps@draftfalse}
+
+\tl_set:Nn\g_sdaps_style_tl{code128}%
+
+\newif\if@checkmode@checkcorrect\@checkmode@checkcorrecttrue
+\newif\if@checkmode@check\@checkmode@checkfalse
+\newif\if@checkmode@fill\@checkmode@fillfalse
+\def\@sdaps@checkmode{checkcorrect}%
+
+
+\DefineFamily{SDAPS}
+\DefineFamilyMember{SDAPS}
+\DefineFamilyKey{SDAPS}{style}[code128]%
+{%
+  \KOMA@set@ncmdkey{style}{@tempa}{%
+    {code128}{0},%
+    {custom}{1},%
+    {qr}{2}%
+  }{#1}%
+  \ifcase \@tempa\relax
+    \tl_set:Nn\g_sdaps_style_tl{code128}%
+  \or
+    \tl_set:Nn\g_sdaps_style_tl{custom}%
+  \or
+    \tl_set:Nn\g_sdaps_style_tl{qr}%
+  \fi
+}
+
+\DefineFamilyKey{SDAPS}{checkmode}[checkcorrect]%
+{%
+  \KOMA@set@ncmdkey{checkmode}{@tempa}{%
+    {checkcorrect}{0},%
+    {check}{1},%
+    {fill}{2}%
+  }{#1}%
+  \ifcase \@tempa\relax
+    \tl_set:Nn\g_sdaps_checkmode_tl{checkcorrect}%
+  \or
+    \tl_set:Nn\g_sdaps_checkmode_tl{check}%
+  \or
+    \tl_set:Nn\g_sdaps_checkmode_tl{fill}%
+  \fi
+}
+
+
+\DefineFamilyKey{SDAPS}{globalid}[]
+{
+  \tl_set:Nn \g_sdaps_global_id_tl { #1 }
+}
+
+\DefineFamilyKey{SDAPS}{globalidlabel}[]
+{
+  \tl_set:Nn \g_sdaps_global_id_label_tl { #1 }
+}
+
+% Set default options for scrartcl. Is this done correctly?
+\PassOptionsToClass{headings=small}{scrartcl}
+\PassOptionsToClass{twoside}{scrartcl}
+% Well, I don't think that this worked in the past ...
+%\PassOptionsToClass{10pt}{scrartcl}
+
+% process given options
+\FamilyProcessOptions{SDAPS}\relax
+
+%-------------------------------------------------------------------------------
+% load base-class
+%-------------------------------------------------------------------------------
+\LoadClass{scrartcl}
+
+
+%-------------------------------------------------------------------------------
+% required packages
+%-------------------------------------------------------------------------------
+% geometry package
+\RequirePackage{geometry}
+\geometry{hmargin=13mm}
+\geometry{vmargin=25mm}
+%\geometry{top=21mm}
+%\geometry{bottom=25mm}
+
+% ifthen package
+\RequirePackage{ifthen}
+
+% fontenc package
+\RequirePackage[T1]{fontenc}
+
+% color
+\RequirePackage{color}
+
+% Symbols (boxes)
+\RequirePackage{amssymb}
+
+% For writing out the page number of boxes
+\RequirePackage{refcount}
+
+% Defines the LastPage label
+\RequirePackage{lastpage}
+
+% Environment creation that gets the body as a macro
+\RequirePackage{environ}
+
+% headers and footers
+\usepackage{scrpage2}
+\clearscrheadings
+  \chead[\@author\\\@title]{\@author\\\@title}
+  \cfoot{\sdapspagemark}
+\pagestyle{scrheadings}
+
+% hyperrefs
+\RequirePackage{url}
+\RequirePackage{hyperref}
+\hypersetup{%
+  breaklinks,%
+  baseurl       = http://,%
+  pdfborder     = 0 0 0,%
+  pdfpagemode   = UseNone,%
+  pdfcreator    = \LaTeX{} with `sdaps' class,%
+  pdfproducer   = \LaTeX{}
+}
+
+% graphics
+\RequirePackage{graphicx}
+
+% Section formatting
+\RequirePackage{sectsty}
+
+% table of fixed width
+\RequirePackage{tabularx}
+
+% Babel (needed for the translator)
+\RequirePackage{babel}
+
+% Translation
+\RequirePackage{translator}
+\usedictionary{translator-sdaps-dictionary}
+
+
+% we need one to consume later on
+\def\questionnaireids{NONE}
+
+% Execute sdaps.opt file to allow SDAPS to override any options
+\InputIfFileExists{sdaps.opt}{}{}
+
+%%%%
+% Mirror old options into new variable
+%%%%
+
+\ifx\surveyid\undefined
+\else
+  \tl_set:NV \g_sdaps_survey_id_tl \surveyid
+\fi
+
+\ifx\globalid\undefined
+\else
+  \tl_set:NV \g_sdaps_global_id_tl \globalid
+\fi
+
+\ifx\globalidlabel\undefined
+\else
+  \tl_set:NV \g_sdaps_global_id_label_tl \globalidlabel
+\fi
+
+\seq_new:N \g__sdaps_questionnaire_ids_seq
+
+\if@PrintQuestionnaireId
+  \seq_gset_from_clist:NN \g__sdaps_questionnaire_ids_seq \questionnaireids
+\else
+  \seq_gpush:Nn \g__sdaps_questionnaire_ids_seq {}
+\fi
+
+\if@sdaps@draft
+  \bool_set_true:N \g__sdaps_draft_bool
+\else
+  \bool_set_false:N \g__sdaps_draft_bool
+\fi
+
+
+%-------------------------------------------------------------------------------
+%                class definition
+%-------------------------------------------------------------------------------
+% minimal base settings
+
+\setlength\lineskip{1\p@}
+\setlength\normallineskip{1\p@}
+\renewcommand\baselinestretch{}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.0ex \@plus 1.5ex \@minus -0.25ex}
+%\setlength{\parskip}{0pt}
+\setlength\columnsep{10\p@}
+\setlength\columnseprule{0\p@}
+% Redefine the spacings for \subsection ie. \questions.
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+      {-\parskip}%
+      {\parskip}%
+      {\normalfont\Large\bfseries\SS@sectfont}}
+\renewcommand\subsection{
+  \@startsection{subsection}{2}{\z@}%
+      {0.5\parskip}%
+      {0.25\parskip}% These are deleted again for questions
+      {}%
+}
+\pagestyle{scrheadings}
+\pagenumbering{arabic}
+\raggedbottom
+%\flushbottom
+\onecolumn
+
+%
+% Fonts for the "classic" class
+%
+
+%common font settings
+\newkomafont{questionfont}{}
+\newkomafont{choicefont}{}
+%singlemark
+\newkomafont{singlemarkquestionfont}{\usekomafont{questionfont}}
+\newkomafont{singlemarkchoicefont}{\usekomafont{choicefont}}
+%markgroup
+\newkomafont{marklinequestionfont}{\usekomafont{questionfont}}
+\newkomafont{marklinechoicefont}{\usekomafont{choicefont}}
+%choicequestion
+\newkomafont{choiceitemfont}{\usekomafont{choicefont}}
+%choicegroup
+\newkomafont{choicegroupchoicefont}{\usekomafont{questionfont}}
+\newkomafont{choicegrouplinefont}{\usekomafont{choicefont}}
+
+
+%    \end{macrocode}
+%
+% \subsection{A bunch of old commands}
+%
+%
+%    \begin{macrocode}
+
+
+\providecommand{\addinfo}[2]{
+  \sdaps_info_write:x{\unexpanded{#1}=\unexpanded{#2}}
+}
+
+\renewcommand{\author}[1]{\def\@author{#1}\sdaps_info_write:x{Author=\unexpanded{#1}}}
+\renewcommand{\title}[1]{\def\@title{#1}\sdaps_info_write:x{Title=\unexpanded{#1}}}
+
+\def\question#1{%
+\ifx&#1&%
+  % #1 is empty
+  \refstepcounter{subsection}%
+ \else%
+  % #1 is nonempty
+  \subsection{\usekomafont{questionfont}\strut#1\strut}%
+  % This is extra spacing after the subsection is removed. By doing this we
+  % get exactly one \parskip
+  \nobreak%
+  \vspace{-0.25\parskip}%
+  \nobreak%
+\fi%
+}
+
+% http://mrunix.de/forums/showthread.php?t=59943
+\newenvironment{info}{%
+  \vspace{\baselineskip}\vspace{\lineskip}\vspace{-1.0em}%
+  \hrule height 1pt%
+  \vspace{\lineskip}%
+}{%
+  \vspace{\lineskip}%
+  \leavevmode\noindent\hrule height 1pt%
+  \vspace{\baselineskip}\vspace{\lineskip}\vspace{-1.0em}%
+}
+
+
+\definecolor{sectionbgcolor}{gray}{0.8}
+\definecolor{sectionfgcolor}{gray}{0.0}
+
+\newcommand{\sectbox}[1]{%
+ \noindent\protect\colorbox{sectionbgcolor}{%
+   \@tempdima=\hsize
+   \advance\@tempdima by-2\fboxsep
+   \protect\parbox{\@tempdima}{%
+     \smallskip
+     \raggedright % extra commands here
+     \color{sectionfgcolor}\usekomafont{section}{#1} \smallskip
+    }%
+  }%
+}
+
+\sectionfont{\sectbox}
+
+\setkomafont{disposition}{\normalfont}
+\addtokomafont{section}{\bfseries\sffamily}
+
+
+
+
+
+% Not sure why we even had this ...
+\def\smallskip{\vspace\smallskipamount}
+\def\medskip{\vspace\medskipamount}
+\def\bigskip{\vspace\bigskipamount}
+\newskip\smallskipamount \smallskipamount=3pt  plus 1pt minus 1pt
+\newskip\medskipamount   \medskipamount  =6pt  plus 2pt minus 2pt
+\newskip\bigskipamount   \bigskipamount  =12pt plus 4pt minus 4pt
+
+
+
+\cs_generate_variant:Nn \sdaps_textbox_hstretch:nnnnn { nVVnn }
+
+
+%    \end{macrocode}
+%
+% \subsection{The different question environments}
+%
+%
+%    \begin{macrocode}
+
+
+\bool_new:N \l__sdaps_classic_have_section
+\bool_set_false:N \l__sdaps_classic_have_section
+\let\origsection\section
+\renewcommand{\section}[1]{
+  \bool_if:NT \l__sdaps_classic_have_section {
+    \sdaps_qobject_end:n { section }
+  }
+
+  \origsection{#1}
+  \bool_set_true:N \l__sdaps_classic_have_section
+  \sdaps_qobject_begin:nnn { section }{ Head }{ #1 }
+}
+
+\cs_new_protected:Nn \sdaps_classic_ensure_section: {
+  \bool_if:NF \l__sdaps_classic_have_section {
+    % This is a bad hack to make the numbering start with zero
+    \int_decr:N \g__sdaps_qobject_id_int
+    \bool_set_true:N \l__sdaps_classic_have_section
+    \sdaps_qobject_begin:nnn { section }{ Head }{ }
+  }
+}
+
+
+
+% With star non-expanding, without start expanding
+\providecommand{\textbox}{\@ifstar
+    {\_sdaps_classic_textbox:nnn\c_false_bool}%
+    {\_sdaps_classic_textbox:nnn\c_true_bool}%
+}
+\cs_new_protected:Nn\_sdaps_classic_textbox:nnn
+{
+  \sdaps_classic_ensure_section:
+  \question{#3}
+
+  \sdaps_qobject_begin:nnn { textbox } { Text } { #3 }
+
+  \bool_if:NTF #1 {
+    \dim_set:Nn \l_tmpa_dim { #2 }
+    \dim_set:Nn \l_tmpb_dim { #2 }
+    \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+    \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+    \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
+  }{
+    \sdaps_textbox_vhstretch:nn {} { #2 }
+  }
+
+  \sdaps_qobject_end:n { textbox }
+}
+
+\newcounter{markcheckboxcount}
+\setcounter{markcheckboxcount}{5}
+
+\providecommand*{\singlemark}[3]{%
+  \sdaps_classic_ensure_section:
+  \question{#1}%
+
+  \sdaps_qobject_begin:nnn { singlemark } { mark } { #1 }
+
+  \sdaps_answer:n{#2}
+
+  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
+    {\usekomafont{singlemarkchoicefont}\strut#2} &
+      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn {} { ##1 } & }
+    {\usekomafont{singlemarkchoicefont}#3}\\%
+  \end{tabularx}%
+
+  \sdaps_answer:n{#3}
+}
+
+% Yes, we use a counter here, and that is because I am too stupid to get LaTeX 3
+% integers to correctly count inside the tabularx environment. If someone knows
+% how to get that to work, I would be happy to know about it and fix it.
+\int_new:N \l__sdaps_classic_choiceitem_cols_int
+\int_new:N \g__sdaps_classic_choiceitem_col_int
+
+
+\newenvironment{choicequestion}[2][3]{%
+  \sdaps_classic_ensure_section:
+  \question{#2}%
+  \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
+
+  \int_set:Nn \l__sdaps_classic_choiceitem_cols_int { #1 }
+  \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+
+  \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int }
+  \tl_clear:N \l_tmpa_tl
+  \int_step_inline:nnnn{1}{1}{\l__sdaps_classic_choiceitem_cols_int}{ \tl_put_right:Nx \l_tmpa_tl {p { \dim_use:N\l_tmpa_dim} } }
+  % There is probably a good reason for this not working, but if someone knows,
+  % I would be interested why it is not :)
+  %\tl_set:Nx \l_tmpa_tl { \int_step_inline:nnnn{1}{1}{\l__sdaps_classic_choiceitem_cols_int}{ p { \dim_use:N\l_tmpa_dim} } }
+
+  \expandafter\tabular\expandafter{\l_tmpa_tl}
+}{%
+  \endtabular
+  \sdaps_qobject_end:n { choicequestion }
+}
+
+
+
+\providecommand*{\choiceitem}[1]{
+  \sdaps_answer:n { #1 }
+
+  { \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} \  #1 }
+
+  \int_gincr:N \g__sdaps_classic_choiceitem_col_int
+  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
+    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+    \\
+  } {
+    &
+  }
+}
+
+\providecommand*{\choicemulticolitem}[2]{
+
+  \int_compare:nT { \l__sdaps_classic_choiceitem_cols_int < \g__sdaps_classic_choiceitem_col_int + #1 } {
+    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+    \\
+  }
+  \multicolumn { #1 } { l } {
+    \sdaps_answer:n { #2 }
+    \usekomafont{choiceitemfont}
+    \sdaps_checkbox:nn {} {} {~ #2 }
+  }
+
+  \int_gadd:Nn \g__sdaps_classic_choiceitem_col_int { #1 }
+  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
+    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+    \\
+  } {
+    &
+  }
+}
+
+\providecommand{\choiceitemtext}[3]{%
+
+  \int_compare:nT { \l__sdaps_classic_choiceitem_cols_int < \g__sdaps_classic_choiceitem_col_int + #2 } {
+    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+    \\
+  }
+
+  \multicolumn{#2}{ l }{
+    \dim_set:Nn \l_tmpa_dim { #1 }
+    \dim_set:Nn \l_tmpb_dim { #1 }
+    \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+    \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+
+    \usekomafont{choiceitemfont}
+    \sdaps_answer:n { #3 } #3 \  \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
+  }
+
+  \int_gadd:Nn \g__sdaps_classic_choiceitem_col_int { #2 }
+  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
+    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+    \\
+  } {
+     &
+  }
+}
+
+
+
+%    \end{macrocode}
+%
+% \subsection{The questionnaire environment}
+%
+% There is a bit of magic here. If (and only if) we need to render multiple
+% pages of the questionnaire, then we write the whole questionnaire into a
+% temporary file. This way we can input the file multiple times, which means
+% that environments changing the parser (e.g. verbatim) work properly.
+%
+%    \begin{macrocode}
+%
+
+\iow_new:N \l_sdaps_questionnaire_iow
+\bool_new:N \l__sdaps_questionnaire_parse_direct_bool
+
+\def\questionnaire{
+
+  \hypersetup{%
+    pdfauthor     = \@author,%
+    pdftitle      = \@title,%
+    pdfsubject    = sdaps questionnaire \@title,%
+    pdfkeywords   = sdaps questionnaire \@title%
+  }%
+  %
+
+
+  % If we only have one questionnaire ID, then parse the environment directly,
+  % otherwise write it into a temporary file and input it multiple times.
+  \group_begin:
+
+  % Enable all metadata writing by default
+  \sdaps_context_set:n{*={writepos}}
+
+  \int_compare:nTF { \seq_count:N \g__sdaps_questionnaire_ids_seq <= 1 } {
+    \bool_set_true:N \l__sdaps_questionnaire_parse_direct_bool
+
+    % Set the questionnaire ID
+    \seq_gpop_left:NN \g__sdaps_questionnaire_ids_seq \l_tmpa_tl
+    \tl_gset:NV \g_sdaps_questionnaire_id_tl \l_tmpa_tl
+
+    % And, begin the questionnaire
+    \sdaps_begin:
+  } {
+    \bool_set_false:N \l__sdaps_questionnaire_parse_direct_bool
+
+     % Write content into a file, see "verbatim" documentation for more information.
+     % TODO: Allow multiple temporary files by postfixing with integer?
+    \iow_open:Nn \l_sdaps_questionnaire_iow { \c_job_name_tl . questionnaire }
+    \let\do\@makeother\dospecials
+    \catcode`\^^M\active
+    \verbatim@startline
+    \verbatim@addtoline
+    \verbatim@finish
+    \def\verbatim@processline{
+      \iow_now:Nx \l_sdaps_questionnaire_iow {\the\verbatim@line}}
+    \verbatim@start
+  }
+}
+
+\def\endquestionnaire{
+  \bool_if:NTF \l__sdaps_questionnaire_parse_direct_bool {
+        % Just end everything, nothing else to do.
+      \sdaps_end:
+
+    \group_end:
+  } {
+       % We are done inputting the questionnaire
+       \iow_close:N \l_sdaps_questionnaire_iow
+    \group_end:
+
+    % Now cycle through all IDS and output it again.
+    \group_begin:
+      \seq_map_inline:Nn \g__sdaps_questionnaire_ids_seq {
+        \tl_gset:Nn \g_sdaps_questionnaire_id_tl { ##1 }
+        \sdaps_begin:
+          \input{ \c_job_name_tl . questionnaire }
+        \sdaps_end:
+        \newpage
+
+        % Close the output file now (after the page has been shipped out)
+        \iow_shipout_close:N \g_sdaps_infofile_iow
+
+      }
+    \group_end:
+  }
+}
+
+\def\sdapspagemark{
+  \sdaps_page_end:
+}
+
+\ExplSyntaxOff
+
+%    \end{macrocode}
+
+% \Finale
+\endinput

@@ -1028,8 +1028,11 @@
 
     \__sdaps_textbox_prepare:n { #1 }
 
+    \dim_set:Nn \l_tmpa_dim { #2 }
+    \dim_set:Nn \l_tmpb_dim { #3 }
+
     % Place a vrule to make space for the top/bottom padding
-    \tex_vrule:D depth #2 height #3 width 0pt \nobreak
+    \tex_vrule:D depth \dim_use:N \l_tmpa_dim height \dim_use:N \l_tmpb_dim width 0pt \nobreak
     \pgfsys@markposition{textboxstart\int_use:N\g__sdaps_textbox_num_int} \nobreak
 
     \skip_horizontal:n { #4 + \stretch{#5} } \nobreak
@@ -1041,7 +1044,7 @@
       % The position here is the position of the baseline.
       % So move up by height (param 2) to get the correct vertical position.
       \pgfpointadd{\@sdaps@textboxpos}{
-        \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{#3}}
+        \pgfpointadd{\@sdaps@pageorigin}{\pgfpoint{0}{ \dim_use:N \l_tmpb_dim}}
       }
       \pgfgetlastxy{\l__sdaps_x}{\l__sdaps_y}
       \dim_set:Nn \l_sdaps_x_dim {\l__sdaps_x}
@@ -1051,7 +1054,7 @@
       % Calculate width and add the height to it
       \pgfpointadd{
         \pgfpointdiff{\@sdaps@textboxpos}{\@sdaps@textboxendpos}
-      }{\pgfpoint{0pt}{#2 + #3}}
+      }{\pgfpoint{0pt}{\dim_use:N \l_tmpa_dim +  \dim_use:N \l_tmpb_dim}}
       \pgfgetlastxy{\l__sdaps_width}{\l__sdaps_height}
       \dim_set:Nn \l_sdaps_width_dim {\l__sdaps_width}
       \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_height}
@@ -1353,81 +1356,6 @@
                 \tl_use:N \g_sdaps_global_id_label_tl
               }
             };
-          \end{scope}
-        }
-      }
-
-      \str_if_eq:VnT \g_sdaps_style_tl { classic } {
-        % TODO: This is non-working! And should be rewritten.
-        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
-          \if@PrintSurveyId
-            \def\@questionnaire_id_shift{\g_sdaps_classic_boxpad_dim+\codeboxheight}
-          \else:
-            \def\@questionnaire_id_shift{0pt}
-          \fi:
-          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (\g_sdaps_classic_boxsize_dim, \@questionnaire_id_shift)$)}]
-            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
-            \@tempcnta=\value{questionnaireid}
-            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
-              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
-              {
-                \ifodd \@tempcnta
-                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
-                \fi:
-                \global\divide\@tempcnta by 2
-              }
-            \end{scope}
-          \end{scope}
-          \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (-\thecodeboxlength\codeboxstep, 0) + (-\g_sdaps_classic_boxsize_dim, \@questionnaire_id_shift)$)}]
-            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
-            \@tempcnta=\value{questionnaireid}
-            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
-              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
-              {
-                \ifodd \@tempcnta
-                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
-                \fi:
-                \global\divide\@tempcnta by 2
-              }
-            \end{scope}
-          \end{scope}
-          \begin{scope}[shift={($(current~page.south) + (0, \g_sdaps_edge_bottom_margin_dim) + (0, \g_sdaps_classic_boxpad_dim) + (0 ,\@questionnaire_id_shift) + (0, 0.5\codeboxheight)$)}]
-            \pgfmathsetbasenumberlength{5}\pgfmathdectoBase{\@temphexa}{\value{questionnaireid}}{10}
-            \node{\usekomafont{questionnaireidfont}{\translate{questionnaireid} \@temphexa}};
-          \end{scope}
-        \fi:
-        \if@PrintSurveyId
-          % survey-id
-          \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (\g_sdaps_classic_boxsize_dim, 0)$)}]
-            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
-            \@tempcnta=\value{surveyidmshw}
-            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
-              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
-              {
-                \ifodd \@tempcnta
-                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
-                \fi:
-                \global\divide\@tempcnta by 2
-              }
-            \end{scope}
-          \end{scope}
-          \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-2*\g_sdaps_classic_boxpad_dim, \g_sdaps_classic_boxpad_dim) + (-\thecodeboxlength\codeboxstep, 0) + (-\g_sdaps_classic_boxsize_dim, 0)$)}]
-            \draw (0, 0) rectangle (\thecodeboxlength\codeboxstep, \codeboxheight);
-            \@tempcnta=\value{surveyidlshw}
-            \begin{scope}[shift={(\thecodeboxlength\codeboxstep, 0)}]
-              \foreach \x in {0,...,\numexpr\thecodeboxlength-1\relax}
-              {
-                \ifodd \@tempcnta
-                  \draw[fill] (-\x\codeboxstep, 0) rectangle +(-\codeboxstep, \codeboxheight);
-                \fi:
-                \global\divide\@tempcnta by 2
-              }
-            \end{scope}
-          \end{scope}
-          \begin{scope}[shift={($(current~page.south) + (0, \g_sdaps_edge_bottom_margin_dim) + (0, \g_sdaps_classic_boxpad_dim) + (0, 0.5\codeboxheight)$)}]
-            \pgfmathsetbasenumberlength{4}\pgfmathdectoBase{\@temphexa}{\value{surveyidlshw}}{16}
-            \pgfmathsetbasenumberlength{4}\pgfmathdectoBase{\@temphexb}{\value{surveyidmshw}}{16}
-            \node{\usekomafont{surveyidfont}{\translate{surveyid} \@temphexb\@temphexa}};
           \end{scope}
         }
       }

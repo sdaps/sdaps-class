@@ -1,0 +1,70 @@
+\documentclass[
+  % Babel language, also used to load translations
+  english,
+  % Use A4 paper size, you can change this to eg. letterpaper if you need
+  % the letter format. The normal methods to modify the paper size should
+  % be picked up by SDAPS automatically.
+  % a4paper, % setting this might break the example scan unfortunately
+  % letterpaper
+  %
+  % If you need it, you can add a custom barcode at the center
+  %globalid=SDAPS,
+  %
+  % And the following adds a per sheet barcode at the bottom left
+  %print_questionnaire_id,
+  %
+  % You can choose between twoside and oneside. twoside is the default, and
+  % requires the document to be printed and scanned in duplex mode.
+  %oneside,
+  %
+  % With SDAPS 1.1.6 and newer you can choose the mode used when recognizing
+  % checkboxes. valid modes are "checkcorrect" (default), "check" and
+  % "fill".
+  %checkmode=checkcorrect,
+  %
+  % The following options make sense so that we can get a better feel for the
+  % final look.
+  pagemark,
+  stamp]{sdapsclassic}
+
+\author{asdf}
+\title{blub}
+
+\begin{document}
+
+  \begin{questionnaire}
+
+\begin{verbatim}
+ This is a test @_öäü*'%asdf
+
+\end{verbatim}
+
+\textbox*{2cm}{asdf}
+
+\singlemark{Hallo}{lower}{upper}
+
+    \begin{choicequestion}[3]{Which of the following Open Source
+                              Optical Mark Recognition software
+                              packages have you heard about?}
+      \choiceitem{SDAPS}
+      \choicemulticolitem{2}{Auto Multiple Choice}
+      \choiceitem{QueXF}
+
+      % Insert a text field. The freeform box automatically scales horizontally
+      % The first parameter is the height of the box. The second parameter
+      % is the amount of columns it should span.
+      \choiceitemtext{1.2cm}{2}{Other:}
+      \choicemulticolitem{2}{Auto Multiple Choice}
+    \end{choicequestion}
+
+
+\section{asdf}
+
+\textbox{2cm}{asdf}
+
+\section{blub}
+
+  \end{questionnaire}
+
+\end{document}
+
