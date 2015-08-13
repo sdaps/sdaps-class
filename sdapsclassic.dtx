@@ -517,95 +517,100 @@
   \sdaps_answer:n{#3}
 }
 
-% Yes, we use a counter here, and that is because I am too stupid to get LaTeX 3
-% integers to correctly count inside the tabularx environment. If someone knows
-% how to get that to work, I would be happy to know about it and fix it.
+\dim_new:N \l__sdaps_classic_choiceitem_pad_dim
 \int_new:N \l__sdaps_classic_choiceitem_cols_int
-\int_new:N \g__sdaps_classic_choiceitem_col_int
-
+\int_new:N \l__sdaps_classic_choiceitem_col_int
+\coffin_new:N \l__sdaps_classic_choicequestion_coffin
 
 \newenvironment{choicequestion}[2][3]{%
   \sdaps_classic_ensure_section:
   \question{#2}%
   \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
 
+  \dim_set:Nn \l__sdaps_classic_choiceitem_pad_dim { 1ex }
+
   \int_set:Nn \l__sdaps_classic_choiceitem_cols_int { #1 }
-  \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
+  \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
+  \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
+  \par
 
-  \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int }
-  \tl_clear:N \l_tmpa_tl
-  \int_step_inline:nnnn{1}{1}{\l__sdaps_classic_choiceitem_cols_int}{ \tl_put_right:Nx \l_tmpa_tl {p { \dim_use:N\l_tmpa_dim} } }
-  % There is probably a good reason for this not working, but if someone knows,
-  % I would be interested why it is not :)
-  %\tl_set:Nx \l_tmpa_tl { \int_step_inline:nnnn{1}{1}{\l__sdaps_classic_choiceitem_cols_int}{ p { \dim_use:N\l_tmpa_dim} } }
-
-  \expandafter\tabular\expandafter{\l_tmpa_tl}
+  % we are now in vertical mode
+  % TODO: Insert correct widow, etc. panelties
 }{%
-  \endtabular
+  % Flush out last line
+  \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
+  \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
+  \par
   \sdaps_qobject_end:n { choicequestion }
 }
 
+\cs_new_protected:Nn \_sdaps_classic_line_shipout_add:Nn
+{
+  % new box
+  % padding
 
-
-\providecommand*{\choiceitem}[1]{
-  \sdaps_answer:n { #1 }
-
-  { \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} \  #1 }
-
-  \int_gincr:N \g__sdaps_classic_choiceitem_col_int
-  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
-    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
-    \\
-  } {
-    &
+  % Is linewidth the right thing here?
+  \int_compare:nT { \l__sdaps_classic_choiceitem_col_int + #2 > \l__sdaps_classic_choiceitem_cols_int } {
+    %\dim_use:N \l_tmpa_dim \ ,\  \dim_use:N \linewidth
+    %\ , \ \dim_set:Nn \l_tmpa_dim { 1ex } \dim_use:N \l_tmpa_dim
+    % We can only typeset a coffin in vertical mode if we use the box function
+    \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
+    \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
+    \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
   }
+
+  \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+  \dim_set:Nn \l_tmpa_dim { \l__sdaps_classic_choiceitem_col_int \l_tmpa_dim }
+
+  \coffin_join:NnnNnnnn \l__sdaps_classic_choicequestion_coffin { l } { H } #1 { l } { H } { \l_tmpa_dim } { 0pt }
+  \int_add:Nn \l__sdaps_classic_choiceitem_col_int { #2 }
 }
 
-\providecommand*{\choicemulticolitem}[2]{
+\providecommand*{\choiceitem}[1]{%
+  \sdaps_answer:n { #1 }%
 
-  \int_compare:nT { \l__sdaps_classic_choiceitem_cols_int < \g__sdaps_classic_choiceitem_col_int + #1 } {
-    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
-    \\
-  }
-  \multicolumn { #1 } { l } {
-    \sdaps_answer:n { #2 }
-    \usekomafont{choiceitemfont}
-    \sdaps_checkbox:nn {} {} {~ #2 }
+  \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+
+  \hcoffin_set:Nn \l_tmpa_coffin {
+    \begin{minipage}{\l_tmpa_dim}
+      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} {~ #1 }
+    \end{minipage}
   }
 
-  \int_gadd:Nn \g__sdaps_classic_choiceitem_col_int { #1 }
-  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
-    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
-    \\
-  } {
-    &
+  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { 1 }
+}
+
+\providecommand*{\choicemulticolitem}[2]{ %
+  \sdaps_answer:n { #2 }%
+
+  \dim_set:Nn \l_tmpa_dim { #1\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #1 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+
+  \hcoffin_set:Nn \l_tmpa_coffin {
+    \begin{minipage}{\l_tmpa_dim}
+      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} {~ #2 }
+    \end{minipage}
   }
+
+  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #1 }
 }
 
 \providecommand{\choiceitemtext}[3]{%
+  \sdaps_answer:n { #3 }
 
-  \int_compare:nT { \l__sdaps_classic_choiceitem_cols_int < \g__sdaps_classic_choiceitem_col_int + #2 } {
-    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
-    \\
+  \dim_set:Nn \l_tmpa_dim { #2\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #2 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+
+  \hcoffin_set:Nn \l_tmpa_coffin {
+    \begin{minipage}{\l_tmpa_dim}
+      \usekomafont{choiceitemfont}
+      \dim_set:Nn \l_tmpa_dim { #1 }
+      \dim_set:Nn \l_tmpb_dim { #1 }
+      \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+      \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+       {#3 \  \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 } }
+    \end{minipage}
   }
 
-  \multicolumn{#2}{ l }{
-    \dim_set:Nn \l_tmpa_dim { #1 }
-    \dim_set:Nn \l_tmpb_dim { #1 }
-    \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
-    \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-
-    \usekomafont{choiceitemfont}
-    \sdaps_answer:n { #3 } #3 \  \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
-  }
-
-  \int_gadd:Nn \g__sdaps_classic_choiceitem_col_int { #2 }
-  \int_compare:nTF { \l__sdaps_classic_choiceitem_cols_int <= \g__sdaps_classic_choiceitem_col_int } {
-    \int_gset:Nn \g__sdaps_classic_choiceitem_col_int { 0 }
-    \\
-  } {
-     &
-  }
+  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #2 }
 }
 
 
