@@ -380,9 +380,10 @@
 \ifx&#1&%
   % #1 is empty
   \refstepcounter{subsection}%
+  \par%
  \else%
   % #1 is nonempty
-  \subsection{\usekomafont{questionfont}\strut#1\strut}%
+  \subsection{\usekomafont{questionfont}\strut\ignorespaces#1}%
   % This is extra spacing after the subsection is removed. By doing this we
   % get exactly one \parskip
   \nobreak%
@@ -509,7 +510,7 @@
   \sdaps_answer:n{#2}
 
   \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
-    {\usekomafont{singlemarkchoicefont}\strut#2} &
+    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#2} &
       \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn {} { ##1 } & }
     {\usekomafont{singlemarkchoicefont}#3}\\%
   \end{tabularx}%
@@ -525,6 +526,11 @@
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
 
 \newenvironment{choicequestion}[2][3]{%
+  % TODO:
+  %  * Spacing to top line
+  %  * page break handling/nobreak (or widow handling)
+  %  * spacing after environment
+
   \sdaps_classic_ensure_section:
   \question{#2}%
   \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
@@ -586,7 +592,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} {~ #1 }
+      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} { \strut ~ #1 }
     \end{minipage}
   }
 
@@ -600,7 +606,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} {~ #2 }
+      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} { \strut ~ #2 }
     \end{minipage}
   }
 
@@ -619,7 +625,8 @@
       \dim_set:Nn \l_tmpb_dim { #1 }
       \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
       \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-       {#3 \  \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 } }
+      \strut \ignorespaces #3 ~
+      \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
     \end{minipage}
   }
 
