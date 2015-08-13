@@ -522,6 +522,8 @@
 \int_new:N \l__sdaps_classic_choiceitem_col_int
 \coffin_new:N \l__sdaps_classic_choicequestion_coffin
 
+\msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
+
 \newenvironment{choicequestion}[2][3]{%
   \sdaps_classic_ensure_section:
   \question{#2}%
@@ -532,11 +534,20 @@
   \int_set:Nn \l__sdaps_classic_choiceitem_cols_int { #1 }
   \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
-  \par
 
-  % we are now in vertical mode
-  % TODO: Insert correct widow, etc. panelties
+  % We have to be in vertical mode at this point.
+  \if_mode_vertical:
+    % Nothing
+  \else:
+    \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
+  \fi:
 }{%
+  \if_mode_vertical:
+    % Nothing
+  \else:
+    \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
+  \fi:
+
   % Flush out last line
   \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
@@ -546,13 +557,15 @@
 
 \cs_new_protected:Nn \_sdaps_classic_line_shipout_add:Nn
 {
-  % new box
-  % padding
+  % We have to be in vertical mode at this point.
+  \if_mode_vertical:
+    % Nothing
+  \else:
+    \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
+  \fi:
 
   % Is linewidth the right thing here?
   \int_compare:nT { \l__sdaps_classic_choiceitem_col_int + #2 > \l__sdaps_classic_choiceitem_cols_int } {
-    %\dim_use:N \l_tmpa_dim \ ,\  \dim_use:N \linewidth
-    %\ , \ \dim_set:Nn \l_tmpa_dim { 1ex } \dim_use:N \l_tmpa_dim
     % We can only typeset a coffin in vertical mode if we use the box function
     \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
     \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
