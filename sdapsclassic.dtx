@@ -524,7 +524,7 @@
 
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
 
-\newenvironment{choicequestion}[2][3]{%
+\newenvironment{choicequestion}[2][3]{
   % TODO:
   %  * Spacing to top line
   %  * page break handling/nobreak (or widow handling)
@@ -546,7 +546,7 @@
   \else:
     \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
   \fi:
-}{%
+}{
   \if_mode_vertical:
     % Nothing
   \else:
@@ -591,7 +591,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} { \strut ~ #1 }
+      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:nn {} {} {}~ \tl_trim_spaces:n { #1 }
     \end{minipage}
   }
 
@@ -605,7 +605,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\sdaps_checkbox:nn {} {} { \strut ~ #2 }
+      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:nn {} {} {}~ \tl_trim_spaces:n { #2 }
     \end{minipage}
   }
 
@@ -624,7 +624,7 @@
       \dim_set:Nn \l_tmpb_dim { #1 }
       \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
       \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-      \strut \ignorespaces #3 ~
+      \strut\ignorespaces \tl_trim_spaces:n { #3 } ~
       \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
     \end{minipage}
   }
