@@ -112,18 +112,28 @@
 %    \begin{macrocode}
 
 \tl_new:N \g_sdaps_layout_table_shared_data_tl
-\prop_new:N \g__sdaps_array_type_colwidths_prop
+\tl_new:N \g_sdaps_layout_table_stored_data_tl
+\prop_new:N \g__sdaps_layout_table_stored_data_prop
+\prop_new:N \g__sdaps_layout_table_shared_data_prop
 
 \cs_new_protected:Nn \_sdaps_array_load_colwidths:n
 {
-  \prop_gpop:NnN \g__sdaps_array_type_colwidths_prop { #1 } \g_sdaps_layout_table_shared_data_tl
+  \tl_set:Nx \g_sdaps_layout_table_stored_data_tl { \prop_item:Nn \g__sdaps_layout_table_stored_data_prop { #1 } }
+  \tl_set:Nx \g_sdaps_layout_table_shared_data_tl { \prop_item:Nn \g__sdaps_layout_table_shared_data_prop { #1 } }
 }
 
-\cs_new_protected:Nn \_sdaps_array_save_colwidths:n
+\cs_new_protected:Nn \_sdaps_array_store_colwidths:n
 {
-  \prop_gput:NnN \g__sdaps_array_type_colwidths_prop { #1 } \g_sdaps_layout_table_shared_data_tl
+  % Do not overwrite the "stored" that we have right now.
+  \prop_gput:NnV \g__sdaps_layout_table_shared_data_prop { #1 } \g_sdaps_layout_table_shared_data_tl
+
+  \immediate\write\@auxout{\exp_not:n{\sdapslayoutloadstoreddata}{#1}{\g_sdaps_layout_table_shared_data_tl}}
 }
 
+% Define for loading sdaps code in aux file
+\def\sdapslayoutloadstoreddata#1#2{
+  \prop_gput:Nnn \g__sdaps_layout_table_stored_data_prop { #1 } { #2 }
+}
 
 %    \end{macrocode}
 %
@@ -135,7 +145,8 @@
 
 \seq_new:N \g_table_layout_overhangs_left_seq
 \seq_new:N \g_table_layout_overhangs_right_seq
-\seq_new:N \g_sdaps_layout_colwidths_seq
+\seq_new:N \g_sdaps_layout_shared_colwidths_seq
+\seq_new:N \g_sdaps_layout_stored_colwidths_seq
 
 \cs_new_protected:Nn \sdaps_layout_table_layout_cell_default:n
 {
@@ -185,21 +196,32 @@
 
 \cs_new_protected:Nn \sdaps_layout_table_layout_begin_default:
 {
+  \_sdaps_array_load_colwidths:n { testing }
+
   \tl_if_empty:NTF \g_sdaps_layout_table_shared_data_tl {
-    \seq_clear:N \g_sdaps_layout_colwidths_seq
+    \seq_clear:N \g_sdaps_layout_shared_colwidths_seq
   } {
-    \seq_gset_split:NnV \g_sdaps_layout_colwidths_seq { : } \g_sdaps_layout_table_shared_data_tl
+    \seq_gset_split:NnV \g_sdaps_layout_shared_colwidths_seq { ~ } \g_sdaps_layout_table_shared_data_tl
+  }
+  \tl_if_empty:NTF \g_sdaps_layout_table_stored_data_tl {
+    \seq_clear:N \g_sdaps_layout_stored_colwidths_seq
+  } {
+    \seq_gset_split:NnV \g_sdaps_layout_stored_colwidths_seq { ~ } \g_sdaps_layout_table_stored_data_tl
   }
 }
 
 \cs_new_protected:Nn \sdaps_layout_table_layout_end_default:
 {
-  \tl_gset:Nx \g_sdaps_layout_table_shared_data_tl { \seq_use:Nn \g_sdaps_layout_colwidths_seq { : } }
+  \tl_gset:Nx \g_sdaps_layout_table_shared_data_tl { \seq_use:Nn \g_sdaps_layout_shared_colwidths_seq { ~ } }
+  \tl_gset:Nx \g_sdaps_layout_table_stored_data_tl { \seq_use:Nn \g_sdaps_layout_stored_colwidths_seq { ~ } }
 
   % Clear the global sequences, to save memory
   \seq_gclear:N \g_table_layout_overhangs_left_seq
   \seq_gclear:N \g_table_layout_overhangs_right_seq
-  \seq_gclear:N \g_sdaps_layout_colwidths_seq
+  \seq_gclear:N \g_sdaps_layout_shared_colwidths_seq
+  \seq_gclear:N \g_sdaps_layout_stored_colwidths_seq
+
+  \_sdaps_array_store_colwidths:n { testing }
 }
 
 \cs_new_protected:Nn \sdaps_layout_table_layout_row_start_default:
@@ -235,14 +257,24 @@
       \dim_set:Nn \l_tmpb_dim { 0pt }
     }
     % Implicit "last" column that contains the overhead
-    \seq_gpop:NNTF \g_sdaps_layout_colwidths_seq \l_tmpa_tl {
+    \seq_gpop:NNTF \g_sdaps_layout_shared_colwidths_seq \l_tmpa_tl {
       \dim_set:Nn \l_tmpa_dim { \l_tmpa_tl }
     } {
       \dim_set:Nn \l_tmpa_dim { 0pt }
     }
     \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
 
+
+    % MAX with stored values (NOTE: sequence only modified in local scope)
+    \seq_pop:NNTF \g_sdaps_layout_stored_colwidths_seq \l_tmpa_tl {
+      \dim_set:Nn \l_tmpb_dim { \l_tmpa_tl }
+    } {
+      \dim_set:Nn \l_tmpb_dim { 0pt }
+    }
+    % Store value from this run, and then calculate max with previous run
     \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
+    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
+
 
     % Insert the overhang space minus the first inter column spacing
     \hcoffin_set:Nn \l_tmpa_coffin { \skip_horizontal:n { \l_tmpa_dim - 1em } }
@@ -252,17 +284,24 @@
     \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box } {
       % Pop the target width for the current box (i.e. we don't globally
       % modify the clist here).
-      \seq_gpop:NNTF \g_sdaps_layout_colwidths_seq \l_tmpa_tl {
+      \seq_gpop:NNTF \g_sdaps_layout_shared_colwidths_seq \l_tmpa_tl {
         \dim_set:Nn \l_tmpa_dim { \l_tmpa_tl }
       } {
         \dim_set:Nn \l_tmpa_dim { 0pt }
       }
-
       % Calculate the maximum width of current and previous items
       \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \box_wd:N \l_tmpa_box } { \l_tmpa_dim } }
-      % Store it
-      \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
 
+
+      % MAX with stored values (NOTE: sequence only modified in local scope)
+      \seq_pop:NNTF \g_sdaps_layout_stored_colwidths_seq \l_tmpa_tl {
+        \dim_set:Nn \l_tmpb_dim { \l_tmpa_tl }
+      } {
+        \dim_set:Nn \l_tmpb_dim { 0pt }
+      }
+      % Store value from this run, and then calculate max with previous run
+      \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
+      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
 
 
       % Set the box into a new box with the correct width which contains fil
@@ -284,7 +323,7 @@
   }
   \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N \l_tmpa_box }
 
-  \seq_gconcat:NNN \g_sdaps_layout_colwidths_seq \g_tmpa_seq \g_sdaps_layout_colwidths_seq
+  \seq_gconcat:NNN \g_sdaps_layout_shared_colwidths_seq \g_tmpa_seq \g_sdaps_layout_shared_colwidths_seq
   \seq_gclear:N \g_tmpa_seq
 
   % Calculate the space that is left for the header column
