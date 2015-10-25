@@ -152,7 +152,7 @@
 {
   % This command has to leave a single non empty box in the input stream that
   % can be added into an hbox.
-  \hbox:n { \hbox:n {} #1 }
+  \hbox:n { \strut #1 }
   % This is build in reverse order (i.e. same order as it is processed later
   % on when getting the boxes out of the container again in layout_row).
   \seq_gpush:Nn \g_table_layout_overhangs_left_seq { 0pt }
@@ -330,7 +330,7 @@
   \dim_set:Nn \l_tmpa_dim { \coffin_wd:N \l_tmpa_coffin + 1em }
   \dim_set:Nn \l_tmpa_dim { #3 - \l_tmpa_dim }
   \hcoffin_set:Nn \l_tmpb_coffin { \parbox[t][][t] { \dim_use:N \l_tmpa_dim } { \raggedleft \strut #1 } }
-  \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
+  \coffin_join:NnnNnnnn \l_tmpa_coffin { vc } { l } \l_tmpb_coffin { vc } { r } { -1em } { 0pt }
 
   \hbox { \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt } }
 }
