@@ -105,6 +105,29 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+% \subsection{Initialization}
+%
+% Define some routines to store width information for columns.
+%
+%    \begin{macrocode}
+
+\clist_new:N \g__sdaps_array_colwidths_clist
+\prop_new:N \g__sdaps_array_type_colwidths_prop
+
+\cs_new_protected:Nn \_sdaps_array_load_colwidths:n
+{
+  \prop_gpop:NnN \g__sdaps_array_type_colwidths_prop { #1 } \g__sdaps_array_colwidths_clist
+}
+
+\cs_new_protected:Nn \_sdaps_array_save_colwidths:n
+{
+  \prop_gput:NnN \g__sdaps_array_type_colwidths_prop { #1 } \g__sdaps_array_colwidths_clist
+}
+
+
+%    \end{macrocode}
+%
+%
 % \subsection{Choice Question Layout}
 %
 % \subsubsection{Choice Question Matrix Layout}
@@ -195,12 +218,16 @@
       \keys_set:nn { sdaps / choicearray } { #1 }
     }
 
+  \if_mode_horizontal:
+    \tex_par:D
+  \fi:
+
     \bool_if:NT \l_sdaps_choicearray_horizontal_bool {
-      \_sdaps_choicearray_typset_horizontal:
+      \_sdaps_choicearray_typeset_horizontal:
     }
 
     \bool_if:NT \l_sdaps_choicearray_vertical_bool {
-      \_sdaps_choicearray_typset_vertical:
+      \_sdaps_choicearray_typeset_vertical:
     }
 
    \sdaps_qobject_end:n { choicearray }
@@ -261,68 +288,169 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \_sdaps_choicearray_typset_horizontal:
+\cs_new_protected:Nn \_sdaps_choicearray_typeset_row:nNNN
+{
+  % #1: Token List containing the content for the header cell (which should be
+  %     set inside a parbox or similar).
+  % #2: Data cells packed into an hbox which need to be unpacked and set to the
+  %     correct width.
+  % #3: Sequence of widths that the columns shall be typeset to, this sequence
+  %     may be (globally) modified to affect all other rows.
+  %     SDAPS already does a max() calculation over each column, so unless you
+  %     want to make all colums the same size you will not need to modify
+  %     this sequence.
+  %     Please note that the correct width will only be available after the
+  %     second or even further (if the content contains labels) run.
+  % #4: The width that the hbox should have.
+  %
+  % The macro should leave an hbox which is exactly #4 width in the input
+  % stream. It will be called in vertical mode.
+  % To simplify the iteration it is guranteed that the data cell boxes are not
+  % completely empty. This means the code can simply unbox until it sees a box
+  % that is void.
+
+  % Empty coffin that represents the line.
+  \hcoffin_set:Nn \l_tmpa_coffin {}
+
+  \clist_gclear:N \g_tmpa_clist
+
+  % Insert the boxes
+  \hbox_set:Nn \l_tmpa_box {
+    \hbox_unpack:N #2
+
+    % Grab first cell
+    \box_set_to_last:N \l_tmpa_box
+    \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box } {
+      % Locally pop the target width for the current box (i.e. we don't globally
+      % modify the clist here).
+      \clist_gpop:NNTF #3 \l_tmpa_tl {
+        \dim_set:Nn \l_tmpa_dim { \l_tmpa_tl }
+      } {
+        \dim_set:Nn \l_tmpa_dim { 0pt }
+      }
+
+      % Calculate the maximum width of current and previous items
+      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \box_wd:N \l_tmpa_box } { \l_tmpa_dim } }
+      % Store it
+      \clist_gput_right:Nx \g_tmpa_clist { \dim_use:N \l_tmpa_dim }
+
+
+
+      % Set the box into a new box with the correct width which contains fil
+      % to center it.
+      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack_clear:N \l_tmpa_box \hfil } }
+
+      % This loops works backward, so attach the cell on the right side of
+      % the coffin.
+      % XXX: Do not hardcode padding
+      \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
+
+      % Grab next cell
+      \box_set_to_last:N \l_tmpa_box
+    }
+
+    % Get the coffin out of the nested scope by placing it into the box and
+    % placing that into it again ...
+    \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
+  }
+  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N \l_tmpa_box }
+
+  \clist_gconcat:NNN \g__sdaps_array_colwidths_clist \g_tmpa_clist \g__sdaps_array_colwidths_clist
+
+  % Calculate the space that is left for the header column
+  \dim_set:Nn \l_tmpa_dim { \coffin_wd:N \l_tmpa_coffin + 1em }
+  \dim_set:Nn \l_tmpa_dim { #4 - \l_tmpa_dim }
+  \hcoffin_set:Nn \l_tmpb_coffin { \parbox[t][][t] { \dim_use:N \l_tmpa_dim } { \raggedleft \strut #1 } }
+  \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
+
+  \hbox { \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt } }
+}
+
+\cs_new_protected:Nn \_sdaps_choicearray_typeset_horizontal:
 {
   \group_begin:
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
 
-    \tl_clear:N \l_tmpa_tl
-    \tl_clear:N \l_tmpb_tl
-    \seq_map_inline:Nn \g_sdaps_choices_var_seq {
-      \tl_put_right:Nn \l_tmpa_tl { \l_sdaps_choicearray_column_tl }
-      \tl_put_right:Nn \l_tmpb_tl { & { \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn{##1}{} } } }
-     }
+    % Header
+    \hbox_set:Nn \l_tmpa_box {
+      \seq_map_inline:Nn \g_sdaps_choices_seq {
 
-    \exp_args:Nnx
-    \begin{tabular}{ { \tl_use:N \l_sdaps__choicearray_rowheadcol_tl \tl_use:N \l_tmpa_tl} }
-      \seq_map_inline:Nn \g_sdaps_choices_seq { & { \l_sdaps_choicearray_colheadstyle_tl { ##1 } } } \\
-      \seq_map_inline:Nn \g_sdaps_questions_seq {
-        % Just overwrite the current context
-        \sdaps_context_set:n { ##1 }
-        \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
+        \hbox_set:Nn \l_tmpa_box { \l_sdaps_choicearray_colheadstyle_tl { ##1 } }
 
-        { \l_sdaps_choicearray_rowheadstyle_tl { \tl_use:N \l__sdaps_tmpa_tl } } \tl_use:N \l_tmpb_tl \\
+        \box_use:N \l_tmpa_box
       }
-    \end{tabular}
+    }
+    \_sdaps_choicearray_typeset_row:nNNN { } \l_tmpa_box \g__sdaps_array_colwidths_clist \linewidth
+
+    % Store each row as a token list
+    \tl_clear:N \l_tmpa_tl
+    \seq_map_inline:Nn \g_sdaps_choices_var_seq {
+      \tl_put_right:Nn \l_tmpa_tl { \hbox:n { \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn {##1 } { } } } }
+    }
+
+    % And the "data" rows
+    \seq_map_inline:Nn \g_sdaps_questions_seq {
+      \nointerlineskip
+      \nobreak
+
+      % Just overwrite the current context
+      \sdaps_context_set:n { ##1 }
+
+      \hbox_set:Nn \l_tmpa_box { \l_tmpa_tl }
+
+      \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
+
+      \_sdaps_choicearray_typeset_row:nNNN { \l_sdaps_choicearray_rowheadstyle_tl { \tl_use:N \l__sdaps_tmpa_tl } } \l_tmpa_box \g__sdaps_array_colwidths_clist \linewidth
+    }
 
   \group_end:
 }
 
-\cs_new_protected:Nn \_sdaps_choicearray_typset_vertical_int:n
+\cs_new_protected:Nn \_sdaps_choicearray_typeset_vertical_int:n
 {
   \seq_map_inline:Nn \g_sdaps_questions_seq {
-    \sdaps_context_set:n { ##1 }
-    & { \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn{#1}{} } }
+    \hbox:n {
+      \sdaps_context_set:n { ##1 }
+      \l_sdaps_choicearray_itemstyle_tl { \sdaps_checkbox:nn{#1}{} }
+    }
   }
 }
-\cs_generate_variant:Nn \_sdaps_choicearray_typset_vertical_int:n {f}
+\cs_generate_variant:Nn \_sdaps_choicearray_typeset_vertical_int:n { f }
 
-\cs_new_protected:Nn \_sdaps_choicearray_typset_vertical:
+
+\cs_new_protected:Nn \_sdaps_choicearray_typeset_vertical:
 {
   \group_begin:
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
 
-    \tl_clear:N \l_tmpa_tl
-    \tl_clear:N \l_tmpb_tl
-    \seq_map_inline:Nn \g_sdaps_questions_text_seq {
-      \tl_set:Nn \l_tmpc_tl { \l_sdaps_choicearray_column_tl }
-      \tl_put_right:NV \l_tmpa_tl \l_tmpc_tl
-      \tl_put_right:Nn \l_tmpb_tl { & { \l_sdaps_choicearray_colheadstyle_tl { ##1 } } }
-     }
+    % Header
+    \hbox_set:Nn \l_tmpa_box {
+      \seq_map_inline:Nn \g_sdaps_questions_text_seq {
 
-    \exp_args:Nnx
-    \begin{tabular} { { \tl_use:N \l_sdaps__choicearray_rowheadcol_tl \tl_use:N \l_tmpa_tl } }
-      \tl_use:N \l_tmpb_tl \\
-      \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
-        { \l_sdaps_choicearray_rowheadstyle_tl { \seq_item:Nn \g_sdaps_choices_seq { ##1 } } }
-        \_sdaps_choicearray_typset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
-        \\
+        \hbox_set:Nn \l_tmpa_box { \l_sdaps_choicearray_colheadstyle_tl { ##1 } }
+
+        \box_use:N \l_tmpa_box
       }
-    \end{tabular}
+    }
+    \_sdaps_choicearray_typeset_row:nNNN { } \l_tmpa_box \g__sdaps_array_colwidths_clist \linewidth
+
+
+    \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
+
+      \hbox_set:Nn \l_tmpa_box {
+        \_sdaps_choicearray_typeset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
+      }
+
+      \_sdaps_choicearray_typeset_row:nNNN
+        { \l_sdaps_choicearray_rowheadstyle_tl { \seq_item:Nn \g_sdaps_choices_seq { ##1 } } }
+        \l_tmpa_box
+        \g__sdaps_array_colwidths_clist
+        \linewidth
+    }
 
   \group_end:
 }
