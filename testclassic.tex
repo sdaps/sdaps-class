@@ -57,6 +57,20 @@
       \choicemulticolitem{2}{Auto Multiple Choice}
     \end{choicequestion}
 
+    % And a more compact way of doing it; similar to markgroup
+    \begin{choicegroup}{Which software do you prefere for the following tasks?}
+      % We have to add the possible choices at the start.
+      \groupaddchoice{\LaTeX}
+      \groupaddchoice{LibreOffice}
+      \groupaddchoice{Microsoft Word}
+      \groupaddchoice{other}
+
+      % After that it is possible to add each question.
+      \choiceline{writing letters}
+      \choiceline{creating tables}
+      \choiceline{typesetting equations}
+    \end{choicegroup}
+
 
 \section{asdf}
 
