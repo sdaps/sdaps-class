@@ -89,6 +89,7 @@
 \ExplSyntaxOn
 
 \RequirePackage{sdapsbase}
+\RequirePackage{sdapslayout}
 \RequirePackage{xparse}
 
 % We use verbatim to grab the content of the questionnaire envorinment into a
@@ -723,6 +724,33 @@
 
 \def\sdapspagemark{
   \sdaps_page_end:
+}
+
+%    \end{macrocode}
+%
+% \subsection{The group environments}
+%
+% Alias for the group environments.
+%
+%    \begin{macrocode}
+%
+
+
+\NewDocumentEnvironment { choicegroup } { o m }
+{
+  \group_begin:
+
+    \let\question\relax
+    \let\choice\relax
+
+    \begin{choicearray}[#1]{#2}
+
+      \let\groupaddchoice\choice
+      \let\choiceline\question
+}
+{
+    \end{choicearray}
+  \group_end:
 }
 
 \ExplSyntaxOff
