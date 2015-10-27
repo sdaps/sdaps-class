@@ -418,9 +418,9 @@
       \keys_set:nn { sdaps / choicearray } { #1 }
     }
 
-  \if_mode_horizontal:
-    \tex_par:D
-  \fi:
+    \if_mode_horizontal:
+      \tex_par:D
+    \fi:
 
     \bool_if:NTF \l_sdaps_choicearray_horizontal_bool {
       \_sdaps_choicearray_typeset_horizontal:
