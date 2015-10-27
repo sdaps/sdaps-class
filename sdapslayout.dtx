@@ -351,7 +351,6 @@
 
 
 \bool_new:N \l_sdaps_choicearray_horizontal_bool
-\bool_new:N \l_sdaps_choicearray_vertical_bool
 \tl_new:N \l_sdaps_choicearray_var_tl
 \tl_new:N \l_sdaps_choicearray_text_tl
 %\tl_new:N \l_sdaps_choicearray_layouter_tl
@@ -369,8 +368,9 @@
 {
   horizontal .bool_set:N = \l_sdaps_choicearray_horizontal_bool,
   horizontal .default:n  = true,
-  vertical   .bool_set:N = \l_sdaps_choicearray_vertical_bool,
-  vertial    .default:n  = true,
+  horizontal .initial:n  = true,
+  vertical   .bool_set_inverse:N = \l_sdaps_choicearray_horizontal_bool,
+  vertical   .default:n  = true,
   var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
   text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
 %  layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
@@ -422,11 +422,9 @@
     \tex_par:D
   \fi:
 
-    \bool_if:NT \l_sdaps_choicearray_horizontal_bool {
+    \bool_if:NTF \l_sdaps_choicearray_horizontal_bool {
       \_sdaps_choicearray_typeset_horizontal:
-    }
-
-    \bool_if:NT \l_sdaps_choicearray_vertical_bool {
+    } {
       \_sdaps_choicearray_typeset_vertical:
     }
 
