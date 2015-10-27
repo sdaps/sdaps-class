@@ -393,7 +393,7 @@
 {
   \group_begin:
 
-    \tl_if_empty:nF { #1 } {
+    \IfNoValueF { #1 } {
       \keys_set:nn { sdaps / choicearray } { #1 }
     }
 
@@ -414,7 +414,7 @@
 {
   \group_begin:
 
-    \tl_if_empty:nF { #1 } {
+    \IfNoValueF { #1 } {
       \keys_set:nn { sdaps / choicearray } { #1 }
     }
 
@@ -437,7 +437,7 @@
 {
   \group_begin:
 
-    \tl_if_empty:nF { #1 } {
+    \IfNoValueF { #1 } {
       \keys_set:nn { sdaps / choicearray / choice } { #1 }
     }
 
@@ -457,7 +457,7 @@
 {
   \group_begin:
 
-    \tl_if_empty:nF { #1 } {
+    \IfNoValueF { #1 } {
       \keys_set:nn { sdaps / choicearray / question } { #1 }
      }
 
