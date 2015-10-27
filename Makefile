@@ -33,8 +33,8 @@ test.pdf: sdapslayout.sty sdapspdf.sty test.tex
 	latexmk -pdf test.tex
 	#latexmk -xelatex test.tex
 
-testclassic.pdf: sdapsclassic.cls testclassic.tex
-	latexmk -pdf testclassic.tex
+testclassic.pdf: sdapsclassic.cls sdapslayout.sty testclassic.tex
+	latexmk -xelatex testclassic.tex
 
 
 clean:
