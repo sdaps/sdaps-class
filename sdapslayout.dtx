@@ -163,9 +163,7 @@
 {
   \group_begin:
 
-    \IfNoValueF { #1 } {
-      \keys_set:nn { sdaps / choicearray } { #1 }
-    }
+    \keys_set:nn { sdaps / choicearray } { #1 }
 
    \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
      \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
@@ -179,14 +177,13 @@
 
   \group_end:
 }
+\cs_generate_variant:Nn \_sdaps_choicearray_preprocess:nn { Vn }
 
 \cs_new_protected:Npn \_sdaps_choicearray_postprocess:nn #1#2
 {
   \group_begin:
 
-    \IfNoValueF { #1 } {
-      \keys_set:nn { sdaps / choicearray } { #1 }
-    }
+    \keys_set:nn { sdaps / choicearray } { #1 }
 
     \if_mode_horizontal:
       \tex_par:D
@@ -202,14 +199,13 @@
 
   \group_end:
 }
+\cs_generate_variant:Nn \_sdaps_choicearray_postprocess:nn { Vn }
 
 \cs_new_protected:Npn \_sdaps_choicearray_process_choice:nn #1#2
 {
   \group_begin:
 
-    \IfNoValueF { #1 } {
-      \keys_set:nn { sdaps / choicearray / choice } { #1 }
-    }
+    \keys_set:nn { sdaps / choicearray / choice } { #1 }
 
    \seq_gput_right:Nn \g_sdaps_choices_seq { #2 }
    \seq_gput_right:Nx \g_sdaps_choices_var_seq { \l_sdaps_choice_var_tl }
@@ -222,14 +218,13 @@
 
   \group_end:
 }
+\cs_generate_variant:Nn \_sdaps_choicearray_process_choice:nn { Vn }
 
 \cs_new_protected:Npn \_sdaps_choicearray_process_question:nn #1#2
 {
   \group_begin:
 
-    \IfNoValueF { #1 } {
-      \keys_set:nn { sdaps / choicearray / question } { #1 }
-     }
+    \keys_set:nn { sdaps / choicearray / question } { #1 }
 
     \tl_if_empty:NTF \l_sdaps_question_text_tl {
       \sdaps_qobject_begin:nnn { choicearray_question } { Choice } { #2 }
@@ -255,6 +250,7 @@
 
   \group_end:
 }
+\cs_generate_variant:Nn \_sdaps_choicearray_process_question:nn { Vn }
 
 \cs_new_protected:Nn \_sdaps_choicearray_typeset_horizontal:
 {
@@ -367,7 +363,16 @@
 {
   \group_begin:
 
-    \_sdaps_choicearray_preprocess:nn { #1 } { #2 }
+    \__sdaps_append_from_context:nN { choicearray } \l_tmpa_tl
+    \IfNoValueF { #1 } {
+      \tl_if_empty:NTF \l_tmpa_tl {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      } {
+        \tl_set:Nf \l_tmpa_tl { \l_tmpa_tl, #1 }
+      }
+    }
+
+    \_sdaps_choicearray_preprocess:Vn \l_tmpa_tl { #2 }
     % Clear the variables
     \seq_gclear:N \g_sdaps_choices_seq
     \seq_gclear:N \g_sdaps_choices_var_seq
@@ -376,15 +381,27 @@
 
     % Define new commands
     \NewDocumentCommand \choice { o m } {
-      \_sdaps_choicearray_process_choice:nn { ##1 } { ##2 }
+      \IfNoValueTF { ##1 } {
+        \tl_set:Nn \l_tmpa_tl {}
+      } {
+        \tl_set:Nn \l_tmpa_tl { ##1 }
+      }
+      \_sdaps_choicearray_process_choice:Vn \l_tmpa_tl { ##2 }
     }
     \NewDocumentCommand \question { o m } {
-      \_sdaps_choicearray_process_question:nn { ##1 } { ##2 }
+      \IfNoValueTF { ##1 } {
+        \tl_set:Nn \l_tmpa_tl {}
+      } {
+        \tl_set:Nn \l_tmpa_tl { ##1 }
+      }
+      \_sdaps_choicearray_process_question:Vn \l_tmpa_tl { ##2 }
     }
+    \group_begin:
 }
 {
+    \group_end:
     % Process keys
-    \_sdaps_choicearray_postprocess:nn { #1 } { #2 }
+    \_sdaps_choicearray_postprocess:Vn \l_tmpa_tl { #2 }
 
   \group_end:
 }
