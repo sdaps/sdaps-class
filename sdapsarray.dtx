@@ -127,7 +127,7 @@
 
 \cs_new_protected:Nn \_sdaps_array_store_colwidths:n
 {
-  % Do not overwrite the "stored" that we have right now.
+  % Do not overwrite the "stored" data that we have right now.
   \prop_gput:NnV \g__sdaps_array_shared_data_prop { #1 } \g_sdaps_array_shared_data_tl
 
   \immediate\write\@auxout{\exp_not:n{\sdapsarrayloadstoreddata}{#1}{\g_sdaps_array_shared_data_tl}}
@@ -159,6 +159,7 @@
   } {
     \tl_set:Nn \l__sdaps_array_current_name_tl { #2 }
   }
+  \tl_set:Nx \l__sdaps_array_current_name_tl  { \l__sdaps_array_current_name_tl }
 
   \_sdaps_array_load_colwidths:V \l__sdaps_array_current_name_tl
 
