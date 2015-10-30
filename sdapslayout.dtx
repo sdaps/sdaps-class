@@ -120,7 +120,8 @@
 \bool_new:N \l_sdaps_choicearray_horizontal_bool
 \tl_new:N \l_sdaps_choicearray_var_tl
 \tl_new:N \l_sdaps_choicearray_text_tl
-%\tl_new:N \l_sdaps_choicearrayer_tl
+\tl_new:N \l_sdaps_choicearray_layouter_tl
+\tl_new:N \l_sdaps_choicearray_align_tl
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -140,8 +141,10 @@
   vertical   .default:n  = true,
   var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
   text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
-%  layouter   .tl_set:N   = \l_sdaps_choicearrayer_tl,
-%  layouter   .initial:n   = default,
+  layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
+  layouter   .initial:n  = default,
+  align      .tl_set:N   = \l_sdaps_choicearray_align_tl,
+  align      .initial:n  = { choicearray\bool_if:NTF\l_sdaps_choicearray_horizontal_bool{horizontal}{vertical} },
 }
 
 \keys_define:nn { sdaps / choicearray / choice }
@@ -257,7 +260,7 @@
 {
   \group_begin:
 
-  \sdaps_array_begin:nn { default } { choicearrayhorizontal }
+  \sdaps_array_begin:VV \l_sdaps_choicearray_layouter_tl \l_sdaps_choicearray_align_tl
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
@@ -313,7 +316,7 @@
 {
   \group_begin:
 
-  \sdaps_array_begin:nn { default } { choicearrayvertical }
+  \sdaps_array_begin:VV \l_sdaps_choicearray_layouter_tl \l_sdaps_choicearray_align_tl
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
