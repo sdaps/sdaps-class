@@ -96,6 +96,7 @@
 \ExplSyntaxOff
 
 \RequirePackage{sdapsbase}
+\RequirePackage{sdapsarray}
 \RequirePackage{xparse}
 
 
@@ -105,240 +106,6 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% \subsection{Initialization}
-%
-% Define some routines to store width information for columns.
-%
-%    \begin{macrocode}
-
-\tl_new:N \g_sdaps_layout_table_shared_data_tl
-\tl_new:N \g_sdaps_layout_table_stored_data_tl
-\prop_new:N \g__sdaps_layout_table_stored_data_prop
-\prop_new:N \g__sdaps_layout_table_shared_data_prop
-
-\cs_new_protected:Nn \_sdaps_array_load_colwidths:n
-{
-  \tl_set:Nx \g_sdaps_layout_table_stored_data_tl { \prop_item:Nn \g__sdaps_layout_table_stored_data_prop { #1 } }
-  \tl_set:Nx \g_sdaps_layout_table_shared_data_tl { \prop_item:Nn \g__sdaps_layout_table_shared_data_prop { #1 } }
-}
-
-\cs_new_protected:Nn \_sdaps_array_store_colwidths:n
-{
-  % Do not overwrite the "stored" that we have right now.
-  \prop_gput:NnV \g__sdaps_layout_table_shared_data_prop { #1 } \g_sdaps_layout_table_shared_data_tl
-
-  \immediate\write\@auxout{\exp_not:n{\sdapslayoutloadstoreddata}{#1}{\g_sdaps_layout_table_shared_data_tl}}
-}
-
-% Define for loading sdaps code in aux file
-\def\sdapslayoutloadstoreddata#1#2{
-  \prop_gput:Nnn \g__sdaps_layout_table_stored_data_prop { #1 } { #2 }
-}
-
-%    \end{macrocode}
-%
-% \subsection{Data Table Layouter}
-%
-% \subsubsection{Common Layouter Macros}
-%
-%    \begin{macrocode}
-
-\seq_new:N \g_table_layout_overhangs_left_seq
-\seq_new:N \g_table_layout_overhangs_right_seq
-\seq_new:N \g_sdaps_layout_shared_colwidths_seq
-\seq_new:N \g_sdaps_layout_stored_colwidths_seq
-
-\cs_new_protected:Nn \sdaps_layout_table_layout_cell_default:n
-{
-  % This command has to leave a single non empty box in the input stream that
-  % can be added into an hbox.
-  \hbox:n { \strut #1 }
-  % This is build in reverse order (i.e. same order as it is processed later
-  % on when getting the boxes out of the container again in layout_row).
-  \seq_gpush:Nn \g_table_layout_overhangs_left_seq { 0pt }
-  \seq_gpush:Nn \g_table_layout_overhangs_right_seq { 0pt }
-}
-
-% Only sane for header row
-\cs_new_protected:Nn \sdaps_layout_table_layout_cell_rotated:n
-{
-  \hbox:n {
-    \hbox_set:Nn \l_tmpa_box { \strut #1 }
-
-    \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
-    \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
-
-    \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
-    \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
-
-    \box_rotate:Nn \l_tmpa_box { 70 }
-
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-    \rlap{
-      \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
-      \box_use:N \l_tmpa_box
-    }
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-
-    \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
-
-    \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
-    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { 0pt } { \l_tmpb_dim - \l_tmpa_dim } }
-
-    \seq_gpush:Nn \g_table_layout_overhangs_left_seq { 0pt }
-    \seq_gpush:Nx \g_table_layout_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
-  }
-}
-
-% XXX: A parbox layouter with fixed width would be nice
-%\cs_new_protected:Nn \sdaps_layout_table_layout_cell_fixed:n {}
-
-
-\cs_new_protected:Nn \sdaps_layout_table_layout_begin_default:
-{
-  \_sdaps_array_load_colwidths:n { testing }
-
-  \tl_if_empty:NTF \g_sdaps_layout_table_shared_data_tl {
-    \seq_clear:N \g_sdaps_layout_shared_colwidths_seq
-  } {
-    \seq_gset_split:NnV \g_sdaps_layout_shared_colwidths_seq { ~ } \g_sdaps_layout_table_shared_data_tl
-  }
-  \tl_if_empty:NTF \g_sdaps_layout_table_stored_data_tl {
-    \seq_clear:N \g_sdaps_layout_stored_colwidths_seq
-  } {
-    \seq_gset_split:NnV \g_sdaps_layout_stored_colwidths_seq { ~ } \g_sdaps_layout_table_stored_data_tl
-  }
-}
-
-\cs_new_protected:Nn \sdaps_layout_table_layout_end_default:
-{
-  \tl_gset:Nx \g_sdaps_layout_table_shared_data_tl { \seq_use:Nn \g_sdaps_layout_shared_colwidths_seq { ~ } }
-  \tl_gset:Nx \g_sdaps_layout_table_stored_data_tl { \seq_use:Nn \g_sdaps_layout_stored_colwidths_seq { ~ } }
-
-  % Clear the global sequences, to save memory
-  \seq_gclear:N \g_table_layout_overhangs_left_seq
-  \seq_gclear:N \g_table_layout_overhangs_right_seq
-  \seq_gclear:N \g_sdaps_layout_shared_colwidths_seq
-  \seq_gclear:N \g_sdaps_layout_stored_colwidths_seq
-
-  \_sdaps_array_store_colwidths:n { testing }
-}
-
-\cs_new_protected:Nn \sdaps_layout_table_layout_row_start_default:
-{
-  \seq_gclear:N \g_table_layout_overhangs_left_seq
-  \seq_gclear:N \g_table_layout_overhangs_right_seq
-}
-
-\cs_new_protected:Nn \sdaps_layout_table_layout_row_ltr:nNN
-{
-  % #1: Token List containing the content for the header cell (which should be
-  %     set inside a parbox or similar).
-  % #2: Data cells packed into an hbox which need to be unpacked and set to the
-  %     correct width.
-  % #3: The width that the hbox should have.
-  %
-  % The macro should leave an hbox which is exactly #3 width in the input
-  % stream. It will be called in vertical mode.
-  % To simplify the iteration it is guranteed that the data cell boxes are not
-  % completely empty. This means the code can simply unbox until it sees a box
-  % that is void.
-
-  \seq_gclear:N \g_tmpa_seq
-
-  % Insert the boxes
-  \hbox_set:Nn \l_tmpa_box {
-    \hbox_unpack:N #2
-
-    % Handle the overhang, note that we modify the \g_table_layout_overhangs_right_seq locally only!
-    \seq_pop:NNTF \g_table_layout_overhangs_right_seq \l_tmpa_tl {
-      \dim_set:Nn \l_tmpb_dim { \l_tmpa_tl }
-    } {
-      \dim_set:Nn \l_tmpb_dim { 0pt }
-    }
-    % Implicit "last" column that contains the overhead
-    \seq_gpop:NNTF \g_sdaps_layout_shared_colwidths_seq \l_tmpa_tl {
-      \dim_set:Nn \l_tmpa_dim { \l_tmpa_tl }
-    } {
-      \dim_set:Nn \l_tmpa_dim { 0pt }
-    }
-    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
-
-
-    % MAX with stored values (NOTE: sequence only modified in local scope)
-    \seq_pop:NNTF \g_sdaps_layout_stored_colwidths_seq \l_tmpa_tl {
-      \dim_set:Nn \l_tmpb_dim { \l_tmpa_tl }
-    } {
-      \dim_set:Nn \l_tmpb_dim { 0pt }
-    }
-    % Store value from this run, and then calculate max with previous run
-    \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
-    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
-
-
-    % Insert the overhang space minus the first inter column spacing
-    \hcoffin_set:Nn \l_tmpa_coffin { \skip_horizontal:n { \l_tmpa_dim - 1em } }
-
-    % Now grab the first of the cells, and then loop over the rest
-    \box_set_to_last:N \l_tmpa_box
-    \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box } {
-      % Pop the target width for the current box (i.e. we don't globally
-      % modify the clist here).
-      \seq_gpop:NNTF \g_sdaps_layout_shared_colwidths_seq \l_tmpa_tl {
-        \dim_set:Nn \l_tmpa_dim { \l_tmpa_tl }
-      } {
-        \dim_set:Nn \l_tmpa_dim { 0pt }
-      }
-      % Calculate the maximum width of current and previous items
-      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \box_wd:N \l_tmpa_box } { \l_tmpa_dim } }
-
-
-      % MAX with stored values (NOTE: sequence only modified in local scope)
-      \seq_pop:NNTF \g_sdaps_layout_stored_colwidths_seq \l_tmpa_tl {
-        \dim_set:Nn \l_tmpb_dim { \l_tmpa_tl }
-      } {
-        \dim_set:Nn \l_tmpb_dim { 0pt }
-      }
-      % Store value from this run, and then calculate max with previous run
-      \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
-      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
-
-
-      % Set the box into a new box with the correct width which contains fil
-      % to center it.
-      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack_clear:N \l_tmpa_box \hfil } }
-
-      % This loops works backward, so attach the cell on the right side of
-      % the coffin.
-      % XXX: Do not hardcode padding
-      \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
-
-      % Grab next cell
-      \box_set_to_last:N \l_tmpa_box
-    }
-
-    % Get the coffin out of the nested scope by placing it into the box and
-    % placing that into it again ...
-    \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
-  }
-  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N \l_tmpa_box }
-
-  \seq_gconcat:NNN \g_sdaps_layout_shared_colwidths_seq \g_tmpa_seq \g_sdaps_layout_shared_colwidths_seq
-  \seq_gclear:N \g_tmpa_seq
-
-  % Calculate the space that is left for the header column
-  \dim_set:Nn \l_tmpa_dim { \coffin_wd:N \l_tmpa_coffin + 1em }
-  \dim_set:Nn \l_tmpa_dim { #3 - \l_tmpa_dim }
-  \hcoffin_set:Nn \l_tmpb_coffin { \parbox[t][][t] { \dim_use:N \l_tmpa_dim } { \raggedleft \strut #1 } }
-  \coffin_join:NnnNnnnn \l_tmpa_coffin { vc } { l } \l_tmpb_coffin { vc } { r } { -1em } { 0pt }
-
-  \hbox { \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt } }
-}
-
-
-
-
-%     \end{macrocode}
 %
 % \subsection{Choice Question Layout}
 %
@@ -353,7 +120,7 @@
 \bool_new:N \l_sdaps_choicearray_horizontal_bool
 \tl_new:N \l_sdaps_choicearray_var_tl
 \tl_new:N \l_sdaps_choicearray_text_tl
-%\tl_new:N \l_sdaps_choicearray_layouter_tl
+%\tl_new:N \l_sdaps_choicearrayer_tl
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -373,7 +140,7 @@
   vertical   .default:n  = true,
   var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
   text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
-%  layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
+%  layouter   .tl_set:N   = \l_sdaps_choicearrayer_tl,
 %  layouter   .initial:n   = default,
 }
 
@@ -490,25 +257,25 @@
 {
   \group_begin:
 
-  \sdaps_layout_table_layout_begin_default:
+  \sdaps_array_begin:nn { default } { choicearrayhorizontal }
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
 
     % Header
-    \sdaps_layout_table_layout_row_start_default:
+    \sdaps_array_row_start:
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_choices_seq {
 
-        \sdaps_layout_table_layout_cell_rotated:n { ##1 }
+        \sdaps_array_cell:n { ##1 }
       }
     }
-    \sdaps_layout_table_layout_row_ltr:nNN { } \l_tmpa_box \linewidth
+    \sdaps_array_row:nNn { } \l_tmpa_box { \linewidth }
 
     % Store each row as a token list
     \tl_clear:N \l_tmpa_tl
     \seq_map_inline:Nn \g_sdaps_choices_var_seq {
-      \tl_put_right:Nn \l_tmpa_tl { \sdaps_layout_table_layout_cell_default:n { \sdaps_checkbox:nn { ##1 } { } } }
+      \tl_put_right:Nn \l_tmpa_tl { \sdaps_array_cell:n { \sdaps_checkbox:nn { ##1 } { } } }
     }
 
     % And the "data" rows
@@ -519,15 +286,15 @@
       % Just overwrite the current context
       \sdaps_context_set:n { ##1 }
 
-      \sdaps_layout_table_layout_row_start_default:
+      \sdaps_array_row_start:
       \hbox_set:Nn \l_tmpa_box { \l_tmpa_tl }
 
       \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
 
-      \sdaps_layout_table_layout_row_ltr:nNN { \tl_use:N \l__sdaps_tmpa_tl } \l_tmpa_box \linewidth
+      \sdaps_array_row:nNn { \tl_use:N \l__sdaps_tmpa_tl } \l_tmpa_box \linewidth
     }
 
-  \sdaps_layout_table_layout_end_default:
+  \sdaps_array_end:
 
   \group_end:
 }
@@ -536,7 +303,7 @@
 {
   \seq_map_inline:Nn \g_sdaps_questions_seq {
     \sdaps_context_set:n { ##1 }
-    \sdaps_layout_table_layout_cell_default:n { \sdaps_checkbox:nn{#1}{} }
+    \sdaps_array_cell:n { \sdaps_checkbox:nn{#1}{} }
   }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_typeset_vertical_int:n { f }
@@ -546,36 +313,38 @@
 {
   \group_begin:
 
-  \sdaps_layout_table_layout_begin_default:
+  \sdaps_array_begin:nn { default } { choicearrayvertical }
 
     % Local context so that we can modify at will
     \sdaps_context_begin_local:
 
     % Header
-    \sdaps_layout_table_layout_row_start_default:
+    \sdaps_array_row_start:
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_questions_text_seq {
 
-        \sdaps_layout_table_layout_cell_rotated:n { ##1 }
+        \sdaps_array_cell:n { ##1 }
       }
     }
-    \sdaps_layout_table_layout_row_ltr:nNN { } \l_tmpa_box \linewidth
+    \sdaps_array_row:nNn { } \l_tmpa_box \linewidth
 
 
     \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
+      \nointerlineskip
+      \nobreak
 
-      \sdaps_layout_table_layout_row_start_default:
+      \sdaps_array_row_start:
       \hbox_set:Nn \l_tmpa_box {
         \_sdaps_choicearray_typeset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
       }
 
-      \sdaps_layout_table_layout_row_ltr:nNN
+      \sdaps_array_row:nNn
         { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
         \l_tmpa_box
-        \linewidth
+        { \linewidth }
     }
 
-  \sdaps_layout_table_layout_end_default:
+  \sdaps_array_end:
 
   \group_end:
 }

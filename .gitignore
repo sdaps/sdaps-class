@@ -1,6 +1,7 @@
 *.pdf
 *.out
 sdapsbase.sty
+sdapsarray.sty
 sdapslayout.sty
 sdapspdf.sty
 sdapsclassic.cls
