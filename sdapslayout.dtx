@@ -270,7 +270,7 @@
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_choices_seq {
 
-        \sdaps_array_cell:n { ##1 }
+        \sdaps_array_header:n { ##1 }
       }
     }
     \sdaps_array_row:nNn { } \l_tmpa_box { \linewidth }
@@ -326,7 +326,7 @@
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_questions_text_seq {
 
-        \sdaps_array_cell:n { ##1 }
+        \sdaps_array_header:n { ##1 }
       }
     }
     \sdaps_array_row:nNn { } \l_tmpa_box \linewidth

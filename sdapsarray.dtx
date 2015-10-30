@@ -180,6 +180,11 @@
   \l__sdaps_array_row_start_tl
 }
 
+\cs_new_protected:Nn \sdaps_array_header:n
+{
+  \l__sdaps_array_header_tl { #1 }
+}
+
 \cs_new_protected:Nn \sdaps_array_cell:n
 {
   \l__sdaps_array_cell_tl { #1 }
@@ -203,6 +208,7 @@
 
 \tl_new:N \l__sdaps_array_begin_tl
 \tl_new:N \l__sdaps_array_row_start_tl
+\tl_new:N \l__sdaps_array_header_tl
 \tl_new:N \l__sdaps_array_cell_tl
 \tl_new:N \l__sdaps_array_row_tl
 \tl_new:N \l__sdaps_array_end_tl
@@ -211,6 +217,7 @@
 {
   begin        .tl_set:N   = \l__sdaps_array_begin_tl,
   row_start    .tl_set:N   = \l__sdaps_array_row_start_tl,
+  header       .tl_set:N   = \l__sdaps_array_header_tl,
   cell         .tl_set:N   = \l__sdaps_array_cell_tl,
   row          .tl_set:N   = \l__sdaps_array_row_tl,
   end          .tl_set:N   = \l__sdaps_array_end_tl,
@@ -411,6 +418,7 @@
 \prop_gput:Nnn \g__sdaps_array_layouter_prop { default } {
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
+  header = { \_sdaps_array_cell_default:n },
   cell = { \_sdaps_array_cell_default:n },
   row = { \_sdaps_array_row_ltr:nNn },
   end = { \_sdaps_array_end_default: },
@@ -420,7 +428,8 @@
 \prop_gput:Nnn \g__sdaps_array_layouter_prop { rotated } {
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
-  cell = { \_sdaps_array_cell_rotated:n },
+  header = { \_sdaps_array_cell_rotated:n },
+  cell = { \_sdaps_array_cell_default:n },
   row = { \_sdaps_array_row_ltr:nNn },
   end = { \_sdaps_array_end_default: },
 }
