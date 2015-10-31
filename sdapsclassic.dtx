@@ -647,7 +647,7 @@
 %    \begin{macrocode}
 %
 
-\iow_new:N \l_sdaps_questionnaire_iow
+\iow_new:N \l__sdaps_questionnaire_iow
 \bool_new:N \l__sdaps_questionnaire_parse_direct_bool
 
 \def\questionnaire{
@@ -680,16 +680,14 @@
   } {
     \bool_set_false:N \l__sdaps_questionnaire_parse_direct_bool
 
-     % Write content into a file, see "verbatim" documentation for more information.
-     % TODO: Allow multiple temporary files by postfixing with integer?
-    \iow_open:Nn \l_sdaps_questionnaire_iow { \c_job_name_tl . questionnaire }
+    % Write content into a file, see "verbatim" documentation for more information.
+    % TODO: Allow multiple temporary files by postfixing with integer?
+    \iow_open:Nn \l__sdaps_questionnaire_iow { \c_job_name_tl . questionnaire }
     \let\do\@makeother\dospecials
     \catcode`\^^M\active
-    \verbatim@startline
-    \verbatim@addtoline
-    \verbatim@finish
     \def\verbatim@processline{
-      \iow_now:Nx \l_sdaps_questionnaire_iow {\the\verbatim@line}}
+      \iow_now:Nx \l__sdaps_questionnaire_iow {\the\verbatim@line}
+    }
     \verbatim@start
   }
 }
@@ -702,7 +700,7 @@
     \group_end:
   } {
        % We are done inputting the questionnaire
-       \iow_close:N \l_sdaps_questionnaire_iow
+       \iow_close:N \l__sdaps_questionnaire_iow
     \group_end:
 
     % Now cycle through all IDS and output it again.
@@ -715,7 +713,7 @@
         \newpage
 
         % Close the output file now (after the page has been shipped out)
-        \iow_shipout_close:N \g_sdaps_infofile_iow
+        \iow_close:N \g_sdaps_infofile_iow
 
       }
     \group_end:
