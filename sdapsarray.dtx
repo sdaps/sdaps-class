@@ -118,14 +118,14 @@
 \prop_new:N \g__sdaps_array_stored_data_prop
 \prop_new:N \g__sdaps_array_shared_data_prop
 
-\cs_new_protected:Nn \_sdaps_array_load_colwidths:n
+\cs_new_protected_nopar:Nn \_sdaps_array_load_colwidths:n
 {
   \tl_gset:Nx \g_sdaps_array_stored_data_tl { \prop_item:Nn \g__sdaps_array_stored_data_prop { #1 } }
   \tl_gset:Nx \g_sdaps_array_shared_data_tl { \prop_item:Nn \g__sdaps_array_shared_data_prop { #1 } }
 }
 \cs_generate_variant:Nn \_sdaps_array_load_colwidths:n { V }
 
-\cs_new_protected:Nn \_sdaps_array_store_colwidths:n
+\cs_new_protected_nopar:Nn \_sdaps_array_store_colwidths:n
 {
   % Do not overwrite the "stored" data that we have right now.
   \prop_gput:NnV \g__sdaps_array_shared_data_prop { #1 } \g_sdaps_array_shared_data_tl
@@ -135,9 +135,10 @@
 \cs_generate_variant:Nn \_sdaps_array_store_colwidths:n { V }
 
 % Define for loading sdaps code in aux file
-\def\sdapsarrayloadstoreddata#1#2{
+\cs_new_protected_nopar:Nn \sdaps_array_load_stored_data:nn {
   \prop_gput:Nnn \g__sdaps_array_stored_data_prop { #1 } { #2 }
 }
+\cs_new_eq:NN \sdapsarrayloadstoreddata \sdaps_array_load_stored_data:nn
 
 %    \end{macrocode}
 %
@@ -151,7 +152,7 @@
 \tl_new:N \l__sdaps_array_current_name_tl
 
 \cs_generate_variant:Nn \keys_set:nn { nf }
-\cs_new_protected:Nn \sdaps_array_begin:nn
+\cs_new_protected_nopar:Nn \sdaps_array_begin:nn
 {
   \tl_if_empty:NTF { #2 } {
     \tl_set:Nn \l__sdaps_array_current_name_tl { sdapsarray \g__sdaps_array_current_id_int }
@@ -171,32 +172,32 @@
 \cs_generate_variant:Nn \sdaps_array_begin:nn { VV }
 \cs_generate_variant:Nn \sdaps_array_begin:nn { nV }
 
-\cs_new_protected:Nn \sdaps_array_begin:n
+\cs_new_protected_nopar:Nn \sdaps_array_begin:n
 {
   \sdaps_array_begin:nn { #1 } { }
 }
 
-\cs_new_protected:Nn \sdaps_array_row_start:
+\cs_new_protected_nopar:Nn \sdaps_array_row_start:
 {
   \l__sdaps_array_row_start_tl
 }
 
-\cs_new_protected:Nn \sdaps_array_header:n
+\cs_new_protected_nopar:Nn \sdaps_array_header:n
 {
   \l__sdaps_array_header_tl { #1 }
 }
 
-\cs_new_protected:Nn \sdaps_array_cell:n
+\cs_new_protected_nopar:Nn \sdaps_array_cell:n
 {
   \l__sdaps_array_cell_tl { #1 }
 }
 
-\cs_new_protected:Nn \sdaps_array_row:nNn
+\cs_new_protected_nopar:Nn \sdaps_array_row:nNn
 {
   \l__sdaps_array_row_tl { #1 } #2 { #3 }
 }
 
-\cs_new_protected:Nn \sdaps_array_end:
+\cs_new_protected_nopar:Nn \sdaps_array_end:
 {
   \l__sdaps_array_end_tl
 }
@@ -230,7 +231,7 @@
 \seq_new:N \g_sdaps_array_shared_colwidths_seq
 \seq_new:N \g_sdaps_array_stored_colwidths_seq
 
-\cs_new_protected:Nn \_sdaps_array_cell_default:n
+\cs_new_protected_nopar:Nn \_sdaps_array_cell_default:n
 {
   % This command has to leave a single non empty box in the input stream that
   % can be added into an hbox.
@@ -242,7 +243,7 @@
 }
 
 % Only sane for header row
-\cs_new_protected:Nn \_sdaps_array_cell_rotated:n
+\cs_new_protected_nopar:Nn \_sdaps_array_cell_rotated:n
 {
   \hbox:n {
     \hbox_set:Nn \l_tmpa_box { \strut #1 }
@@ -273,10 +274,10 @@
 }
 
 % XXX: A parbox layouter with fixed width would be nice
-%\cs_new_protected:Nn \sdaps_array_cell_fixed:n {}
+%\cs_new_protected_nopar:Nn \sdaps_array_cell_fixed:n {}
 
 
-\cs_new_protected:Nn \_sdaps_array_begin_default:
+\cs_new_protected_nopar:Nn \_sdaps_array_begin_default:
 {
   \tl_if_empty:NTF \g_sdaps_array_shared_data_tl {
     \seq_clear:N \g_sdaps_array_shared_colwidths_seq
@@ -290,7 +291,7 @@
   }
 }
 
-\cs_new_protected:Nn \_sdaps_array_end_default:
+\cs_new_protected_nopar:Nn \_sdaps_array_end_default:
 {
   \tl_gset:Nx \g_sdaps_array_shared_data_tl { \seq_use:Nn \g_sdaps_array_shared_colwidths_seq { ~ } }
   \tl_gset:Nx \g_sdaps_array_stored_data_tl { \seq_use:Nn \g_sdaps_array_stored_colwidths_seq { ~ } }
@@ -304,13 +305,13 @@
   \_sdaps_array_store_colwidths:V \l__sdaps_array_current_name_tl
 }
 
-\cs_new_protected:Nn \_sdaps_array_row_start_default:
+\cs_new_protected_nopar:Nn \_sdaps_array_row_start_default:
 {
   \seq_gclear:N \g_sdaps_array_overhangs_left_seq
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected:Nn \_sdaps_array_row_ltr:nNn
+\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:nNn
 {
   % #1: Token List containing the content for the header cell (which should be
   %     set inside a parbox or similar).

@@ -140,7 +140,7 @@
   checkboxsymbol   .initial:n   = 8,
 }
 
-\cs_new_protected:Nn \_sdaps_pdf_overlay_checkbox_form:
+\cs_new_protected_nopar:Nn \_sdaps_pdf_overlay_checkbox_form:
 {
   \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } { \l_sdaps_parse_unknown_tl } %
 
@@ -153,7 +153,7 @@
 \seq_put_left:Nn \g__sdaps_checkbox_overlays_seq \_sdaps_pdf_overlay_checkbox_form:
 
 
-\cs_new_protected:Nn \_sdaps_pdf_overlay_text_form:
+\cs_new_protected_nopar:Nn \_sdaps_pdf_overlay_text_form:
 {
   \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } { \l_sdaps_parse_unknown_tl } %
 

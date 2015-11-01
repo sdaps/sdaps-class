@@ -159,7 +159,7 @@
   text       .tl_set:N   = \l_sdaps_question_text_tl,
 }
 
-\cs_new_protected:Npn \_sdaps_choicearray_preprocess:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:nn #1#2
 {
   \group_begin:
 
@@ -179,7 +179,7 @@
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_preprocess:nn { Vn }
 
-\cs_new_protected:Npn \_sdaps_choicearray_postprocess:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_postprocess:nn #1#2
 {
   \group_begin:
 
@@ -201,7 +201,7 @@
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_postprocess:nn { Vn }
 
-\cs_new_protected:Npn \_sdaps_choicearray_process_choice:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice:nn #1#2
 {
   \group_begin:
 
@@ -220,7 +220,7 @@
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_process_choice:nn { Vn }
 
-\cs_new_protected:Npn \_sdaps_choicearray_process_question:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_question:nn #1#2
 {
   \group_begin:
 
@@ -252,7 +252,7 @@
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_process_question:nn { Vn }
 
-\cs_new_protected:Nn \_sdaps_choicearray_typeset_horizontal:
+\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_horizontal:
 {
   \group_begin:
 
@@ -298,7 +298,7 @@
   \group_end:
 }
 
-\cs_new_protected:Nn \_sdaps_choicearray_typeset_vertical_int:n
+\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_vertical_int:n
 {
   \seq_map_inline:Nn \g_sdaps_questions_seq {
     \sdaps_context_set:n { ##1 }
@@ -308,7 +308,7 @@
 \cs_generate_variant:Nn \_sdaps_choicearray_typeset_vertical_int:n { f }
 
 
-\cs_new_protected:Nn \_sdaps_choicearray_typeset_vertical:
+\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_vertical:
 {
   \group_begin:
 

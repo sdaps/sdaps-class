@@ -462,7 +462,7 @@
   \sdaps_qobject_begin:nnn { section }{ Head }{ #1 }
 }
 
-\cs_new_protected:Nn \sdaps_classic_ensure_section: {
+\cs_new_protected_nopar:Nn \sdaps_classic_ensure_section: {
   \bool_if:NF \l__sdaps_classic_have_section {
     % This is a bad hack to make the numbering start with zero
     \int_decr:N \g__sdaps_qobject_id_int
@@ -478,7 +478,7 @@
     {\_sdaps_classic_textbox:nnn\c_false_bool}%
     {\_sdaps_classic_textbox:nnn\c_true_bool}%
 }
-\cs_new_protected:Nn\_sdaps_classic_textbox:nnn
+\cs_new_protected_nopar:Nn\_sdaps_classic_textbox:nnn
 {
   \sdaps_classic_ensure_section:
   \question{#3}
@@ -561,7 +561,7 @@
   \sdaps_qobject_end:n { choicequestion }
 }
 
-\cs_new_protected:Nn \_sdaps_classic_line_shipout_add:Nn
+\cs_new_protected_nopar:Nn \_sdaps_classic_line_shipout_add:Nn
 {
   % We have to be in vertical mode at this point.
   \if_mode_vertical:
