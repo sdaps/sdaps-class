@@ -460,7 +460,7 @@
 
       % Set the box into a new box with the correct width which contains fil
       % to center it.
-      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack_clear:N #2 \hfil } }
+      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \box_use:N #2 \hfil } }
 
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
@@ -573,6 +573,7 @@
   % Note that cells are not safe for fragile commands at the moment.
   \_sdaps_sdapsarray_cell:w \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+    \cs_set_eq:NN \\ \cr
 }
 
 \msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
@@ -598,6 +599,8 @@
 \cs_new_nopar:Nn \_sdaps_sdapsarray_linestart: {
   \sdaps_array_assign_rowhead:Nw \l_tmpa_box
     \bgroup
+      \cs_set_eq:NN \\ \cr
+
       \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
       \bgroup
         \group_insert_after:N \_sdaps_sdapsarray_start_cells:
@@ -712,9 +715,11 @@
   \box_if_empty:NTF \l_sdaps_sdapsarray_headers_box {
     \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
       \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+      \cs_set_eq:NN \\ \cr
   } {
     \sdaps_array_assign_cell:Nw \l_tmpa_box \bgroup
       \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+      \cs_set_eq:NN \\ \cr
   }
 }
 
@@ -753,6 +758,7 @@
   % Create next box to store away, this has to be a colhead at this point
   \sdaps_array_assign_colhead:Nw \l_tmpa_box \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+    \cs_set_eq:NN \\ \cr
 }
 
 
@@ -764,6 +770,9 @@
     \IfNoValueF { #1 } {
       \tl_set:Nn \l_tmpa_tl { #1 }
     }
+
+    \box_clear:N \l_tmpa_box
+    \box_clear:N \l_tmpb_box
 
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
@@ -782,6 +791,7 @@
 
       % Two hboxes to hold the content, note that 
       % a: row headers, b: cells/col headers
+      \box_clear:N \l_sdaps_sdapsarray_headers_box
       \box_clear:N \l_sdaps_sdapsarray_boxlist_head_box
       \box_clear:N \l_sdaps_sdapsarray_boxlist_tail_box
 
@@ -793,6 +803,7 @@
         \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
         \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
           \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+          \cs_set_eq:NN \\ \cr
     } {
       \char_set_catcode_active:N &
       \cs_set_eq:NN \sdaps_orig_cr \cr
