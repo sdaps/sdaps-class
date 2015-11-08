@@ -521,12 +521,12 @@
 %
 %    \begin{macrocode}
 
-\cs_new_nopar:Nn \l_sdaps_array_alignment_set_have_content:
+\cs_new_nopar:Nn \l_sdaps_sdapsarray_alignment_set_have_content:
 {
   \bool_set_true:N\l__sdaps_sdapsarray_have_content_bool
 }
 
-\cs_new_nopar:Nn \_sdaps_array_alignment: {
+\cs_new_nopar:Nn \_sdaps_sdapsarray_alignment: {
     % End the last group, which will be the group that was begun earlier.
     % If the earlier cell was the first one, then this egroup also starts the
     % hbox to temporarily store the cells.
@@ -537,10 +537,10 @@
 
   % We need to notify the outside scope that there are items, will be inserted
   % multiple times, but that does not matter.
-  \group_insert_after:N\l_sdaps_array_alignment_set_have_content:
+  \group_insert_after:N\l_sdaps_sdapsarray_alignment_set_have_content:
 
   % Just in case someone leaked a change into our scope
-  \cs_set_eq:NN \cr \_sdaps_array_newline:
+  \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
   \cs_set_eq:NN \\ \cr
 
   % Define a cell now, we can just put everything into a new cell, and that
@@ -569,7 +569,7 @@
     \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
 }
 
-\cs_new_nopar:Nn \_sdaps_array_linestart: {
+\cs_new_nopar:Nn \_sdaps_sdapsarray_linestart: {
   \sdaps_array_rowhead:Nw \l_tmpa_box
     \bgroup
       \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
@@ -578,7 +578,7 @@
         \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
 }
 
-\cs_new_nopar:Nn \_sdaps_array_newline: {
+\cs_new_nopar:Nn \_sdaps_sdapsarray_newline: {
     \egroup
     \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
       \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~a~row }
@@ -593,7 +593,7 @@
   \bool_set_false:N \l__sdaps_sdapsarray_have_content_bool
 
   \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_cell:w
-  \_sdaps_array_linestart:
+  \_sdaps_sdapsarray_linestart:
 }
 
 \cs_new:Npn\sdaps_array_nested_alignenv:w {
@@ -609,8 +609,8 @@
 
 \group_begin:
 \char_set_catcode_active:N &
-\cs_new:Nn \_sdaps_array_define_alignment: {
-  \cs_set_eq:NN & \_sdaps_array_alignment:
+\cs_new:Nn \_sdaps_sdapsarray_define_alignment: {
+  \cs_set_eq:NN & \_sdaps_sdapsarray_alignment:
 }
 \group_end:
 
@@ -627,17 +627,17 @@
 
     \sdaps_array_begin:VV \l_sdaps_sdapsarray_layouter_tl \l_sdaps_sdapsarray_align_tl
 
-    % Note, this environment is *not* fragile; we redefine & to be active.
+    % Note, this environment is fragile; we redefine & to be active.
     \dim_set:Nn \l_tmpa_dim { 0.5\hsize }
     \char_set_catcode_active:N &
     \cs_set_eq:NN \sdaps_orig_cr \cr
     \cs_set_eq:NN \sdaps_orig_backslash \\
-    \cs_set_eq:NN \cr \_sdaps_array_newline:
+    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
     \cs_set_eq:NN \\ \cr
-    \_sdaps_array_define_alignment:
+    \_sdaps_sdapsarray_define_alignment:
 
     \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
-    \_sdaps_array_linestart:
+    \_sdaps_sdapsarray_linestart:
 }
 {
       \egroup
