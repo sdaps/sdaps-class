@@ -451,13 +451,13 @@
 
 \bool_new:N \l__sdaps_classic_have_section
 \bool_set_false:N \l__sdaps_classic_have_section
-\let\origsection\section
+\cs_new_eq:NN\_sdapsclassic_origsection\section
 \renewcommand{\section}[1]{
   \bool_if:NT \l__sdaps_classic_have_section {
     \sdaps_qobject_end:n { section }
   }
 
-  \origsection{#1}
+  \_sdapsclassic_origsection{#1}
   \bool_set_true:N \l__sdaps_classic_have_section
   \sdaps_qobject_begin:nnn { section }{ Head }{ #1 }
 }
@@ -683,7 +683,7 @@
     % Write content into a file, see "verbatim" documentation for more information.
     % TODO: Allow multiple temporary files by postfixing with integer?
     \iow_open:Nn \l__sdaps_questionnaire_iow { \c_job_name_tl . questionnaire }
-    \let\do\@makeother\dospecials
+    \cs_set_eq:NN\do\@makeother\dospecials
     \catcode`\^^M\active
     \def\verbatim@processline{
       \iow_now:Nx \l__sdaps_questionnaire_iow {\the\verbatim@line}
@@ -738,13 +738,18 @@
 {
   \group_begin:
 
-    \let\question\relax
-    \let\choice\relax
+    \question{#2}
+
+    % Undefine the question (and choice) commands in local scope so that they
+    % can be redefined by choicearray without any issues.
+    % Note that \cs_undefine:N works in global scope, so we cannot use it here.
+    \cs_set_eq:NN\question\tex_undefined:D
+    \cs_set_eq:NN\choice\tex_undefined:D
 
     \begin{choicearray}[#1]{#2}
 
-      \let\groupaddchoice\choice
-      \let\choiceline\question
+      \cs_set_eq:NN\groupaddchoice\choice
+      \cs_set_eq:NN\choiceline\question
 }
 {
     \end{choicearray}
