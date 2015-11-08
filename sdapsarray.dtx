@@ -21,7 +21,7 @@
 \ProvidesFile{sdapsarray.dtx}
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%<package>\ProvidesPackage{sdapslayout}
+%<package>\ProvidesPackage{sdapsarray}
 %<*package>
     [2015/04/10 v0.1 Initial version of SDAPS array package]
 %</package>
@@ -59,13 +59,13 @@
 %
 % \changes{v0.1}{2015/01/14}{Initial version}
 %
-% \GetFileInfo{sdapslayout.dtx}
+% \GetFileInfo{sdapsarray.dtx}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 % 
 %
-% \title{The \textsf{sdapslayout} package\thanks{This document
-%   corresponds to \textsf{sdapslayout}~\fileversion, dated \filedate.}}
+% \title{The \textsf{sdapsarray} package\thanks{This document
+%   corresponds to \textsf{sdapsarray}~\fileversion, dated \filedate.}}
 % \author{Benjamin Berg \\ \texttt{benjamin@sipsolutions.net}}
 %
 % \maketitle
@@ -115,30 +115,43 @@
 
 \tl_new:N \g_sdaps_array_shared_data_tl
 \tl_new:N \g_sdaps_array_stored_data_tl
+\tl_new:N \g_sdaps_array_local_data_tl
+\tl_new:N \g_sdaps_array_local_data_new_tl
 \prop_new:N \g__sdaps_array_stored_data_prop
 \prop_new:N \g__sdaps_array_shared_data_prop
+\prop_new:N \g__sdaps_array_local_data_prop
 
-\cs_new_protected_nopar:Nn \_sdaps_array_load_colwidths:n
+\cs_generate_variant:Nn \prop_item:Nn { NV }
+
+\cs_new_protected_nopar:Nn \_sdaps_array_load_data:
 {
-  \tl_gset:Nx \g_sdaps_array_stored_data_tl { \prop_item:Nn \g__sdaps_array_stored_data_prop { #1 } }
-  \tl_gset:Nx \g_sdaps_array_shared_data_tl { \prop_item:Nn \g__sdaps_array_shared_data_prop { #1 } }
+  \tl_gset:Nx \g_sdaps_array_stored_data_tl { \prop_item:NV \g__sdaps_array_stored_data_prop \l__sdaps_array_global_name_tl }
+  \tl_gset:Nx \g_sdaps_array_shared_data_tl { \prop_item:NV \g__sdaps_array_shared_data_prop \l__sdaps_array_global_name_tl }
+  \tl_gset:Nx \g_sdaps_array_local_data_tl { \prop_item:NV \g__sdaps_array_local_data_prop \l__sdaps_array_local_name_tl }
 }
-\cs_generate_variant:Nn \_sdaps_array_load_colwidths:n { V }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_store_colwidths:n
+\cs_new_protected_nopar:Nn \_sdaps_array_store_data:
 {
   % Do not overwrite the "stored" data that we have right now.
-  \prop_gput:NnV \g__sdaps_array_shared_data_prop { #1 } \g_sdaps_array_shared_data_tl
+  \prop_gput:NVV \g__sdaps_array_shared_data_prop \l__sdaps_array_global_name_tl \g_sdaps_array_shared_data_tl
 
-  \immediate\write\@auxout{\exp_not:n{\sdapsarrayloadstoreddata}{#1}{\g_sdaps_array_shared_data_tl}}
+  \immediate\write\@auxout{\exp_not:n{\sdapsarrayloadstoreddata}{\l__sdaps_array_global_name_tl}{\g_sdaps_array_shared_data_tl}}
+  \tl_if_empty:NF \g_sdaps_array_local_data_new_tl {
+    \immediate\write\@auxout{\exp_not:n{\sdapsarrayloadlocaldata}{\l__sdaps_array_local_name_tl}{\g_sdaps_array_local_data_new_tl}}
+  }
 }
-\cs_generate_variant:Nn \_sdaps_array_store_colwidths:n { V }
 
 % Define for loading sdaps code in aux file
 \cs_new_protected_nopar:Nn \sdaps_array_load_stored_data:nn {
   \prop_gput:Nnn \g__sdaps_array_stored_data_prop { #1 } { #2 }
 }
 \cs_new_eq:NN \sdapsarrayloadstoreddata \sdaps_array_load_stored_data:nn
+
+% Define for loading sdaps code in aux file
+\cs_new_protected_nopar:Nn \sdaps_array_load_local_data:nn {
+  \prop_gput:Nnn \g__sdaps_array_local_data_prop { #1 } { #2 }
+}
+\cs_new_eq:NN \sdapsarrayloadlocaldata \sdaps_array_load_local_data:nn
 
 %    \end{macrocode}
 %
@@ -149,20 +162,21 @@
 %    \begin{macrocode}
 
 \int_new:N \g__sdaps_array_current_id_int
-\tl_new:N \l__sdaps_array_current_name_tl
+\tl_new:N \l__sdaps_array_global_name_tl
+\tl_new:N \l__sdaps_array_local_name_tl
 
 \cs_generate_variant:Nn \keys_set:nn { nf }
 \cs_new_protected_nopar:Nn \sdaps_array_begin:nn
 {
+ \tl_set:Nx \l__sdaps_array_local_name_tl { sdapsarray \int_use:N\g__sdaps_array_current_id_int }
+  \int_gincr:N \g__sdaps_array_current_id_int
   \tl_if_empty:NTF { #2 } {
-    \tl_set:Nn \l__sdaps_array_current_name_tl { sdapsarray \g__sdaps_array_current_id_int }
-    \int_ginc:N \g__sdaps_array_current_id_int
+    \tl_set:NV \l__sdaps_array_global_name_tl \l__sdaps_array_local_name_tl
   } {
-    \tl_set:Nn \l__sdaps_array_current_name_tl { #2 }
+    \tl_set:Nx \l__sdaps_array_global_name_tl { #2 }
   }
-  \tl_set:Nx \l__sdaps_array_current_name_tl  { \l__sdaps_array_current_name_tl }
 
-  \_sdaps_array_load_colwidths:V \l__sdaps_array_current_name_tl
+  \_sdaps_array_load_data:
 
   \keys_set:nf { sdaps / array } { \prop_item:Nn \g__sdaps_array_layouter_prop { #1 } }
 
@@ -182,19 +196,24 @@
   \l__sdaps_array_row_start_tl
 }
 
-\cs_new_protected_nopar:Nn \sdaps_array_header:n
+\cs_new_protected_nopar:Npn \sdaps_array_colhead:w
 {
-  \l__sdaps_array_header_tl { #1 }
+  \l__sdaps_array_colhead_tl
 }
 
-\cs_new_protected_nopar:Nn \sdaps_array_cell:n
+\cs_new_protected:Npn \sdaps_array_rowhead:Nw #1
 {
-  \l__sdaps_array_cell_tl { #1 }
+  \l__sdaps_array_rowhead_tl #1
 }
 
-\cs_new_protected_nopar:Nn \sdaps_array_row:nNn
+\cs_new_protected_nopar:Npn \sdaps_array_cell:w
 {
-  \l__sdaps_array_row_tl { #1 } #2 { #3 }
+  \l__sdaps_array_cell_tl
+}
+
+\cs_new_protected_nopar:Nn \sdaps_array_row:NNn
+{
+  \l__sdaps_array_row_tl #1 #2 { #3 }
 }
 
 \cs_new_protected_nopar:Nn \sdaps_array_end:
@@ -210,7 +229,8 @@
 
 \tl_new:N \l__sdaps_array_begin_tl
 \tl_new:N \l__sdaps_array_row_start_tl
-\tl_new:N \l__sdaps_array_header_tl
+\tl_new:N \l__sdaps_array_colhead_tl
+\tl_new:N \l__sdaps_array_rowhead_tl
 \tl_new:N \l__sdaps_array_cell_tl
 \tl_new:N \l__sdaps_array_row_tl
 \tl_new:N \l__sdaps_array_end_tl
@@ -219,7 +239,8 @@
 {
   begin        .tl_set:N   = \l__sdaps_array_begin_tl,
   row_start    .tl_set:N   = \l__sdaps_array_row_start_tl,
-  header       .tl_set:N   = \l__sdaps_array_header_tl,
+  colhead      .tl_set:N   = \l__sdaps_array_colhead_tl,
+  rowhead      .tl_set:N   = \l__sdaps_array_rowhead_tl,
   cell         .tl_set:N   = \l__sdaps_array_cell_tl,
   row          .tl_set:N   = \l__sdaps_array_row_tl,
   end          .tl_set:N   = \l__sdaps_array_end_tl,
@@ -231,46 +252,77 @@
 \seq_new:N \g_sdaps_array_shared_colwidths_seq
 \seq_new:N \g_sdaps_array_stored_colwidths_seq
 
-\cs_new_protected_nopar:Nn \_sdaps_array_cell_default:n
+\cs_new_protected_nopar:Npn \_sdaps_array_rowhead_default:Nw #1
 {
-  % This command has to leave a single non empty box in the input stream that
-  % can be added into an hbox.
-  \hbox:n { \strut #1 }
+  \tl_if_empty:NTF \g_sdaps_array_local_data_tl {
+      \tl_if_empty:NTF \g_sdaps_array_local_data_new_tl {
+        \dim_set:Nn \l_tmpa_dim { 0.5 \hsize }
+      } {
+        \dim_set:Nn \l_tmpa_dim { \g_sdaps_array_local_data_new_tl }
+      }
+  } {
+    \dim_set:Nn \l_tmpa_dim { \g_sdaps_array_local_data_tl }
+  }
+  \vbox_set:Nn #1 \bgroup
+    \raggedleft
+    \hsize=\dim_use:N\l_tmpa_dim
+    % TODO: Insert a strut on the last line somehow?
+    \strut
+    % swallow group opening token, TODO: Ensure it really is an opening brace?
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Npn \_sdaps_array_cell_default:w
+{
   % This is build in reverse order (i.e. same order as it is processed later
   % on when getting the boxes out of the container again in layout_row).
   \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
   \seq_gpush:Nn \g_sdaps_array_overhangs_right_seq { 0pt }
+
+  % This command has to leave a single non empty box in the input stream that
+  % can be added into an hbox.
+  \hbox:n \bgroup
+    \strut
+    \tex_let:D\next=
+}
+
+\cs_new:Nn \_sdaps_array_cell_rotated_end: {
+    \hbox:n {
+      \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
+      \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
+
+      \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
+      \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
+
+      \box_rotate:Nn \l_tmpa_box { 70 }
+
+      \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+      \rlap{
+        \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
+        \box_use:N \l_tmpa_box
+      }
+      \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+
+      \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
+
+      \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
+      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { 0pt } { \l_tmpb_dim - \l_tmpa_dim } }
+
+      \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
+      \seq_gpush:Nx \g_sdaps_array_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
+    }
+
+  \group_end:
 }
 
 % Only sane for header row
-\cs_new_protected_nopar:Nn \_sdaps_array_cell_rotated:n
+\cs_new_protected_nopar:Npn \_sdaps_array_cell_rotated:w
 {
-  \hbox:n {
-    \hbox_set:Nn \l_tmpa_box { \strut #1 }
-
-    \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
-    \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
-
-    \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
-    \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
-
-    \box_rotate:Nn \l_tmpa_box { 70 }
-
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-    \rlap{
-      \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
-      \box_use:N \l_tmpa_box
-    }
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-
-    \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
-
-    \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
-    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { 0pt } { \l_tmpb_dim - \l_tmpa_dim } }
-
-    \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
-    \seq_gpush:Nx \g_sdaps_array_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
-  }
+  \group_begin:
+    \tex_setbox:D \l_tmpa_box \tex_hbox:D
+    \bgroup \strut
+    \group_insert_after:N \_sdaps_array_cell_rotated_end:
+    \tex_let:D\next=
 }
 
 % XXX: A parbox layouter with fixed width would be nice
@@ -302,7 +354,7 @@
   \seq_gclear:N \g_sdaps_array_shared_colwidths_seq
   \seq_gclear:N \g_sdaps_array_stored_colwidths_seq
 
-  \_sdaps_array_store_colwidths:V \l__sdaps_array_current_name_tl
+  \_sdaps_array_store_data:
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_array_row_start_default:
@@ -311,7 +363,7 @@
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:nNn
+\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNn
 {
   % #1: Token List containing the content for the header cell (which should be
   %     set inside a parbox or similar).
@@ -328,7 +380,7 @@
   \seq_gclear:N \g_tmpa_seq
 
   % Insert the boxes
-  \hbox_set:Nn \l_tmpa_box {
+  \hbox_set:Nn #2 {
     \hbox_unpack:N #2
 
     % Handle the overhang, note that we modify the \g_sdaps_array_overhangs_right_seq locally only!
@@ -361,8 +413,8 @@
     \hcoffin_set:Nn \l_tmpa_coffin { \skip_horizontal:n { \l_tmpa_dim - 1em } }
 
     % Now grab the first of the cells, and then loop over the rest
-    \box_set_to_last:N \l_tmpa_box
-    \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box } {
+    \box_set_to_last:N #2
+    \bool_do_while:nn { ! \box_if_empty_p:N #2 } {
       % Pop the target width for the current box (i.e. we don't globally
       % modify the clist here).
       \seq_gpop:NNTF \g_sdaps_array_shared_colwidths_seq \l_tmpa_tl {
@@ -371,7 +423,7 @@
         \dim_set:Nn \l_tmpa_dim { 0pt }
       }
       % Calculate the maximum width of current and previous items
-      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \box_wd:N \l_tmpa_box } { \l_tmpa_dim } }
+      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \box_wd:N #2 } { \l_tmpa_dim } }
 
 
       % MAX with stored values (NOTE: sequence only modified in local scope)
@@ -387,7 +439,7 @@
 
       % Set the box into a new box with the correct width which contains fil
       % to center it.
-      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack_clear:N \l_tmpa_box \hfil } }
+      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack_clear:N #2 \hfil } }
 
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
@@ -395,14 +447,14 @@
       \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
 
       % Grab next cell
-      \box_set_to_last:N \l_tmpa_box
+      \box_set_to_last:N #2
     }
 
     % Get the coffin out of the nested scope by placing it into the box and
     % placing that into it again ...
     \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
   }
-  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N \l_tmpa_box }
+  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N #2 }
 
   \seq_gconcat:NNN \g_sdaps_array_shared_colwidths_seq \g_tmpa_seq \g_sdaps_array_shared_colwidths_seq
   \seq_gclear:N \g_tmpa_seq
@@ -410,7 +462,9 @@
   % Calculate the space that is left for the header column
   \dim_set:Nn \l_tmpa_dim { #3 }
   \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 1em }
-  \hcoffin_set:Nn \l_tmpb_coffin { \parbox[t][][t] { \dim_use:N \l_tmpa_dim } { \raggedleft \strut #1 } }
+  \tl_set:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
+
+  \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \box_use:N #1 } }
   \coffin_join:NnnNnnnn \l_tmpa_coffin { vc } { l } \l_tmpb_coffin { vc } { r } { -1em } { 0pt }
 
   \hbox { \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt } }
@@ -420,9 +474,10 @@
 \prop_gput:Nnn \g__sdaps_array_layouter_prop { default } {
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
-  header = { \_sdaps_array_cell_default:n },
-  cell = { \_sdaps_array_cell_default:n },
-  row = { \_sdaps_array_row_ltr:nNn },
+  rowhead = { \_sdaps_array_rowhead_default:Nw },
+  colhead = { \_sdaps_array_cell_default:w },
+  cell = { \_sdaps_array_cell_default:w },
+  row = { \_sdaps_array_row_ltr:NNn },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -430,11 +485,180 @@
 \prop_gput:Nnn \g__sdaps_array_layouter_prop { rotated } {
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
-  header = { \_sdaps_array_cell_rotated:n },
-  cell = { \_sdaps_array_cell_default:n },
-  row = { \_sdaps_array_row_ltr:nNn },
+  rowhead = { \_sdaps_array_rowhead_default:Nw },
+  colhead = { \_sdaps_array_cell_rotated:w },
+  cell = { \_sdaps_array_cell_default:w },
+  row = { \_sdaps_array_row_ltr:NNn },
   end = { \_sdaps_array_end_default: },
 }
+
+%    \end{macrocode}
+%
+% \subsection{Exporting a tabular/array like environment}
+%
+% \subsubsection{Helper required for the environment}
+%
+%    \begin{macrocode}
+
+\bool_new:N \l__sdaps_sdapsarray_in_top_group_bool
+\bool_new:N \l__sdaps_sdapsarray_have_content_bool
+\tl_new:N \l_sdaps_sdapsarray_layouter_tl
+\tl_new:N \l_sdaps_sdapsarray_align_tl
+\box_new:N \l__sdaps_sdapsarray_roheaders_box
+
+\keys_define:nn { sdaps / sdapsarray }
+{
+  layouter   .tl_set:N   = \l_sdaps_sdapsarray_layouter_tl,
+  layouter   .initial:n  = default,
+  align      .tl_set:N   = \l_sdaps_sdapsarray_align_tl,
+  align      .initial:n  = { },
+}
+
+
+%    \end{macrocode}
+%
+% \subsubsection{Environment definition}
+%
+%    \begin{macrocode}
+
+\cs_new_nopar:Nn \l_sdaps_array_alignment_set_have_content:
+{
+  \bool_set_true:N\l__sdaps_sdapsarray_have_content_bool
+}
+
+\cs_new_nopar:Nn \_sdaps_array_alignment: {
+    % End the last group, which will be the group that was begun earlier.
+    % If the earlier cell was the first one, then this egroup also starts the
+    % hbox to temporarily store the cells.
+  \egroup
+  \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+    \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { an~alignment~tab }
+  }
+
+  % We need to notify the outside scope that there are items, will be inserted
+  % multiple times, but that does not matter.
+  \group_insert_after:N\l_sdaps_array_alignment_set_have_content:
+
+  % Just in case someone leaked a change into our scope
+  \cs_set_eq:NN \cr \_sdaps_array_newline:
+  \cs_set_eq:NN \\ \cr
+
+  % Define a cell now, we can just put everything into a new cell, and that
+  % should work fine.
+  % Note that cells are not safe for fragile commands at the moment.
+  \_sdaps_sdapsarray_cell:w \bgroup
+    \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+}
+
+\msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
+
+\cs_new:Nn \_sdaps_sdapsarray_start_cells: {
+    \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+      \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~a~row~header }
+    }
+  \egroup
+
+  % We are in the environment scope again here
+
+  % Notify code that we are going to generate cells for a new row.
+  \sdaps_array_row_start:
+
+  % Start an hbox to stow away the cells.
+  % The rest of the setup happens in the alignment handler
+  \hbox_set:Nn \l_tmpb_box \bgroup
+    \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
+}
+
+\cs_new_nopar:Nn \_sdaps_array_linestart: {
+  \sdaps_array_rowhead:Nw \l_tmpa_box
+    \bgroup
+      \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
+      \bgroup
+        \group_insert_after:N \_sdaps_sdapsarray_start_cells:
+        \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+}
+
+\cs_new_nopar:Nn \_sdaps_array_newline: {
+    \egroup
+    \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+      \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~a~row }
+    }
+  \egroup
+
+  % We are in the environment scope again here
+  % Output the last line if the cells were non-empty.
+  \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
+    \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+  }
+  \bool_set_false:N \l__sdaps_sdapsarray_have_content_bool
+
+  \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_cell:w
+  \_sdaps_array_linestart:
+}
+
+\cs_new:Npn\sdaps_array_nested_alignenv:w {
+  \bgroup
+    \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+    \char_set_catcode_alignment:N &
+    \cs_set_eq:NN \cr \sdaps_orig_cr
+    \cs_set_eq:NN \\ \sdaps_orig_backslash
+    % Eat next token using plain TeX
+    \tex_let:D\next=
+}
+\cs_new_eq:NN \sdapsnested \sdaps_array_nested_alignenv:w
+
+\group_begin:
+\char_set_catcode_active:N &
+\cs_new:Nn \_sdaps_array_define_alignment: {
+  \cs_set_eq:NN & \_sdaps_array_alignment:
+}
+\group_end:
+
+\NewDocumentEnvironment { sdapsarray } { o }
+{
+  \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+  \group_begin:
+    \tl_set:Nn \l_tmpa_tl { }
+    \IfNoValueF { #1 } {
+      \tl_set:Nn \l_tmpa_tl { #1 }
+    }
+
+    \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
+
+    \sdaps_array_begin:VV \l_sdaps_sdapsarray_layouter_tl \l_sdaps_sdapsarray_align_tl
+
+    % Note, this environment is *not* fragile; we redefine & to be active.
+    \dim_set:Nn \l_tmpa_dim { 0.5\hsize }
+    \char_set_catcode_active:N &
+    \cs_set_eq:NN \sdaps_orig_cr \cr
+    \cs_set_eq:NN \sdaps_orig_backslash \\
+    \cs_set_eq:NN \cr \_sdaps_array_newline:
+    \cs_set_eq:NN \\ \cr
+    \_sdaps_array_define_alignment:
+
+    \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
+    \_sdaps_array_linestart:
+}
+{
+      \egroup
+
+      \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+        \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~the~environment }
+      }
+    \egroup
+
+    % We are in the environment scope again here
+    % Output the last line if the cells were non-empty.
+    \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
+      \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+    }
+
+    \sdaps_array_end:
+
+  \group_end:
+}
+
+
 
 
 \ExplSyntaxOff

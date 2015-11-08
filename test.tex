@@ -49,6 +49,20 @@
 
 \begin{Form}
 
+
+\begin{sdapsarray}[layouter=rotated]
+% blub & asdf & blubber  \cr
+% asdf & \\
+ huhu & asdf & blubbbbbber \\
+ \sdapsnested{\begin{tabular}{ll}
+a & b \\ c & d
+ \end{tabular} }
+ & a & b \\
+ huhu & a &  \sdapsnested{\begin{tabular}{ll}
+a & b \\ c & d
+ \end{tabular} } \\
+\end{sdapsarray}
+
 %\MakeCheckField{3.5mm}{3.5mm}
 %\CheckBox[radio=true,bordercolor=0 0 0,checkboxsymbol=H]{field}
 %\CheckBox[radio=true,bordercolor=0 0 0,checkboxsymbol=H,value=true]{asdfb}

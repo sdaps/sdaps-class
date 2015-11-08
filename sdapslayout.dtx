@@ -266,15 +266,15 @@
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_choices_seq {
 
-        \sdaps_array_header:n { ##1 }
+        \sdaps_array_colhead:w { ##1 }
       }
     }
-    \sdaps_array_row:nNn { } \l_tmpa_box { \linewidth }
+    \sdaps_array_row:NNn \c_empty_box \l_tmpa_box { \linewidth }
 
     % Store each row as a token list
     \tl_clear:N \l_tmpa_tl
     \seq_map_inline:Nn \g_sdaps_choices_var_seq {
-      \tl_put_right:Nn \l_tmpa_tl { \sdaps_array_cell:n { \sdaps_checkbox:nn { ##1 } { } } }
+      \tl_put_right:Nn \l_tmpa_tl { \sdaps_array_cell:w { \sdaps_checkbox:nn { ##1 } { } } }
     }
 
     % And the "data" rows
@@ -290,7 +290,8 @@
 
       \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
 
-      \sdaps_array_row:nNn { \tl_use:N \l__sdaps_tmpa_tl } \l_tmpa_box \linewidth
+      \sdaps_array_rowhead:Nw \l_tmpb_box { \tl_use:N \l__sdaps_tmpa_tl }
+      \sdaps_array_row:NNn \l_tmpb_box \l_tmpa_box \linewidth
     }
 
   \sdaps_array_end:
@@ -302,7 +303,7 @@
 {
   \seq_map_inline:Nn \g_sdaps_questions_seq {
     \sdaps_context_set:n { ##1 }
-    \sdaps_array_cell:n { \sdaps_checkbox:nn{#1}{} }
+    \sdaps_array_cell:w { \sdaps_checkbox:nn{#1}{} }
   }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_typeset_vertical_int:n { f }
@@ -322,10 +323,10 @@
     \hbox_set:Nn \l_tmpa_box {
       \seq_map_inline:Nn \g_sdaps_questions_text_seq {
 
-        \sdaps_array_header:n { ##1 }
+        \sdaps_array_colhead:w { ##1 }
       }
     }
-    \sdaps_array_row:nNn { } \l_tmpa_box \linewidth
+    \sdaps_array_row:NNn \c_empty_box \l_tmpa_box \linewidth
 
 
     \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
@@ -337,8 +338,9 @@
         \_sdaps_choicearray_typeset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
       }
 
-      \sdaps_array_row:nNn
-        { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
+      \sdaps_array_rowhead:Nw \l_tmpb_box { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
+      \sdaps_array_row:NNn
+        \l_tmpb_box
         \l_tmpa_box
         { \linewidth }
     }
@@ -347,6 +349,20 @@
 
   \group_end:
 }
+
+%
+%    \end{macrocode}
+%
+%
+% \subsection{Range Question Layout}
+%
+% \subsubsection{Range Question Matrix Layout}
+%
+% The following macros provide the functionality to layout range/option
+% questions in a matrix like fashion.
+%
+%    \begin{macrocode}
+
 
 %
 %    \end{macrocode}
