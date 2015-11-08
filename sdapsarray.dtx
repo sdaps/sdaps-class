@@ -196,19 +196,48 @@
   \l__sdaps_array_row_start_tl
 }
 
-\cs_new_protected_nopar:Npn \sdaps_array_colhead:w
-{
-  \l__sdaps_array_colhead_tl
+\cs_new_protected_nopar:Nn \_sdaps_array_assign_use: {
+    \box_use:N \l_tmpa_box
+  \egroup
 }
 
-\cs_new_protected:Npn \sdaps_array_rowhead:Nw #1
+\cs_new_protected_nopar:Npn \sdaps_array_assign_colhead:Nw #1
+{
+  \l__sdaps_array_colhead_tl #1
+}
+
+\cs_new_protected_nopar:Npn \sdaps_array_colhead:w
+{
+  \bgroup
+    \l__sdaps_array_colhead_tl \l_tmpa_box \bgroup
+    \group_insert_after:N\_sdaps_array_assign_use:
+    \tex_let:D\next=
+}
+
+\cs_new_protected:Npn \sdaps_array_assign_rowhead:Nw #1
 {
   \l__sdaps_array_rowhead_tl #1
 }
 
+\cs_new_protected:Npn \sdaps_array_rowhead:w
+{
+  \bgroup
+    \l__sdaps_array_rowhead_tl \l_tmpa_box \bgroup
+    \group_insert_after:N\_sdaps_array_assign_use:
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Npn \sdaps_array_assign_cell:Nw #1
+{
+  \l__sdaps_array_cell_tl #1
+}
+
 \cs_new_protected_nopar:Npn \sdaps_array_cell:w
 {
-  \l__sdaps_array_cell_tl
+  \bgroup
+    \l__sdaps_array_cell_tl \l_tmpa_box \bgroup
+    \group_insert_after:N\_sdaps_array_assign_use:
+    \tex_let:D\next=
 }
 
 \cs_new_protected_nopar:Nn \sdaps_array_row:NNn
@@ -272,54 +301,46 @@
     \tex_let:D\next=
 }
 
-\cs_new_protected_nopar:Npn \_sdaps_array_cell_default:w
+\cs_new_protected_nopar:Npn \_sdaps_array_cell_default:Nw #1
 {
-  % This is build in reverse order (i.e. same order as it is processed later
-  % on when getting the boxes out of the container again in layout_row).
-  \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
-  \seq_gpush:Nn \g_sdaps_array_overhangs_right_seq { 0pt }
-
   % This command has to leave a single non empty box in the input stream that
   % can be added into an hbox.
-  \hbox:n \bgroup
+  \hbox_set:Nn #1 \bgroup
     \strut
     \tex_let:D\next=
 }
 
 \cs_new:Nn \_sdaps_array_cell_rotated_end: {
-    \hbox:n {
-      \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
-      \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
+    \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
+    \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
 
-      \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
-      \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
+    \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
+    \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
 
-      \box_rotate:Nn \l_tmpa_box { 70 }
+    \box_rotate:Nn \l_tmpa_box { 70 }
 
-      \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-      \rlap{
-        \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
-        \box_use:N \l_tmpa_box
-      }
-      \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-
-      \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
-
-      \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
-      \dim_set:Nn \l_tmpa_dim { \dim_max:nn { 0pt } { \l_tmpb_dim - \l_tmpa_dim } }
-
-      \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
-      \seq_gpush:Nx \g_sdaps_array_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
+    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+    \rlap{
+      \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
+      \box_use:N \l_tmpa_box
     }
+    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
 
-  \group_end:
+    \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
+
+    \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
+    \dim_set:Nn \l_tmpa_dim { \dim_max:nn { 0pt } { \l_tmpb_dim - \l_tmpa_dim } }
+
+    \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
+    \seq_gpush:Nx \g_sdaps_array_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
+  \egroup
 }
 
 % Only sane for header row
-\cs_new_protected_nopar:Npn \_sdaps_array_cell_rotated:w
+\cs_new_protected_nopar:Npn \_sdaps_array_cell_rotated:Nw #1
 {
-  \group_begin:
-    \tex_setbox:D \l_tmpa_box \tex_hbox:D
+  \hbox_set:Nn #1 \bgroup
+    \hbox_set:Nn \l_tmpa_box
     \bgroup \strut
     \group_insert_after:N \_sdaps_array_cell_rotated_end:
     \tex_let:D\next=
@@ -462,7 +483,7 @@
   % Calculate the space that is left for the header column
   \dim_set:Nn \l_tmpa_dim { #3 }
   \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 1em }
-  \tl_set:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
+  \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
   \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \box_use:N #1 } }
   \coffin_join:NnnNnnnn \l_tmpa_coffin { vc } { l } \l_tmpb_coffin { vc } { r } { -1em } { 0pt }
@@ -475,8 +496,8 @@
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
   rowhead = { \_sdaps_array_rowhead_default:Nw },
-  colhead = { \_sdaps_array_cell_default:w },
-  cell = { \_sdaps_array_cell_default:w },
+  colhead = { \_sdaps_array_cell_default:Nw },
+  cell = { \_sdaps_array_cell_default:Nw },
   row = { \_sdaps_array_row_ltr:NNn },
   end = { \_sdaps_array_end_default: },
 }
@@ -486,8 +507,8 @@
   begin = { \_sdaps_array_begin_default: },
   row_start = { \_sdaps_array_row_start_default: },
   rowhead = { \_sdaps_array_rowhead_default:Nw },
-  colhead = { \_sdaps_array_cell_rotated:w },
-  cell = { \_sdaps_array_cell_default:w },
+  colhead = { \_sdaps_array_cell_rotated:Nw },
+  cell = { \_sdaps_array_cell_default:Nw },
   row = { \_sdaps_array_row_ltr:NNn },
   end = { \_sdaps_array_end_default: },
 }
@@ -502,12 +523,16 @@
 
 \bool_new:N \l__sdaps_sdapsarray_in_top_group_bool
 \bool_new:N \l__sdaps_sdapsarray_have_content_bool
+\bool_new:N \l_sdaps_sdapsarray_flip_bool
 \tl_new:N \l_sdaps_sdapsarray_layouter_tl
 \tl_new:N \l_sdaps_sdapsarray_align_tl
 \box_new:N \l__sdaps_sdapsarray_roheaders_box
 
 \keys_define:nn { sdaps / sdapsarray }
 {
+  flip       .bool_set:N   = \l_sdaps_sdapsarray_flip_bool,
+  flip       .initial:n  = false,
+  flip       .default:n  = true,
   layouter   .tl_set:N   = \l_sdaps_sdapsarray_layouter_tl,
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_sdapsarray_align_tl,
@@ -551,6 +576,7 @@
 }
 
 \msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
+\msg_new:nnn { sdapsarray } { unequal_cols } { The~number~of~columns~is~not~equal~for~all~rows. }
 
 \cs_new:Nn \_sdaps_sdapsarray_start_cells: {
     \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
@@ -570,7 +596,7 @@
 }
 
 \cs_new_nopar:Nn \_sdaps_sdapsarray_linestart: {
-  \sdaps_array_rowhead:Nw \l_tmpa_box
+  \sdaps_array_assign_rowhead:Nw \l_tmpa_box
     \bgroup
       \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
       \bgroup
@@ -612,7 +638,123 @@
 \cs_new:Nn \_sdaps_sdapsarray_define_alignment: {
   \cs_set_eq:NN & \_sdaps_sdapsarray_alignment:
 }
+\cs_new:Nn \_sdaps_sdapsarray_define_alignment_flip: {
+  \cs_set_eq:NN & \_sdaps_sdapsarray_alignment_flip:
+}
 \group_end:
+
+%%%%%%
+% Flipping environment
+%%%%%%
+
+% First some helpers
+
+\box_new:N \l_sdaps_sdapsarray_headers_box
+\box_new:N \l_sdaps_sdapsarray_boxlist_head_box
+\box_new:N \l_sdaps_sdapsarray_boxlist_tail_box
+
+\cs_new_protected:Nn \_sdaps_sdapsarray_prepend_box:NN {
+  \hbox_set:Nn #2 {
+    \box_use:N #1
+    \hbox_unpack:N #2
+  }
+  \box_clear:N #1
+}
+
+\cs_new_protected:Nn \_sdaps_sdapsarray_append_box:NN {
+  \hbox_set:Nn #2 {
+    \hbox_unpack:N #2
+    \box_use:N #1
+  }
+  \box_clear:N #1
+}
+
+\cs_new_protected:Nn \_sdaps_sdapsarray_pop_last_box:NN {
+  \hbox_set:Nn #2 {
+    \hbox_unpack:N #2
+    \box_gset_to_last:N \g_tmpa_box
+  }
+  \box_set_eq:NN #1 \g_tmpa_box
+  \box_gclear:N \g_tmpa_box
+}
+
+\cs_new_protected:Nn \_sdaps_sdapsarray_boxlist_void_if_empty:N {
+  \hbox_set:Nn #1 {
+    \hbox_unpack:N #1
+    \box_set_to_last:N #1
+    \box_if_empty:NTF #1 {
+      \bool_gset_true:N \g_tmpa_bool
+    } {
+      \box_use:N #1
+      \bool_gset_false:N \g_tmpa_bool
+    }
+  }
+  \bool_if:NT \g_tmpa_bool {
+    \box_clear:N #1
+  }
+}
+
+% Lets say we are in row 4, cell 2 as defined in the environment, so the actual
+% position is 2, 4. Minus the row headers, this gives us 2, 3.
+% This means we need to append the cell to the box 3rd last box.
+% In that case we have to append the cell
+
+\cs_new_protected_nopar:Nn \_sdaps_sdapsarray_alignment_flip:
+{
+  \_sdaps_sdapsarray_end_cell_flip:
+
+  % Just in case someone leaked a change into our scope
+  \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
+  \cs_set_eq:NN \\ \cr
+
+  % Next up is either a cell or a row header. We can figure that out by checking
+  % that the row headings box is void
+  \box_if_empty:NTF \l_sdaps_sdapsarray_headers_box {
+    \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
+      \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+  } {
+    \sdaps_array_assign_cell:Nw \l_tmpa_box \bgroup
+      \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+  }
+}
+
+\cs_new_nopar:Nn \_sdaps_sdapsarray_end_cell_flip: {
+  \egroup % Finish of the cell
+  \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+    \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { end~of~cell~or~row }
+  }
+
+  % Get last box from head
+  \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
+  % Append the new box to the list of boxes for this row
+  \_sdaps_sdapsarray_append_box:NN \l_tmpa_box \l_tmpb_box
+  % Prepend the new box to the tail
+  \_sdaps_sdapsarray_prepend_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_tail_box
+}
+
+\cs_new_nopar:Nn \_sdaps_sdapsarray_newline_flip: {
+  \_sdaps_sdapsarray_end_cell_flip:
+
+  % At the end of the line, move tail into head.
+  % First check that head is empty.
+  \_sdaps_sdapsarray_boxlist_void_if_empty:N \l_sdaps_sdapsarray_boxlist_head_box
+  \box_if_empty:NF \l_sdaps_sdapsarray_boxlist_head_box {
+    \msg_error:nn { sdapsarray } { unequal_cols }
+  }
+  \box_set_eq:NN \l_sdaps_sdapsarray_boxlist_head_box \l_sdaps_sdapsarray_boxlist_tail_box
+  \box_clear:N \l_sdaps_sdapsarray_boxlist_tail_box
+
+  % If this was the first row, store it away, these are the headings.
+  \box_if_empty:NT \l_sdaps_sdapsarray_headers_box {
+    \box_set_eq:NN \l_sdaps_sdapsarray_headers_box \l_sdaps_sdapsarray_boxlist_head_box
+    \box_clear:N \l_sdaps_sdapsarray_boxlist_head_box
+  }
+
+  % Create next box to store away, this has to be a colhead at this point
+  \sdaps_array_assign_colhead:Nw \l_tmpa_box \bgroup
+    \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+}
+
 
 \NewDocumentEnvironment { sdapsarray } { o }
 {
@@ -628,29 +770,84 @@
     \sdaps_array_begin:VV \l_sdaps_sdapsarray_layouter_tl \l_sdaps_sdapsarray_align_tl
 
     % Note, this environment is fragile; we redefine & to be active.
-    \dim_set:Nn \l_tmpa_dim { 0.5\hsize }
-    \char_set_catcode_active:N &
-    \cs_set_eq:NN \sdaps_orig_cr \cr
-    \cs_set_eq:NN \sdaps_orig_backslash \\
-    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
-    \cs_set_eq:NN \\ \cr
-    \_sdaps_sdapsarray_define_alignment:
+    % One can go back into normal mode by using \sdapsnested{} though.
 
-    \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
-    \_sdaps_sdapsarray_linestart:
+    \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {
+      \char_set_catcode_active:N &
+      \cs_set_eq:NN \sdaps_orig_cr \cr
+      \cs_set_eq:NN \sdaps_orig_backslash \\
+      \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
+      \cs_set_eq:NN \\ \cr
+      \_sdaps_sdapsarray_define_alignment_flip:
+
+      % Two hboxes to hold the content, note that 
+      % a: row headers, b: cells/col headers
+      \box_clear:N \l_sdaps_sdapsarray_boxlist_head_box
+      \box_clear:N \l_sdaps_sdapsarray_boxlist_tail_box
+
+      % not sure why we need this group, but nothing works without it
+      \bgroup
+        % This is a bit creative to say the least
+        \sdaps_array_row_start:
+
+        \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
+        \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
+          \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+    } {
+      \char_set_catcode_active:N &
+      \cs_set_eq:NN \sdaps_orig_cr \cr
+      \cs_set_eq:NN \sdaps_orig_backslash \\
+      \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
+      \cs_set_eq:NN \\ \cr
+      \_sdaps_sdapsarray_define_alignment:
+
+      \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
+      \_sdaps_sdapsarray_linestart:
+    }
 }
 {
+    \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {
+        \egroup
+        \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+          \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { end~of~cell~or~row }
+        }
+
+        % if tail is void then we just started a new line, discard the box and
+        % assume it is is effectively empty, i.e. don't do anything.
+        % Otherwise, if head is not void, end the current line.
+        \box_if_empty:NF \l_sdaps_sdapsarray_boxlist_tail_box {
+          \bgroup
+          \_sdaps_sdapsarray_newline_flip:
+          \egroup
+        }
+
+        % Now we can have fun!
+        % Pop cells and heading, until we cannot find any new ones.
+        \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
+        \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
+        \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box || ! \box_if_empty_p:N \l_tmpb_box } {
+          \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+
+          \sdaps_array_row_start:
+
+          \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
+          \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
+        }
+
+      \egroup
+    } {
+        \egroup
+
+        \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
+          \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~the~environment }
+        }
       \egroup
 
-      \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
-        \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { the~end~of~the~environment }
+      % We are in the environment scope again here
+      % Output the last line if the cells were non-empty.
+      \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
+        \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
       }
-    \egroup
-
-    % We are in the environment scope again here
-    % Output the last line if the cells were non-empty.
-    \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
-      \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
     }
 
     \sdaps_array_end:

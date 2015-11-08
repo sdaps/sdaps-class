@@ -290,7 +290,7 @@
 
       \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
 
-      \sdaps_array_rowhead:Nw \l_tmpb_box { \tl_use:N \l__sdaps_tmpa_tl }
+      \sdaps_array_assign_rowhead:Nw \l_tmpb_box { \tl_use:N \l__sdaps_tmpa_tl }
       \sdaps_array_row:NNn \l_tmpb_box \l_tmpa_box \linewidth
     }
 
@@ -338,7 +338,7 @@
         \_sdaps_choicearray_typeset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
       }
 
-      \sdaps_array_rowhead:Nw \l_tmpb_box { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
+      \sdaps_array_assign_rowhead:Nw \l_tmpb_box { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
       \sdaps_array_row:NNn
         \l_tmpb_box
         \l_tmpa_box
