@@ -527,6 +527,7 @@
 \tl_new:N \l_sdaps_sdapsarray_layouter_tl
 \tl_new:N \l_sdaps_sdapsarray_align_tl
 \box_new:N \l__sdaps_sdapsarray_roheaders_box
+\bool_new:N \l_sdaps_sdapsarray_keepenv_bool
 
 \keys_define:nn { sdaps / sdapsarray }
 {
@@ -537,6 +538,9 @@
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_sdapsarray_align_tl,
   align      .initial:n  = { },
+  keepenv    .bool_set:N   = \l_sdaps_sdapsarray_keepenv_bool,
+  keepenv    .initial:n  = false,
+  keepenv    .default:n  = true,
 }
 
 
@@ -638,11 +642,15 @@
 
 \group_begin:
 \char_set_catcode_active:N &
-\cs_new:Nn \_sdaps_sdapsarray_define_alignment: {
-  \cs_set_eq:NN & \_sdaps_sdapsarray_alignment:
-}
-\cs_new:Nn \_sdaps_sdapsarray_define_alignment_flip: {
-  \cs_set_eq:NN & \_sdaps_sdapsarray_alignment_flip:
+\cs_new:Nn \_sdaps_sdapsarray_defines: {
+  \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
+    \char_set_catcode_active:N &
+    \cs_set_eq:NN \sdaps_orig_cr \cr
+    \cs_set_eq:NN \sdaps_orig_backslash \\
+    \cs_set_eq:NN \cr \sdaps_array_newline:
+    \cs_set_eq:NN \\ \cr
+    \cs_set_eq:NN & \sdaps_array_alignment:
+  }
 }
 \group_end:
 
@@ -782,12 +790,10 @@
     % One can go back into normal mode by using \sdapsnested{} though.
 
     \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {
-      \char_set_catcode_active:N &
-      \cs_set_eq:NN \sdaps_orig_cr \cr
-      \cs_set_eq:NN \sdaps_orig_backslash \\
-      \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
-      \cs_set_eq:NN \\ \cr
-      \_sdaps_sdapsarray_define_alignment_flip:
+      \cs_set_eq:NN \sdaps_array_newline: \_sdaps_sdapsarray_newline_flip:
+      \cs_set_eq:NN \sdaps_array_alignment: \_sdaps_sdapsarray_alignment_flip:
+
+      \_sdaps_sdapsarray_defines:
 
       % Two hboxes to hold the content, note that 
       % a: row headers, b: cells/col headers
@@ -805,12 +811,9 @@
           \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
           \cs_set_eq:NN \\ \cr
     } {
-      \char_set_catcode_active:N &
-      \cs_set_eq:NN \sdaps_orig_cr \cr
-      \cs_set_eq:NN \sdaps_orig_backslash \\
-      \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
-      \cs_set_eq:NN \\ \cr
-      \_sdaps_sdapsarray_define_alignment:
+      \cs_set_eq:NN \sdaps_array_newline: \_sdaps_sdapsarray_newline:
+      \cs_set_eq:NN \sdaps_array_alignment: \_sdaps_sdapsarray_alignment:
+      \_sdaps_sdapsarray_defines:
 
       \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
       \_sdaps_sdapsarray_linestart:
