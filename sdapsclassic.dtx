@@ -747,11 +747,15 @@
     \cs_set_eq:NN\choice\tex_undefined:D
 
     \begin{choicearray}[#1]{#2}
-
-      \cs_set_eq:NN\groupaddchoice\choice
-      \cs_set_eq:NN\choiceline\question
+      % XXX: This is a bit of a hack, set in global scope because the choicearray
+      %      environment does evil things with scopes.
+      \cs_gset_eq:NN\groupaddchoice\choice
+      \cs_gset_eq:NN\choiceline\question
 }
 {
+      \cs_gset_eq:NN\groupaddchoice\undefined
+      \cs_gset_eq:NN\choiceline\undefined
+
     \end{choicearray}
   \group_end:
 }
