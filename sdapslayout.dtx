@@ -126,7 +126,6 @@
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
 \tl_new:N \l_sdaps_question_text_tl
-\seq_new:N \g_sdaps_choices_seq
 \seq_new:N \g_sdaps_choices_var_seq
 \seq_new:N \g_sdaps_choices_text_seq
 \seq_new:N \g_sdaps_questions_seq
@@ -161,194 +160,93 @@
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:nn #1#2
 {
-  \group_begin:
+  \keys_set:nn { sdaps / choicearray } { #1 }
 
-    \keys_set:nn { sdaps / choicearray } { #1 }
+  \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
+    \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
+  } {
+    \sdaps_qobject_begin:nnV { choicearray } { Head } \l_sdaps_choicearray_text_tl
+  }
 
-   \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
-     \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
-    } {
-     \sdaps_qobject_begin:nnV { choicearray } { Head } \l_sdaps_choicearray_text_tl
-    }
-
-   \tl_if_empty:NF \l_sdaps_choicearray_var_tl {
-     \sdaps_context_append:nVn { var } \l_sdaps_choicearray_var_tl { _ }
-    }
-
-  \group_end:
+  \tl_if_empty:NF \l_sdaps_choicearray_var_tl {
+    \sdaps_context_append:nVn { var } \l_sdaps_choicearray_var_tl { _ }
+  }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_preprocess:nn { Vn }
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_postprocess:nn #1#2
 {
-  \group_begin:
-
-    \keys_set:nn { sdaps / choicearray } { #1 }
-
-    \if_mode_horizontal:
-      \tex_par:D
-    \fi:
-
-    \bool_if:NTF \l_sdaps_choicearray_horizontal_bool {
-      \_sdaps_choicearray_typeset_horizontal:
-    } {
-      \_sdaps_choicearray_typeset_vertical:
-    }
-
-   \sdaps_qobject_end:n { choicearray }
-
-  \group_end:
+  \sdaps_qobject_end:n { choicearray }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_postprocess:nn { Vn }
 
-\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice:nn #1#2
-{
-  \group_begin:
-
-    \keys_set:nn { sdaps / choicearray / choice } { #1 }
-
-   \seq_gput_right:Nn \g_sdaps_choices_seq { #2 }
-   \seq_gput_right:Nx \g_sdaps_choices_var_seq { \l_sdaps_choice_var_tl }
-
-   \tl_if_empty:NTF \l_sdaps_choice_text_tl {
-     \seq_gput_right:Nn \g_sdaps_choices_text_seq { #2 }
-    } {
-     \seq_gput_right:NV \g_sdaps_choices_text_seq { \l_sdaps_choice_text_tl }
-    }
-
-  \group_end:
+\cs_new_nopar:Nn \_sdaps_choicearray_grab_choice:n {
+  \seq_gput_right:Nn \g_sdaps_choices_text_seq { #1 }
+  #1
 }
-\cs_generate_variant:Nn \_sdaps_choicearray_process_choice:nn { Vn }
+
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice:nw #1
+{
+  % This modifies grouping so it has to be at the start
+  \sdaps_array_alignment:
+
+  \tl_clear:N \l_sdaps_choice_var_tl
+  \tl_clear:N \l_sdaps_choice_text_tl
+
+  \keys_set:nn { sdaps / choicearray / choice } { #1 }
+
+  \seq_gput_right:Nx \g_sdaps_choices_var_seq { \l_sdaps_choice_var_tl }
+
+  \tl_if_empty:NTF \l_sdaps_choice_text_tl {
+    % We need to leave a command in the stream that grabs the next parameter
+    % and outputs it immediately
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_choicearray_grab_choice:n
+  } {
+    % Nothing else to do
+    \seq_gput_right:NV \g_sdaps_choices_text_seq { \l_sdaps_choice_text_tl }
+    \cs_set_eq:NN \l_tmpa_token \scan_stop:
+  }
+  \l_tmpa_token
+}
+\cs_generate_variant:Nn \_sdaps_choicearray_process_choice:nw { Vw }
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_process_question:nn #1#2
 {
-  \group_begin:
+  \keys_set:nn { sdaps / choicearray / question } { #1 }
 
-    \keys_set:nn { sdaps / choicearray / question } { #1 }
+  \tl_if_empty:NTF \l_sdaps_question_text_tl {
+    \sdaps_qobject_begin:nnn { choicearray_question } { Choice } { #2 }
+  } {
+    \sdaps_qobject_begin:nnV { choicearray_question } { Choice } \l_sdaps_question_text_tl
+  }
 
-    \tl_if_empty:NTF \l_sdaps_question_text_tl {
-      \sdaps_qobject_begin:nnn { choicearray_question } { Choice } { #2 }
-    } {
-      \sdaps_qobject_begin:nnV { choicearray_question } { Choice } \l_sdaps_question_text_tl
-    }
+  \tl_if_empty:NF \l_sdaps_question_var_tl {
+   \sdaps_context_append:nVn { var } \l_sdaps_question_var_tl { _ }
+  }
 
-   \tl_if_empty:NF \l_sdaps_question_var_tl {
-     \sdaps_context_append:nVn { var } \l_sdaps_question_var_tl { _ }
-    }
+  \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
+  \seq_gput_right:NV \g_sdaps_questions_seq { \l__sdaps_tmpa_tl }
 
-    \sdaps_context_put:nn { question_text } { #2 }
-    \seq_gput_right:Nn \g_sdaps_questions_text_seq { #2 }
+  \sdaps_array_newline:
 
-    \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
-      \sdaps_answer:f {\seq_item:Nn \g_sdaps_choices_text_seq { ##1 }}
-      }
+  % We an handle this by assuming a start of group, and generating the choices
+  % after the end of group.
+  #2
 
-    \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
-    \seq_gput_right:NV \g_sdaps_questions_seq { \l__sdaps_tmpa_tl }
+  \seq_map_inline:Nn \g_sdaps_choices_text_seq {
+    \sdaps_answer:f { ##1 }
+  }
 
-    \sdaps_qobject_end:n { choicearray_question }
+  \seq_map_inline:Nn \g_sdaps_choices_var_seq {
+    \sdaps_array_alignment:
+    \sdaps_checkbox:nn { ##1 } {  }
+  }
 
-  \group_end:
+  \sdaps_qobject_end:n { choicearray_question }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_process_question:nn { Vn }
 
-\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_horizontal:
-{
-  \group_begin:
 
-  \sdaps_array_begin:VV \l_sdaps_choicearray_layouter_tl \l_sdaps_choicearray_align_tl
-
-    % Local context so that we can modify at will
-    \sdaps_context_begin_local:
-
-    % Header
-    \sdaps_array_row_start:
-    \hbox_set:Nn \l_tmpa_box {
-      \seq_map_inline:Nn \g_sdaps_choices_seq {
-
-        \sdaps_array_colhead:w { ##1 }
-      }
-    }
-    \sdaps_array_row:NNn \c_empty_box \l_tmpa_box { \linewidth }
-
-    % Store each row as a token list
-    \tl_clear:N \l_tmpa_tl
-    \seq_map_inline:Nn \g_sdaps_choices_var_seq {
-      \tl_put_right:Nn \l_tmpa_tl { \sdaps_array_cell:w { \sdaps_checkbox:nn { ##1 } { } } }
-    }
-
-    % And the "data" rows
-    \seq_map_inline:Nn \g_sdaps_questions_seq {
-      \nointerlineskip
-      \nobreak
-
-      % Just overwrite the current context
-      \sdaps_context_set:n { ##1 }
-
-      \sdaps_array_row_start:
-      \hbox_set:Nn \l_tmpa_box { \l_tmpa_tl }
-
-      \sdaps_context_get:nN { question_text } \l__sdaps_tmpa_tl
-
-      \sdaps_array_assign_rowhead:Nw \l_tmpb_box { \tl_use:N \l__sdaps_tmpa_tl }
-      \sdaps_array_row:NNn \l_tmpb_box \l_tmpa_box \linewidth
-    }
-
-  \sdaps_array_end:
-
-  \group_end:
-}
-
-\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_vertical_int:n
-{
-  \seq_map_inline:Nn \g_sdaps_questions_seq {
-    \sdaps_context_set:n { ##1 }
-    \sdaps_array_cell:w { \sdaps_checkbox:nn{#1}{} }
-  }
-}
-\cs_generate_variant:Nn \_sdaps_choicearray_typeset_vertical_int:n { f }
-
-
-\cs_new_protected_nopar:Nn \_sdaps_choicearray_typeset_vertical:
-{
-  \group_begin:
-
-  \sdaps_array_begin:VV \l_sdaps_choicearray_layouter_tl \l_sdaps_choicearray_align_tl
-
-    % Local context so that we can modify at will
-    \sdaps_context_begin_local:
-
-    % Header
-    \sdaps_array_row_start:
-    \hbox_set:Nn \l_tmpa_box {
-      \seq_map_inline:Nn \g_sdaps_questions_text_seq {
-
-        \sdaps_array_colhead:w { ##1 }
-      }
-    }
-    \sdaps_array_row:NNn \c_empty_box \l_tmpa_box \linewidth
-
-
-    \int_step_inline:nnnn { 1 } { 1 } { \seq_count:N \g_sdaps_choices_seq } {
-      \nointerlineskip
-      \nobreak
-
-      \sdaps_array_row_start:
-      \hbox_set:Nn \l_tmpa_box {
-        \_sdaps_choicearray_typeset_vertical_int:f { \seq_item:Nn \g_sdaps_choices_var_seq { ##1 } }
-      }
-
-      \sdaps_array_assign_rowhead:Nw \l_tmpb_box { \seq_item:Nn \g_sdaps_choices_seq { ##1 } }
-      \sdaps_array_row:NNn
-        \l_tmpb_box
-        \l_tmpa_box
-        { \linewidth }
-    }
-
-  \sdaps_array_end:
-
-  \group_end:
-}
 
 %
 %    \end{macrocode}
@@ -390,19 +288,19 @@
 
     \_sdaps_choicearray_preprocess:Vn \l_tmpa_tl { #2 }
     % Clear the variables
-    \seq_gclear:N \g_sdaps_choices_seq
     \seq_gclear:N \g_sdaps_choices_var_seq
+    \seq_gclear:N \g_sdaps_choices_text_seq
     \seq_gclear:N \g_sdaps_questions_seq
     \seq_gclear:N \g_sdaps_questions_text_seq
 
     % Define new commands
-    \NewDocumentCommand \choice { o m } {
+    \NewDocumentCommand \choice { o } {
       \IfNoValueTF { ##1 } {
         \tl_set:Nn \l_tmpa_tl {}
       } {
         \tl_set:Nn \l_tmpa_tl { ##1 }
       }
-      \_sdaps_choicearray_process_choice:Vn \l_tmpa_tl { ##2 }
+      \_sdaps_choicearray_process_choice:Vw \l_tmpa_tl
     }
     \NewDocumentCommand \question { o m } {
       \IfNoValueTF { ##1 } {
@@ -412,10 +310,12 @@
       }
       \_sdaps_choicearray_process_question:Vn \l_tmpa_tl { ##2 }
     }
-    \group_begin:
+
+    \tl_set:Nx \l_tmpb_tl {keepenv,layouter=\tl_use:N\l_sdaps_choicearray_layouter_tl,align=\l_sdaps_choicearray_align_tl\bool_if:NF\l_sdaps_choicearray_horizontal_bool{,flip}}
+    \expandafter\sdapsarray\expandafter[\l_tmpb_tl]
 }
 {
-    \group_end:
+    \endsdapsarray
     % Process keys
     \_sdaps_choicearray_postprocess:Vn \l_tmpa_tl { #2 }
 
