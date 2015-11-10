@@ -465,7 +465,10 @@
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
       % XXX: Do not hardcode padding
-      \coffin_join:NnnNnnnn \l_tmpa_coffin { H } { l } \l_tmpb_coffin { H } { r } { -1em } { 0pt }
+      % Note that we make sure here that the order is correct again (as the
+      % metadata currently relys on the correct order).
+      \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
+      \coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
 
       % Grab next cell
       \box_set_to_last:N #2
