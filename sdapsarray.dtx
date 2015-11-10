@@ -789,6 +789,11 @@
     \box_clear:N \l_tmpa_box
     \box_clear:N \l_tmpb_box
 
+    % Ensure horizontal mode.
+    \if_mode_horizontal:
+      \tex_par:D
+    \fi:
+
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
     \sdaps_array_begin:VV \l_sdaps_sdapsarray_layouter_tl \l_sdaps_sdapsarray_align_tl
