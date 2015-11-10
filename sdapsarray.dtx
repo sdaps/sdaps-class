@@ -587,6 +587,7 @@
 
 \msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
 \msg_new:nnn { sdapsarray } { unequal_cols } { The~number~of~columns~is~not~equal~for~all~rows. }
+\msg_new:nnn { sdapsarray } { no_new_line_at_end } { You~have~terminated~the~last~line~with~\textbackslash\textbackslash~or~similar.~This~can~have~side~effects,~please~remove~it. }
 
 \cs_new:Nn \_sdaps_sdapsarray_start_cells: {
     \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
@@ -751,9 +752,7 @@
   \_sdaps_sdapsarray_prepend_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_tail_box
 }
 
-\cs_new_nopar:Nn \_sdaps_sdapsarray_newline_flip: {
-  \_sdaps_sdapsarray_end_cell_flip:
-
+\cs_new_nopar:Nn \_sdaps_sdapsarray_end_line_flip: {
   % At the end of the line, move tail into head.
   % First check that head is empty.
   \_sdaps_sdapsarray_boxlist_void_if_empty:N \l_sdaps_sdapsarray_boxlist_head_box
@@ -768,6 +767,11 @@
     \box_set_eq:NN \l_sdaps_sdapsarray_headers_box \l_sdaps_sdapsarray_boxlist_head_box
     \box_clear:N \l_sdaps_sdapsarray_boxlist_head_box
   }
+}
+
+\cs_new_nopar:Nn \_sdaps_sdapsarray_newline_flip: {
+  \_sdaps_sdapsarray_end_cell_flip:
+  \_sdaps_sdapsarray_end_line_flip:
 
   % Create next box to store away, this has to be a colhead at this point
   \sdaps_array_assign_colhead:Nw \l_tmpa_box \bgroup
@@ -832,18 +836,15 @@
 }
 {
     \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {
-        \egroup
-        \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
-          \msg_error:nnn { sdapsarray } { unmatched_grouping_level } { end~of~cell~or~row }
-        }
+        \_sdaps_sdapsarray_end_cell_flip:
 
-        % if tail is void then we just started a new line, discard the box and
-        % assume it is is effectively empty, i.e. don't do anything.
-        % Otherwise, if head is not void, end the current line.
-        \box_if_empty:NF \l_sdaps_sdapsarray_boxlist_tail_box {
-          \bgroup
-          \_sdaps_sdapsarray_newline_flip:
-          \egroup
+        % At this point we should have swallowed all items from the head list.
+        % If not, then someone likely add a stray \\ command or similar
+        \_sdaps_sdapsarray_boxlist_void_if_empty:N \l_sdaps_sdapsarray_boxlist_head_box
+        \box_if_empty:NTF \l_sdaps_sdapsarray_boxlist_head_box {
+          \_sdaps_sdapsarray_end_line_flip:
+        } {
+          \msg_error:nn { sdapsarray } { no_new_line_at_end }
         }
 
         % Now we can have fun!
