@@ -572,8 +572,10 @@
   \group_insert_after:N\l_sdaps_sdapsarray_alignment_set_have_content:
 
   % Just in case someone leaked a change into our scope
-  \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
-  \cs_set_eq:NN \\ \cr
+  \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
+    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
+    \cs_set_eq:NN \\ \cr
+  }
 
   % Define a cell now, we can just put everything into a new cell, and that
   % should work fine.
@@ -646,10 +648,10 @@
 \group_begin:
 \char_set_catcode_active:N &
 \cs_new:Nn \_sdaps_sdapsarray_defines: {
+  \cs_set_eq:NN \sdaps_orig_cr \cr
+  \cs_set_eq:NN \sdaps_orig_backslash \\
   \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
     \char_set_catcode_active:N &
-    \cs_set_eq:NN \sdaps_orig_cr \cr
-    \cs_set_eq:NN \sdaps_orig_backslash \\
     \cs_set_eq:NN \cr \sdaps_array_newline:
     \cs_set_eq:NN \\ \cr
     \cs_set_eq:NN & \sdaps_array_alignment:
@@ -718,8 +720,10 @@
   \_sdaps_sdapsarray_end_cell_flip:
 
   % Just in case someone leaked a change into our scope
-  \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
-  \cs_set_eq:NN \\ \cr
+  \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
+    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
+    \cs_set_eq:NN \\ \cr
+  }
 
   % Next up is either a cell or a row header. We can figure that out by checking
   % that the row headings box is void
