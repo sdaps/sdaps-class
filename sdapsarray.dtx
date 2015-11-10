@@ -170,7 +170,7 @@
 {
  \tl_set:Nx \l__sdaps_array_local_name_tl { sdapsarray \int_use:N\g__sdaps_array_current_id_int }
   \int_gincr:N \g__sdaps_array_current_id_int
-  \tl_if_empty:NTF { #2 } {
+  \tl_if_empty:nTF { #2 } {
     \tl_set:NV \l__sdaps_array_global_name_tl \l__sdaps_array_local_name_tl
   } {
     \tl_set:Nx \l__sdaps_array_global_name_tl { #2 }
