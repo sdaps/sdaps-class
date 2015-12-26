@@ -489,9 +489,9 @@
   \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
   \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \box_use:N #1 } }
-  \coffin_join:NnnNnnnn \l_tmpa_coffin { vc } { l } \l_tmpb_coffin { vc } { r } { -1em } { 0pt }
+  \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { 1em } { 0pt }
 
-  \hbox { \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt } }
+  \hbox { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
 }
 
 
