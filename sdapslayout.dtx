@@ -177,9 +177,20 @@
   \sdaps_qobject_end:n { choicearray }
 }
 
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice_insert_tail_after:w {
+  \bgroup
+    \group_insert_after:N \_sdaps_choicearray_process_choice_tail:
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_choicearray_process_choice_tail: {
+  \ignorespaces
+}
+
 \cs_new_nopar:Nn \_sdaps_choicearray_grab_choice:n {
   \seq_gput_right:Nn \g_sdaps_choices_text_seq { #1 }
   #1
+  \_sdaps_choicearray_process_choice_tail:
 }
 
 \cs_new_nopar:Npn \_sdaps_choicearray_process_choice:nw #1
@@ -201,7 +212,7 @@
   } {
     % Nothing else to do
     \seq_gput_right:NV \g_sdaps_choices_text_seq { \l_sdaps_choice_text_tl }
-    \cs_set_eq:NN \l_tmpa_token \scan_stop:
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_choicearray_process_choice_insert_tail_after:w
   }
   \l_tmpa_token
 }
