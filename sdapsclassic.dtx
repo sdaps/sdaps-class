@@ -501,21 +501,36 @@
 \newcounter{markcheckboxcount}
 \setcounter{markcheckboxcount}{5}
 
-\providecommand*{\singlemark}[3]{%
+
+\tl_new:N \l_sdaps_singlemark_var_tl
+\keys_define:nn { sdaps / singlemark }
+{
+  var        .tl_set:N   = \l_sdaps_singlemark_var_tl,
+}
+
+
+\providecommand*{\singlemark}[4][]{%
   \sdaps_classic_ensure_section:
-  \question{#1}%
 
-  \sdaps_qobject_begin:nnn { singlemark } { mark } { #1 }
+  \keys_set:nn { sdaps / singlemark } { #1 }
 
-  \sdaps_answer:n{#2}
+  \question{#2}%
 
-  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
-    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#2} &
-      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn {} { ##1 } & }
-    {\usekomafont{singlemarkchoicefont}#3}\\%
-  \end{tabularx}%
+  \sdaps_qobject_begin:nnn { singlemark } { mark } { #2 }
+
+  \tl_if_empty:NF \l_sdaps_singlemark_var_tl {
+    \sdaps_context_append:nVn { var } \l_sdaps_singlemark_var_tl { _ }
+  }
 
   \sdaps_answer:n{#3}
+
+  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
+    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
+      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { ##1 } { ##1 } & }
+    {\usekomafont{singlemarkchoicefont}#4}\\%
+  \end{tabularx}%
+
+  \sdaps_answer:n{#4}
 
   \sdaps_qobject_end:n { singlemark }
 }
