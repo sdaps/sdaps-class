@@ -180,6 +180,7 @@
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice_insert_tail_after:w {
   \bgroup
     \group_insert_after:N \_sdaps_choicearray_process_choice_tail:
+    \sdaps_array_nested_alignenv:
     \tex_let:D\next=
 }
 
@@ -189,7 +190,10 @@
 
 \cs_new_nopar:Nn \_sdaps_choicearray_grab_choice:n {
   \seq_gput_right:Nn \g_sdaps_choices_text_seq { #1 }
-  #1
+  \group_begin:
+    \sdaps_array_nested_alignenv:
+    #1
+  \group_end:
   \_sdaps_choicearray_process_choice_tail:
 }
 
@@ -223,7 +227,10 @@
 
   \_sdaps_choicearray_process_question_head:
 
-  #1
+  \group_begin:
+    \sdaps_array_nested_alignenv:
+    #1
+  \group_end:
 
   \_sdaps_choicearray_process_question_tail:
 }
@@ -232,6 +239,7 @@
   \_sdaps_choicearray_process_question_head:
   \bgroup
     \group_insert_after:N \_sdaps_choicearray_process_question_tail:
+    \sdaps_array_nested_alignenv:
     \tex_let:D\next=
 }
 

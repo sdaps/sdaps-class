@@ -635,11 +635,15 @@
   \_sdaps_sdapsarray_linestart:
 }
 
+\cs_new:Npn\sdaps_array_nested_alignenv: {
+  \char_set_catcode_alignment:N &
+  \cs_set_eq:NN \cr \sdaps_orig_cr
+  \cs_set_eq:NN \\ \sdaps_orig_backslash
+}
+
 \cs_new:Npn\sdaps_array_nested_alignenv:w {
   \bgroup
-    \char_set_catcode_alignment:N &
-    \cs_set_eq:NN \cr \sdaps_orig_cr
-    \cs_set_eq:NN \\ \sdaps_orig_backslash
+    \sdaps_array_nested_alignenv:
     % Eat next token using plain TeX
     \tex_let:D\next=
 }
