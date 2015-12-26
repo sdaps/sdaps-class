@@ -141,7 +141,7 @@
   layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_choicearray_align_tl,
-  align      .initial:n  = { choicearray\bool_if:NTF\l_sdaps_choicearray_horizontal_bool{horizontal}{vertical} },
+  align      .initial:n  = { choicearray\bool_if:NTF\l_sdaps_choicearray_horizontal_bool{horizontal}{vertical}\tl_use:N\l_sdaps_choicearray_layouter_tl },
 }
 
 \keys_define:nn { sdaps / choicearray / choice }
