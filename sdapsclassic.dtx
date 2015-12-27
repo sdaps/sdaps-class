@@ -111,29 +111,15 @@
 %-------------------------------------------------------------------------------
 % option processing
 %-------------------------------------------------------------------------------
-% enable stamps
-\newif\if@STAMP\@STAMPfalse
-\DeclareOption{stamp}{\@STAMPtrue}
-\DeclareOption{nostamp}{\@STAMPfalse}
-
-% enable pagemarks
-\newif\if@PAGEMARK\@PAGEMARKfalse
-\DeclareOption{pagemark}{\@PAGEMARKtrue}
-\DeclareOption{nopagemark}{\@PAGEMARKfalse}
 
 % Whether sdaps should print the questionnaire id
-\newif\if@PrintQuestionnaireId\@PrintQuestionnaireIdfalse
-\DeclareOption{no_print_questionnaire_id}{\@PrintQuestionnaireIdfalse}
-\DeclareOption{print_questionnaire_id}{\@PrintQuestionnaireIdtrue}
-
-% Whether sdaps should print the questionnaire id
-\newif\if@PrintSurveyId\@PrintSurveyIdtrue
-\DeclareOption{no_print_survey_id}{\@PrintSurveyIdfalse}
-\DeclareOption{print_survey_id}{\@PrintSurveyIdtrue}
+\DeclareOption{no_print_questionnaire_id}{\bool_gset_false:N\g_sdaps_print_questionnaire_id_bool}
+\DeclareOption{print_questionnaire_id}{\bool_gset_true:N\g_sdaps_print_questionnaire_id_bool}
 
 % pass unknown options to scrartcl
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 
+% We need this if right now as it is set by sdaps.opt.
 \newif\if@sdaps@draft\@sdaps@drafttrue
 \DeclareOption{final}{\@sdaps@draftfalse}
 
@@ -275,41 +261,11 @@
 % we need one to consume later on
 \def\questionnaireids{NONE}
 
+\seq_new:N \g_sdaps_questionnaire_ids_seq
+\seq_gpush:Nn \g_sdaps_questionnaire_ids_seq {{NONE}}
+
 % Execute sdaps.opt file to allow SDAPS to override any options
 \InputIfFileExists{sdaps.opt}{}{}
-
-%%%%
-% Mirror old options into new variable
-%%%%
-
-\ifx\surveyid\undefined
-\else
-  \tl_set:NV \g_sdaps_survey_id_tl \surveyid
-\fi
-
-\ifx\globalid\undefined
-\else
-  \tl_set:NV \g_sdaps_global_id_tl \globalid
-\fi
-
-\ifx\globalidlabel\undefined
-\else
-  \tl_set:NV \g_sdaps_global_id_label_tl \globalidlabel
-\fi
-
-\seq_new:N \g__sdaps_questionnaire_ids_seq
-
-\if@PrintQuestionnaireId
-  \seq_gset_from_clist:NN \g__sdaps_questionnaire_ids_seq \questionnaireids
-\else
-  \seq_gpush:Nn \g__sdaps_questionnaire_ids_seq {}
-\fi
-
-\if@sdaps@draft
-  \bool_set_true:N \g__sdaps_draft_bool
-\else
-  \bool_set_false:N \g__sdaps_draft_bool
-\fi
 
 
 %-------------------------------------------------------------------------------
@@ -682,14 +638,20 @@
   % otherwise write it into a temporary file and input it multiple times.
   \group_begin:
 
+  \if@twoside
+    \bool_gset_true:N \g_sdaps_twoside_bool
+  \else
+    \bool_gset_false:N \g_sdaps_twoside_bool
+  \fi
+
   % Enable all metadata writing by default
   \sdaps_context_set:n{*={writepos}}
 
-  \int_compare:nTF { \seq_count:N \g__sdaps_questionnaire_ids_seq <= 1 } {
+  \int_compare:nTF { \seq_count:N \g_sdaps_questionnaire_ids_seq <= 1 } {
     \bool_set_true:N \l__sdaps_questionnaire_parse_direct_bool
 
     % Set the questionnaire ID
-    \seq_gpop_left:NN \g__sdaps_questionnaire_ids_seq \l_tmpa_tl
+    \seq_gpop_left:NN \g_sdaps_questionnaire_ids_seq \l_tmpa_tl
     \tl_gset:NV \g_sdaps_questionnaire_id_tl \l_tmpa_tl
 
     % And, begin the questionnaire
@@ -722,7 +684,7 @@
 
     % Now cycle through all IDS and output it again.
     \group_begin:
-      \seq_map_inline:Nn \g__sdaps_questionnaire_ids_seq {
+      \seq_map_inline:Nn \g_sdaps_questionnaire_ids_seq {
         \tl_gset:Nn \g_sdaps_questionnaire_id_tl { ##1 }
         \sdaps_begin:
           \input{ \c_job_name_tl . questionnaire }

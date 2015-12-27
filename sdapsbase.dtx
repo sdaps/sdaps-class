@@ -1188,11 +1188,13 @@
 \int_new:N \g_sdaps_page_int
 \int_set:Nn \g_sdaps_page_int { 0 }
 
-\bool_new:N \g__sdaps_draft_bool
+\bool_new:N \g_sdaps_draft_bool
 \bool_new:N \g_sdaps_twoside_bool
+\bool_new:N \g_sdaps_print_questionnaire_id_bool
 
-\bool_set:Nn \g__sdaps_draft_bool \c_true_bool
+\bool_set:Nn \g_sdaps_draft_bool \c_true_bool
 \bool_set:Nn \g_sdaps_twoside_bool \c_false_bool
+\bool_set:Nn \g_sdaps_print_questionnaire_id_bool \c_false_bool
 
 
 
@@ -1485,7 +1487,7 @@
       %---------------------------------------------------------------------------
       % watermark for non final mode
       %---------------------------------------------------------------------------
-      \bool_if:NT \g__sdaps_draft_bool {
+      \bool_if:NT \g_sdaps_draft_bool {
         \node [rotate=60,scale=10,text~opacity=0.2,color=red]
            at (current~page.center) {\textsc{draft}};
       }
@@ -1518,6 +1520,7 @@
 
   % TODO: We really want to make sure nobody modifies the values after \sdaps_begin:
   \sdaps_info_write:x{Duplex=\bool_if:NTF \g_sdaps_twoside_bool {true} {false}}
+  \sdaps_info_write:x{PrintQuestionnaireId=\bool_if:NTF \g_sdaps_print_questionnaire_id_bool {1} {0}}
   \sdaps_info_write:x{
     PageSize=\the\paperwidth, \the\paperheight
   }
