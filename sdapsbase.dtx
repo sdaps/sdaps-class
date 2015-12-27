@@ -1465,12 +1465,13 @@
           \sdaps_draw_codes:
         } {
 
-          \int_if_odd:VTF \g_sdaps_page_int {
-            \msg_warning:nn { sdapsbase } { odd_page_count }
-          } {
-            % questionnaire-id
-            \sdaps_draw_codes:
+          \bool_if:NT \g_sdaps_twoside_bool {
+            \int_if_odd:VT \g_sdaps_page_int {
+              \msg_warning:nn { sdapsbase } { odd_page_count }
+            }
           }
+
+          \sdaps_draw_codes:
         }
 
         % TODO: Check whether the page count is as expected?
