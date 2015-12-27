@@ -1210,59 +1210,59 @@
 \dim_new:N \g_sdaps_classic_boxsize_dim
 
 
-\tl_set:Nn \g_sdaps_style_tl { code128 }
-\dim_set:Nn \g_sdaps_edge_left_margin_dim { 10mm }
-\dim_set:Nn \g_sdaps_edge_right_margin_dim { 10mm }
-\dim_set:Nn \g_sdaps_edge_top_margin_dim { 12mm }
-\dim_set:Nn \g_sdaps_edge_bottom_margin_dim { 12mm }
-\dim_set:Nn \g_sdaps_edge_marker_linewidth_dim { 1bp }
-\dim_set:Nn \g_sdaps_edge_marker_length_dim { 20mm }
+\tl_gset:Nn \g_sdaps_style_tl { code128 }
+\dim_gset:Nn \g_sdaps_edge_left_margin_dim { 10mm }
+\dim_gset:Nn \g_sdaps_edge_right_margin_dim { 10mm }
+\dim_gset:Nn \g_sdaps_edge_top_margin_dim { 12mm }
+\dim_gset:Nn \g_sdaps_edge_bottom_margin_dim { 12mm }
+\dim_gset:Nn \g_sdaps_edge_marker_linewidth_dim { 1bp }
+\dim_gset:Nn \g_sdaps_edge_marker_length_dim { 20mm }
 
-\dim_set:Nn \g_sdaps_classic_boxpad_dim { 3mm }
-\dim_set:Nn \g_sdaps_classic_boxsize_dim { 3.5mm }
+\dim_gset:Nn \g_sdaps_classic_boxpad_dim { 3mm }
+\dim_gset:Nn \g_sdaps_classic_boxsize_dim { 3.5mm }
 
 
 \tl_new:N \g_sdaps_questionnaire_id_tl
-\tl_set:Nn \g_sdaps_questionnaire_id_tl { }
+\tl_gset:Nn \g_sdaps_questionnaire_id_tl { }
 
 \tl_new:N \g_sdaps_questionnaire_id_label_tl
-\tl_set:Nn \g_sdaps_questionnaire_id_label_tl { }
+\tl_gset:Nn \g_sdaps_questionnaire_id_label_tl { }
 
 
 \tl_new:N \g_sdaps_survey_id_tl
-\tl_set:Nn \g_sdaps_survey_id_tl { 32498923 }
+\tl_gset:Nn \g_sdaps_survey_id_tl { 32498923 }
 
 \tl_new:N \g_sdaps_global_id_tl
-\tl_set:Nn \g_sdaps_global_id_tl { }
+\tl_gset:Nn \g_sdaps_global_id_tl { }
 
 \tl_new:N \g_sdaps_global_id_label_tl
-\tl_set:Nn \g_sdaps_global_id_label_tl { }
+\tl_gset:Nn \g_sdaps_global_id_label_tl { }
 
 
 
 
 % Settings for code128 barcodes (used in code128 style, who would have thought?)
 \dim_new:N \c_sdaps_barcode_height_dim
-\dim_set:Nn \c_sdaps_barcode_height_dim {6.5mm}
+\dim_gset:Nn \c_sdaps_barcode_height_dim {6.5mm}
 % This is the same as the default
 \dim_new:N \c_sdaps_barcode_bar_width_dim
-\dim_set:Nn \c_sdaps_barcode_bar_width_dim {0.33mm}
+\dim_gset:Nn \c_sdaps_barcode_bar_width_dim {0.33mm}
 % Same as default. Barwidth is decreased for printing by this value.
 \dim_new:N \c_sdaps_barcode_bcorr_dim
-\dim_set:Nn \c_sdaps_barcode_bcorr_dim {0.020mm}
+\dim_gset:Nn \c_sdaps_barcode_bcorr_dim {0.020mm}
 
 % The padding on the left/right of a barcode. This is the distance that the
 % barcodes will be printed from the cornermarks
 % Choosen to be the same as the barcode height. Note that the Code-128
 % standard requires a quiet zone of max(10*modulesize, ~6.4mm).
 \dim_new:N \c_sdaps_barcode_hpad_dim
-\dim_set:Nn \c_sdaps_barcode_hpad_dim {6.5mm}
+\dim_gset:Nn \c_sdaps_barcode_hpad_dim {6.5mm}
 
 % This needs to be smaller than 6.5mm because otherwise the content is too close.
 % We set it so that it forms a golden ratio 6.5mm*(sqrt(5/4)-0.5). This means
 % we have about 4.5mm padding to the content.
 \dim_new:N \c_sdaps_barcode_vpad_dim
-\dim_set:Nn \c_sdaps_barcode_vpad_dim {4.02mm}
+\dim_gset:Nn \c_sdaps_barcode_vpad_dim {4.02mm}
 
 
 \cs_new_protected_nopar:Nn \sdaps_draw_codes:

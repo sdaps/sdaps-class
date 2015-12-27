@@ -123,7 +123,7 @@
 \newif\if@sdaps@draft\@sdaps@drafttrue
 \DeclareOption{final}{\@sdaps@draftfalse}
 
-\tl_set:Nn\g_sdaps_style_tl{code128}%
+\tl_gset:Nn\g_sdaps_style_tl{code128}%
 
 \newif\if@checkmode@checkcorrect\@checkmode@checkcorrecttrue
 \newif\if@checkmode@check\@checkmode@checkfalse
@@ -141,11 +141,11 @@
     {qr}{2}%
   }{#1}%
   \ifcase \@tempa\relax
-    \tl_set:Nn\g_sdaps_style_tl{code128}%
+    \tl_gset:Nn\g_sdaps_style_tl{code128}%
   \or
-    \tl_set:Nn\g_sdaps_style_tl{custom}%
+    \tl_gset:Nn\g_sdaps_style_tl{custom}%
   \or
-    \tl_set:Nn\g_sdaps_style_tl{qr}%
+    \tl_gset:Nn\g_sdaps_style_tl{qr}%
   \fi
 }
 
@@ -157,23 +157,23 @@
     {fill}{2}%
   }{#1}%
   \ifcase \@tempa\relax
-    \tl_set:Nn\g_sdaps_checkmode_tl{checkcorrect}%
+    \tl_gset:Nn\g_sdaps_checkmode_tl{checkcorrect}%
   \or
-    \tl_set:Nn\g_sdaps_checkmode_tl{check}%
+    \tl_gset:Nn\g_sdaps_checkmode_tl{check}%
   \or
-    \tl_set:Nn\g_sdaps_checkmode_tl{fill}%
+    \tl_gset:Nn\g_sdaps_checkmode_tl{fill}%
   \fi
 }
 
 
 \DefineFamilyKey{SDAPS}{globalid}[]
 {
-  \tl_set:Nn \g_sdaps_global_id_tl { #1 }
+  \tl_gset:Nn \g_sdaps_global_id_tl { #1 }
 }
 
 \DefineFamilyKey{SDAPS}{globalidlabel}[]
 {
-  \tl_set:Nn \g_sdaps_global_id_label_tl { #1 }
+  \tl_gset:Nn \g_sdaps_global_id_label_tl { #1 }
 }
 
 % Set default options for scrartcl. Is this done correctly?
