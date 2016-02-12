@@ -395,6 +395,7 @@
 
 
 \cs_generate_variant:Nn \sdaps_textbox_hstretch:nnnnn { nVVnn }
+\cs_generate_variant:Nn \sdaps_textbox_hstretch:nnnnn { VVVnn }
 
 
 %    \end{macrocode}
@@ -498,6 +499,16 @@
 
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
 
+\tl_new:N \l_sdaps_choicequestion_choice_var_tl
+\tl_new:N \l_sdaps_choicequestion_choice_text_tl
+
+\keys_define:nn { sdaps / choicequestion / choice }
+{
+  var        .tl_set:N   = \l_sdaps_choicequestion_choice_var_tl,
+  text       .tl_set:N   = \l_sdaps_choicequestion_choice_text_tl,
+}
+
+
 \newenvironment{choicequestion}[2][3]{
   % TODO:
   %  * Spacing to top line
@@ -558,52 +569,79 @@
   \int_add:Nn \l__sdaps_classic_choiceitem_col_int { #2 }
 }
 
-\providecommand*{\choiceitem}[1]{%
-  \sdaps_answer:n { #1 }%
+\providecommand*{\choiceitem}[2][]{%
+  \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
+
+  \keys_set:nn { sdaps / choicequestion / choice } { #1 }
+
+  \tl_if_empty:NTF \l_sdaps_choicequestion_choice_text_tl {
+   \sdaps_answer:n { #2 }
+  } {
+   \sdaps_answer:V \l_sdaps_choicequestion_choice_text_tl
+  }
 
   \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:nn {} {} {}~ \tl_trim_spaces:n { #1 }
+      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}~ \tl_trim_spaces:n { #2 }
     \end{minipage}
   }
 
   \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { 1 }
 }
 
-\providecommand*{\choicemulticolitem}[2]{ %
-  \sdaps_answer:n { #2 }%
+\providecommand*{\choicemulticolitem}[3][]{ %
+  \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
 
-  \dim_set:Nn \l_tmpa_dim { #1\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #1 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+  \keys_set:nn { sdaps / choicequestion / choice } { #1 }
 
-  \hcoffin_set:Nn \l_tmpa_coffin {
-    \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:nn {} {} {}~ \tl_trim_spaces:n { #2 }
-    \end{minipage}
+  \tl_if_empty:NTF \l_sdaps_choicequestion_choice_text_tl {
+   \sdaps_answer:n { #3 }
+  } {
+   \sdaps_answer:V \l_sdaps_choicequestion_choice_text_tl
   }
-
-  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #1 }
-}
-
-\providecommand{\choiceitemtext}[3]{%
-  \sdaps_answer:n { #3 }
 
   \dim_set:Nn \l_tmpa_dim { #2\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #2 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}
-      \dim_set:Nn \l_tmpa_dim { #1 }
-      \dim_set:Nn \l_tmpb_dim { #1 }
-      \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
-      \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-      \strut\ignorespaces \tl_trim_spaces:n { #3 } ~
-      \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}~ \tl_trim_spaces:n { #3 }
     \end{minipage}
   }
 
   \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #2 }
+}
+
+\providecommand{\choiceitemtext}[4][]{%
+  \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
+
+  \keys_set:nn { sdaps / choicequestion / choice } { #1 }
+
+  \tl_if_empty:NTF \l_sdaps_choicequestion_choice_text_tl {
+   \sdaps_answer:n { #4 }
+  } {
+   \sdaps_answer:V \l_sdaps_choicequestion_choice_text_tl
+  }
+
+  \dim_set:Nn \l_tmpa_dim { #3\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #3 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
+
+  \hcoffin_set:Nn \l_tmpa_coffin {
+    \begin{minipage}{\l_tmpa_dim}
+      \usekomafont{choiceitemfont}
+      \dim_set:Nn \l_tmpa_dim { #2 }
+      \dim_set:Nn \l_tmpb_dim { #2 }
+      \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+      \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+      \strut\ignorespaces \tl_trim_spaces:n { #4 } ~
+      \sdaps_textbox_hstretch:VVVnn \l_sdaps_choicequestion_choice_var_tl \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+    \end{minipage}
+  }
+
+  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #3 }
 }
 
 
