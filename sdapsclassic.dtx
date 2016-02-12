@@ -396,6 +396,7 @@
 
 \cs_generate_variant:Nn \sdaps_textbox_hstretch:nnnnn { nVVnn }
 \cs_generate_variant:Nn \sdaps_textbox_hstretch:nnnnn { VVVnn }
+\cs_generate_variant:Nn \int_set:Nn { NV }
 
 
 %    \end{macrocode}
@@ -499,6 +500,19 @@
 
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
 
+\tl_new:N \l_sdaps_choicequestion_var_tl
+\tl_new:N \l_sdaps_choicequestion_text_tl
+\int_new:N \l_sdaps_choicequestion_cols_int
+
+\keys_define:nn { sdaps / choicequestion }
+{
+  var        .tl_set:N   = \l_sdaps_choicequestion_var_tl,
+  text       .tl_set:N   = \l_sdaps_choicequestion_text_tl,
+  cols       .int_set:N  = \l_sdaps_choicequestion_cols_int,
+  cols       .initial:n  = 3,
+}
+
+
 \tl_new:N \l_sdaps_choicequestion_choice_var_tl
 \tl_new:N \l_sdaps_choicequestion_choice_text_tl
 
@@ -509,19 +523,33 @@
 }
 
 
-\newenvironment{choicequestion}[2][3]{
+\newenvironment{choicequestion}[2][]{
   % TODO:
   %  * Spacing to top line
   %  * page break handling/nobreak (or widow handling)
   %  * spacing after environment
 
   \sdaps_classic_ensure_section:
+
+  \tl_clear:N \l_sdaps_choicequestion_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_text_tl
+
+  \keys_set:nn { sdaps / choicequestion } { #1 }
+
   \question{#2}%
-  \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
+
+  \tl_if_empty:NTF \l_sdaps_choicequestion_text_tl {
+    \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
+  } {
+    \sdaps_qobject_begin:nnV { choicequestion } { choice } \l_sdaps_choicequestion_text_tl
+  }
+
+  \sdaps_context_append:nVn { var } \l_sdaps_choicequestion_var_tl { _ }
+
 
   \dim_set:Nn \l__sdaps_classic_choiceitem_pad_dim { 1ex }
 
-  \int_set:Nn \l__sdaps_classic_choiceitem_cols_int { #1 }
+  \int_set:NV \l__sdaps_classic_choiceitem_cols_int \l_sdaps_choicequestion_cols_int
   \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
 

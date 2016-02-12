@@ -43,9 +43,9 @@
 
 \singlemark{Hallo}{lower}{upper}
 
-    \begin{choicequestion}[3]{Which of the following Open Source
-                              Optical Mark Recognition software
-                              packages have you heard about?}
+    \begin{choicequestion}[cols=3]{Which of the following Open Source
+                                   Optical Mark Recognition software
+                                   packages have you heard about?}
       \choiceitem{SDAPS}
       \choicemulticolitem{2}{Auto Multiple Choice}
       \choiceitem{QueXF}
@@ -57,16 +57,16 @@
       \choicemulticolitem{2}{Auto Multiple Choice}
     \end{choicequestion}
 
-    \begin{choicequestion}[3]{Same thing again, with variables and text.}
-      \choiceitem[var=a1,text=a1]{SDAPS}
-      \choicemulticolitem[var=a2,text=a2]{2}{Auto Multiple Choice}
-      \choiceitem[var=a3,text=a3]{QueXF}
+    \begin{choicequestion}[cols=3,var=q,text=tq]{Same thing again, with variables and text.}
+      \choiceitem[var=a1,text=ta1]{SDAPS}
+      \choicemulticolitem[var=a2,text=ta2]{2}{Auto Multiple Choice}
+      \choiceitem[var=a3,text=ta3]{QueXF}
 
       % Insert a text field. The freeform box automatically scales horizontally
       % The first parameter is the height of the box. The second parameter
       % is the amount of columns it should span.
-      \choiceitemtext[var=a4,text=a4]{1.2cm}{2}{Other:}
-      \choicemulticolitem[var=a1,text=a1]{2}{Auto Multiple Choice}
+      \choiceitemtext[var=a4,text=ta4]{1.2cm}{2}{Other:}
+      \choicemulticolitem[var=a1,text=ta1]{2}{Auto Multiple Choice}
     \end{choicequestion}
 
     % And a more compact way of doing it; similar to markgroup
