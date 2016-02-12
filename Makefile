@@ -41,7 +41,7 @@ test.pdf: sdapslayout.sty sdapspdf.sty test.tex
 	#latexmk -xelatex test.tex
 
 testclassic.pdf: sdapsclassic.cls sdapslayout.sty testclassic.tex
-	latexmk -xelatex testclassic.tex
+	latexmk -pdf testclassic.tex
 
 
 clean:
