@@ -57,6 +57,18 @@
       \choicemulticolitem{2}{Auto Multiple Choice}
     \end{choicequestion}
 
+    \begin{choicequestion}[3]{Same thing again, with variables and text.}
+      \choiceitem[var=a1,text=a1,asdf=blub]{SDAPS}
+      \choicemulticolitem[var=a2,text=a2]{2}{Auto Multiple Choice}
+      \choiceitem[var=a3,text=a3]{QueXF}
+
+      % Insert a text field. The freeform box automatically scales horizontally
+      % The first parameter is the height of the box. The second parameter
+      % is the amount of columns it should span.
+      \choiceitemtext[var=a4,text=a4]{1.2cm}{2}{Other:}
+      \choicemulticolitem[var=a1,text=a1]{2}{Auto Multiple Choice}
+    \end{choicequestion}
+
     % And a more compact way of doing it; similar to markgroup
     \begin{choicegroup}{Which software do you prefere for the following tasks?}
       % We have to add the possible choices at the start.
