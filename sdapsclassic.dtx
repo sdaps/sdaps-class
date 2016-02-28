@@ -522,10 +522,7 @@
 
 
 \newenvironment{choicequestion}[2][]{
-  % TODO:
-  %  * Spacing to top line
-  %  * page break handling/nobreak (or widow handling)
-  %  * spacing after environment
+  \group_begin:
 
   \sdaps_classic_ensure_section:
 
@@ -557,6 +554,17 @@
   \else:
     \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
   \fi:
+
+  % It is important to look like a paragraph, otherwise latex thinks there is
+  % nothing between the two question sections and doesn't insert a voluntary
+  % page break.
+  \the\everypar
+
+  % Paragraph like spacing
+  \vspace{\parskip}
+
+  \def\choicequestion_clubpenalty{\penalty\clubpenalty\def\choicequestion_clubpenalty{\relax}\def\choicequestion_clubpenalty{\penalty\widowpenalty}}
+  \def\choicequestion_widowpenalty{}
 }{
   \if_mode_vertical:
     % Nothing
@@ -564,11 +572,13 @@
     \msg_error:nn { sdapsclassic } { choicequestion_wrong_mode }
   \fi:
 
-  % Flush out last line
+  \choicequestion_widowpenalty
   \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
-  \par
   \sdaps_qobject_end:n { choicequestion }
+
+  \group_end:
+  \vspace{\parskip}
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_classic_line_shipout_add:Nn
@@ -585,6 +595,7 @@
     % We can only typeset a coffin in vertical mode if we use the box function
     \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
     \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
+    \choicequestion_clubpenalty
     \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
   }
 
@@ -616,6 +627,7 @@
   }
 
   \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { 1 }
+  \ignorespaces
 }
 
 \providecommand*{\choicemulticolitem}[3][]{ %
@@ -639,6 +651,7 @@
   }
 
   \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #2 }
+  \ignorespaces
 }
 
 \providecommand{\choiceitemtext}[4][]{%
@@ -668,6 +681,7 @@
   }
 
   \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #3 }
+  \ignorespaces
 }
 
 
