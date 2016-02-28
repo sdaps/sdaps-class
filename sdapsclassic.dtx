@@ -345,19 +345,20 @@
 }
 }
 
-% http://mrunix.de/forums/showthread.php?t=59943
 \newenvironment{info}{%
-  \vspace{\baselineskip}\vspace{\lineskip}\vspace{-1.0em}%
-  \hrule height 1pt%
-  \nobreak
-  \vspace{\lineskip}%
-  \nobreak
+  \group_begin:
+    \par
+    \noindent\hrule height 1pt%
+    \nobreak
+    \vspace{-\parskip}
+    \vspace{0.5ex}
 }{%
-  \nobreak
-  \vspace{\lineskip}%
-  \nobreak
-  \leavevmode\noindent\hrule height 1pt%
-  \vspace{\baselineskip}\vspace{\lineskip}\vspace{-1.0em}%
+    \par
+    \nobreak
+    \vspace{-\parskip}
+    \vspace{0.5ex}
+    \noindent\hrule height 1pt
+  \group_end:
 }
 
 
