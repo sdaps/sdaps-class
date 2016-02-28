@@ -915,10 +915,17 @@
 % can simply use \textbackslash par directly.
 %
 %    \begin{macrocode}
+
+  % We want to look similar to a paragraph to the outside world, however, we
+  % do not insert a parskip if we are still in horizontal mode.
   \if_mode_horizontal:
     % TODO: Make configurable/section by default penalty?
     \tex_par:D
     \tex_penalty:D \tex_widowpenalty:D
+  \else:
+    \tex_par:D
+    \the\everypar
+    \skip_vertical:n{\parskip}
   \fi:
 
   \group_begin:%
@@ -1020,6 +1027,13 @@
     \int_gincr:N\g__sdaps_textbox_num_int
 
   \group_end:
+
+  % Remove the following parskip and insert a penalty. Reset everything to
+  % normal in case a paragraph is inserted (\par or empty line)
+  \penalty\clubpenalty
+  \skip_vertical:n{-\parskip}
+  \def\par{\unpenalty\let\par=\endgraf\skip_vertical:n{\parskip}\endgraf}
+  \everypar{\let\par=\endgraf\everypar{}}
 }
 
 
