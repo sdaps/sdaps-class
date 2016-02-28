@@ -658,7 +658,7 @@
 \tl_new:N \l_sdaps_overlay_minipage_pos_tl
 \dim_new:N \l_sdaps_overlay_minipage_pad_dim
 
-
+% Note that width/height is the *outside* width/height
 \keys_define:nn { sdaps / checkbox }
 {
   linewidth    .dim_set:N   = \l_sdaps_checkbox_linewidth_dim,
@@ -715,8 +715,8 @@
     \dim_set:Nn \l_sdaps_y_dim { \voffset + \l_sdaps_checkbox_height_dim - \dim_max:nn { 0ex } { 0.5\l_sdaps_checkbox_height_dim - 1ex + 0.5\l_sdaps_checkbox_linewidth_dim } }
 
     % Size
-    \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim + \l_sdaps_checkbox_linewidth_dim }
-    \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_checkbox_height_dim + \l_sdaps_checkbox_linewidth_dim }
+    \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim }
+    \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_checkbox_height_dim }
 
     \bool_if:NT \l_sdaps_checkbox_writepos_bool {
       % pdflast[xy]pos is the PDF position of the baseline at the start of the box
@@ -735,12 +735,12 @@
     }
 
 
-    \tikz[baseline={max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex+0.5\l_sdaps_checkbox_linewidth_dim)}]{%
+    \tikz[baseline={max(0ex, 0.5\l_sdaps_checkbox_height_dim-1ex)}]{%
       \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} {box} {
-        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0) rectangle +(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim);%
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0) rectangle +($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim)-(\l_sdaps_checkbox_linewidth_dim,\l_sdaps_checkbox_linewidth_dim)$);%
       }
       \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} { ellipse } {
-        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] ($(0.5\l_sdaps_checkbox_linewidth_dim, 0) + (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim)$) circle [x~radius=0.5\l_sdaps_checkbox_width_dim, y~radius=0.5\l_sdaps_checkbox_height_dim];%
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) circle [x~radius=0.5\l_sdaps_checkbox_width_dim-0.5\l_sdaps_checkbox_linewidth_dim, y~radius=0.5\l_sdaps_checkbox_height_dim-0.5\l_sdaps_checkbox_linewidth_dim];%
       }
 
       % For the overlay we actually position the nodes relative to the checkbox
