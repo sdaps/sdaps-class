@@ -258,11 +258,8 @@
 \usedictionary{translator-sdaps-dictionary}
 
 
-% we need one to consume later on
-\def\questionnaireids{NONE}
-
 \seq_new:N \g_sdaps_questionnaire_ids_seq
-\seq_gpush:Nn \g_sdaps_questionnaire_ids_seq {{NONE}}
+\seq_gpush:Nn \g_sdaps_questionnaire_ids_seq {NONE}
 
 % Execute sdaps.opt file to allow SDAPS to override any options
 \InputIfFileExists{sdaps.opt}{}{}
