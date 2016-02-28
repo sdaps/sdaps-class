@@ -446,13 +446,9 @@
   \sdaps_qobject_begin:nnn { textbox } { Text } { #3 }
 
   \bool_if:NTF #1 {
-    \dim_set:Nn \l_tmpa_dim { #2 }
-    \dim_set:Nn \l_tmpb_dim { #2 }
-    \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
-    \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-    \sdaps_textbox_hstretch:nVVnn {} \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+    \sdaps_textbox_vhstretch:nnn {} { #2 } { 0 }
   }{
-    \sdaps_textbox_vhstretch:nn {} { #2 }
+    \sdaps_textbox_vhstretch:nnn {} { #2 } { 1 }
   }
 
   \sdaps_qobject_end:n { textbox }
