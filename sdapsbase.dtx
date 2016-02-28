@@ -892,7 +892,7 @@
   \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
 }
 
-\cs_new_protected_nopar:Nn \sdaps_textbox_vhstretch:nn
+\cs_new_protected_nopar:Nn \sdaps_textbox_vhstretch:nnn
 {
 %    \end{macrocode}
 %
@@ -959,12 +959,12 @@
     \tex_penalty:D 10000
     \tex_prevdepth:D=-1000pt
 
-    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#2 - \l__sdaps_textbox_ht_dim}
+    \tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#2 - \l__sdaps_textbox_ht_dim}
 
     \tex_penalty:D 10000
     \tex_prevdepth:D=-1000pt
 
-    \tex_expandafter:D\tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{\stretch{1}}
+    \tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{\stretch{#3}}
 
     \tex_penalty:D 10000
     \tex_prevdepth:D=-1000pt
@@ -1020,6 +1020,12 @@
     \int_gincr:N\g__sdaps_textbox_num_int
 
   \group_end:
+}
+
+
+\cs_new_protected_nopar:Nn \sdaps_textbox_vhstretch:nn
+{
+  \sdaps_textbox_vhstretch:nnn { #1 } { #2 } { 1 }
 }
 
 
