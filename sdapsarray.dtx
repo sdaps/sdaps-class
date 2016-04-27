@@ -175,14 +175,10 @@
 
 
 \int_new:N \g_sdaps_array_row_penalty_tl
-\int_new:N \g_sdaps_array_widow_penalty_tl
-\int_new:N \g_sdaps_array_orphan_penalty_tl
 
-% Slightly try to keep rows together. Orphan/Widow is last/first data row to
-% next/previous row.
+% XXX: Penalty in between rows. After the header a nobreak is inserted, but
+%      do we want special penalties elsewhere (preventing orphans/widows?)
 \int_set:Nn \g_sdaps_array_row_penalty_tl { -10 }
-\int_set:Nn \g_sdaps_array_widow_penalty_tl { -300 }
-\int_set:Nn \g_sdaps_array_orphan_penalty_tl { -300 }
 
 \tl_new:N \g_sdaps_array_shared_data_tl
 \tl_new:N \g_sdaps_array_stored_data_tl
@@ -318,13 +314,11 @@
 
 \box_new:N \g_sdaps_array_header_box
 \dim_new:N \g_sdaps_array_header_dim
-\dim_new:N \g_sdaps_array_header_topskip_dim
 
 \cs_new_protected_nopar:Nn \sdaps_array_row:NNn
 {
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
   \bool_if:NTF \g_sdaps_array_first_row {
-    % Insert a special penalty?
   } {
     \kern -\g_sdaps_array_header_dim
     \nobreak
@@ -349,9 +343,10 @@
     % We now have the header as the last box on the stack. This should be
     % stowed away to be inserted again at a later point.
     \vbox_gset:Nn \g_sdaps_array_header_box { \l__sdaps_array_row_tl #1 #2 { #3 } }
+    % and also insert now
     \vbox_unpack:N \g_sdaps_array_header_box
     \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
-    \penalty\int_use:N\g_sdaps_array_widow_penalty_tl
+    \nobreak
   } {
     \l__sdaps_array_row_tl #1 #2 { #3 }
     \penalty\int_use:N\g_sdaps_array_row_penalty_tl
