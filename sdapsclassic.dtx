@@ -848,6 +848,29 @@
   \group_end:
 }
 
+\NewDocumentEnvironment { markgroup } { o m }
+{
+  \group_begin:
+
+    \question{#2}
+
+    % Undefine the question (and choice) commands in local scope so that they
+    % can be redefined by choicearray without any issues.
+    % Note that \cs_undefine:N works in global scope, so we cannot use it here.
+    \cs_set_eq:NN\range\tex_undefined:D
+
+    \begin{rangearray}[#1]{#2}
+      % XXX: This is a bit of a hack, set in global scope because the choicearray
+      %      environment does evil things with scopes.
+      \cs_gset_eq:NN\markline\range
+}
+{
+      \cs_gset_eq:NN\markline\undefined
+
+    \end{rangearray}
+  \group_end:
+}
+
 \ExplSyntaxOff
 
 %    \end{macrocode}
