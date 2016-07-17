@@ -569,7 +569,7 @@
 
       % Set the box into a new box with the correct width which contains fil
       % to center it.
-      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \box_use:N #2 \hfil } }
+      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack:N #2 \hfil } }
 
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
