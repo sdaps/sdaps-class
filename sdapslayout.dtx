@@ -235,7 +235,7 @@
   \_sdaps_choicearray_process_question_tail:
 }
 
-\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_question_insert_tail_after:w {
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_process_question_inline:w {
   \_sdaps_choicearray_process_question_head:
   \bgroup
     \group_insert_after:N \_sdaps_choicearray_process_question_tail:
@@ -276,8 +276,8 @@
     % outputs it again, and finishes the question.
     \cs_set_eq:NN \l_tmpa_token \_sdaps_choicearray_process_question_grab:n
   } {
-    % We need to generate the question after the next group stops
-    \cs_set_eq:NN \l_tmpa_token \_sdaps_choicearray_process_question_insert_tail_after:w
+    % Insert the question around the next argument
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_choicearray_process_question_inline:w
   }
   \l_tmpa_token
 }
