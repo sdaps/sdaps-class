@@ -433,6 +433,18 @@
 \cs_generate_variant:Nn \sdaps_answer:n { f }
 \cs_generate_variant:Nn \sdaps_answer:n { V }
 
+\cs_new_protected_nopar:Nn \sdaps_range:nnn
+{
+  \sdaps_context_get:nN { id } \l__sdaps_tmpa_tl
+
+  \sdaps_info_write:x {
+     Range-#1[\tl_use:N \l__sdaps_tmpa_tl]=\int_eval:n{#2},\exp_not:n { #3 }
+  }
+}
+\cs_generate_variant:Nn \sdaps_range:nnn { nno }
+\cs_generate_variant:Nn \sdaps_range:nnn { nnf }
+\cs_generate_variant:Nn \sdaps_range:nnn { nnV }
+
 \cs_new_protected_nopar:Nn \sdaps_generate_var:nN
 {
   \sdaps_context_get:nN { var } \l__sdaps_tmpa_tl

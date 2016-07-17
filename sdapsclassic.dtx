@@ -472,7 +472,7 @@
 
   \question{#2}%
 
-  \sdaps_qobject_begin:nnn { singlemark } { mark } { #2 }
+  \sdaps_qobject_begin:nnn { singlemark } { range } { #2 }
 
   \sdaps_context_set:n {checkbox={ellipse}}
 
@@ -480,7 +480,8 @@
     \sdaps_context_append:nVn { var } \l_sdaps_singlemark_var_tl { _ }
   }
 
-  \sdaps_answer:n{#3}
+  \sdaps_range:nnn{lower}{0}{#3}
+  \sdaps_range:nnn{upper}{\themarkcheckboxcount-1}{#4}
 
   \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
     {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
@@ -488,7 +489,35 @@
     {\usekomafont{singlemarkchoicefont}#4}\\%
   \end{tabularx}%
 
-  \sdaps_answer:n{#4}
+  \sdaps_qobject_end:n { singlemark }
+}
+
+
+\providecommand*{\singlemarkother}[5][]{%
+  \sdaps_classic_ensure_section:
+
+  \keys_set:nn { sdaps / singlemark } { #1 }
+
+  \question{#2}%
+
+  \sdaps_qobject_begin:nnn { singlemark } { range } { #2 }
+
+  \sdaps_context_set:n {checkbox={ellipse}}
+
+  \tl_if_empty:NF \l_sdaps_singlemark_var_tl {
+    \sdaps_context_append:nVn { var } \l_sdaps_singlemark_var_tl { _ }
+  }
+
+  \sdaps_range:nnn{lower}{0}{#3}
+  \sdaps_range:nnn{upper}{\themarkcheckboxcount-1}{#4}
+  \sdaps_answer:n{#5}
+
+  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}XX}
+    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
+      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { ##1 } { ##1 } & }
+    {\usekomafont{singlemarkchoicefont}#4} &
+    {\usekomafont{singlemarkchoicefont}\sdaps_checkbox:nn { 0 } { 0 } {} ~ #5}\\%
+  \end{tabularx}%
 
   \sdaps_qobject_end:n { singlemark }
 }
