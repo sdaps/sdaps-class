@@ -1,7 +1,7 @@
 % \iffalse meta-comment
 %
 % Copyright (C) 2014 by Henry Menke <henrimenke@gmail.com>
-% Copyright (C) 2015 by Benjamin Berg <benjamin@sipsolutions.net>
+% Copyright (C) 2015-2016 by Benjamin Berg <benjamin@sipsolutions.net>
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -299,6 +299,270 @@
 %    \begin{macrocode}
 
 
+\tl_new:N \l_sdaps_rangearray_var_tl
+\tl_new:N \l_sdaps_rangearray_text_tl
+\tl_new:N \l_sdaps_rangearray_align_tl
+\int_new:N \l_sdaps_rangearray_rangecount_int
+\bool_new:N \l_sdaps_rangearray_other_bool
+\tl_new:N \g_sdaps_question_var_tl
+\tl_new:N \g_sdaps_question_text_tl
+\tl_new:N \g_sdaps_question_lowertext_tl
+\tl_new:N \g_sdaps_question_uppertext_tl
+\tl_new:N \g_sdaps_question_othertext_tl
+
+\keys_define:nn { sdaps / rangearray }
+{
+  var        .tl_set:N   = \l_sdaps_rangearray_var_tl,
+  text       .tl_set:N   = \l_sdaps_rangearray_text_tl,
+  count      .int_set:N  = \l_sdaps_rangearray_rangecount_int,
+  count      .initial:n  = 5,
+  align      .tl_set:N   = \l_sdaps_rangearray_align_tl,
+  align      .initial:n  = { rangearray\bool_if:NTF\l_sdaps_rangearray_other_bool{optcol}{nooptcol}\int_use:N\l_sdaps_rangearray_rangecount_int },
+  other      .bool_set:N = \l_sdaps_rangearray_other_bool,
+  other      .default:n  = true,
+  other      .initial:n  = false,
+}
+
+\keys_define:nn { sdaps / rangearray / question }
+{
+  var        .tl_gset:N   = \g_sdaps_question_var_tl,
+  text       .tl_gset:N   = \g_sdaps_question_text_tl,
+  upper      .tl_gset:N   = \g_sdaps_question_uppertext_tl,
+  lower      .tl_gset:N   = \g_sdaps_question_lowertext_tl,
+  other      .tl_gset:N   = \g_sdaps_question_othertext_tl,
+}
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_preprocess:nn #1#2
+{
+  \keys_set:nn { sdaps / rangearray } { #1 }
+
+  \tl_if_empty:NTF \l_sdaps_rangearray_text_tl {
+    \sdaps_qobject_begin:nnn { rangearray } { Head } { #2 }
+  } {
+    \sdaps_qobject_begin:nnV { rangearray } { Head } \l_sdaps_rangearray_text_tl
+  }
+
+  \sdaps_context_set:n {checkbox={ellipse}}
+
+  \tl_if_empty:NF \l_sdaps_rangearray_var_tl {
+    \sdaps_context_append:nVn { var } \l_sdaps_rangearray_var_tl { _ }
+  }
+}
+\cs_generate_variant:Nn \_sdaps_rangearray_preprocess:nn { Vn }
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_postprocess:
+{
+  \sdaps_qobject_end:n { rangearray }
+}
+
+% Before/After the different parts
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_question: {
+  \sdaps_qobject_begin:nnV { rangearray_question } { Range } \g_sdaps_question_text_tl
+
+  \tl_if_empty:NF \g_sdaps_question_var_tl {
+   \sdaps_context_append:nVn { var } \g_sdaps_question_var_tl { _ }
+  }
+
+  \sdaps_array_newline:
+  \ignorespaces
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_lower: {
+  \sdaps_range:nnV { lower } { 0 } \g_sdaps_question_lowertext_tl
+  % right align
+  \sdaps_array_alignment:
+  \hfill
+  \ignorespaces
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_upper: {
+  \sdaps_range:nnV { upper } { \l_sdaps_rangearray_rangecount_int - 1 } \g_sdaps_question_uppertext_tl
+
+  \sdaps_array_alignment:
+  \ignorespaces
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_other: {
+  \sdaps_answer:V \g_sdaps_question_othertext_tl
+
+  \sdaps_array_alignment:
+  \sdaps_checkbox:nn { dummy } { 0 } {} ~ {}
+  \ignorespaces
+}
+
+
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_question: {
+  \tl_if_empty:NTF \g_sdaps_question_lowertext_tl {
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_lower:n
+  } {
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_inline_lower:w
+  }
+  \l_tmpa_token
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_lower: {
+  % Insert the option checkbox column
+  \sdaps_array_alignment:
+  % Assume we have at least one checkbox
+  \sdaps_checkbox:nn { dummy } { 1 }
+  \int_step_inline:nnnn { 2 } { 1 } { \l_sdaps_rangearray_rangecount_int } {
+    \hspace{1em} \sdaps_checkbox:nn { dummy } { ##1 }
+  }
+
+  \tl_if_empty:NTF \g_sdaps_question_uppertext_tl {
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_upper:n
+  } {
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_inline_upper:w
+  }
+  \l_tmpa_token
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_upper: {
+  \hfill
+
+  \bool_if:NTF \l_sdaps_rangearray_other_bool {
+    \tl_if_empty:NTF \g_sdaps_question_othertext_tl {
+      \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_other:n
+    } {
+      \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_inline_other:w
+    }
+  } {
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_finish:
+  }
+  \l_tmpa_token
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_other: {
+  \hfill
+  \ignorespaces
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_finish: {
+  \sdaps_qobject_end:n { rangearray_question }
+  \ignorespaces
+}
+
+% Processors for inline processing/grabbing the argument
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_question:n {
+  \tl_set:Nn \g_sdaps_question_text_tl { #1 }
+
+  \_sdaps_rangearray_process_question_before_question:
+  \group_begin:
+    \sdaps_array_nested_alignenv:
+    #1
+  \group_end:
+  \_sdaps_rangearray_process_question_after_question:
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_lower:n {
+  \tl_set:Nn \g_sdaps_question_lowertext_tl { #1 }
+
+  \_sdaps_rangearray_process_question_before_lower:
+  \group_begin:
+    \sdaps_array_nested_alignenv:
+    #1
+  \group_end:
+  \_sdaps_rangearray_process_question_after_lower:
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_upper:n {
+  \tl_set:Nn \g_sdaps_question_uppertext_tl { #1 }
+
+  \_sdaps_rangearray_process_question_before_upper:
+  \group_begin:
+    \sdaps_array_nested_alignenv:
+    #1
+  \group_end:
+  \_sdaps_rangearray_process_question_after_upper:
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_other:n {
+  \tl_set:Nn \g_sdaps_question_othertext_tl { #1 }
+
+  % If the text is empty, assume that this particular question does not have
+  % an alternative choice. Note that this column might not exist and this
+  % macro will not even be called in that case.
+  % If we skip the optional "other" option then we still need to insert the
+  % alignment to create the column.
+  \tl_if_empty:NTF \g_sdaps_question_othertext_tl {
+    \sdaps_array_alignment:
+    \ignorespaces
+  } {
+    \_sdaps_rangearray_process_question_before_other:
+    \group_begin:
+      \sdaps_array_nested_alignenv:
+      #1
+    \group_end:
+    \_sdaps_rangearray_process_question_after_other:
+  }
+  \_sdaps_rangearray_process_question_finish:
+}
+
+
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_process_question_inline_question:w {
+  \_sdaps_rangearray_process_question_before_question:
+  \bgroup
+    \group_insert_after:N \_sdaps_rangearray_process_question_after_question:
+    \sdaps_array_nested_alignenv:
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_process_question_inline_lower:w {
+  \_sdaps_rangearray_process_question_before_lower:
+  \bgroup
+    \group_insert_after:N \_sdaps_rangearray_process_question_after_lower:
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_process_question_inline_upper:w {
+  \_sdaps_rangearray_process_question_before_upper:
+  \bgroup
+    \group_insert_after:N \_sdaps_rangearray_process_question_after_upper:
+    \tex_let:D\next=
+}
+
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_process_question_inline_other:w {
+  \_sdaps_rangearray_process_question_before_other:
+  % If we reach this macro then a text has been set for the other item. This
+  % means we never need to ignore the "other" parameter at this point.
+  \bgroup
+    \group_insert_after:N \_sdaps_rangearray_process_question_after_other:
+    \group_insert_after:N \_sdaps_rangearray_process_question_finish:
+    \tex_let:D\next=
+}
+
+
+
+
+\cs_new_nopar:Npn \_sdaps_rangearray_process_question:nw #1
+{
+  % Is there a better way other than clearing these before parsing?
+  \tl_gclear:N \g_sdaps_question_var_tl
+  \tl_gclear:N \g_sdaps_question_text_tl
+  \tl_gclear:N \g_sdaps_question_uppertext_tl
+  \tl_gclear:N \g_sdaps_question_lowertext_tl
+  \tl_gclear:N \g_sdaps_question_othertext_tl
+
+  \keys_set:nn { sdaps / rangearray / question } { #1 }
+
+  \tl_if_empty:NTF \g_sdaps_question_text_tl {
+    % We need to leave a command in the stream that grabs the next parameter,
+    % outputs it again, and finishes the question.
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_question:n
+  } {
+    % We need to generate the question after the next group stops
+    \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_inline_question:w
+  }
+  \l_tmpa_token
+}
+\cs_generate_variant:Nn \_sdaps_rangearray_process_question:nw { Vw }
+
+
+
 %
 %    \end{macrocode}
 %
@@ -363,6 +627,51 @@
 
   \group_end:
 }
+
+
+
+\NewDocumentEnvironment { rangearray } { o m }
+{
+  \group_begin:
+
+    \sdaps_context_get:nN { rangearray } \l_tmpa_tl
+    \tl_if_eq:NNT \l_tmpa_tl \q_no_value {
+      \tl_set:Nn \l_tmpa_tl {}
+    }
+
+    \IfNoValueF { #1 } {
+      \tl_if_empty:NTF \l_tmpa_tl {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      } {
+        \tl_set:Nf \l_tmpa_tl { \l_tmpa_tl, #1 }
+      }
+    }
+
+    \_sdaps_rangearray_preprocess:Vn \l_tmpa_tl { #2 }
+
+    \NewDocumentCommand \range { o } {
+      \IfNoValueTF { ##1 } {
+        \tl_set:Nn \l_tmpa_tl {}
+      } {
+        \tl_set:Nn \l_tmpa_tl { ##1 }
+      }
+      \_sdaps_rangearray_process_question:Vw \l_tmpa_tl
+    }
+
+    \group_begin:
+
+      \tl_set:Nx \l_tmpb_tl {keepenv,align=\l_sdaps_rangearray_align_tl}
+      \expandafter\sdapsarray\expandafter[\l_tmpb_tl]
+}
+{
+      \endsdapsarray
+    \group_end:
+    % Process keys
+    \_sdaps_rangearray_postprocess:
+
+  \group_end:
+}
+
 
 \ExplSyntaxOff
 
