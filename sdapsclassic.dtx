@@ -113,8 +113,8 @@
 %-------------------------------------------------------------------------------
 
 % Whether sdaps should print the questionnaire id
-\DeclareOption{no_print_questionnaire_id}{\bool_gset_false:N\g_sdaps_print_questionnaire_id_bool}
-\DeclareOption{print_questionnaire_id}{\bool_gset_true:N\g_sdaps_print_questionnaire_id_bool}
+\DeclareOption{no_print_questionnaire_id}{\bool_gset_false:N\g_sdaps_print_questionnaire_id_bool\seq_gset_from_clist:Nn \g_sdaps_questionnaire_ids_seq {{}}}
+\DeclareOption{print_questionnaire_id}{\bool_gset_true:N\g_sdaps_print_questionnaire_id_bool\seq_gset_from_clist:Nn \g_sdaps_questionnaire_ids_seq {{NONE}}}
 
 % pass unknown options to scrartcl
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
@@ -181,6 +181,9 @@
 \PassOptionsToClass{twoside}{scrartcl}
 % Well, I don't think that this worked in the past ...
 %\PassOptionsToClass{10pt}{scrartcl}
+
+\seq_new:N \g_sdaps_questionnaire_ids_seq
+\seq_gset_from_clist:Nn \g_sdaps_questionnaire_ids_seq {{}}
 
 % process given options
 \FamilyProcessOptions{SDAPS}\relax
@@ -257,9 +260,6 @@
 \RequirePackage{translator}
 \usedictionary{translator-sdaps-dictionary}
 
-
-\seq_new:N \g_sdaps_questionnaire_ids_seq
-\seq_gpush:Nn \g_sdaps_questionnaire_ids_seq {NONE}
 
 % Execute sdaps.opt file to allow SDAPS to override any options
 \InputIfFileExists{sdaps.opt}{}{}
