@@ -358,35 +358,35 @@
 % Before/After the different parts
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_question: {
-  \sdaps_qobject_begin:nnV { rangearray_question } { Range } \g_sdaps_question_text_tl
-
   \tl_if_empty:NF \g_sdaps_question_var_tl {
    \sdaps_context_append:nVn { var } \g_sdaps_question_var_tl { _ }
   }
 
   \sdaps_array_newline:
+  % Note: This needs to be after sdaps_array_newline as the command may be
+  %       discarded otherwise (i.e. it does not make it into the output stream)
+  \sdaps_qobject_begin:nnV { rangearray_question } { Range } \g_sdaps_question_text_tl
+
   \ignorespaces
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_lower: {
-  \sdaps_range:nnV { lower } { 0 } \g_sdaps_question_lowertext_tl
   % right align
   \sdaps_array_alignment:
+  \sdaps_range:nnV { lower } { 0 } \g_sdaps_question_lowertext_tl
   \hfill
   \ignorespaces
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_upper: {
-  \sdaps_range:nnV { upper } { \l_sdaps_rangearray_rangecount_int - 1 } \g_sdaps_question_uppertext_tl
-
   \sdaps_array_alignment:
+  \sdaps_range:nnV { upper } { \l_sdaps_rangearray_rangecount_int - 1 } \g_sdaps_question_uppertext_tl
   \ignorespaces
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_other: {
-  \sdaps_answer:V \g_sdaps_question_othertext_tl
-
   \sdaps_array_alignment:
+  \sdaps_answer:V \g_sdaps_question_othertext_tl
   \sdaps_checkbox:nn { dummy } { 0 } {} ~ {}
   \ignorespaces
 }
@@ -447,7 +447,7 @@
 % Processors for inline processing/grabbing the argument
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_question:n {
-  \tl_set:Nn \g_sdaps_question_text_tl { #1 }
+  \tl_gset:Nn \g_sdaps_question_text_tl { #1 }
 
   \_sdaps_rangearray_process_question_before_question:
   \group_begin:
@@ -458,7 +458,7 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_lower:n {
-  \tl_set:Nn \g_sdaps_question_lowertext_tl { #1 }
+  \tl_gset:Nn \g_sdaps_question_lowertext_tl { #1 }
 
   \_sdaps_rangearray_process_question_before_lower:
   \group_begin:
@@ -469,7 +469,7 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_upper:n {
-  \tl_set:Nn \g_sdaps_question_uppertext_tl { #1 }
+  \tl_gset:Nn \g_sdaps_question_uppertext_tl { #1 }
 
   \_sdaps_rangearray_process_question_before_upper:
   \group_begin:
@@ -480,7 +480,7 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_grab_other:n {
-  \tl_set:Nn \g_sdaps_question_othertext_tl { #1 }
+  \tl_gset:Nn \g_sdaps_question_othertext_tl { #1 }
 
   % If the text is empty, assume that this particular question does not have
   % an alternative choice. Note that this column might not exist and this
