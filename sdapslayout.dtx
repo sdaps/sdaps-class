@@ -528,14 +528,14 @@
 % Before/After the different parts
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_question: {
-  \tl_if_empty:NF \g_sdaps_question_var_tl {
-   \sdaps_context_append:nVn { var } \g_sdaps_question_var_tl { _ }
-  }
-
   \sdaps_array_newline:
   % Note: This needs to be after sdaps_array_newline as the command may be
   %       discarded otherwise (i.e. it does not make it into the output stream)
   \sdaps_qobject_begin:nnV { rangearray_question } { Range } \g_sdaps_question_text_tl
+
+  \tl_if_empty:NF \g_sdaps_question_var_tl {
+   \sdaps_context_append:nVn { var } \g_sdaps_question_var_tl { _ }
+  }
 
   \ignorespaces
 }
