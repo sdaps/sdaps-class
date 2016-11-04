@@ -15,6 +15,7 @@ Contents:
     sdapslayout
     sdapspdf
     sdapsarray
+    sdapsbase
 
 
 Indices and tables
