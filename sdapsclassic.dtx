@@ -446,9 +446,9 @@
   \sdaps_qobject_begin:nnn { textbox } { Text } { #3 }
 
   \bool_if:NTF #1 {
-    \sdaps_textbox_vhstretch:nnn {} { #2 } { 0 }
-  }{
     \sdaps_textbox_vhstretch:nnn {} { #2 } { 1 }
+  }{
+    \sdaps_textbox_vhstretch:nnn {} { #2 } { 0 }
   }
 
   \sdaps_qobject_end:n { textbox }
