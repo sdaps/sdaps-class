@@ -80,6 +80,7 @@ class SDAPSDirective(Directive):
     option_spec = {
         'sdapsclassic'  : directives.flag,
         'metadata'      : directives.flag,
+        'preamble'      : directives.unchanged,
     }
 
     def run(self):
@@ -100,6 +101,11 @@ class SDAPSDirective(Directive):
             node['metadata'] = True
         else:
             node['metadata'] = False
+
+        if 'preamble' in self.options:
+            node['preamble'] = self.options['preamble']
+        else:
+            node['preamble'] = ''
 
         return [node]
 
@@ -139,6 +145,8 @@ TEMPLATE = r'''
 
 \title{Title}
 \author{Author}
+
+%(preamble)s
 
 \makeatletter
 \ExplSyntaxOn
@@ -188,6 +196,8 @@ TEMPLATE_SDAPSCLASSIC = r'''
 
 \title{Title}
 \author{Author}
+
+%(preamble)s
 
 \makeatletter
 \ExplSyntaxOn
@@ -239,12 +249,13 @@ TEMPLATE_SDAPSCLASSIC = r'''
 
 
 
-def render_sdaps(self,code,libs='',sdapsclassic=False,metadata=False):
+def render_sdaps(self, node):
+    code = node['sdaps']
     hashkey = code.encode('utf-8')
-    hashkey += libs.encode('utf-8')
-    if sdapsclassic:
+    hashkey += node['preamble'].encode('utf-8')
+    if node['sdapsclassic']:
         hashkey += b'sdapsclassic'
-    if metadata:
+    if node['metadata']:
         hashkey += b'metadata'
 
     fname = 'sdaps-%s.svg' % (sha(hashkey).hexdigest())
@@ -261,11 +272,11 @@ def render_sdaps(self,code,libs='',sdapsclassic=False,metadata=False):
     curdir = os.getcwd()
 
     replacements = {
-        'libs' : libs,
         'target' : code,
+        'preamble' : node['preamble'] if 'preamble' in node else ''
     }
 
-    if not sdapsclassic:
+    if not node['sdapsclassic']:
         latex = TEMPLATE % replacements
     else:
         latex = TEMPLATE_SDAPSCLASSIC % replacements
@@ -284,7 +295,7 @@ def render_sdaps(self,code,libs='',sdapsclassic=False,metadata=False):
             self.builder._sdaps_warned = True
             relfn = None
         else:
-            if metadata:
+            if node['metadata']:
                 shutil.copy(os.path.join(tempdir, 'tmp.sdaps'), outfn + '.meta')
 
             topinfo, bottominfo, paper = open(os.path.join(tempdir, 'tmp.targetinfo')).read().split('\n')[0:3]
@@ -317,7 +328,7 @@ def html_visit_sdaps(self,node):
     libs = libs.replace(' ', '').replace('\t', '').strip(', ')
 
     try:
-        fname, errlog = render_sdaps(self,node['sdaps'],libs,node['sdapsclassic'],node['metadata'])
+        fname, errlog = render_sdaps(self, node)
     except SDAPSExtError as exc:
         info = str(exc)[str(exc).find('!'):-1]
         sm = nodes.system_message(info, type='WARNING', level=2,
@@ -361,7 +372,17 @@ def html_visit_sdaps(self,node):
             node['sdaps'], 'latex')
 
     self.body.append(highlighted)
+
+    if node['preamble']:
+        self.body.append('Required code in preamble:')
+
+        highlighted = self.highlighter.highlight_block(
+                node['preamble'], 'latex')
+
+        self.body.append(highlighted)
+
     self.body.append('</div>')
+
 
     self.body.append(self.starttag(node, 'div', CLASS='content-rendering'))
     if fname is not None:
