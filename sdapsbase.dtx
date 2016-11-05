@@ -742,6 +742,7 @@
         \dim_use:N \l_sdaps_width_dim,
         \dim_use:N \l_sdaps_height_dim,
         \tl_to_str:N\l_sdaps_checkbox_form_tl,
+        \dim_use:N \l_sdaps_checkbox_linewidth_dim,
         #1,#2
       }
     }
@@ -1029,6 +1030,7 @@
             \dim_use:N \l_sdaps_y_dim,
             \dim_use:N \l_sdaps_width_dim,
             \dim_use:N \l_sdaps_height_dim,
+            \dim_use:N \l_sdaps_textbox_linewidth_dim,
             \tl_use:N \l_sdaps_var_tl,
           }
         }
@@ -1107,6 +1109,7 @@
           \dim_use:N \l_sdaps_y_dim,
           \dim_use:N \l_sdaps_width_dim,
           \dim_use:N \l_sdaps_height_dim,
+          \dim_use:N \l_sdaps_textbox_linewidth_dim,
           \tl_use:N \l_sdaps_var_tl,
         }
       }
@@ -1141,6 +1144,7 @@
         \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
         \dim_use:N \l_sdaps_width_dim,
         \dim_use:N \l_sdaps_height_dim,
+        \dim_use:N \l_sdaps_textbox_linewidth_dim,
         \tl_use:N \l_sdaps_var_tl,
       }
     }
