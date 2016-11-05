@@ -420,13 +420,18 @@
   \sdaps_qobject_end:n { unnamed_qobject }
 }
 
+\msg_new:nnn { sdapsbase } { no_qid } { Trying~to~output~metadata~but~no~QID~is~set~on~the~context.~Supressing~the~output! }
 
 \cs_new_protected_nopar:Nn \sdaps_answer:n
 {
   \sdaps_context_get:nN { id } \l__sdaps_tmpa_tl
 
-  \sdaps_info_write:x {
-     Answer[\tl_use:N \l__sdaps_tmpa_tl]=\exp_not:n { #1 }
+  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+    \msg_warning:nn { sdapsbase } { no_qid }
+  } {
+    \sdaps_info_write:x {
+       Answer[\tl_use:N \l__sdaps_tmpa_tl]=\exp_not:n { #1 }
+    }
   }
 }
 \cs_generate_variant:Nn \sdaps_answer:n { o }
@@ -437,8 +442,12 @@
 {
   \sdaps_context_get:nN { id } \l__sdaps_tmpa_tl
 
-  \sdaps_info_write:x {
-     Range-#1[\tl_use:N \l__sdaps_tmpa_tl]=\int_eval:n{#2},\exp_not:n { #3 }
+  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+    \msg_warning:nn { sdapsbase } { no_qid }
+  } {
+    \sdaps_info_write:x {
+       Range-#1[\tl_use:N \l__sdaps_tmpa_tl]=\int_eval:n{#2},\exp_not:n { #3 }
+    }
   }
 }
 \cs_generate_variant:Nn \sdaps_range:nnn { nno }
@@ -734,16 +743,20 @@
       % pdflast[xy]pos is the PDF position of the baseline at the start of the box
       % excluding the page origin offset.
       \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
-      \sdaps_info_write_x:x{
-        Box[\l__sdaps_tmpa_tl]=Checkbox,
-        \exp_not:n{\int_use:N\g_sdaps_page_int},
-        \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_x_dim + \the\pdflastxpos sp} },
-        \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_y_dim + \the\pdflastypos sp} },
-        \dim_use:N \l_sdaps_width_dim,
-        \dim_use:N \l_sdaps_height_dim,
-        \tl_to_str:N\l_sdaps_checkbox_form_tl,
-        \dim_use:N \l_sdaps_checkbox_linewidth_dim,
-        #1,#2
+      \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+        \msg_warning:nn { sdapsbase } { no_qid }
+      } {
+        \sdaps_info_write_x:x{
+          Box[\l__sdaps_tmpa_tl]=Checkbox,
+          \exp_not:n{\int_use:N\g_sdaps_page_int},
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_x_dim + \the\pdflastxpos sp} },
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_y_dim + \the\pdflastypos sp} },
+          \dim_use:N \l_sdaps_width_dim,
+          \dim_use:N \l_sdaps_height_dim,
+          \tl_to_str:N\l_sdaps_checkbox_form_tl,
+          \dim_use:N \l_sdaps_checkbox_linewidth_dim,
+          #1,#2
+        }
       }
     }
 
