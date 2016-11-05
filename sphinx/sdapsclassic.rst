@@ -315,7 +315,5 @@ Preselection and overrides
       \choiceline[var=bob]{Question "bob"}
     \end{choicegroup}
 
-.. warning:: Not all options are supported by the SDAPS main program. In particular setting linewidth to anything other than 1bp will confuse SDAPS.
-
 .. warning:: The API will likely keep working, however this is rather inconvenient and helper macros not requireing ExplSyntaxOn/Off should be added.
 
