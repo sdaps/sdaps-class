@@ -227,5 +227,3 @@ modifies the linewidth for all boxes, and the size of checkboxes:
 
 .. todo:: It appears the text is not centered correctly.
 
-.. warning:: It appears setting "writepos" in the example causes an infinite loop while compiling. Obviously this should not happen, the cause for it is unknown at this point!
-
