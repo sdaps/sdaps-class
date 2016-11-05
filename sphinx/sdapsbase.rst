@@ -125,7 +125,7 @@ Checkbox
 =================== ===================================================================
 Option              Description
 =================== ===================================================================
-linewidth           The width of the outline (default: 1bp, modification is not supported by the SDAPS main program!)
+linewidth           The width of the outline (default: 1bp)
 width               The width of the checkbox (default 3.5mm)
 height              The height of the checkbox (default: 3.5mm)
 form                The form, either `box` or `ellipse` (default: `box`, usually set internally)
