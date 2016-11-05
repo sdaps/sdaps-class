@@ -272,9 +272,9 @@ class TeXXRefRole(XRefRole):
     pass
 
 class TeXDomain(Domain):
-    """JavaScript language domain."""
+    """TeX language domain."""
     name = 'tex'
-    label = 'JavaScript'
+    label = 'TeX'
     # if you add a new object type make sure to edit TeXObject.get_index_text
     object_types = {
         'macro':     ObjType(l_('macro'),     'macro'),
