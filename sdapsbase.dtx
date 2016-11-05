@@ -1036,15 +1036,20 @@
         \end{scope}
 
         \bool_if:NT \l_sdaps_textbox_writepos_bool {
-          \sdaps_info_write_x:x {
-            Box=Textbox,
-            \exp_not:n{\int_use:N\g_sdaps_page_int},
-            \dim_use:N \l_sdaps_x_dim,
-            \dim_use:N \l_sdaps_y_dim,
-            \dim_use:N \l_sdaps_width_dim,
-            \dim_use:N \l_sdaps_height_dim,
-            \dim_use:N \l_sdaps_textbox_linewidth_dim,
-            \tl_use:N \l_sdaps_var_tl,
+          \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
+          \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+            \msg_warning:nn { sdapsbase } { no_qid }
+          } {
+            \sdaps_info_write_x:x {
+              Box[\l__sdaps_tmpa_tl]=Textbox,
+              \exp_not:n{\int_use:N\g_sdaps_page_int},
+              \dim_use:N \l_sdaps_x_dim,
+              \dim_use:N \l_sdaps_y_dim,
+              \dim_use:N \l_sdaps_width_dim,
+              \dim_use:N \l_sdaps_height_dim,
+              \dim_use:N \l_sdaps_textbox_linewidth_dim,
+              \tl_use:N \l_sdaps_var_tl,
+            }
           }
         }
       \end{tikzpicture}
@@ -1115,15 +1120,20 @@
       \end{scope}
 
       \bool_if:NT \l_sdaps_textbox_writepos_bool {
-        \sdaps_info_write_x:x {
-          Box=Textbox,
-          \exp_not:n{\int_use:N\g_sdaps_page_int},
-          \dim_use:N \l_sdaps_x_dim,
-          \dim_use:N \l_sdaps_y_dim,
-          \dim_use:N \l_sdaps_width_dim,
-          \dim_use:N \l_sdaps_height_dim,
-          \dim_use:N \l_sdaps_textbox_linewidth_dim,
-          \tl_use:N \l_sdaps_var_tl,
+        \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
+        \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+          \msg_warning:nn { sdapsbase } { no_qid }
+        } {
+          \sdaps_info_write_x:x {
+            Box[\l__sdaps_tmpa_tl]=Textbox,
+            \exp_not:n{\int_use:N\g_sdaps_page_int},
+            \dim_use:N \l_sdaps_x_dim,
+            \dim_use:N \l_sdaps_y_dim,
+            \dim_use:N \l_sdaps_width_dim,
+            \dim_use:N \l_sdaps_height_dim,
+            \dim_use:N \l_sdaps_textbox_linewidth_dim,
+            \tl_use:N \l_sdaps_var_tl,
+          }
         }
       }
     \end{tikzpicture}
@@ -1150,15 +1160,20 @@
     % pdflast[xy]pos is the PDF position of the top left corner excluding the
     % origin
     \bool_if:NT \l_sdaps_textbox_writepos_bool {
-      \sdaps_info_write_x:x{
-        Box=Textbox,
-        \exp_not:n{\int_use:N\g_sdaps_page_int},
-        \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
-        \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
-        \dim_use:N \l_sdaps_width_dim,
-        \dim_use:N \l_sdaps_height_dim,
-        \dim_use:N \l_sdaps_textbox_linewidth_dim,
-        \tl_use:N \l_sdaps_var_tl,
+      \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
+      \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+        \msg_warning:nn { sdapsbase } { no_qid }
+      } {
+        \sdaps_info_write_x:x {
+          Box[\l__sdaps_tmpa_tl]=Textbox,
+          \exp_not:n{\int_use:N\g_sdaps_page_int},
+          \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
+          \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
+          \dim_use:N \l_sdaps_width_dim,
+          \dim_use:N \l_sdaps_height_dim,
+          \dim_use:N \l_sdaps_textbox_linewidth_dim,
+          \tl_use:N \l_sdaps_var_tl,
+        }
       }
     }
 
