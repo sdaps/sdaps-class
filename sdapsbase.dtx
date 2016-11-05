@@ -733,7 +733,7 @@
 
      % Position of page and baseline offset
     \dim_set:Nn \l_sdaps_x_dim { \hoffset }
-    \dim_set:Nn \l_sdaps_y_dim { \voffset + \l_sdaps_checkbox_height_dim - \dim_max:nn { 0ex } { 0.5\l_sdaps_checkbox_height_dim - 1ex + 0.5\l_sdaps_checkbox_linewidth_dim } }
+    \dim_set:Nn \l_sdaps_y_dim { \voffset + \l_sdaps_checkbox_height_dim - \dim_max:nn { 0ex } { 0.5\l_sdaps_checkbox_height_dim - 1ex } }
 
     % Size
     \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim }
@@ -772,7 +772,7 @@
       % For the overlay we actually position the nodes relative to the checkbox
       % and not absolute on the page.
       \dim_set:Nn \l_sdaps_x_dim { 0pt }
-      \dim_set:Nn \l_sdaps_y_dim { \l_sdaps_checkbox_height_dim + 0.5\l_sdaps_checkbox_linewidth_dim }
+      \dim_set:Nn \l_sdaps_y_dim { \l_sdaps_checkbox_height_dim }
 
       % Use overlay so that nothing happens if a node is larger than the checkbox
       \begin{scope}[overlay]
