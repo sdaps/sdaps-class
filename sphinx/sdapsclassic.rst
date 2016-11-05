@@ -9,10 +9,18 @@ Pleaes note that the environments from the sdapslayout package cannot be used
 directly as using these environments will cause conflicting macro definitions.
 Instead one can simply use the aliases provided in this class.
 
+The following question types exists for your use:
+
+* :macro:`\\singlemark`: A single range or mark question
+* :macro:`\\singlemarkother`: A single range or makr question with an alternative answer in case it isn't applicable
+* :macro:`\\textbox`: A large and optionally scalable textbox for freeform content
+* :environ:`choicequestion`: A multiple choice question with a number of answers
+* :environ:`choicegroup`: A list of multiple choice questions layed out in rows (or columns)
+* :environ:`markgroup`: A list of range or mark questions layed out in rows (or columns)
+
+
 Class Options
 -------------
-
-adsfadsf
 
 =========================== =========================
 Argument                    Description
@@ -34,180 +42,271 @@ choice macro and each question using the question macro.
 Macros
 ------
 
-.. _singlemark:
+.. macro:: \singlemark[kwargs]{question}{lower}{upper}
 
-singlemark
-^^^^^^^^^^
+    A simple "mark" question, i.e. a range. The command does not currently allow adding
+    an alternate answer in a way similar to the markgroup or rangearray environments.
 
-A simple "mark" question, i.e. a range. The command does not currently allow adding
-an alternate answer in a way similar to the markgroup or rangearray environments.
+    :arg question: The question text
+    :arg lower: The text for the lower label
+    :arg upper: The text for the upper label
 
-.. sdaps:: Simplest form of a range question
-    :sdapsclassic:
+    :kwarg text: The question text for the metadata, if set then `question` may contain fragile content.
+    :kwarg lower: The lower label text for the metadata, if set then `lower` may contain fragile content.
+    :kwarg upper: The upper label text for the metadata, if set then `upper` may contain fragile content.
 
-    \singlemark{A range question}{lower}{upper}
-    \setcounter{markcheckboxcount}{7}
-    \singlemark{A range question with 7 answers}{lower}{upper}
+    .. sdaps:: Simplest form of a range question
+        :sdapsclassic:
 
-singlemarkother
-^^^^^^^^^^^^^^^
+        \singlemark{A range question}{lower}{upper}
+        \setcounter{markcheckboxcount}{7}
+        \singlemark{A range question with 7 answers}{lower}{upper}
 
-Similar to :ref:`singlemark` but also takes an alternative answer.
+.. macro:: \singlemarkother[kwargs]{question}{lower}{upper}{other}
 
-.. sdaps:: A range question with an alternative answer
-    :sdapsclassic:
+    Similar to :macro:`\\singlemark` but also takes an alternative answer.
 
-    \singlemarkother{A range question}{lower}{upper}{other}
-    \setcounter{markcheckboxcount}{7}
-    \singlemarkother{A range question with 7 answers}{lower}{upper}{other}
+    :arg question: The question text
+    :arg lower: The text for the lower label
+    :arg upper: The text for the upper label
+    :arg other: The text for the other label
+
+    :kwarg text: The question text for the metadata, if set then `question` may contain fragile content.
+    :kwarg lower: The lower label text for the metadata, if set then `lower` may contain fragile content.
+    :kwarg upper: The upper label text for the metadata, if set then `upper` may contain fragile content.
+    :kwarg other: The other label text for the metadata, if set then `other` may contain fragile content.
+
+    .. sdaps:: A range question with an alternative answer
+        :sdapsclassic:
+
+        \singlemarkother{A range question}{lower}{upper}{other}
+        \setcounter{markcheckboxcount}{7}
+        \singlemarkother{A range question with 7 answers}{lower}{upper}{other}
 
 
-textbox
-^^^^^^^
+.. macro:: \textbox*{height}{question}
 
-.. sdaps:: A textbox
-    :sdapsclassic:
+    :arg *: If given, the textbox is scalable in height
+    :arg height: The height of the text including a unit. If the `*` parameter is given, then this is the minimal height only
+    :arg question: The question text, may not contain fragile content
 
-    \textbox*{2cm}{A textbox which is 2cm high, not scaling up to the page size}
-    \textbox{2cm}{A textbox which is at least 2cm high and can scale up to the page size}
-    \textbox{10cm}{A textbox which is at least 10cm high sharing the rest of the page with the previous one}
+    .. todo:: :macro:`\\textbox` should be able to handle an optional keyword
+        argument and then allow the question text to include fragile content.
+
+    .. sdaps:: A textbox
+        :sdapsclassic:
+
+        \textbox*{2cm}{A textbox which is 2cm high, not scaling up to the page size}
+        \textbox{2cm}{A textbox which is at least 2cm high and can scale up to the page size}
+        \textbox{10cm}{A textbox which is at least 10cm high sharing the rest of the page with the previous one}
 
 Note that the SDAPS class supports rather fancy textbox handling including textboxes around
 other content!
 
-.. warning:: The following examples are missing code for proper use! They mostly exist to show off the features but are not quite ready for easy consumption.
+    .. warning:: The following examples are missing code for proper use! They mostly exist to show off the features but are not quite ready for easy consumption.
 
-.. sdaps:: Fancy textboxes, for real use additional metadata writing is required!
-    :sdapsclassic:
-    :metadata:
+    .. sdaps:: Fancy textboxes, for real use additional metadata writing is required!
+        :sdapsclassic:
+        :metadata:
 
-    % Prepare some stuff so that we can access the specialized commands more easily.
-    \ExplSyntaxOn
-    \let\sdapshbox\sdaps_textbox_hbox:nnn
-    \let\sdapshstretch\sdaps_textbox_hstretch:nnnnn
-    \let\sdapsvbox\sdaps_textbox_vbox:nnnn
-    \ExplSyntaxOff
+        % Prepare some stuff so that we can access the specialized commands more easily.
+        \ExplSyntaxOn
+        \let\sdapshbox\sdaps_textbox_hbox:nnn
+        \let\sdapshstretch\sdaps_textbox_hstretch:nnnnn
+        \let\sdapsvbox\sdaps_textbox_vbox:nnnn
+        \ExplSyntaxOff
 
-    \sdapshbox {} {3bp} { This hbox } should have the same baseline. And one can see that a hbox on the left edge
-    is \sdapshbox{}{3bp}{ nicely aligned } with the edge. And some in a formula: $ f(x) = \frac{1}{c\,\sdapshbox{}{3bp}{box}} \sdapshstretch{}{2mm}{5mm}{40mm}{1} $
+        \sdapshbox {} {3bp} { This hbox } should have the same baseline. And one can see that a hbox on the left edge
+        is \sdapshbox{}{3bp}{ nicely aligned } with the edge. And some in a formula: $ f(x) = \frac{1}{c\,\sdapshbox{}{3bp}{box}} \sdapshstretch{}{2mm}{5mm}{40mm}{1} $
 
-    See how even the horizontally stretching box in math mode works fine and fills up to the whole width!
+        See how even the horizontally stretching box in math mode works fine and fills up to the whole width!
 
-    Some complex inline content:
-      \sdapsvbox {} {0.6\linewidth} {3bp} {
-        \begin{tabularx}{\linewidth}{l|l|X}
-          adsf  lkasjd lksj flkjsfd & blub & gah \\
-          \hline
-          asdf & & \\
-        \end{tabularx}
+        Some complex inline content:
+          \sdapsvbox {} {0.6\linewidth} {3bp} {
+            \begin{tabularx}{\linewidth}{l|l|X}
+              adsf  lkasjd lksj flkjsfd & blub & gah \\
+              \hline
+              asdf & & \\
+            \end{tabularx}
 
-        This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
-        This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
-      }
+            This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
+            This is a paragraph with more text. This is a paragraph with more text. This is a paragraph with more text. 
+          }
 
 
-addinfo
-^^^^^^^
+.. macro:: \addinfo{key}{value}
 
-Adds a bit of metadata. This metadata will for example appear on the cover page of the report.
+    Adds a bit of metadata. This metadata will for example appear on the cover page of the report.
 
-.. sdaps:: An example with metadata
-    :sdapsclassic:
-    :metadata:
+    :arg key: The key to set
+    :arg value: The value to set the key to
 
-    \addinfo{Key 1}{Value 1}
-    \addinfo{Key 2}{Value 2}
-    \addinfo{Key 3}{Value 3}
-    \addinfo{Key 4}{Value 4}
+    .. sdaps:: An example showing the generated metadata
+        :sdapsclassic:
+        :metadata:
 
-    Almost empty document, look at the metadata to see what this is about.
+        \addinfo{Key 1}{Value 1}
+        \addinfo{Key 2}{Value 2}
+        \addinfo{Key 3}{Value 3}
+        \addinfo{Key 4}{Value 4}
+
+        Almost empty document, look at the metadata to see what this is about.
+
 
 Environments
 ------------
 
-choicequestion
-^^^^^^^^^^^^^^
-
-.. sdaps:: A choicequestion
-    :sdapsclassic:
-
-    \begin{choicequestion}[cols=3]{This is a choice question}
-      \choiceitem{First choice}
-      \choicemulticolitem{2}{Second choice with a lot of text}
-      \choiceitemtext{1.2cm}{3}{Other:}
+.. environ::
+    \begin{choicequestion}[kwargs]{text}
+      content
     \end{choicequestion}
 
-info
-^^^^
+    :param text: Text of the choice question. Fragile content is currently *not* supported.
+    :kwarg cols: Number of columns
+    :kwarg var: Variable name for this question (to be appended to context).
+    :kwarg text: Replacement text for metadata
 
-.. sdaps:: An info block
-    :sdapsclassic:
+    The content should only contain :macro:`\\choiceitem`, :macro:`\\choicemulticolitem` and :macro:`\\choiceitemtext`.
 
+    .. sdaps:: A choicequestion
+        :sdapsclassic:
+
+        \begin{choicequestion}[cols=3]{This is a choice question}
+          \choiceitem{First choice}
+          \choicemulticolitem{2}{Second choice with a lot of text}
+          \choiceitemtext{1.2cm}{3}{Other:}
+        \end{choicequestion}
+
+    .. macro:: \choiceitem[kwargs]{text}
+
+        A possible choice in a :environ:`choicequestion`. Will span exactly one column.
+
+        :param text: The text for the choice. Fragile content is currently *not* supported.
+        :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg text: Replacement text for metadata.
+
+    .. macro:: \choicemulticolitem[kwargs]{cols}{text}
+
+        A possible choice in a :environ:`choicequestion`. Will span exactly `cols` columns.
+
+        :param cols: The number of columns to span.
+        :param text: The text for the choice. Fragile content is currently *not* supported.
+        :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg text: Replacement text for metadata.
+
+    .. macro:: \choiceitemtext[kwargs]{height}{cols}{text}
+
+        A possible freeform choice in a :environ:`choicequestion`. The text field
+        will be of height `height` and it will span exactly `cols` columns.
+
+        :param cols: The number of columns to span.
+        :param text: The text for the choice. Fragile content is currently *not* supported.
+        :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg text: Replacement text for metadata.
+
+
+.. environ::
     \begin{info}
-      Just a block to write some information in, will have a line above and below.
+      content
     \end{info}
 
+    A simple block to typeset important information differently.
 
-markgroup
-^^^^^^^^^
+    .. sdaps:: An info block
+        :sdapsclassic:
 
-.. sdaps:: A group of range questions (used to be called mark)
-    :sdapsclassic:
+        \begin{info}
+          Just a block to write some information in, will have a line above and below.
+        \end{info}
 
-    \begin{markgroup}{A set of mark questions}
-      \markline{First question}{lower}{upper}
-      \markline{Second question}{lower 2}{upper 2}
+
+.. environ::
+    \begin{markgroup}[kwargs]{text}
+      content
     \end{markgroup}
 
-    \begin{markgroup}{Another set of mark questions which is automatically aligned to the first}
-      \markline{First question}{a}{c}
-      \markline{Second question}{b}{d}
-    \end{markgroup}
+    :param text: Common question for all subquestions. Fragile content is currently *not* supported
+    :param kwags: Same as :environ:`rangearray`
 
-    \begin{markgroup}[other]{Another further set of questions with an alternative answer}
-      \markline{First question}{lower}{upper}{other}
-      \markline{Second question}{a}{b}{c}
-    \end{markgroup}
+    .. sdaps:: A group of range questions (used to be called mark)
+        :sdapsclassic:
+
+        \begin{markgroup}{A set of mark questions}
+          \markline{First question}{lower}{upper}
+          \markline{Second question}{lower 2}{upper 2}
+        \end{markgroup}
+
+        \begin{markgroup}{Another set of mark questions which is automatically aligned to the first}
+          \markline{First question}{a}{c}
+          \markline{Second question}{b}{d}
+        \end{markgroup}
+
+        \begin{markgroup}[other]{Another further set of questions with an alternative answer}
+          \markline{First question}{lower}{upper}{other}
+          \markline{Second question}{a}{b}{c}
+        \end{markgroup}
 
 .. todo::
     The spacing in the "other" case is not sane, we need a larger default spacing in general.
 
-choicegroup
-^^^^^^^^^^^
 
-The choicegroup environment is an alias for the :ref:`choicearray` environment. At this
-point the only difference is that the choicegroup environment correctly prints the
-header and that it allows using the commands `groupaddchoice` and `choiceline`
-internally.
 
-.. warning:: The choicearray environment does not work as is because it collides with the `question` command of `sdapsclassic`.
-
-.. sdaps:: Example of a choicegroup environment
-    :sdapsclassic:
-
-    \begin{choicegroup}{A group of questions}
-      \groupaddchoice{Choice 1}
-      \groupaddchoice{Choice 2}
-      \choiceline{Question one}
-      \choiceline{Question two}
-    \end{choicegroup}
-    
-    \begin{choicegroup}{Another group of questions which is automatically aligned to the first}
-      \groupaddchoice{1}
-      \groupaddchoice{2}
-      \choiceline{Question one}
-      \choiceline{Question two}
+.. environ::
+    \begin{choicegroup}[kwargs]{text}
+      content
     \end{choicegroup}
 
-.. sdaps:: Example of a vertical choicegroup environment also showing the "rotated" header layouter
-    :sdapsclassic:
+    :param text: Common question for all subquestions. Fragile content is currently *not* supported
+    :param kwags: Same as :environ:`choicearray`
 
-    \begin{choicegroup}[layouter=rotated,vertical]{A group of questions}
-      \groupaddchoice{Choice 1}
-      \groupaddchoice{Choice 2}
-      \choiceline{Question one}
-      \choiceline{Question two}
-    \end{choicegroup}
+    .. note:: The choicegroup environment is an alias for the :environ:`choicearray` environment. At this
+        point the only difference is that the choicegroup environment correctly prints the
+        header and that it uses the command aliases :macro:`\\groupaddchoice` and :macro:`\\choiceline`.
+
+    .. macro:: \groupaddchoice[kwargs]{text}
+
+        A possible choice inside inside the group.
+
+        :param text: The choices (header) text.
+        :kwarg text: A replacement text for the metadata, if set fragile content is
+            permitted inside the `text` argument.
+        :kwarg var: Variable name for this answer (to be appended to context).
+
+    .. macro:: \choiceline[kwargs]{text}
+
+        A single question inside the group. All choices need to be defined earlier using :macro:`\\groupaddchoice`.
+
+        :param text: Question text.
+        :kwarg text: A replacement text for the metadata, if set fragile content is
+            permitted inside the `text` argument.
+        :kwarg var: Variable name for this question (to be appended to context).
+
+    .. sdaps:: Example of a choicegroup environment
+        :sdapsclassic:
+
+        \begin{choicegroup}{A group of questions}
+          \groupaddchoice{Choice 1}
+          \groupaddchoice{Choice 2}
+          \choiceline{Question one}
+          \choiceline{Question two}
+        \end{choicegroup}
+        
+        \begin{choicegroup}{Another group of questions which is automatically aligned to the first}
+          \groupaddchoice{1}
+          \groupaddchoice{2}
+          \choiceline{Question one}
+          \choiceline{Question two}
+        \end{choicegroup}
+
+    .. sdaps:: Example of a vertical choicegroup environment also showing the "rotated" header layouter
+        :sdapsclassic:
+
+        \begin{choicegroup}[layouter=rotated,vertical]{A group of questions}
+          \groupaddchoice{Choice 1}
+          \groupaddchoice{Choice 2}
+          \choiceline{Question one}
+          \choiceline{Question two}
+        \end{choicegroup}
 
 
 
