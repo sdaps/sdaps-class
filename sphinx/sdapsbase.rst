@@ -155,7 +155,6 @@ globally at the start by simply setting a few flags. As an example the following
 modifies the linewidth for all boxes, and the size of checkboxes:
 
 .. sdaps:: Example showing modification of the context for checkbox rendering
-    :metadata:
 
     \noindent
     \ExplSyntaxOn
@@ -192,7 +191,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
 
     \newline
 
-    \sdaps_context_set:n { * = { text = X }, checkbox = { width=5mm, height=5mm} }
+    \sdaps_context_set:n { * = { centered_text = X }, checkbox = { width=5mm, height=5mm} }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
