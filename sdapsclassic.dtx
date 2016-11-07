@@ -90,7 +90,6 @@
 
 \RequirePackage{sdapsbase}
 \RequirePackage{sdapslayout}
-\RequirePackage{xparse}
 
 % We use verbatim to grab the content of the questionnaire envorinment into a
 % temporary file. This way we can input it multiple times for repeating the
@@ -105,7 +104,6 @@
 %    \begin{macrocode}
 
 \RequirePackage{scrkbase}
-\RequirePackage{xargs}
 
 
 %-------------------------------------------------------------------------------
@@ -822,7 +820,7 @@
 %
 
 
-\NewDocumentEnvironment { choicegroup } { o m }
+\newenvironment { choicegroup } [ 2 ] []
 {
   \group_begin:
 
@@ -848,7 +846,7 @@
   \group_end:
 }
 
-\NewDocumentEnvironment { markgroup } { o m }
+\newenvironment { markgroup } [ 2 ] []
 {
   \group_begin:
 

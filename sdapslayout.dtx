@@ -744,7 +744,7 @@
 %
 
 
-\NewDocumentEnvironment { choicearray } { o m }
+\newenvironment { choicearray } [ 2 ] []
 {
   \group_begin:
 
@@ -753,7 +753,7 @@
       \tl_set:Nn \l_tmpa_tl {}
     }
 
-    \IfNoValueF { #1 } {
+    \tl_if_empty:nF { #1 } {
       \tl_if_empty:NTF \l_tmpa_tl {
         \tl_set:Nn \l_tmpa_tl { #1 }
       } {
@@ -767,21 +767,11 @@
     \seq_gclear:N \g_sdaps_choices_text_seq
 
     % Define new commands
-    \NewDocumentCommand \choice { o } {
-      \IfNoValueTF { ##1 } {
-        \tl_set:Nn \l_tmpa_tl {}
-      } {
-        \tl_set:Nn \l_tmpa_tl { ##1 }
-      }
-      \_sdaps_choicearray_process_choice:Vw \l_tmpa_tl
+    \newcommand \choice [ 1 ] [] {
+      \_sdaps_choicearray_process_choice:nw { ##1 }
     }
-    \NewDocumentCommand \question { o } {
-      \IfNoValueTF { ##1 } {
-        \tl_set:Nn \l_tmpa_tl {}
-      } {
-        \tl_set:Nn \l_tmpa_tl { ##1 }
-      }
-      \_sdaps_choicearray_process_question:Vw \l_tmpa_tl
+    \newcommand \question [ 1 ] [] {
+      \_sdaps_choicearray_process_question:nw { ##1 }
     }
 
     \group_begin:
@@ -800,7 +790,7 @@
 
 
 
-\NewDocumentEnvironment { rangearray } { o m }
+\newenvironment { rangearray } [ 2 ] []
 {
   \group_begin:
 
@@ -809,7 +799,7 @@
       \tl_set:Nn \l_tmpa_tl {}
     }
 
-    \IfNoValueF { #1 } {
+    \tl_if_empty:nF { #1 } {
       \tl_if_empty:NTF \l_tmpa_tl {
         \tl_set:Nn \l_tmpa_tl { #1 }
       } {
@@ -819,13 +809,8 @@
 
     \_sdaps_rangearray_preprocess:Vn \l_tmpa_tl { #2 }
 
-    \NewDocumentCommand \range { o } {
-      \IfNoValueTF { ##1 } {
-        \tl_set:Nn \l_tmpa_tl {}
-      } {
-        \tl_set:Nn \l_tmpa_tl { ##1 }
-      }
-      \_sdaps_rangearray_process_question:Vw \l_tmpa_tl
+    \newcommand \range [ 1 ] [] {
+      \_sdaps_rangearray_process_question:nw { ##1 }
     }
 
     \group_begin:
