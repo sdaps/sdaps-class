@@ -13,7 +13,7 @@ sdapslayout.sty: sdapslayout.dtx sdapslayout.ins sdapsbase.sty sdapsarray.sty
 	-rm sdapslayout.sty
 	pdflatex sdapslayout.ins
 
-sdapsclassic.cls: sdapsclassic.dtx sdapsbase.sty
+sdapsclassic.cls: sdapsclassic.dtx sdapsbase.sty sdapslayout.sty
 	-rm sdapsclassic.cls
 	pdflatex sdapsclassic.ins
 
@@ -40,7 +40,7 @@ test.pdf: sdapslayout.sty sdapspdf.sty test.tex
 	latexmk -pdf test.tex
 	#latexmk -xelatex test.tex
 
-testclassic.pdf: sdapsclassic.cls sdapslayout.sty testclassic.tex
+testclassic.pdf: sdapsclassic.cls testclassic.tex
 	latexmk -pdf testclassic.tex
 
 
