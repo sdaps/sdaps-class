@@ -18,6 +18,7 @@ The following question types exists for your use:
 * :environ:`choicegroup`: A list of multiple choice questions layed out in rows (or columns)
 * :environ:`markgroup`: A list of range or mark questions layed out in rows (or columns)
 
+You should only use ``\section{}`` for structuring the document.
 
 Class Options
 -------------
@@ -35,9 +36,6 @@ globalidlabel               The label for the barcode (only code128)
 no_print_questionnaire_id   Disable printing of questionnaire IDs
 print_questionnaire_id      Enable printing of questionnaire IDs
 =========================== =========================
-
-Inside the environment you need to first define all possible answers with
-choice macro and each question using the question macro.
 
 Macros
 ------
@@ -378,41 +376,4 @@ Variables
 
 .. todo:: Check that the _dummy should be there, pretty sure this is correct.
 
-
-Preselection and overrides
---------------------------
-
-.. todo:: Move onto separate page.
-
-
-.. sdaps:: Example of a checkbox being pre-selected through the override mechanmism and the checkbox size being modified.
-    :sdapsclassic:
-    :metadata:
-
-    \ExplSyntaxOn
-    \sdaps_overrides_init:n{
-      * = {
-        flower_adam_alice = {
-          draw_check=true
-        },
-      }
-    }
-
-    \sdaps_context_set:n{
-      checkbox={
-        width=8mm,
-        height=4mm,
-        linewidth=1.5pt,
-      }
-    }
-    \ExplSyntaxOff
-    
-    \begin{choicegroup}[var=flower]{A group of questions with variable "flower"}
-      \groupaddchoice[var=alice]{Choice "alice"}
-      \groupaddchoice[var=eve]{Choice "eve"}
-      \choiceline[var=adam]{Question "adam"}
-      \choiceline[var=bob]{Question "bob"}
-    \end{choicegroup}
-
-.. warning:: The API will likely keep working, however this is rather inconvenient and helper macros not requireing ExplSyntaxOn/Off should be added.
 
