@@ -537,14 +537,15 @@
 }
 
 \tl_new:N \l__sdaps_set_qid_tl
-\cs_new_protected_nopar:Nn \__sdaps_set_qid:n
+\cs_new_protected_nopar:Nn \sdaps_set_questionnaire_id:n
 {
+  \tl_gset:Nn \g__sdaps_questionnaire_id_tl { #1 }
   \prop_gclear:N \g__sdaps_id_overrides_prop
   \prop_get:NnNT \g__sdaps_id_to_overrides_prop { #1 } \l__sdaps_set_qid_tl {
     \keyval_parse:NNV \use_none:n \__sdaps_id_overrides_set:nn \l__sdaps_set_qid_tl
   }
 }
-
+\cs_generate_variant:Nn \sdaps_set_questionnaire_id:n { V }
 
 
 \cs_new_protected_nopar:Nn \__sdaps_append_override_options:Nnn
@@ -1289,8 +1290,8 @@
 \dim_gset:Nn \g_sdaps_classic_boxsize_dim { 3.5mm }
 
 
-\tl_new:N \g_sdaps_questionnaire_id_tl
-\tl_gset:Nn \g_sdaps_questionnaire_id_tl { }
+\tl_new:N \g__sdaps_questionnaire_id_tl
+\tl_gset:Nn \g__sdaps_questionnaire_id_tl { }
 
 \tl_new:N \g_sdaps_questionnaire_id_label_tl
 \tl_gset:Nn \g_sdaps_questionnaire_id_label_tl { }
@@ -1337,10 +1338,10 @@
   \group_begin:
     \begin{scope}[line~width=\g_sdaps_edge_marker_linewidth_dim, shift={(current~page.south~west)}]
       \str_if_eq:VnT \g_sdaps_style_tl { qr } {
-        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
+        \tl_if_empty:VF \g__sdaps_questionnaire_id_tl {
           \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
             \node(barcode)[anchor=south~west,outer~sep=0,inner~sep=0]{
-              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g_sdaps_questionnaire_id_tl
+              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g__sdaps_questionnaire_id_tl
             };
           \end{scope}
         }
@@ -1365,7 +1366,7 @@
       }
 
       \str_if_eq:VnT \g_sdaps_style_tl { code128 } {
-        \tl_if_empty:VF \g_sdaps_questionnaire_id_tl {
+        \tl_if_empty:VF \g__sdaps_questionnaire_id_tl {
           % TODO: do not hardcode the font!
           \ttfamily\footnotesize
 
@@ -1374,11 +1375,11 @@
               \X = \c_sdaps_barcode_bar_width_dim
               \bcorr = \c_sdaps_barcode_bcorr_dim
               \barheight = \c_sdaps_barcode_height_dim
-              \code_render:V \g_sdaps_questionnaire_id_tl
+              \code_render:V \g__sdaps_questionnaire_id_tl
             };
             \node[below=1mm~of~barcode,distance=0,anchor=north,outer~sep=0,inner~sep=0]{
               \tl_if_empty:VTF \g_sdaps_questionnaire_id_label_tl {
-                \tl_use:N \g_sdaps_questionnaire_id_tl
+                \tl_use:N \g__sdaps_questionnaire_id_tl
               } {
                 \tl_use:N \g_sdaps_questionnaire_id_label_tl
               }

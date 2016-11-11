@@ -759,7 +759,7 @@
 
     % Set the questionnaire ID
     \seq_gpop_left:NN \g_sdaps_questionnaire_ids_seq \l_tmpa_tl
-    \tl_gset:NV \g_sdaps_questionnaire_id_tl \l_tmpa_tl
+    \sdaps_set_questionnaire_id:V \l_tmpa_tl
 
     % And, begin the questionnaire
     \sdaps_begin:
@@ -792,7 +792,7 @@
     % Now cycle through all IDS and output it again.
     \group_begin:
       \seq_map_inline:Nn \g_sdaps_questionnaire_ids_seq {
-        \tl_gset:Nn \g_sdaps_questionnaire_id_tl { ##1 }
+        \sdaps_set_questionnaire_id:n { ##1 }
         \sdaps_begin:
           \input{ \c_job_name_tl . questionnaire }
         \sdaps_end:
