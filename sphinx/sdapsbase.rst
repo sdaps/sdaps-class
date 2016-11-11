@@ -1,10 +1,12 @@
+.. _sdapsbase:
+
 sdapsbase package
 =================
 
 This base package handles many of the core functionalities to make the SDAPS
-class work (together with `sdapsarray`). It implements a number of features
+class work (together with :environ:`sdapsarray`). It implements a number of features
 which should however not be relevant for many end users. It should not be
-neccessary to dive into the `sdapsbase` implementation unless you want to use
+neccessary to dive into the :ref:`sdapsbase <sdapsbase>` implementation unless you want to use
 some of the more advanced features or even create completely custom layouts.
 
 
@@ -28,48 +30,124 @@ The following commands can be used to handle context nesting. Note that SDAPS
 makes a best effort to detect errors where begin/end was not used in a balanced
 fashion.
 
-* `\\sdaps_context_begin:n`: Begins a context with the given name
-* `\\sdaps_context_end:n`: Ends the context again, ensuring the name is correct
-* `\\sdaps_context_begin:`: Begins a context with an empty name
-* `\\sdaps_context_end:`: Ends a context started with `\\sdaps_context_begin:`
-* `\\sdaps_context_begin_local:` Begins a context which automatically ends together with the current TeX group
+.. macro:: \sdaps_context_begin:n { context name }
+
+    Begins a context with the given name
+
+.. macro:: \sdaps_context_end:n { context name }
+
+    Ends the context again, ensuring the name is correct
+
+.. macro:: \sdaps_context_begin:
+
+    Begins a context with an empty name
+
+.. macro:: \sdaps_context_end:
+
+    Ends a context started with :macro:`\\sdaps_context_begin:`
+
+.. macro:: \sdaps_context_begin_local:
+
+    Begins a context which automatically ends together with the current TeX group
 
 Managing context variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* `\\sdaps_context_put:n`: Delete the given variable from the context
-* `\\sdaps_context_put:nn`: Set the given variable to the given value (Variants: `nV`)
-* `\\sdaps_context_set:n`: Set context variables from the given `key=val` parameters
-* `\\sdaps_context_append:nn`: The first argument being a variable to modify, append the value to the existing value
-* `\\sdaps_context_clear:`: Completely clear the context
+.. macro:: \sdaps_context_put:n { key }
+
+    Delete the given variable (or key) from the context
+
+.. macro:: \sdaps_context_put:nn { key } { value }
+
+    Set the given variable to the given value (Variants: ``nV``)
+
+.. macro:: \daps_context_set:n { key=value, key={a=b, c=d} }
+
+    Set context variables from the given ``key=value`` parameters
+
+.. macro:: \sdaps_context_append:nn { key } { value }
+
+    The first argument being a variable to modify, append the given value to the
+    existing value. This can for example be used to change only one aspect of
+    checkbox drawing (e.g. ``form``) without affecting resetting another one
+    that was defined earlier (e.g. ``width`` or ``height``).
+
+    Generally it is a good idea to use this macro as nested options are common.
+
+.. macro:: \sdaps_context_clear:
+
+    Completely clear the context.
 
 
 Defining questions and headings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* `\\sdaps_qobject_begin:nnn`: Start a new qobject, giving the following arguments:
+.. macro:: \sdaps_qobject_begin:nnn { name } { type } { title }
 
-  * The name of the context group to start
-  * The type of the qobject (to be consumed by the SDAPS main program)
-  * The title for the metadata
+    Start a new qobject, giving the following arguments:
 
-* `\\sdaps_qobject_end:n`: Finish a qobject again, must pass the correct name for checking nesting
-* `\\sdaps_qobject_begin:nn`: Same as the first but without giving a context name
-* `\\sdaps_qobject_end:`: End a question which did not have a defined context name
+    * The name of the context group to start
+    * The type of the qobject (to be consumed by the SDAPS main program)
+    * The title for the metadata
 
-Writing further metadata, these commands must be used from within a QObject begin/end block:
+.. macro:: \sdaps_qobject_end:n { name }
 
-* `\\sdaps_answer:n`: Write metadata for an answer which belongs to the current question (context)
-* `\\sdaps_range:nnn`: Write metadata for a range:
+    Finish a qobject again, must pass the correct name to verify correct nesting.
 
-  * `lower` or `upper` to define the ends of the range
-  * The ID of the checkbox to use (zero based) as the first or last (including)
-  * The string for the metadata
-    Variants: `nno`, `nnf`, `nnV`
+.. macro:: \sdaps_qobject_begin:nn { type } { title }
 
-Generic commands are also provided to write to `\\g_sdaps_infofile_iow`:
-* `\\sdaps_info_write:n`: Variants: `x`
-* `\\sdaps_info_write_x:n`: Variants: `x`
+    Same as :macro:`\sdaps_qobject_begin:nnn`  but without giving a context name.
+
+.. macro:: \sdaps_qobject_end:
+
+    End a question which did not have a defined context name
+
+You can write further metadata using the following macros:
+
+.. macro:: \sdaps_answer:n { answer text }
+
+    Write metadata for an answer which belongs to the current question (context)
+
+.. macro:: \sdaps_range:nnn { lower|upper } { ID } { answer text }
+
+    Writes metadata for a range.
+
+    :arg lower|upper: Give either ``lower`` or ``upper`` for each end of the range.
+    :arg ID: The ID of the checkbox which corresponds to the first/lower or
+        last/upper box in the range. Other boxes are considered outside and need a
+        separate answer. Boxes are counted zero based and the given range is inclusive.
+    :arg answer text: The string for the metadata.
+
+    :Variants: ``nno``, ``nnf``, ``nnV``
+
+Generic commands are also provided to write to
+
+.. macro:: \sdaps_info_write:n { text }
+
+    Write given text to metadatafile at shipout. Some output may be reordered due
+    to this, but all SDAPS classes ensure that the metadata can still be decoded
+    correctly.
+
+    The tokens **will not be expanded** again before writing. This implies that coordinates
+    cannot be written using this macro.
+
+    :arg text: Text to write to the metadata file.
+
+    :Variants: ``x``
+
+.. macro:: \sdaps_info_write_x:n
+
+    Write given text to metadatafile at shipout. Some output may be reordered due
+    to this, but all SDAPS classes ensure that the metadata can still be decoded
+    correctly.
+
+    The tokens **will be expanded** again before writing. This implies that coordinates
+    can be written using this macro if one takes care not to protect them from
+    being expanded at macro execution time.
+
+    :arg text: Text to write to the metadata file.
+
+    :Variants: ``x``
 
 Overrides
 ---------
@@ -83,37 +161,78 @@ possible to fill in names into text fields for printing.
 
 Commands which adhere to overrides are currently:
 
-* all `checkboxes`
-* all `textboxes`
+* all ``checkboxes``
+* all ``textboxes``
 
 There is only one command to set the overrides string:
-* `\\sdaps_overrides_init:n`
 
-As an example:
+.. macro:: \sdaps_set_questionnaire_id:n { ID }
 
-.. code::
+    Set the current questionnaire ID. This should generally not change unless
+    some sort of concatenation is done. It is only relevant for writing new
+    environments.
 
-    % The * applies to all questionnaire IDs. The * inside the group will apply
-    % to all items. Other than that it is applied based on the variable name
-    % and value.
-    \sdaps_overrides_init:n{
-        *={
-          *={},
-          tool_letter_latex={default=true}
-        },
-        qid1={
-          var1={box},
-          var2={height=2mm},
-          var2&1={width=10mm},
-        },
-        qid2={
-          var1={ellipse},
-          var2={ellipse,height=7mm},
-          var2&1={ellipse,width=7mm},
-        },
-    }
+.. macro:: \sdaps_overrides_init:n { overrides }
 
+    :arg overrides: A key=value argument with all the override definitions. 
 
+    Each of the override definitions will be appened to the items keys if it is
+    matching. Matching happens first based on the questionnaire ID with ``*``
+    being allowed as a wildcard, and then based on variable name and value. The
+    second level (name and value) is either just the variable name or the variable
+    name and value separated by an ``&`` character.
+
+    This gives six matches with increasing priority:
+
+    * wildcard questionnaire ID, wildcard target
+    * wildcard questionnaire ID, matching variable
+    * wildcard questionnaire ID, matching variable, matching value
+    * matching questionnaire ID, wildcard target
+    * matching questionnaire ID, matching variable
+    * matching questionnaire ID, matching variable, matching value
+
+    .. sdaps:: Overriding checkbox color and pre-filled value based on
+        questionnaire ID and variables.
+        :sdapsclassic:
+        :metadata:
+        :preamble:
+            \ExplSyntaxOn
+            \sdaps_overrides_init:n{
+                % For all questoinnaires independent of their ID
+                *={
+                  % For all elements which use the overrides
+                  *={fill=green},
+                  % Specific element with that variable name
+                  flower_bob_alice={draw_check=true},
+                  % Specific element with variable "var" and value 1
+                  var&1={draw_check=true},
+                },
+                % Specific questionnaire ID
+                testid={
+                  % We need to explicitly unset it again!
+                  flower_bob_alice={draw_check=false},
+                  flower_adam_alice={draw_check=true},
+                },
+            }
+            \ExplSyntaxOff
+
+        \begin{choicegroup}[var=flower]{A group of questions with variable "flower"}
+          \groupaddchoice[var=alice]{Choice "alice"}
+          \groupaddchoice[var=eve]{Choice "eve"}
+          \choiceline[var=adam]{Question "adam"}
+          \choiceline[var=bob]{Question "bob"}
+        \end{choicegroup}
+
+        % Force a different questionnaire ID (never do this in a real document!)
+        \ExplSyntaxOn
+        \sdaps_set_questionnaire_id:n { testid }
+        \ExplSyntaxOff
+        \begin{choicegroup}[var=flower]{A group of questions with variable "flower"}
+          \groupaddchoice[var=alice]{Choice "alice"}
+          \groupaddchoice[var=eve]{Choice "eve"}
+          \choiceline[var=adam]{Question "adam"}
+          \choiceline[var=bob]{Question "bob"}
+        \end{choicegroup}
 
 
 The rendering subsystem

@@ -7,11 +7,11 @@ to tabularx. It is less flexible in the types of layouts that can be realized bu
 a lot more powerful otherwise. The `sdapsarray` environment has the following
 features:
 
- * All `sdapsarray` environments in the document can be aligned to each other
+ * All :environ:`sdapsarray` environments in the document can be aligned to each other
  * The environment can span multiple pages
  * Headers will be repeated when page splits are encountered
  * The rows/columns can be swapped on the fly
- * Different `layouter` can be plugged in to modify the rendering
+ * Different ``layouter`` can be plugged in to modify the rendering
  * Fragile content can be used without further preparation
  * Contained content is executed exactly once (important for metadata generation)
  * Cells are rendered as much in-order as possible  (important for metadata generation)
@@ -23,8 +23,8 @@ Things that are *not* possible currently:
  * Modifying the spacings in between rows or columns
 
 .. warning::
-    You should *not* add a trailing `\\\\` to finish the last row. This can confuse
-    the class in some situation and will usually cause a fatal warning.
+    You should *not* add a trailing ``\\`` to finish the last row. This can confuse
+    the class in some situation and may cause a fatal warning.
 
 .. sdaps:: Example of a sdapsarray environment
 
@@ -66,55 +66,73 @@ Things that are *not* possible currently:
 sdapsarray environment
 ----------------------
 
-The environment has the following optional arguments:
+.. environ::
+    \begin{sdapsarray}[kwargs]
+      content with cells delimitted with & and \\
+    \end{sdapsarray}
 
-=================== ================================================================================================
-Argument            Description
-=================== ================================================================================================
-flip                Transpose array making rows to columns (default: `false`)
-layouter            The layouter to use. New layouters can be defined, the following
-                    exists by default:
+    :kwarg flip: Transpose array making rows to columns (default: ``false``)
+    :kwarg layouter: The layouter to use. New layouters can be defined, the following
+        exists by default:
 
-                     * `default`: Simple layout centering cells and giving all leftover space to the row
-                       header which will line break automatically (this is the default)
-                     * `rotated`: Same as default but rotates the column headers
+        * ``default``: Simple layout centering cells and giving all leftover space to the row
+          header which will line break automatically (this is the default)
+        * ``rotated``: Similar to default but rotates the column headers
 
-align               An arbitrary string to align multiple `sdapsarray` environments
-                    to each other. All environments with the same string will be
-                    aligned. (default: no alignment)
-keepenv             Do not modify the parser to consume `&` and `\\\\` for alignment.
-                    Instead, the user must use `\\sdaps_array_alignment:` and `\\\sdaps_array_newline:`.
-                    This is only useful for writing custom environments which use `sdapsarray` internally.
-                    Normal users should simply put any nested `array` environment into `\\sdapsnested{}`
-                    to prevent issues (see below).
-=================== ================================================================================================
+    :kwarg align: An arbitrary string to align multiple :environ:`sdapsarray` environments
+        to each other. All environments with the same string will be
+        aligned. (default: no alignment)
+    :kwarg keepenv: Do not modify the parser to consume ``&`` and ``\\`` for alignment.
+        Instead, the user must use :macro:`\\sdaps_array_alignment:` and :macro:`\\sdaps_array_newline:`.
+        This is only useful for writing custom environments which use :environ:`sdapsarray` internally.
+        Normal users should simply put any nested `array` environment into :macro:`\\\\sdapsnested`
+        to prevent issues (see below).
 
-The `keepenv` option should usually not be used by an end user writing a document, it is very useful
-when writing environments which use `sdapsarray` internally (like `choicearray`).
+    The ``keepenv`` option should usually not be used by an end user writing a document, it is very useful
+    when writing environments which use :environ:`sdapsarray` internally (like :environ:`choicearray`).
 
-.. sdaps:: Two sdapsarray environments each with a nested array, in one case using the keepenv option.
-    :preamble:
-        \usepackage{multicol}
-        % Wrap the commands with _ as we cannot use them directly. This needs to
-        % be a \def and not a \let because they are redefined dynamically internally.
-        \ExplSyntaxOn
-        \def\sdapsalignment{\sdaps_array_alignment:}
-        \def\sdapsnewline{\sdaps_array_newline:}
-        \ExplSyntaxOff
+    .. macro:: \sdapsnested{content}
 
-    \begin{multicols}{2}
-        \begin{sdapsarray}
-           & col 1 & col 2 \\
-          row header 1 & \sdapsnested{$ \begin{array}{cc} a & b \\ c & d \end{array}$} & cell 2 \\
-          \verb^row_header^ & cell 3 & cell 4
-        \end{sdapsarray}
+        Reverts the ``&`` and ``\\`` to their original meaning. Content in an
+        :environ:`sdapsarray` environment can be wrapped with this if it requires
+        these characters to be active (i.e. you can use the ``array`` environment
+        this way for example).
 
-        \begin{sdapsarray}[keepenv]
-           \sdapsalignment col 1 \sdapsalignment col 2 \sdapsnewline
-          row header 1 \sdapsalignment $ \begin{array}{cc} a & b \\ c & d \end{array}$ \sdapsalignment cell 2 \sdapsnewline
-          \verb^row_header^ \sdapsalignment cell 3 \sdapsalignment cell 4
-        \end{sdapsarray}
-    \end{multicols}
+    .. macro:: \sdaps_array_alignment:
+
+        Alternative to using the ``&`` delimiter between cells. This is useful together
+        with the ``keepenv`` kwarg argument. In particular when creating custom environments
+        which use sdapsarray internally.
+
+    .. macro:: \sdaps_array_newline:
+
+        Alternative to using the ``\\`` delimiter between cells. This is useful together
+        with the ``keepenv`` kwarg argument. In particular when creating custom environments
+        which use sdapsarray internally.
+
+    .. sdaps:: Two sdapsarray environments each with a nested array, in one case using the keepenv option.
+        :preamble:
+            \usepackage{multicol}
+            % Wrap the commands with _ as we cannot use them directly. This needs to
+            % be a \def and not a \let because they are redefined dynamically internally.
+            \ExplSyntaxOn
+            \def\sdapsalignment{\sdaps_array_alignment:}
+            \def\sdapsnewline{\sdaps_array_newline:}
+            \ExplSyntaxOff
+
+        \begin{multicols}{2}
+            \begin{sdapsarray}
+               & col 1 & col 2 \\
+              row header 1 & \sdapsnested{$ \begin{array}{cc} a & b \\ c & d \end{array}$} & cell 2 \\
+              \verb^row_header^ & cell 3 & cell 4
+            \end{sdapsarray}
+
+            \begin{sdapsarray}[keepenv]
+               \sdapsalignment col 1 \sdapsalignment col 2 \sdapsnewline
+              row header 1 \sdapsalignment $ \begin{array}{cc} a & b \\ c & d \end{array}$ \sdapsalignment cell 2 \sdapsnewline
+              \verb^row_header^ \sdapsalignment cell 3 \sdapsalignment cell 4
+            \end{sdapsarray}
+        \end{multicols}
 
 
 Defining a custom layouter
@@ -122,13 +140,13 @@ Defining a custom layouter
 
 .. warning:: This is an advanced feature and its use a good or even in depth knowledge of how TeX processes boxes and input!
 
-It is possible to register further `layouter`
+It is possible to register further ``layouter``
 which can subsequently used throughout the document. These layouters need to
 adhere to a number of rules which will not be explained in detail here.
 
 The following code is a copy of the two predefined layouter not showing the
 implementation of the different macros. Visible here is that they only differ
-in the method to render the column header `colhead`, all other methods are
+in the method to render the column header ``colhead``, all other methods are
 identical.
 
 .. code::
@@ -154,6 +172,6 @@ identical.
     }
 
 If you consider modifying the layouter, then please have a look at the relevant
-parts of `sdapsarray.dtx`. Also, please consider submitting modifications for
+parts of ``sdapsarray.dtx``. Also, please consider submitting modifications for
 upstream inclusion so that other people can benefit from new features.
 
