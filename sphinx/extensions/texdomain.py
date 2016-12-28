@@ -217,7 +217,7 @@ class TeXObject(ObjectDescription):
         fullname = name_obj[0]
         if fullname not in self.state.document.ids:
             signode['names'].append(fullname)
-            signode['ids'].append(fullname.replace('$', '_S_'))
+            signode['ids'].append(fullname)
             signode['first'] = not self.names
             self.state.document.note_explicit_target(signode)
             objects = self.env.domaindata['tex']['objects']
@@ -231,15 +231,23 @@ class TeXObject(ObjectDescription):
 
         indextext = self.get_index_text(objectname, name_obj)
         if indextext:
+            indexstr = fullname
+            if indexstr.startswith('\\'):
+                indexstr = indexstr[1:]
+            if indexstr.startswith('sdaps_'):
+                indexstr = indexstr[6:]
+            if indexstr.startswith('sdaps'):
+                indexstr = indexstr[5:]
             self.indexnode['entries'].append(('single', indextext,
-                                              fullname.replace('$', '_S_'),
-                                              '', None))
+                                              fullname, '',
+                                              indexstr[0]))
 
     def get_index_text(self, objectname, name_obj):
         name, obj = name_obj
+
         if self.objtype == 'macro':
             return _('%s (macro)') % name
-        elif self.objtype == 'environment':
+        elif self.objtype == 'environ':
             return _('%s (environment)') % name
         elif self.objtype == 'data':
             return _('%s (global variable or constant)') % name
@@ -266,6 +274,7 @@ class TeXMacro(TeXObject):
 
 class TeXEnvironment(TeXMacro):
     """Like a callable but with a different prefix."""
+    has_arguments = True
     environment = True
 
 class TeXXRefRole(XRefRole):
@@ -278,7 +287,7 @@ class TeXDomain(Domain):
     # if you add a new object type make sure to edit TeXObject.get_index_text
     object_types = {
         'macro':     ObjType(l_('macro'),     'macro'),
-        'environ':   ObjType(l_('environment'), 'environment'),
+        'environ':   ObjType(l_('environ'), 'environ'),
         'data':      ObjType(l_('data'),      'data'),
         'attribute': ObjType(l_('attribute'), 'attr'),
     }
