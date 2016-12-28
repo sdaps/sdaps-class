@@ -61,7 +61,7 @@ Managing context variables
 
     Set the given variable to the given value (Variants: ``nV``)
 
-.. macro:: \daps_context_set:n { key=value, key={a=b, c=d} }
+.. macro:: \sdaps_context_set:n { key=value, key={a=b, c=d} }
 
     Set context variables from the given ``key=value`` parameters
 
