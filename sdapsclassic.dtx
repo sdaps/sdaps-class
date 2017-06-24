@@ -525,7 +525,7 @@
 \int_new:N \l__sdaps_classic_choiceitem_col_int
 \coffin_new:N \l__sdaps_classic_choicequestion_coffin
 
-\msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~makros. }
+\msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~macros. }
 
 \tl_new:N \l_sdaps_choicequestion_var_tl
 \tl_new:N \l_sdaps_choicequestion_text_tl
@@ -562,6 +562,7 @@
 
   \question{#2}%
 
+  % Setup the context
   \tl_if_empty:NTF \l_sdaps_choicequestion_text_tl {
     \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
   } {
