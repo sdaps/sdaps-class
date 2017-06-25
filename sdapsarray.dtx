@@ -250,7 +250,7 @@
   \_sdaps_array_open_tmpfiles:
 
   \tl_gset_eq:NN \g__sdaps_array_last_row_tl \c_empty_tl
-  \bool_gset_true:N \g_sdaps_array_first_row
+  \bool_gset_true:N \g_sdaps_array_first_row_bool
 
   \l__sdaps_array_begin_tl
 }
@@ -318,7 +318,7 @@
 \cs_new_protected_nopar:Nn \sdaps_array_row:NNn
 {
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
-  \bool_if:NTF \g_sdaps_array_first_row {
+  \bool_if:NTF \g_sdaps_array_first_row_bool {
   } {
     \kern -\g_sdaps_array_header_dim
     \nobreak
@@ -334,12 +334,13 @@
     \nointerlineskip
   }
   \pdfsavepos
+  % This is only used for page break detection
   \iow_shipout_x:Nn \g__sdaps_array_info_iow {
-      \int_use:N\g_sdaps_page_int,
+      \thepage,
       \the\pdflastxpos
    }
-  \bool_if:NTF \g_sdaps_array_first_row {
-    \bool_gset_false:N \g_sdaps_array_first_row
+  \bool_if:NTF \g_sdaps_array_first_row_bool {
+    \bool_gset_false:N \g_sdaps_array_first_row_bool
     % We now have the header as the last box on the stack. This should be
     % stowed away to be inserted again at a later point.
     \vbox_gset:Nn \g_sdaps_array_header_box { \l__sdaps_array_row_tl #1 #2 { #3 } }
@@ -633,7 +634,7 @@
 %
 %    \begin{macrocode}
 
-\bool_new:N \g_sdaps_array_first_row
+\bool_new:N \g_sdaps_array_first_row_bool
 \bool_new:N \l__sdaps_sdapsarray_in_top_group_bool
 \bool_new:N \l__sdaps_sdapsarray_have_content_bool
 \bool_new:N \l_sdaps_sdapsarray_flip_bool
