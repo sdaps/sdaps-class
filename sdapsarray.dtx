@@ -315,41 +315,77 @@
 \box_new:N \g_sdaps_array_header_box
 \dim_new:N \g_sdaps_array_header_dim
 
+\cs_new_protected_nopar:Nn \sdaps_array_calc_interlineskip:nNN
+{
+  \dim_compare:nNnTF { #1 } > { -1000pt } {
+    \skip_set:Nn #3 { \baselineskip - #1 - \box_ht:N #2 }
+    \dim_compare:nNnF { #3 } > { \lineskiplimit } {
+      \skip_set:Nn #3 { \lineskip }
+    }
+  } {
+    \skip_set:Nn #3 { 0pt }
+  }
+}
+
 \cs_new_protected_nopar:Nn \sdaps_array_row:NNn
 {
+  % Pagebreak detection
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
-  \bool_if:NTF \g_sdaps_array_first_row_bool {
-  } {
-    \kern -\g_sdaps_array_header_dim
-    \nobreak
-    \nointerlineskip
-    \vbox_top:n{
-      \bool_if:NTF \g_tmpa_bool {
-        \vbox_unpack:N \g_sdaps_array_header_box
-      } {
-        \vrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt
-      }
-    }
-    \nobreak
-    \nointerlineskip
-  }
   \pdfsavepos
-  % This is only used for page break detection
   \iow_shipout_x:Nn \g__sdaps_array_info_iow {
       \thepage,
       \the\pdflastxpos
    }
+  \l__sdaps_array_row_tl #1 #2 { #3 } \l_tmpb_box
+
   \bool_if:NTF \g_sdaps_array_first_row_bool {
+  } {
+    % The idea is simple. Before every line the header is re-inserted (either
+    % the real one or an empty box with the same dimensions). In the case that
+    % there is *no* page break we insert a corresponding negative skip so that
+    % the resulting skip (including interline skip) is exactly the normal
+    % interline skip between the rows.
+    % In the case that the skip *is* discarded we end up with the header box
+    % and the normal interline skip between the new row and the header. i.e.:
+    %   skip = 1 * ( interlineskip_for_row - interlineskip_for_header - header_height - header_depth ) + header_height + header_depth + interlineksip_for_header
+    % or
+    %   skip = 0 * ( interlineskip_for_row - interlineskip_for_header - header_height - header_depth ) + header_height + header_depth + interlineksip_for_header
+
+    % Calculate interlineksip_for_row and interlineskip_for_header
+    \sdaps_array_calc_interlineskip:nNN { \prevdepth } \l_tmpb_box \l_tmpa_skip
+    \sdaps_array_calc_interlineskip:nNN { \box_dp:N \g_sdaps_array_header_box } \l_tmpb_box \l_tmpb_skip
+
+    \nointerlineskip
+    % Insert the normal interline skip minus the interline skip of the header.
+    % If it is discarded then this has no effect whatsoever. If it is not
+    % discarded it inserts the normal interline skip and removes the one added
+    % later for the header box.
+    \skip_vertical:n { \l_tmpa_skip - \l_tmpb_skip }
+    \kern -\g_sdaps_array_header_dim
+
+    % Inser the real or fake box
+    \bool_if:NTF \g_tmpa_bool {
+      \box_use:N \g_sdaps_array_header_box
+    } {
+     \hbox_to_wd:nn { #3 } {\vrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt \hfil}
+    }
+    \nobreak
+    % TeX would insert exactly \l_tmpb_skip (header box) as interline skip here.
+    % i.e. we could also remove the two lines below but this makes the
+    % calculation more obvious.
+    \nointerlineskip
+    \skip_vertical:N \l_tmpb_skip
+  }
+
+  \box_use:N \l_tmpb_box
+  \bool_if:NTF \g_sdaps_array_first_row_bool {
+    % If this is was the header row, then store the box for later use
     \bool_gset_false:N \g_sdaps_array_first_row_bool
-    % We now have the header as the last box on the stack. This should be
-    % stowed away to be inserted again at a later point.
-    \vbox_gset:Nn \g_sdaps_array_header_box { \l__sdaps_array_row_tl #1 #2 { #3 } }
+    \box_gset_eq:NN \g_sdaps_array_header_box \l_tmpb_box
     % and also insert now
-    \vbox_unpack:N \g_sdaps_array_header_box
     \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
     \nobreak
   } {
-    \l__sdaps_array_row_tl #1 #2 { #3 }
     \penalty\int_use:N\g_sdaps_array_row_penalty_tl
   }
 }
@@ -405,8 +441,6 @@
   \vbox_set:Nn #1 \bgroup
     \raggedleft
     \hsize=\dim_use:N\l_tmpa_dim
-    % TODO: Insert a strut on the last line somehow?
-    \strut
     % swallow group opening token, TODO: Ensure it really is an opening brace?
     \tex_let:D\next=
 }
@@ -416,7 +450,6 @@
   % This command has to leave a single non empty box in the input stream that
   % can be added into an hbox.
   \hbox_set:Nn #1 \bgroup
-    \strut
     \tex_let:D\next=
 }
 
@@ -424,6 +457,7 @@
     \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
     \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
 
+    % sin(70°)
     \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
     \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
 
@@ -451,7 +485,7 @@
 {
   \hbox_set:Nn #1 \bgroup
     \hbox_set:Nn \l_tmpa_box
-    \bgroup \strut
+    \bgroup %\strut
     \group_insert_after:N \_sdaps_array_cell_rotated_end:
     \tex_let:D\next=
 }
@@ -494,16 +528,18 @@
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNn
+\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNnN
 {
   % #1: Token List containing the content for the header cell (which should be
   %     set inside a parbox or similar).
   % #2: Data cells packed into an hbox which need to be unpacked and set to the
   %     correct width.
   % #3: The width that the hbox should have.
+  % #4: The box register to store the resulting hbox in.
   %
-  % The macro should leave an hbox which is exactly #3 width in the input
-  % stream. It will be called in vertical mode.
+  % The macro should create an hbox which is exactly #3 wide and store it in
+  % the box register #4. The box will be used while in vertical mode and may
+  % be inserted multiple times in the case of the header row.
   % To simplify the iteration it is guranteed that the data cell boxes are not
   % completely empty. This means the code can simply unbox until it sees a box
   % that is void.
@@ -541,11 +577,15 @@
 
 
     % Insert the overhang space minus the first inter column spacing
-    \hcoffin_set:Nn \l_tmpa_coffin { \skip_horizontal:n { \l_tmpa_dim - 1em } }
+    \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_tmpa_dim - 1em } }
 
     % Now grab the first of the cells, and then loop over the rest
     \box_set_to_last:N #2
     \bool_do_while:nn { ! \box_if_empty_p:N #2 } {
+      % Strip any trailing glue (i.e. space) coming from the user (for the
+      % leading side we ensure that \tex_ignorespaces:D is called).
+      \hbox_set:Nn #2 { \hbox_unpack:N #2 \unskip }
+
       % Pop the target width for the current box (i.e. we don't globally
       % modify the clist here).
       \seq_gpop:NNTF \g_sdaps_array_shared_colwidths_seq \l_tmpa_tl {
@@ -567,18 +607,18 @@
       \seq_gput_right:Nx \g_tmpa_seq { \dim_use:N \l_tmpa_dim }
       \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
 
-
       % Set the box into a new box with the correct width which contains fil
       % to center it.
-      \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \hbox_unpack:N #2 \hfil } }
+      \hbox_set_to_wd:Nnn \l_tmpb_box \l_tmpa_dim { \hfil \box_use:N #2 \hfil }
 
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
       % XXX: Do not hardcode padding
       % Note that we make sure here that the order is correct again (as the
       % metadata currently relys on the correct order).
-      \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
-      \coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
+      %\coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
+      %\coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
+      \hbox_set:Nn \l_tmpa_box {  \box_use:N \l_tmpb_box \skip_horizontal:n { 1em } \box_use:N \l_tmpa_box }
 
       % Grab next cell
       \box_set_to_last:N #2
@@ -586,7 +626,8 @@
 
     % Get the coffin out of the nested scope by placing it into the box and
     % placing that into it again ...
-    \coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
+    %\coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
+    \box_use:N \l_tmpa_box
   }
   \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N #2 }
 
@@ -598,10 +639,19 @@
   \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 1em }
   \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
-  \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \box_use:N #1 } }
-  \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { 1em } { 0pt }
+  % TODO: The \hfil here is a hack to prevent a warning if the vbox is empty.
+  %       Unfortunately checking for an empty box does not work for some reason.
+  \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \box_use:N #1 } }
+  % TODO: Document that alignment will be done if header height < baselineskip
+  %       i.e. it should be gone as soon as the header is going multiline.
+  \dim_compare:nNnTF { \coffin_ht:N \l_tmpb_coffin } < { \baselineskip } {
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
+  } {
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { 1em } { 0pt }
+  }
+  %\box_show:N \l_tmpb_coffin
 
-  \hbox { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
+  \hbox_set:Nn #2 { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
 }
 
 
@@ -611,7 +661,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_default:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNn },
+  row = { \_sdaps_array_row_ltr:NNnN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -622,7 +672,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_rotated:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNn },
+  row = { \_sdaps_array_row_ltr:NNnN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -693,6 +743,8 @@
   \_sdaps_sdapsarray_cell:w \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
     \cs_set_eq:NN \\ \cr
+    % Ignore following spaces by the user
+    \tex_ignorespaces:D
 }
 
 \msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
@@ -725,6 +777,8 @@
       \bgroup
         \group_insert_after:N \_sdaps_sdapsarray_start_cells:
         \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
+        % Ignore following spaces by the user
+        \tex_ignorespaces:D
 }
 
 \cs_new_nopar:Nn \_sdaps_sdapsarray_newline: {
@@ -845,10 +899,14 @@
     \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
       \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
       \cs_set_eq:NN \\ \cr
+      % Ignore following spaces by the user
+      \tex_ignorespaces:D
   } {
     \sdaps_array_assign_cell:Nw \l_tmpa_box \bgroup
       \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
       \cs_set_eq:NN \\ \cr
+      % Ignore following spaces by the user
+      \tex_ignorespaces:D
   }
 }
 
@@ -891,6 +949,8 @@
   \sdaps_array_assign_colhead:Nw \l_tmpa_box \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
     \cs_set_eq:NN \\ \cr
+    % Ignore following spaces by the user
+    \tex_ignorespaces:D
 }
 
 
@@ -940,6 +1000,8 @@
         \sdaps_array_assign_rowhead:Nw \l_tmpa_box \bgroup
           \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
           \cs_set_eq:NN \\ \cr
+          % Ignore following spaces by the user
+          \tex_ignorespaces:D
     } {
       \cs_set_eq:NN \sdaps_array_newline: \_sdaps_sdapsarray_newline:
       \cs_set_eq:NN \sdaps_array_alignment: \_sdaps_sdapsarray_alignment:
