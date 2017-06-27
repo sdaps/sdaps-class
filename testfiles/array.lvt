@@ -185,6 +185,66 @@
   \end{multicols}
 \end{MYTESTPAGE}
 
+\begin{MYTESTPAGE}{sdapsarray not splitting with huge penalty}
+  \ExplSyntaxOn
+  \int_set:Nn \g_sdaps_array_row_penalty_tl { 10000 }
+  \ExplSyntaxOff
+
+  % All of this will be in the first column becaues of the huge penalty
+  % (effectively a \nobreak) above.
+  \begin{multicols}{2}
+    \begin{sdapsarray}
+      row head & col 1 & col 2 \\
+      row head 1 & a & \logpos{a} \\
+      row head 2 & a & a \\
+      row head 3 & a & a \\
+      row head 4 & a & a \\
+      row head 5 & a & a \\
+      row head 6 & a & a \\
+      row head 7 & a & a \\
+      row head 8 & a & a \\
+      row head 9 & a & a \\
+      row head 10 & a & a \\
+      row head 11 & a & a \\
+      row head 12 & a & a \\
+      row head 13 & a & a \\
+      row head 14 & a & a \\
+      row head 15 & a & a \\
+      row head 16 & a & a \\
+      row head 17 & a & a \\
+      row head 18 & a & a \\
+      row head 19 & a & a \\
+      row head 20 & a & \logpos{a}
+    \end{sdapsarray}
+
+  \end{multicols}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{sdapsarray should discourage being split over pages}
+  Some filler text (just so that the skip is not discarded)
+  \vskip 45em
+  And add some more variable glue after this.
+
+  \vfil
+
+  And the array is below this, but we end this paragraph first.
+
+  \begin{sdapsarray}
+    row head & col 1 & col 2 \\
+    row head 1 & a & \logpos{a} \\
+    row head 2 & a & a \\
+    row head 3 & a & a \\
+    row head 4 & a & a \\
+    row head 5 & a & a \\
+    row head 6 & a & a \\
+    row head 7 & a & a \\
+    row head 8 & a & a \\
+    row head 9 & a & a \\
+    row head 10 & a & \logpos{a}
+  \end{sdapsarray}
+\end{MYTESTPAGE}
+
+
 \begin{MYTESTPAGE}{sdapsarray with rotated header}
   % Rotated header test. This is a bit of a cludge as we only test the
   % positioning of the box and rotation is not actually tested.
