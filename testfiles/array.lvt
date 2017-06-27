@@ -199,10 +199,11 @@
   \end{sdapsarray}
 \end{MYTESTPAGE}
 
+
 \begin{MYTESTPAGE}{sdapsarray with multiline row header}
   % The row headers can be multiline and should properly flow as paragraphs.
   % They are ragged right though towards the cells.
-  \begin{sdapsarray}[layouter=rotated]
+  \begin{sdapsarray}
       & col 1 & col 2 \\
     \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
     \logpos{row head 2} & \logpos{c} & \logpos{d} \\
