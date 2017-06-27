@@ -199,6 +199,29 @@
   \end{sdapsarray}
 \end{MYTESTPAGE}
 
+\begin{MYTESTPAGE}{sdapsarray with rotated header}
+  % Rotated header test. This is a bit of a cludge as we only test the
+  % positioning of the box and rotation is not actually tested.
+  % But for example "row head" is higher than "col head X".
+  \begin{sdapsarray}[layouter=rotated,align=test-rotated-header-align]
+    \logpos{row head} &
+      \logpos{col head 1} &
+      \logpos{col head 2} \\
+    \logpos{row head 1} & \logpos{a} & \logpos{b} \\
+    \logpos{row head 2} & \logpos{c} & \logpos{d} \\
+    \logpos{row head 3} & \logpos{e} & \logpos{f}
+  \end{sdapsarray}
+
+  \begin{sdapsarray}[layouter=rotated,align=test-rotated-header-align]
+    \logpos{row head} &
+      \logpos{col head 1} &
+      \logpos{col head 2 with extra long text} \\
+    \logpos{row head 1} & \logpos{a} & \logpos{b} \\
+    \logpos{row head 2} & \logpos{c} & \logpos{d} \\
+    \logpos{row head 3} & \logpos{e} & \logpos{f}
+  \end{sdapsarray}
+\end{MYTESTPAGE}
+
 
 \begin{MYTESTPAGE}{sdapsarray with multiline row header}
   % The row headers can be multiline and should properly flow as paragraphs.
