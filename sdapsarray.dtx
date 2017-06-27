@@ -178,7 +178,7 @@
 
 % XXX: Penalty in between rows. After the header a nobreak is inserted, but
 %      do we want special penalties elsewhere (preventing orphans/widows?)
-\int_set:Nn \g_sdaps_array_row_penalty_tl { -10 }
+\int_set:Nn \g_sdaps_array_row_penalty_tl { 10 }
 
 \tl_new:N \g_sdaps_array_shared_data_tl
 \tl_new:N \g_sdaps_array_stored_data_tl
@@ -331,14 +331,30 @@
 {
   % Pagebreak detection
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
-  \pdfsavepos
-  \iow_shipout_x:Nn \g__sdaps_array_info_iow {
-      \thepage,
-      \the\pdflastxpos
-   }
   \l__sdaps_array_row_tl #1 #2 { #3 } \l_tmpb_box
 
+  \bool_if:NT \g_sdaps_array_first_row_bool {
+    % Stow away the bo for later use (before rewriting it to save the position)
+    \box_gset_eq:NN \g_sdaps_array_header_box \l_tmpb_box
+    % and also insert now
+    \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
+  }
+
+  \hbox_set:Nn \l_tmpb_box {
+    \pdfsavepos
+    \iow_shipout_x:Nn \g__sdaps_array_info_iow {
+      \thepage,
+      \the\pdflastxpos
+    }
+    \box_use:N \l_tmpb_box
+  }
+
   \bool_if:NTF \g_sdaps_array_first_row_bool {
+    \bool_gset_false:N \g_sdaps_array_first_row_bool
+
+    \box_use:N \l_tmpb_box
+    % Do not ever allow a break after the header line.
+    \nobreak
   } {
     % The idea is simple. Before every line the header is re-inserted (either
     % the real one or an empty box with the same dimensions). In the case that
@@ -354,7 +370,6 @@
     % Calculate interlineksip_for_row and interlineskip_for_header
     \sdaps_array_calc_interlineskip:nNN { \prevdepth } \l_tmpb_box \l_tmpa_skip
     \sdaps_array_calc_interlineskip:nNN { \box_dp:N \g_sdaps_array_header_box } \l_tmpb_box \l_tmpb_skip
-
     \nointerlineskip
     % Insert the normal interline skip minus the interline skip of the header.
     % If it is discarded then this has no effect whatsoever. If it is not
@@ -375,17 +390,10 @@
     % calculation more obvious.
     \nointerlineskip
     \skip_vertical:N \l_tmpb_skip
-  }
 
-  \box_use:N \l_tmpb_box
-  \bool_if:NTF \g_sdaps_array_first_row_bool {
-    % If this is was the header row, then store the box for later use
-    \bool_gset_false:N \g_sdaps_array_first_row_bool
-    \box_gset_eq:NN \g_sdaps_array_header_box \l_tmpb_box
-    % and also insert now
-    \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
-    \nobreak
-  } {
+    \box_use:N \l_tmpb_box
+
+    % Insert normal inter row penalty after the box for the following rows.
     \penalty\int_use:N\g_sdaps_array_row_penalty_tl
   }
 }
