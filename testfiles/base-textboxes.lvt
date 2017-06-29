@@ -1,0 +1,278 @@
+\documentclass{scrartcl}
+\input{regression-test}
+
+\OMIT
+\usepackage{sdapsbase}
+\usepackage{multicol}
+
+
+\def\logpos#1{\lognamedpos{#1}#1}
+\def\lognamedpos#1{\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+
+\newenvironment{MYTEST}[1]{%
+  \begingroup%
+    \global\advance \gTESTint 1 %
+    \SEPARATOR%
+    \LONGTYPEOUT{%
+      TEST \the\gTESTint: \detokenize{#1}}%
+    \SEPARATOR%
+}{%
+    \SEPARATOR%
+    \LONGTYPEOUT{}%
+  \endgroup%
+}
+
+\newenvironment{OMITPAGE}{%
+  \begingroup%
+    \OMIT%
+}{%
+    \vfil\break%
+    \TIMO%
+  \endgroup%
+}
+
+\newenvironment{MYTESTPAGE}[1]{%
+  \begin{MYTEST}{#1}%
+}{%
+    \vfil\break%
+  \end{MYTEST}%
+}
+
+\newenvironment{MYTESTPAGESHOW}[1]{%
+  \begin{MYTESTPAGE}{#1}%
+    \showoutput%
+}{%
+  \end{MYTESTPAGE}%
+}
+
+\TIMO
+
+
+\begin{document}
+\START
+
+\begin{OMITPAGE}
+  % Some font stuff
+  $ a + b $
+
+  % Enable writing out information.
+  \ExplSyntaxOn
+
+  % Redirect output to log file instead of .sdaps file
+  \iow_close:N \g_sdaps_infofile_iow
+  \global\let\g_sdaps_infofile_iow=\c_log_iow
+
+  \sdaps_begin:
+  \sdaps_context_set:n{*={writepos}}
+  \ExplSyntaxOff
+
+  \setlength\lineskiplimit{1pt}
+  \setlength\lineskip{1pt}
+
+\end{OMITPAGE}
+
+
+\begin{MYTESTPAGESHOW}{hstretch: visually check the outline does not overshoot}
+  \thispagestyle{empty}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+      \noindent\sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{70mm}{1} \newline
+      \vrule height 1em \hfill \vrule height 1em \newline
+
+      \noindent \rlap{\vrule depth 4mm}\sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{70mm}{0}\llap{\vrule depth 4mm}\lognamedpos{at70mm}\, \vrule height 5mm depth 2mm width 2pt \newline
+      \rlap{\vrule height 1em} \hspace{70mm} \llap{\vrule height 1em}
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGESHOW}
+
+\begin{MYTESTPAGE}{hstretch: check only specified width is used}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+    \noindent \hfill \lognamedpos{center1} \sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{0mm}{1} \newline
+    \noindent \sdaps_textbox_hstretch:nnnnn{ text }{2mm}{5mm}{0mm}{1} \lognamedpos{center2} \hfill \strut
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{hbox: check alignment}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+    \noindent\sdaps_textbox_hbox:nnn {text} {3bp} { x } \rule{5cm}{.5pt} \hfill \rule{5cm}{.5pt} \sdaps_textbox_hbox:nnn {text} {1bp} { Xg } \newline
+      \vrule height 1em ~2bp~between~content~and~outline \hfill  0bp~between~content~and~outline~ \vrule height 1em
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{hbox: inside a formular}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+    \noindent
+    Inside ~ a ~ formula ~ $ f(x) = \frac{1}{c\,\sdaps_textbox_hbox:nnn{text}{3bp}{box}} \sdaps_textbox_hstretch:nnnnn{text}{2mm}{5mm}{70mm}{1} $ \lognamedpos{lineend} \newline
+    x\hfill \vrule height 1em
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{vhstretch: full page box}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+    \sdaps_textbox_vhstretch:nn { text } { 0cm }
+    \break
+    asfdasdf
+
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{vhstretch: box that are exactly 200pt high }
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+    \setlength{\columnsep}{1pt}
+    % Without stretching
+    \begin{multicols}{2}
+      \sdaps_textbox_vhstretch:nnn { text } { 200pt } { 0 }
+
+      \columnbreak
+
+      % This hrule is on the first baseline (\topskip from the top)
+      \hrule height 0pt
+      % Then go up 1.7ex (\l__sdaps_textbox_ht_dim) to get the top position
+      \vskip -1.7ex
+      \hrule height 1pt
+      \vskip 198pt
+      \hrule height 1pt
+    \end{multicols}
+
+    % And with stretching
+    \begin{multicols}{2}
+      \sdaps_textbox_vhstretch:nnn { text } { 0pt } { 1 }
+      % Need an hrule here as multicols alignes the baselines
+      \hrule height 0pt depth 0pt
+
+      \columnbreak
+
+      % This hrule is on the first baseline (\topskip from the top)
+      \hrule height 0pt
+      % Then go up 1.7ex (\l__sdaps_textbox_ht_dim) to get the top position
+      \vskip -1.7ex
+      \hrule height 1pt
+      \vskip 198pt
+      \hrule height 1pt
+    \end{multicols}
+
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{vhstretch: rules at top/bottom have no distance}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+      \hrule
+      \sdaps_textbox_vhstretch:nnn { text } { 200pt } { 0 }
+      \lognamedpos{bottom}\hrule
+    \sdaps_qobject_end:
+
+    Visually ~ check ~ that ~ the ~ lines ~ at ~ the ~ top/bottom ~ are ~ slightly ~ thicker ~ without ~ a ~ gap.
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{vhstretch: bottom has a depth of 0.5ex}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+      % No stretch here
+      \sdaps_textbox_vhstretch:nnn { text } { 200pt } { 0 }
+
+      \dim_log:N \prevdepth
+      \dim_compare:nNnTF { 0.5ex } = { \prevdepth } { GOOD } { BAD \ERROR }
+
+
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{vhstretch: With surrounding paragraphs}
+  \parskip=1em
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+    Text~text~text~text~text~text~text~text~text~text~text~text~text~text~text~
+    text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+
+    Text~text~text~text~text~text~text~text~text~text~text~text~text~text~text~
+    text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
+
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+
+    \vspace{-\parskip}
+    Text~text~text~text~text~text~text~text~text~text~text~text~text~text~text~
+    text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
+
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{vhstretch: error in math and inner modes}
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+    \ExplSyntaxOff
+    \ExplSyntaxOn
+    $\sdaps_textbox_vhstretch:nn { text } { 0cm }$
+
+    \ExplSyntaxOff
+    \ExplSyntaxOn
+    \vbox{\sdaps_textbox_vhstretch:nn { text } { 0cm }}
+
+    \ExplSyntaxOff
+    \ExplSyntaxOn
+    \hbox{\sdaps_textbox_vhstretch:nn { text } { 0cm }}
+
+    \ExplSyntaxOff
+    \ExplSyntaxOn
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
+
+
+
+\begin{OMITPAGE}
+  Nothing here to see.
+
+  % Enable writing out information.
+  \ExplSyntaxOn
+  \sdaps_end:
+  \ExplSyntaxOff
+
+\end{OMITPAGE}
+
+\end{document}
+
