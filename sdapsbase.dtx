@@ -991,17 +991,17 @@
     }
 
     \tex_penalty:D 10000
-    \tex_prevdepth:D=-1000pt
+    \nointerlineskip
 
     \tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{#2 - \l__sdaps_textbox_ht_dim}
 
     \tex_penalty:D 10000
-    \tex_prevdepth:D=-1000pt
+    \nointerlineskip
 
     \tex_cleaders:D\tex_hbox:D{}\skip_vertical:n{\stretch{#3}}
 
     \tex_penalty:D 10000
-    \tex_prevdepth:D=-1000pt
+    \nointerlineskip
 
     \vbox:n {
       \noindent
@@ -1055,7 +1055,17 @@
         }
       \end{tikzpicture}
     }
-    \tex_prevdepth:D=\l__sdaps_textbox_dp_dim
+
+    % We are done here, but we need the correct depth, so skip around a bit
+    \tex_penalty:D 10000
+    \nointerlineskip
+
+    \skip_vertical:n{ - \l__sdaps_textbox_dp_dim}
+
+    \tex_penalty:D 10000
+    \nointerlineskip
+
+    \hbox:n { \vrule depth \l__sdaps_textbox_dp_dim height 0pt width 0pt }
 
     \int_gincr:N\g__sdaps_textbox_num_int
 
