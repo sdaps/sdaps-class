@@ -929,11 +929,10 @@
 %    \begin{macrocode}
   \if_mode_math:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { math }
-  \fi:
-
+  \else:
   \if_mode_inner:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { inner }
-  \fi:
+  \else:
 %    \end{macrocode}
 %
 % If the mode is currently horizontal, then we switch back to vertical mode by
@@ -1077,6 +1076,8 @@
   \skip_vertical:n{-\parskip}
   \def\par{\unpenalty\let\par=\endgraf\skip_vertical:n{\parskip}\endgraf}
   \everypar{\let\par=\endgraf\everypar{}}
+  \fi:
+  \fi:
 }
 
 
