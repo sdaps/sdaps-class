@@ -1,0 +1,327 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+============================================================
+TEST 1: hstretch: visually check the outline does not overshoot
+============================================================
+Completed box being shipped out [2]
+\vbox(655.63496+0.0)x435.61176
+.\hbox(0.0+0.0)x0.0
+..\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+.\glue -25.16531
+.\vbox(680.80028+0.0)x418.25555, shifted 17.3562
+..\vbox(17.0+0.0)x418.25555, glue set 17.0fil
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x418.25555
+....\special{color push gray 0}
+....\hbox(0.0+0.0)x418.25555
+....\special{color pop}
+..\glue 20.40001
+..\glue(\lineskip) 0.0
+..\vbox(595.80026+0.0)x418.25555, glue set 525.31981fil
+...\write-{\exp_not:n {QObject-Text=1. }}
+...\glue(\topskip) 0.0
+...\hbox(14.22636+5.69054)x418.25555, glue set 219.08627fill
+....\rule(14.22636+5.69054)x0.0
+....\penalty 10000
+....\pdfsavepos
+....\write1{\noexpand \pgfsyspdfmark {textboxstart0}{\the \pdflastxpos }{\the \pdflastypos \ETC.}
+....\penalty 10000
+....\glue 199.16928 plus 1.0fill
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0
+......\special{pdf:bcontent}
+......\special{pdf:code q }
+......\special{pdf:code 0 G }
+......\special{pdf:code 0 g }
+......\special{pdf:code 0.3985 w }
+......\hbox(0.0+0.0)x0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\special{pdf:code q }
+.......\glue 0.0
+.......\special{pdf:code q }
+.......\special{pdf:code 1.0 w }
+.......\special{pdf:code 1 g }
+.......\special{pdf:code -416.19833 13.6734 m }
+.......\special{pdf:code -416.19833 13.6734 m }
+.......\special{pdf:code -416.19833 -5.16933 l }
+.......\special{pdf:code -0.5 -5.16933 l }
+.......\special{pdf:code -0.5 13.6734 l }
+.......\special{pdf:code h }
+.......\special{pdf:code -0.5 -5.16933 m }
+.......\special{pdf:code B }
+.......\special{pdf:code Q }
+.......\special{pdf:code q }
+.......\special{pdf:code Q }
+.......\write-{Box[1]=Textbox,\int_use:N \g_sdaps_page_int ,89.62619pt,760.54225pt,4\ETC.}
+.......\special{pdf:code Q }
+.......\hbox(0.0+0.0)x0.0
+........\pdfsavepos
+........\write1{\noexpand \pgfsyspdfmark {pgfid1}{\the \pdflastxpos }{\the \pdflastypos \ETC.}
+.......\glue 0.0 plus 1.0fil minus 1.0fil
+......\special{pdf:code n }
+......\special{pdf:code Q }
+......\special{pdf:econtent}
+......\glue 0.0 plus 1.0fil minus 1.0fil
+....\penalty 10000
+....\glue 0.0 plus 1.0fil
+....\penalty -10000
+....\glue(\rightskip) 0.0
+...\penalty 150
+...\glue(\lineskip) 1.0
+...\hbox(10.95+0.0)x418.25555, glue set 417.45557fill
+....\rule(10.95+*)x0.4
+....\glue 0.0 plus 1.0fill
+....\rule(10.95+*)x0.4
+....\penalty 10000
+....\glue 0.0 plus 1.0fil
+....\penalty -10000
+....\glue(\rightskip) 0.0
+...\glue(\lineskip) 1.0
+...\hbox(14.22636+11.38109)x418.25555, glue set 215.26123fil
+....\hbox(0.0+11.38109)x0.0, glue set - 0.4fil
+.....\rule(*+11.38109)x0.4
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\rule(14.22636+5.69054)x0.0
+....\penalty 10000
+....\pdfsavepos
+....\write1{\noexpand \pgfsyspdfmark {textboxstart1}{\the \pdflastxpos }{\the \pdflastypos \ETC.}
+....\penalty 10000
+....\glue 199.16928
+....\penalty 10000
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+.....\hbox(0.0+0.0)x0.0
+......\special{pdf:bcontent}
+......\special{pdf:code q }
+......\special{pdf:code 0 G }
+......\special{pdf:code 0 g }
+......\special{pdf:code 0.3985 w }
+......\hbox(0.0+0.0)x0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\glue 0.0
+.......\special{pdf:code q }
+.......\glue 0.0
+.......\special{pdf:code q }
+.......\special{pdf:code 1.0 w }
+.......\special{pdf:code 1 g }
+.......\special{pdf:code -197.92775 13.6734 m }
+.......\special{pdf:code -197.92775 13.6734 m }
+.......\special{pdf:code -197.92775 -5.16933 l }
+.......\special{pdf:code -0.5 -5.16933 l }
+.......\special{pdf:code -0.5 13.6734 l }
+.......\special{pdf:code h }
+.......\special{pdf:code -0.5 -5.16933 m }
+.......\special{pdf:code B }
+.......\special{pdf:code Q }
+.......\special{pdf:code q }
+.......\special{pdf:code Q }
+.......\write-{Box[1]=Textbox,\int_use:N \g_sdaps_page_int ,89.62619pt,727.67535pt,1\ETC.}
+.......\special{pdf:code Q }
+.......\hbox(0.0+0.0)x0.0
+........\pdfsavepos
+........\write1{\noexpand \pgfsyspdfmark {pgfid2}{\the \pdflastxpos }{\the \pdflastypos \ETC.}
+.......\glue 0.0 plus 1.0fil minus 1.0fil
+......\special{pdf:code n }
+......\special{pdf:code Q }
+......\special{pdf:econtent}
+......\glue 0.0 plus 1.0fil minus 1.0fil
+....\hbox(0.0+11.38109)x0.0, glue set - 0.4fil
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+.....\rule(*+11.38109)x0.4
+....\pdfsavepos
+....\write*{POSITION at70mm: \the \pdflastxpos ,\the \pdflastypos }
+....\kern 1.82504
+....\rule(14.22636+5.69054)x2.0
+....\penalty 10000
+....\glue 0.0 plus 1.0fil
+....\penalty -10000
+....\glue(\rightskip) 0.0
+...\penalty 150
+...\glue(\lineskip) 1.0
+...\hbox(10.95+0.0)x418.25555, glue set 219.08627fil
+....\hbox(10.95+0.0)x0.0, glue set - 0.4fil
+.....\rule(10.95+*)x0.4
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 199.16928
+....\hbox(10.95+0.0)x0.0, glue set - 0.4fil
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+.....\rule(10.95+*)x0.4
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+...\glue 0.0 plus 0.0001fil
+..\glue(\baselineskip) 47.6
+..\hbox(0.0+0.0)x418.25555
+...\special{color push gray 0}
+...\hbox(0.0+0.0)x418.25555
+...\special{color pop}
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,760.54225pt,418.25555pt,19.9169pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,727.67535pt,199.16928pt,19.9169pt,1.00374pt,text,
+POSITION at70mm: 18926500,46756593
+============================================================
+============================================================
+TEST 2: hstretch: check only specified width is used
+============================================================
+[3
+QObject-Text=1. 
+POSITION center1: 19579140,48910558
+Box[1]=Textbox,0,298.75397pt,760.54225pt,209.12778pt,19.9169pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,739.62535pt,209.12778pt,19.9169pt,1.00374pt,text,
+POSITION center2: 19579140,47539748
+]
+============================================================
+============================================================
+TEST 3: hbox: check alignment
+============================================================
+[4
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.27295pt,11.8041pt,10.74194pt,1.00374pt,text,
+Box[1]=Textbox,0,492.18677pt,758.02484pt,15.69498pt,11.74202pt,1.00374pt,text,
+]
+============================================================
+============================================================
+TEST 4: hbox: inside a formular
+============================================================
+[5
+QObject-Text=1. 
+Box[1]=Textbox,0,213.1426pt,748.45341pt,23.3673pt,13.74223pt,1.00374pt,text,
+Box[1]=Textbox,0,237.70988pt,760.54225pt,270.17186pt,19.9169pt,1.00374pt,text,
+POSITION lineend: 33284538,48910558
+]
+============================================================
+============================================================
+TEST 5: vhstretch: full page box
+============================================================
+[6
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,595.18303pt,1.00374pt,text,
+] [7]
+============================================================
+============================================================
+TEST 6: vhstretch: box that are exactly 200pt high 
+============================================================
+[8
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.56529pt,208.62778pt,200.0pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,539.34805pt,208.62778pt,200.0pt,1.00374pt,text,
+]
+============================================================
+============================================================
+TEST 7: vhstretch: rules at top/bottom have no distance
+============================================================
+[9
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,749.54225pt,418.25555pt,200.0pt,1.00374pt,text,
+POSITION bottom: 5873742,36014801
+]
+============================================================
+============================================================
+TEST 8: vhstretch: bottom has a depth of 0.5ex
+============================================================
+> \prevdepth=2.35973pt.
+[10
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,200.0pt,1.00374pt,text,
+]
+============================================================
+============================================================
+TEST 9: vhstretch: With surrounding paragraphs
+============================================================
+[11
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,686.49255pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,588.2198pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,489.94705pt,418.25555pt,56.9055pt,1.00374pt,text,
+]
+============================================================
+============================================================
+TEST 10: vhstretch: error in math and inner modes
+============================================================
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! sdapsbase error: "textbox_wrong_mode"
+! 
+! Impossible to layout a vhstretch textbox in math mode.
+! 
+! See the sdapsbase documentation for further information.
+! 
+! Type <return> to continue.
+!...............................................  
+l. ......aps_textbox_vhstretch:nn { text } { 0cm }
+                                                  $
+|'''''''''''''''''''''''''''''''''''''''''''''''
+| LaTeX does not know anything more about this error, sorry.
+| 
+| Try typing <return> to proceed.
+| If that doesn't work, type X <return> to quit.
+|...............................................
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! sdapsbase error: "textbox_wrong_mode"
+! 
+! Impossible to layout a vhstretch textbox in inner mode.
+! 
+! See the sdapsbase documentation for further information.
+! 
+! Type <return> to continue.
+!...............................................  
+l. ......aps_textbox_vhstretch:nn { text } { 0cm }
+                                                  }
+|'''''''''''''''''''''''''''''''''''''''''''''''
+| LaTeX does not know anything more about this error, sorry.
+| 
+| Try typing <return> to proceed.
+| If that doesn't work, type X <return> to quit.
+|...............................................
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+! sdapsbase error: "textbox_wrong_mode"
+! 
+! Impossible to layout a vhstretch textbox in inner mode.
+! 
+! See the sdapsbase documentation for further information.
+! 
+! Type <return> to continue.
+!...............................................  
+l. ......aps_textbox_vhstretch:nn { text } { 0cm }
+                                                  }
+|'''''''''''''''''''''''''''''''''''''''''''''''
+| LaTeX does not know anything more about this error, sorry.
+| 
+| Try typing <return> to proceed.
+| If that doesn't work, type X <return> to quit.
+|...............................................
+[12
+QObject-Text=1. 
+]
+============================================================
+(.aux)
