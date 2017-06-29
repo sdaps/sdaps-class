@@ -943,14 +943,12 @@
 %    \begin{macrocode}
 
   % We want to look similar to a paragraph to the outside world, however, we
-  % do not insert a parskip if we are still in horizontal mode.
+  % do not insert a parskip if we were in horizontal mode before.
   \if_mode_horizontal:
     % TODO: Make configurable/section by default penalty?
     \tex_par:D
     \tex_penalty:D \tex_widowpenalty:D
   \else:
-    \tex_par:D
-    \the\everypar
     \skip_vertical:n{\parskip}
   \fi:
 
@@ -962,8 +960,8 @@
 %
 % First we define the height and depth of the box that will be set. Setting the
 % height works by inserting a rule into the first box and adding a negative
-% skip afterwards. The depth is compensated by simply telling LaTeX what the
-% previous depth was.
+% skip afterwards. The depth is compensated by simply doing the same thing at
+% the bottom.
 %
 % Note that we need to add nobreak/nointerlineskip everywhere so that we
 % don't insert extra spacing and no page break will happen.
@@ -972,9 +970,9 @@
 % frame code later on. Then two cleaders follow which simply implement the
 % required stretching (cleaders are used to prevent page breaking, I do not
 % know whether this is sane, but it seems to work just fine). After this the
-% box containing the main drawing code is placed last. We simply use a vbox
-% with right aligned content.
-%
+% box containing the main drawing code is placed. We simply use a vbox with
+% right aligned content. The last thing happening is a vskip plus hbox to set
+% the correct depth.
 %
 %    \begin{macrocode}
     % TODO: Make this configurable
@@ -982,9 +980,9 @@
     \dim_set:Nn \l__sdaps_textbox_ht_dim { 1.7ex }
 
     \vbox:n {
-      \noindent
       \leftskip=0pt
       \rightskip=0pt plus 1fill
+      \noindent
       \tex_vrule:D height \l__sdaps_textbox_ht_dim depth 0pt width 0pt
       \pgfsys@markposition{textboxtop\int_use:N\g__sdaps_textbox_num_int}
     }
@@ -1069,13 +1067,6 @@
     \int_gincr:N\g__sdaps_textbox_num_int
 
   \group_end:
-
-  % Remove the following parskip and insert a penalty. Reset everything to
-  % normal in case a paragraph is inserted (\par or empty line)
-  \penalty\clubpenalty
-  \skip_vertical:n{-\parskip}
-  \def\par{\unpenalty\let\par=\endgraf\skip_vertical:n{\parskip}\endgraf}
-  \everypar{\let\par=\endgraf\everypar{}}
   \fi:
   \fi:
 }
