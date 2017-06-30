@@ -933,24 +933,11 @@
   \if_mode_inner:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { inner }
   \else:
-%    \end{macrocode}
-%
-% If the mode is currently horizontal, then we switch back to vertical mode by
-% ending the current paragraph. \textbackslash widowpenalty is inserted so that
-% no page break will happen usually. If the user desires a page break, then she
-% can simply use \textbackslash par directly.
-%
-%    \begin{macrocode}
-
-  % We want to look similar to a paragraph to the outside world, however, we
-  % do not insert a parskip if we were in horizontal mode before.
-  \if_mode_horizontal:
-    % TODO: Make configurable/section by default penalty?
-    \tex_par:D
-    \tex_penalty:D \tex_widowpenalty:D
-  \else:
-    \skip_vertical:n{\parskip}
-  \fi:
+  % Go into vertical mode by ending the current paragraph and insert
+  % \cs{widowpenalty} so that we don't get an unwelcome page break. It is
+  % assumed that any explanation for the textbox will be on top.
+  \tex_par:D
+  \tex_penalty:D \tex_widowpenalty:D
 
   \group_begin:%
 
