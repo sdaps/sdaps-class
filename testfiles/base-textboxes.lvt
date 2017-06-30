@@ -66,8 +66,7 @@
   \sdaps_context_set:n{*={writepos}}
   \ExplSyntaxOff
 
-  \setlength\lineskiplimit{1pt}
-  \setlength\lineskip{1pt}
+  \textbackslash
 
 \end{OMITPAGE}
 
@@ -219,6 +218,8 @@
     \sdaps_qobject_begin:nn {Text} { }
 
     \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
     \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
     Text~text~text~text~text~text~text~text~text~text~text~text~text~text~text~
     text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
@@ -230,13 +231,32 @@
     \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
 
     \vspace{-\parskip}
-    Text~text~text~text~text~text~text~text~text~text~text~text~text~text~text~
+    This~is~moved~up~by~\textbackslash parskip.~text~text~text~text~text~text~text~text~
     text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
 
     \sdaps_qobject_end:
   \ExplSyntaxOff
 \end{MYTESTPAGE}
 
+
+\begin{MYTESTPAGE}{vhstretch: Keeping together with the previous paragraph}
+  \parskip=1em
+  \ExplSyntaxOn
+    % Reset counting
+    \int_gzero:N \g__sdaps_qobject_id_int
+    \sdaps_qobject_begin:nn {Text} { }
+
+    % This is just too big so that a page break must happen
+    \sdaps_textbox_vhstretch:nnn { text } { 17.5cm } { 1 }
+
+    This~text~is~at~the~top~of~the~new~page.~Text~text~text~text~text~text~text~
+    text~text~text~text~text~text~text~text~text~text~text~text~text~text~text.
+
+    \sdaps_textbox_vhstretch:nnn { text } { 2cm } { 0 }
+
+    \sdaps_qobject_end:
+  \ExplSyntaxOff
+\end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{vhstretch: error in math and inner modes}
   \ExplSyntaxOn

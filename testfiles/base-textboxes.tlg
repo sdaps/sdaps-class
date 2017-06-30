@@ -253,13 +253,24 @@ TEST 9: vhstretch: With surrounding paragraphs
 [11
 QObject-Text=1. 
 Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,686.47348pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,588.18996pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,489.90643pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,697.42351pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,637.29002pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,539.0065pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,440.72298pt,418.25555pt,56.9055pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
-TEST 10: vhstretch: error in math and inner modes
+TEST 10: vhstretch: Keeping together with the previous paragraph
+============================================================
+[12
+QObject-Text=1. 
+Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,595.17229pt,1.00374pt,text,
+] [13
+Box[1]=Textbox,0,89.62619pt,730.35698pt,418.25555pt,56.9055pt,1.00374pt,text,
+]
+============================================================
+============================================================
+TEST 11: vhstretch: error in math and inner modes
 ============================================================
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -315,7 +326,7 @@ l. ......aps_textbox_vhstretch:nn { text } { 0cm }
 | Try typing <return> to proceed.
 | If that doesn't work, type X <return> to quit.
 |...............................................
-[12
+[14
 QObject-Text=1. 
 ]
 ============================================================
