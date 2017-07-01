@@ -88,7 +88,7 @@ sdapsarray environment
         Normal users should simply put any nested `array` environment into :macro:`\\\\sdapsnested`
         to prevent issues (see below).
 
-    :kwarg colsep: Spacing added on the left/right of every cell. This defaults to :macro:`\\tabcolsep`.
+    :kwarg colsep: Spacing added on the left/right of every cell. This defaults to `6pt`.
     :kwarg baselineskip: Override the baselineskip used when calculating the distance between rows.
         Can be used to increase the row distance but keep the line separation inside row headers unmodified.
     :kwarg lineskip: Override the lineskip used when calculating the distance between rows (see ``baselineskip``).
