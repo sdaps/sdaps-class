@@ -7,7 +7,7 @@
 
 
 \def\logpos#1{\lognamedpos{#1}#1}
-\def\lognamedpos#1{\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+\def\lognamedpos#1{\leavevmode\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
 
 \newenvironment{MYTEST}[1]{%
   \begingroup%
