@@ -371,6 +371,7 @@
 {
   % This modifies grouping so it has to be at the start
   \sdaps_array_alignment:
+  \leavevmode
 
   \tl_clear:N \l_sdaps_choice_var_tl
   \tl_clear:N \l_sdaps_choice_text_tl
@@ -438,6 +439,7 @@
 \cs_new_nopar:Npn \_sdaps_choicearray_process_question:nw #1
 {
   \sdaps_array_newline:
+  \leavevmode
 
   \keys_set:nn { sdaps / choicearray / question } { #1 }
 
@@ -531,6 +533,8 @@
   \sdaps_array_newline:
   % Note: This needs to be after sdaps_array_newline as the command may be
   %       discarded otherwise (i.e. it does not make it into the output stream)
+  %       We also need to leave vmode here
+  \leavevmode
   \sdaps_qobject_begin:nnV { rangearray_question } { Range } \g_sdaps_question_text_tl
 
   \tl_if_empty:NF \g_sdaps_question_var_tl {
@@ -543,6 +547,7 @@
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_lower: {
   % right align
   \sdaps_array_alignment:
+  \leavevmode
   \sdaps_range:nnV { lower } { 0 } \g_sdaps_question_lowertext_tl
   \hfill
   \ignorespaces
@@ -550,12 +555,14 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_upper: {
   \sdaps_array_alignment:
+  \leavevmode
   \sdaps_range:nnV { upper } { \l_sdaps_rangearray_rangecount_int - 1 } \g_sdaps_question_uppertext_tl
   \ignorespaces
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_other: {
   \sdaps_array_alignment:
+  \leavevmode
   \sdaps_answer:V \g_sdaps_question_othertext_tl
   \sdaps_checkbox:nn { dummy } { 0 } {} ~ {}
   \ignorespaces
@@ -575,6 +582,7 @@
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_lower: {
   % Insert the option checkbox column
   \sdaps_array_alignment:
+  \leavevmode
   % Assume we have at least one checkbox
   \sdaps_checkbox:nn { dummy } { 1 }
   \int_step_inline:nnnn { 2 } { 1 } { \l_sdaps_rangearray_rangecount_int } {
@@ -659,6 +667,7 @@
   % alignment to create the column.
   \tl_if_empty:NTF \g_sdaps_question_othertext_tl {
     \sdaps_array_alignment:
+    \leavevmode
     \ignorespaces
   } {
     \_sdaps_rangearray_process_question_before_other:
