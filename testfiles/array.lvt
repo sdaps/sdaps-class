@@ -289,10 +289,120 @@
   \begin{sdapsarray}
       & col 1 & col 2 \\
     \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
     \logpos{row head 2} & \logpos{c} & \logpos{d} \\
-    \logpos{row head 3} & \logpos{e} & \logpos{f}
+     asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf  & col 1 & col 2
+  \end{sdapsarray}
+
+  \noindent x
+  \hrule
+
+  \begin{sdapsarray}[flip]
+      &
+      \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. \\
+    col 1 &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} \\
+    col 2 &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b}
   \end{sdapsarray}
 \end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{sdapsarray modifying separation}
+  % The row headers can be multiline and should properly flow as paragraphs.
+  % They are ragged right though towards the cells.
+  colsep=1em,baselineskip=3em
+  \begin{sdapsarray}[colsep=1em,baselineskip=3em]
+      & col 1 & col 2 \\
+    \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{row head 2} & \logpos{c} & \logpos{d} \\
+     asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf  & col 1 & col 2
+  \end{sdapsarray}
+
+  \hrule
+
+  colsep=1em,baselineskip=3em
+  \begin{sdapsarray}[flip,colsep=1em,baselineskip=3em]
+      &
+      \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. \\
+    col 1 &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} \\
+    col 2 &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b}
+  \end{sdapsarray}
+
+  \hrule
+
+  lineskiplimit=2ex,lineskip=2ex
+  \begin{sdapsarray}[colsep=1em,lineskiplimit=1ex,lineskip=1ex]
+      & col 1 & col 2 \\
+    \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
+    \logpos{row head 2} & \logpos{c} & \logpos{d} \\
+     x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x   & col 1 & col 2
+  \end{sdapsarray}
+
+  \hrule
+
+  lineskiplimit=2ex,lineskip=0ex (i.e. effectively no lineskip)
+  \begin{sdapsarray}[flip,colsep=1em,lineskiplimit=2ex,lineskip=0ex]
+      &
+      \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. &
+      \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. \\
+    col 1 &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} &
+      \logpos{a} \\
+    col 2 &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b} &
+      \logpos{b}
+  \end{sdapsarray}
+
+  \hrule
+
+\end{MYTESTPAGE}
+
 
 \begin{MYTESTPAGE}{sdapsarray with special contents}
   % 
