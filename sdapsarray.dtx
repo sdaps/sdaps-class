@@ -112,6 +112,10 @@
 % temporary files instead. As these files should not change their content
 % for reruns (that would break e.g. latexmk) we copy the "tic" file into "toc"
 % so that "toc" can be read while "tic" is being re-written.
+% We then go on to define a macro which will read a single
+% line and return true if it is different from the previous line.
+% This is the indicator that a page/column break has happened and the
+% row header needs to be inserted.
 %
 %    \begin{macrocode}
 
@@ -124,6 +128,7 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_array_open_tmpfiles:
 {
+  % Guard against being executed multiple times
   \bool_if:NF \g__sdaps_array_info_open {
     \bool_gset_true:N \g__sdaps_array_info_open
 
@@ -167,18 +172,24 @@
 %
 % \subsection{Initialization}
 %
-% Define some routines to store width information for columns.
+% Global definitions and penalty constant.
 %
 %    \begin{macrocode}
 
 \prop_new:N \g__sdaps_array_layouter_prop
 
-
-\int_new:N \g_sdaps_array_row_penalty_tl
-
 % XXX: Penalty in between rows. After the header a nobreak is inserted, but
 %      do we want special penalties elsewhere (preventing orphans/widows?)
-\int_set:Nn \g_sdaps_array_row_penalty_tl { 10 }
+\int_new:N \g_sdaps_array_row_penalty_tl
+\int_gset:Nn \g_sdaps_array_row_penalty_tl { 10 }
+
+%    \end{macrocode}
+%
+% \subsection{Initialization}
+%
+% Define some routines to store width information for columns (across builds).
+%
+%    \begin{macrocode}
 
 \tl_new:N \g_sdaps_array_shared_data_tl
 \tl_new:N \g_sdaps_array_stored_data_tl
@@ -283,6 +294,7 @@
   \bgroup
     \l__sdaps_array_colhead_tl \l_tmpa_box \bgroup
     \group_insert_after:N\_sdaps_array_assign_use:
+    % swallow group opening token
     \tex_let:D\next=
 }
 
@@ -296,6 +308,7 @@
   \bgroup
     \l__sdaps_array_rowhead_tl \l_tmpa_box \bgroup
     \group_insert_after:N\_sdaps_array_assign_use:
+    % swallow group opening token
     \tex_let:D\next=
 }
 
@@ -309,13 +322,14 @@
   \bgroup
     \l__sdaps_array_cell_tl \l_tmpa_box \bgroup
     \group_insert_after:N\_sdaps_array_assign_use:
+    % swallow group opening token
     \tex_let:D\next=
 }
 
 \box_new:N \g_sdaps_array_header_box
 \dim_new:N \g_sdaps_array_header_dim
 
-\cs_new_protected_nopar:Nn \sdaps_array_calc_interlineskip:nnN
+\cs_new_protected_nopar:Nn \_sdaps_array_calc_interlineskip:nnN
 {
   \dim_compare:nNnTF { #1 } > { -1000pt } {
     \skip_set:Nn #3 { \l_sdaps_sdapsarray_baselineskip_skip - #1 - #2 }
@@ -370,13 +384,9 @@
     %   skip = 0 * ( interlineskip_for_row - interlineskip_for_header - header_height - header_depth ) + header_height + header_depth + interlineksip_for_header
 
     % Calculate interlineksip_for_row and interlineskip_for_header
-    \sdaps_array_calc_interlineskip:nnN { \prevdepth } { \l_tmpa_dim } \l_tmpa_skip
-    \sdaps_array_calc_interlineskip:nnN { \box_dp:N \g_sdaps_array_header_box } { \l_tmpa_dim } \l_tmpb_skip
+    \_sdaps_array_calc_interlineskip:nnN { \prevdepth } { \l_tmpa_dim } \l_tmpa_skip
+    \_sdaps_array_calc_interlineskip:nnN { \box_dp:N \g_sdaps_array_header_box } { \l_tmpa_dim } \l_tmpb_skip
     \nointerlineskip
-    % Insert the normal interline skip minus the interline skip of the header.
-    % If it is discarded then this has no effect whatsoever. If it is not
-    % discarded it inserts the normal interline skip and removes the one added
-    % later for the header box.
     \skip_vertical:n { \l_tmpa_skip - \l_tmpb_skip }
     \kern -\g_sdaps_array_header_dim
 
@@ -387,15 +397,15 @@
      \hbox_to_wd:nn { #3 } {\vrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt \hfil}
     }
     \nobreak
-    % TeX would insert exactly \l_tmpb_skip (header box) as interline skip here.
-    % i.e. we could also remove the two lines below but this makes the
-    % calculation more obvious.
+    % Insert the calculated interline skip (in the same way the TeX would do it,
+    % except that we are using our own baselineskip, lineskip and lineksiplimit
+    % values.
     \nointerlineskip
     \skip_vertical:N \l_tmpb_skip
 
     \box_use:N \l_tmpb_box
 
-    % Insert normal inter row penalty after the box for the following rows.
+    % And insert the sdapsarray sepecific inter row penalty.
     \penalty\int_use:N\g_sdaps_array_row_penalty_tl
   }
 }
@@ -451,15 +461,14 @@
   \vbox_set_top:Nn #1 \bgroup
     \raggedleft
     \hsize=\dim_use:N\l_tmpa_dim
-    % swallow group opening token, TODO: Ensure it really is an opening brace?
+    % swallow group opening token
     \tex_let:D\next=
 }
 
 \cs_new_protected_nopar:Npn \_sdaps_array_cell_default:Nw #1
 {
-  % This command has to leave a single non empty box in the input stream that
-  % can be added into an hbox.
   \hbox_set:Nn #1 \bgroup
+    % swallow group opening token
     \tex_let:D\next=
 }
 
@@ -499,6 +508,7 @@
     \hbox_set:Nn \l_tmpa_box
     \bgroup %\strut
     \group_insert_after:N \_sdaps_array_cell_rotated_end:
+    % swallow group opening token
     \tex_let:D\next=
 }
 
@@ -542,24 +552,28 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNnNN
 {
-  % #1: Token List containing the content for the header cell (which should be
-  %     set inside a parbox or similar).
-  % #2: Data cells packed into an hbox which need to be unpacked and set to the
-  %     correct width.
-  % #3: The width that the hbox should have.
-  % #4: The box register to store the resulting hbox in.
-  % #5: The height of the box for purpose of interlineskip
+  % #1: A vbox with baseline on the *first* item containing the row header
+  %     (\vtop in plain TeX).
+  % #2: Data cells packed into an hbox. Each of these needs to be set to the
+  %     correct width and inserted.
+  % #3: The width that the finally produced hbox should have
+  %     (will be the current line width).
+  % #4: The box register to store the resulting hbox in. The depth of this box
+  %     needs to be correct to calculate the interline glue to the following
+  %     row.
+  % #5: A dim register to store the height of the box in for the purpose of
+  %     calculating the interline glue in front of the produced row.
   %
   % The macro should create an hbox which is exactly #3 wide and store it in
   % the box register #4. The box will be used while in vertical mode and may
   % be inserted multiple times in the case of the header row.
-  % To simplify the iteration it is guranteed that the data cell boxes are not
+  % To simplify the iteration it is guaranteed that the data cell boxes are not
   % completely empty. This means the code can simply unbox until it sees a box
   % that is void.
 
   \seq_gclear:N \g_tmpa_seq
 
-  % Insert the boxes
+  % Insert the boxes into a local hbox to work with them
   \hbox_set:Nn #2 {
     \hbox_unpack:N #2
 
@@ -597,6 +611,9 @@
     \bool_do_while:nn { ! \box_if_empty_p:N #2 } {
       % Strip any trailing glue (i.e. space) coming from the user (for the
       % leading side we ensure that \tex_ignorespaces:D is called).
+      % Note that this may remove e.g. a trailing \hfill from the user, the
+      % user needs to work around that (in the same way as is required in e.g.
+      % tabular).
       \hbox_set:Nn #2 { \hbox_unpack:N #2 \unskip }
 
       % Pop the target width for the current box (i.e. we don't globally
@@ -774,7 +791,6 @@
   \_sdaps_sdapsarray_cell:w \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
     \cs_set_eq:NN \\ \cr
-    % Ignore following spaces by the user
     \tex_ignorespaces:D
 }
 
@@ -839,7 +855,7 @@
 \cs_new:Npn\sdaps_array_nested_alignenv:w {
   \bgroup
     \sdaps_array_nested_alignenv:
-    % Eat next token using plain TeX
+    % swallow group opening token
     \tex_let:D\next=
 }
 \cs_new_eq:NN \sdapsnested \sdaps_array_nested_alignenv:w
@@ -946,7 +962,6 @@
     \sdaps_array_assign_cell:Nw \l_tmpa_box \bgroup
       \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
       \cs_set_eq:NN \\ \cr
-      % Ignore following spaces by the user
       \tex_ignorespaces:D
   }
 }
@@ -990,7 +1005,6 @@
   \sdaps_array_assign_colhead:Nw \l_tmpa_box \bgroup
     \bool_set_false:N \l__sdaps_sdapsarray_in_top_group_bool
     \cs_set_eq:NN \\ \cr
-    % Ignore following spaces by the user
     \tex_ignorespaces:D
 }
 
