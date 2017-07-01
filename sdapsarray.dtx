@@ -479,6 +479,8 @@
       \box_use:N \l_tmpa_box
     }
     \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+    % dummy skip to remove
+    \skip_horizontal:n { 0pt }
 
     \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }
 
@@ -620,7 +622,7 @@
 
       % Set the box into a new box with the correct width which contains fil
       % to center it.
-      \hbox_set_to_wd:Nnn \l_tmpb_box \l_tmpa_dim { \hfil \box_use:N #2 \hfil }
+      \hbox_set_to_wd:Nnn \l_tmpb_box \l_tmpa_dim { \hfil \hbox_unpack:N #2 \hfil }
 
       % This loops works backward, so attach the cell on the right side of
       % the coffin.
