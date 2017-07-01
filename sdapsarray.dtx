@@ -876,6 +876,16 @@
   \box_gclear:N \g_tmpa_box
 }
 
+\cs_new_protected:Nn \_sdaps_sdapsarray_pop_last_hbox_unpack:NN {
+  \_sdaps_sdapsarray_pop_last_box:NN #1 #2
+  \hbox_set:Nn #1 {
+    \hbox_unpack:N #1
+    \box_gset_to_last:N \g_tmpa_box
+  }
+  \box_set_eq:NN #1 \g_tmpa_box
+  \box_gclear:N \g_tmpa_box
+}
+
 \cs_new_protected:Nn \_sdaps_sdapsarray_boxlist_void_if_empty:N {
   \hbox_set:Nn #1 {
     \hbox_unpack:N #1
@@ -1040,14 +1050,14 @@
 
         % Now we can have fun!
         % Pop cells and heading, until we cannot find any new ones.
-        \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
+        \_sdaps_sdapsarray_pop_last_hbox_unpack:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
         \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
         \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box || ! \box_if_empty_p:N \l_tmpb_box } {
           \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
 
           \sdaps_array_row_start:
 
-          \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
+          \_sdaps_sdapsarray_pop_last_hbox_unpack:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
           \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
         }
 
