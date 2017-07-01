@@ -1022,10 +1022,8 @@
     \box_clear:N \l_tmpa_box
     \box_clear:N \l_tmpb_box
 
-    % Ensure horizontal mode.
-    \if_mode_horizontal:
-      \tex_par:D
-    \fi:
+    % Ensure vertical mode.
+    \tex_par:D
 
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
