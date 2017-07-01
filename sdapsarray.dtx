@@ -318,9 +318,9 @@
 \cs_new_protected_nopar:Nn \sdaps_array_calc_interlineskip:nnN
 {
   \dim_compare:nNnTF { #1 } > { -1000pt } {
-    \skip_set:Nn #3 { \baselineskip - #1 - #2 }
-    \dim_compare:nNnF { #3 } > { \lineskiplimit } {
-      \skip_set:Nn #3 { \lineskip }
+    \skip_set:Nn #3 { \l_sdaps_sdapsarray_baselineskip_skip - #1 - #2 }
+    \dim_compare:nNnF { #3 } > { \l_sdaps_sdapsarray_lineskiplimit_dim } {
+      \skip_set:Nn #3 { \l_sdaps_sdapsarray_lineskip_skip }
     }
   } {
     \skip_set:Nn #3 { 0pt }
@@ -629,7 +629,7 @@
       % metadata currently relys on the correct order).
       %\coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
       %\coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
-      \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \tabcolsep } \box_use:N \l_tmpb_box \skip_horizontal:n { \tabcolsep } \box_use:N \l_tmpa_box }
+      \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpb_box \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpa_box }
 
       % Grab next cell
       \box_set_to_last:N #2
@@ -647,21 +647,21 @@
 
   % Calculate the space that is left for the header column
   \dim_set:Nn \l_tmpa_dim { #3 }
-  \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 2\tabcolsep }
+  \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 2\l_sdaps_sdapsarray_colsep_dim }
   \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
   % TODO: The \hfil here is a hack to prevent a warning if the vbox is empty.
   %       Unfortunately checking for an empty box does not work for some reason.
   \dim_set:Nn \l_tmpb_dim { \box_ht:N #1 }
-  \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \tabcolsep } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
+  \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
   \dim_set:Nn \l_tmpa_dim { \coffin_ht:N \l_tmpb_coffin }
 
   % If the first/last baseline differ then center the vbox, otherwise align the
   % baseline with the cells
   \dim_compare:nNnTF { \l_tmpa_dim } = { \l_tmpb_dim } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { \tabcolsep } { 0pt }
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
   } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \tabcolsep } { 0pt }
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
   }
 
   \hbox_set:Nn #4 { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
@@ -705,6 +705,10 @@
 \tl_new:N \l_sdaps_sdapsarray_layouter_tl
 \tl_new:N \l_sdaps_sdapsarray_align_tl
 \bool_new:N \l_sdaps_sdapsarray_keepenv_bool
+\dim_new:N \l_sdaps_sdapsarray_colsep_dim
+\skip_new:N \l_sdaps_sdapsarray_baselineskip_skip
+\skip_new:N \l_sdaps_sdapsarray_lineskip_skip
+\dim_new:N \l_sdaps_sdapsarray_lineskiplimit_dim
 
 \keys_define:nn { sdaps / sdapsarray }
 {
@@ -718,6 +722,17 @@
   keepenv    .bool_set:N   = \l_sdaps_sdapsarray_keepenv_bool,
   keepenv    .initial:n  = false,
   keepenv    .default:n  = true,
+
+  colsep         .dim_set:N  = \l_sdaps_sdapsarray_colsep_dim,
+  colsep         .initial:n  = \tabcolsep,
+
+  % The following features are not considered stable!
+  baselineskip   .skip_set:N = \l_sdaps_sdapsarray_baselineskip_skip,
+  baselineskip   .initial:n  = \tex_baselineskip:D,
+  lineskip       .skip_set:N = \l_sdaps_sdapsarray_lineskip_skip,
+  lineskip       .initial:n  = \tex_lineskip:D,
+  lineskiplimit  .dim_set:N  = \l_sdaps_sdapsarray_lineskiplimit_dim,
+  lineskiplimit  .initial:n  = \tex_lineskiplimit:D,
 }
 
 

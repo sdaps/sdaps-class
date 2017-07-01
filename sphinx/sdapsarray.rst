@@ -88,6 +88,12 @@ sdapsarray environment
         Normal users should simply put any nested `array` environment into :macro:`\\\\sdapsnested`
         to prevent issues (see below).
 
+    :kwarg colsep: Spacing added on the left/right of every cell. This defaults to :macro:`\\tabcolsep`.
+    :kwarg baselineskip: Override the baselineskip used when calculating the distance between rows.
+        Can be used to increase the row distance but keep the line separation inside row headers unmodified.
+    :kwarg lineskip: Override the lineskip used when calculating the distance between rows (see ``baselineskip``).
+    :kwarg lineskiplimit: Override the lineskiplimit used when calculating the distance between rows (see ``baselineskip``).
+
     The ``keepenv`` option should usually not be used by an end user writing a document, it is very useful
     when writing environments which use :environ:`sdapsarray` internally (like :environ:`choicearray`).
 
