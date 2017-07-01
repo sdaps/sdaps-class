@@ -118,23 +118,23 @@
 \begin{MYTESTPAGE}{Spaces in cells are not relevant}
   \begin{sdapsarray}
     h & \logpos{a} & \logpos{b} \\
-    h & \logpos{c} & \logpos{d}
+    h && \logpos{d}
   \end{sdapsarray}
 
   \begin{sdapsarray}
     h&\logpos{a}&\logpos{b}\\%
-    h&\logpos{c}&\logpos{d}%
+    h&&\logpos{d}%
   \end{sdapsarray}
 
   % Also test the flip case as the parser is different
   \begin{sdapsarray}[flip]
     h & \logpos{a} & \logpos{b} \\
-    h & \logpos{c} & \logpos{d}
+    h & & \logpos{d}
   \end{sdapsarray}
 
   \begin{sdapsarray}[flip]
     h&\logpos{a}&\logpos{b}\\%
-    h&\logpos{c}&\logpos{d}%
+    h& &\logpos{d}%
   \end{sdapsarray}
 
 \end{MYTESTPAGE}
