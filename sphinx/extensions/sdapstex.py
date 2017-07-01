@@ -428,7 +428,7 @@ def depart_sdaps(self,node):
     pass
 
 def setup(app):
-    app.add_config_value('sdaps_latex_dir', os.path.abspath('..'), ['html'])
+    app.add_config_value('sdaps_latex_dir', os.path.abspath('../build/local'), ['html'])
 
     app.add_node(sdaps,
                  html=(html_visit_sdaps, depart_sdaps),
