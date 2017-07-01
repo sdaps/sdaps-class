@@ -315,10 +315,10 @@
 \box_new:N \g_sdaps_array_header_box
 \dim_new:N \g_sdaps_array_header_dim
 
-\cs_new_protected_nopar:Nn \sdaps_array_calc_interlineskip:nNN
+\cs_new_protected_nopar:Nn \sdaps_array_calc_interlineskip:nnN
 {
   \dim_compare:nNnTF { #1 } > { -1000pt } {
-    \skip_set:Nn #3 { \baselineskip - #1 - \box_ht:N #2 }
+    \skip_set:Nn #3 { \baselineskip - #1 - #2 }
     \dim_compare:nNnF { #3 } > { \lineskiplimit } {
       \skip_set:Nn #3 { \lineskip }
     }
@@ -331,10 +331,12 @@
 {
   % Pagebreak detection
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
-  \l__sdaps_array_row_tl #1 #2 { #3 } \l_tmpb_box
+  % XXX: \l_tmpa_dim is the height to the first baseline in the box. Note that
+  %      we use the real baseline in the case of the header row!
+  \l__sdaps_array_row_tl #1 #2 { #3 } \l_tmpb_box \l_tmpa_dim
 
   \bool_if:NT \g_sdaps_array_first_row_bool {
-    % Stow away the bo for later use (before rewriting it to save the position)
+    % Stow away the box for later use (before rewriting it to save the position)
     \box_gset_eq:NN \g_sdaps_array_header_box \l_tmpb_box
     % and also insert now
     \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
@@ -368,8 +370,8 @@
     %   skip = 0 * ( interlineskip_for_row - interlineskip_for_header - header_height - header_depth ) + header_height + header_depth + interlineksip_for_header
 
     % Calculate interlineksip_for_row and interlineskip_for_header
-    \sdaps_array_calc_interlineskip:nNN { \prevdepth } \l_tmpb_box \l_tmpa_skip
-    \sdaps_array_calc_interlineskip:nNN { \box_dp:N \g_sdaps_array_header_box } \l_tmpb_box \l_tmpb_skip
+    \sdaps_array_calc_interlineskip:nnN { \prevdepth } { \l_tmpa_dim } \l_tmpa_skip
+    \sdaps_array_calc_interlineskip:nnN { \box_dp:N \g_sdaps_array_header_box } { \l_tmpa_dim } \l_tmpb_skip
     \nointerlineskip
     % Insert the normal interline skip minus the interline skip of the header.
     % If it is discarded then this has no effect whatsoever. If it is not
@@ -446,7 +448,7 @@
   } {
     \dim_set:Nn \l_tmpa_dim { \g_sdaps_array_local_data_tl }
   }
-  \vbox_set:Nn #1 \bgroup
+  \vbox_set_top:Nn #1 \bgroup
     \raggedleft
     \hsize=\dim_use:N\l_tmpa_dim
     % swallow group opening token, TODO: Ensure it really is an opening brace?
@@ -536,7 +538,7 @@
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNnN
+\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNnNN
 {
   % #1: Token List containing the content for the header cell (which should be
   %     set inside a parbox or similar).
@@ -544,6 +546,7 @@
   %     correct width.
   % #3: The width that the hbox should have.
   % #4: The box register to store the resulting hbox in.
+  % #5: The height of the box for purpose of interlineskip
   %
   % The macro should create an hbox which is exactly #3 wide and store it in
   % the box register #4. The box will be used while in vertical mode and may
@@ -584,8 +587,8 @@
     \dim_set:Nn \l_tmpa_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
 
 
-    % Insert the overhang space minus the first inter column spacing
-    \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_tmpa_dim - 1em } }
+    % Insert the overhang space
+    \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_tmpa_dim } }
 
     % Now grab the first of the cells, and then loop over the rest
     \box_set_to_last:N #2
@@ -626,7 +629,7 @@
       % metadata currently relys on the correct order).
       %\coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
       %\coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
-      \hbox_set:Nn \l_tmpa_box {  \box_use:N \l_tmpb_box \skip_horizontal:n { 1em } \box_use:N \l_tmpa_box }
+      \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \tabcolsep } \box_use:N \l_tmpb_box \skip_horizontal:n { \tabcolsep } \box_use:N \l_tmpa_box }
 
       % Grab next cell
       \box_set_to_last:N #2
@@ -644,22 +647,25 @@
 
   % Calculate the space that is left for the header column
   \dim_set:Nn \l_tmpa_dim { #3 }
-  \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 1em }
+  \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 2\tabcolsep }
   \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
   % TODO: The \hfil here is a hack to prevent a warning if the vbox is empty.
   %       Unfortunately checking for an empty box does not work for some reason.
-  \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \box_use:N #1 } }
-  % TODO: Document that alignment will be done if header height < baselineskip
-  %       i.e. it should be gone as soon as the header is going multiline.
-  \dim_compare:nNnTF { \coffin_ht:N \l_tmpb_coffin } < { \baselineskip } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
-  } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { 1em } { 0pt }
-  }
-  %\box_show:N \l_tmpb_coffin
+  \dim_set:Nn \l_tmpb_dim { \box_ht:N #1 }
+  \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \tabcolsep } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
+  \dim_set:Nn \l_tmpa_dim { \coffin_ht:N \l_tmpb_coffin }
 
-  \hbox_set:Nn #2 { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
+  % If the first/last baseline differ then center the vbox, otherwise align the
+  % baseline with the cells
+  \dim_compare:nNnTF { \l_tmpa_dim } = { \l_tmpb_dim } {
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { \tabcolsep } { 0pt }
+  } {
+    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \tabcolsep } { 0pt }
+  }
+
+  \hbox_set:Nn #4 { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
+  \dim_set:Nn #5 { \l_tmpb_dim }
 }
 
 
@@ -669,7 +675,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_default:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNnN },
+  row = { \_sdaps_array_row_ltr:NNnNN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -680,7 +686,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_rotated:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNnN },
+  row = { \_sdaps_array_row_ltr:NNnNN },
   end = { \_sdaps_array_end_default: },
 }
 
