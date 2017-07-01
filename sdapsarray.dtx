@@ -343,6 +343,11 @@
 
 \cs_new_protected_nopar:Nn \sdaps_array_row:NNn
 {
+  \if_mode_vertical:
+  \else:
+    \msg_error:nn { sdapsarray } { wrong_mode }
+  \fi
+
   % Pagebreak detection
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
   % XXX: \l_tmpa_dim is the height to the first baseline in the box. Note that
@@ -797,6 +802,7 @@
 \msg_new:nnn { sdapsarray } { unmatched_grouping_level } { The~grouping~level~of~a~cell~was~not~even.~Please~ensure~all~braces~are~balanced~out!~This~error~occured~at~#1. }
 \msg_new:nnn { sdapsarray } { unequal_cols } { The~number~of~columns~is~not~equal~for~all~rows. }
 \msg_new:nnn { sdapsarray } { no_new_line_at_end } { You~have~terminated~the~last~line~with~\textbackslash\textbackslash~or~similar.~This~can~have~side~effects,~please~remove~it. }
+\msg_new:nnn { sdapsarray } { wrong_mode } { The~sdapsarray~environment~can~only~function~in~vertical~mode~(both~inner~and~outer). }
 
 \cs_new:Nn \_sdaps_sdapsarray_start_cells: {
     \bool_if:NF \l__sdaps_sdapsarray_in_top_group_bool {
@@ -1024,6 +1030,10 @@
 
     % Ensure vertical mode.
     \tex_par:D
+    \if_mode_vertical:
+    \else:
+      \msg_error:nn { sdapsarray } { wrong_mode }
+    \fi
 
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
