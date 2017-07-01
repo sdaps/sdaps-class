@@ -751,12 +751,14 @@
   colsep         .initial:n  = 6pt,
 
   % The following features are not considered stable!
+  % Note that .initial is expanded here so it is wrong to have the definitions
+  % here.
   baselineskip   .skip_set:N = \l_sdaps_sdapsarray_baselineskip_skip,
-  baselineskip   .initial:n  = \tex_baselineskip:D,
+  %baselineskip   .initial:n  = \tex_baselineskip:D,
   lineskip       .skip_set:N = \l_sdaps_sdapsarray_lineskip_skip,
-  lineskip       .initial:n  = \tex_lineskip:D,
+  %lineskip       .initial:n  = \tex_lineskip:D,
   lineskiplimit  .dim_set:N  = \l_sdaps_sdapsarray_lineskiplimit_dim,
-  lineskiplimit  .initial:n  = \tex_lineskiplimit:D,
+  %lineskiplimit  .initial:n  = \tex_lineskiplimit:D,
 }
 
 
@@ -1034,6 +1036,12 @@
     \else:
       \msg_error:nn { sdapsarray } { wrong_mode }
     \fi
+
+    % This needs to be initialized here as otherwise the values would be
+    % expanded at import time.
+    \skip_set:Nn \l_sdaps_sdapsarray_baselineskip_skip { \tex_baselineskip:D }
+    \skip_set:Nn \l_sdaps_sdapsarray_lineskip_skip { \tex_lineskip:D }
+    \dim_set:Nn \l_sdaps_sdapsarray_lineskiplimit_dim { \tex_lineskiplimit:D }
 
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
