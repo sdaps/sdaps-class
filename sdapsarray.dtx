@@ -327,7 +327,7 @@
   }
 }
 
-\cs_new_protected_nopar:Nn \sdaps_array_row:NNn
+\cs_new_protected_nopar:Nn \sdaps_array_row:NNnN
 {
   % Pagebreak detection
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
@@ -377,7 +377,12 @@
     % If it is discarded then this has no effect whatsoever. If it is not
     % discarded it inserts the normal interline skip and removes the one added
     % later for the header box.
-    \skip_vertical:n { \l_tmpa_skip - \l_tmpb_skip }
+    \skip_vertical:n { \l_tmpa_skip }
+    % Insert the extra manual skip given by the user instead.
+    \box_if_empty:NF #4 {
+      \vbox_unpack_clear:N #4
+    }
+    \skip_vertical:n { -\l_tmpb_skip }
     \kern -\g_sdaps_array_header_dim
 
     % Inser the real or fake box
@@ -747,7 +752,7 @@
 
   % Just in case someone leaked a change into our scope
   \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
-    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline:
+    \cs_set_eq:NN \cr \sdaps_array_newline:
     \cs_set_eq:NN \\ \cr
   }
 
@@ -805,7 +810,8 @@
   % We are in the environment scope again here
   % Output the last line if the cells were non-empty.
   \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
-    \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+    \sdaps_array_row:NNnN \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize } \g_sdaps_sdapsarray_interrow_box
+    \box_gclear:N \g_sdaps_sdapsarray_interrow_box
   }
   \bool_set_false:N \l__sdaps_sdapsarray_have_content_bool
 
@@ -850,6 +856,8 @@
 \box_new:N \l_sdaps_sdapsarray_headers_box
 \box_new:N \l_sdaps_sdapsarray_boxlist_head_box
 \box_new:N \l_sdaps_sdapsarray_boxlist_tail_box
+\box_new:N \l_sdaps_sdapsarray_interrows_box
+\box_new:N \g_sdaps_sdapsarray_interrow_box
 
 \cs_new_protected:Nn \_sdaps_sdapsarray_prepend_box:NN {
   \hbox_set:Nn #2 {
@@ -903,7 +911,7 @@
 
   % Just in case someone leaked a change into our scope
   \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
-    \cs_set_eq:NN \cr \_sdaps_sdapsarray_newline_flip:
+    \cs_set_eq:NN \cr \sdaps_array_newline:
     \cs_set_eq:NN \\ \cr
   }
 
@@ -939,6 +947,10 @@
 }
 
 \cs_new_nopar:Nn \_sdaps_sdapsarray_end_line_flip: {
+  % store away the interrow box and clear it
+  \_sdaps_sdapsarray_prepend_box:NN \g_sdaps_sdapsarray_interrow_box \l_sdaps_sdapsarray_interrows_box
+  \box_gclear:N \g_sdaps_sdapsarray_interrow_box
+
   % At the end of the line, move tail into head.
   % First check that head is empty.
   \_sdaps_sdapsarray_boxlist_void_if_empty:N \l_sdaps_sdapsarray_boxlist_head_box
@@ -967,6 +979,24 @@
     \tex_ignorespaces:D
 }
 
+\def\_sdaps_sdapsarray_newline_arg[#1]{
+  \vbox_gset:Nn \g_sdaps_sdapsarray_interrow_box { \skip_vertical:n { #1 } }
+  \_sdaps_sdapsarray_real_newline:
+}
+
+\cs_new_nopar:Nn \_sdaps_sdapsarray_newline_maybe_arg: {
+  \ifx[\testchar
+    \let\next\_sdaps_sdapsarray_newline_arg
+  \else
+    \let\next\_sdaps_sdapsarray_real_newline:
+  \fi
+  \box_gclear:N \g_sdaps_sdapsarray_interrow_box
+  \next
+}
+
+\cs_new_nopar:Nn \sdaps_array_newline: {
+  \futurelet\testchar\_sdaps_sdapsarray_newline_maybe_arg:
+}
 
 \NewDocumentEnvironment { sdapsarray } { o }
 {
@@ -994,7 +1024,7 @@
     % One can go back into normal mode by using \sdapsnested{} though.
 
     \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {
-      \cs_set_eq:NN \sdaps_array_newline: \_sdaps_sdapsarray_newline_flip:
+      \cs_set_eq:NN \_sdaps_sdapsarray_real_newline: \_sdaps_sdapsarray_newline_flip:
       \cs_set_eq:NN \sdaps_array_alignment: \_sdaps_sdapsarray_alignment_flip:
 
       \_sdaps_sdapsarray_defines:
@@ -1004,6 +1034,7 @@
       \box_clear:N \l_sdaps_sdapsarray_headers_box
       \box_clear:N \l_sdaps_sdapsarray_boxlist_head_box
       \box_clear:N \l_sdaps_sdapsarray_boxlist_tail_box
+      \box_clear:N \l_sdaps_sdapsarray_interrows_box
 
       % not sure why we need this group, but nothing works without it
       \bgroup
@@ -1017,7 +1048,7 @@
           % Ignore following spaces by the user
           \tex_ignorespaces:D
     } {
-      \cs_set_eq:NN \sdaps_array_newline: \_sdaps_sdapsarray_newline:
+      \cs_set_eq:NN \_sdaps_sdapsarray_real_newline: \_sdaps_sdapsarray_newline:
       \cs_set_eq:NN \sdaps_array_alignment: \_sdaps_sdapsarray_alignment:
       \_sdaps_sdapsarray_defines:
 
@@ -1040,15 +1071,18 @@
 
         % Now we can have fun!
         % Pop cells and heading, until we cannot find any new ones.
+        % There will be an interrow less, so do not check whether interrows is empty
         \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
         \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
+        \_sdaps_sdapsarray_pop_last_box:NN \g_sdaps_sdapsarray_interrow_box \l_sdaps_sdapsarray_interrows_box
         \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box || ! \box_if_empty_p:N \l_tmpb_box } {
-          \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+          \sdaps_array_row:NNnN \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize } \g_sdaps_sdapsarray_interrow_box
 
           \sdaps_array_row_start:
 
           \_sdaps_sdapsarray_pop_last_box:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
           \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
+          \_sdaps_sdapsarray_pop_last_box:NN \g_sdaps_sdapsarray_interrow_box \l_sdaps_sdapsarray_interrows_box
         }
 
       \egroup
@@ -1063,7 +1097,7 @@
       % We are in the environment scope again here
       % Output the last line if the cells were non-empty.
       \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
-        \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+        \sdaps_array_row:NNnN \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize } \c_empty_box
       }
     }
 
