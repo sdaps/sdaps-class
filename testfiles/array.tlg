@@ -44,9 +44,43 @@ POSITION d: 32492644,41100391
 ]
 ============================================================
 ============================================================
-TEST 3: Fliptest
+TEST 3: Cells can be right/left aligned using hfill/vfill
 ============================================================
 [4
+POSITION column: 27559962,49122001
+POSITION column: 30618858,49122001
+POSITION x: 29453681,48230711
+POSITION x: 32512577,48230711
+POSITION x: 28506822,47339421
+POSITION x: 31565718,47339421
+POSITION x: 27559962,46448131
+POSITION x: 30618858,46448131
+POSITION x: 29453681,45556841
+POSITION x: 32512577,45556841
+POSITION x: 28506822,44665551
+POSITION x: 31565718,44665551
+POSITION x: 27559962,43774261
+POSITION x: 30618858,43774261
+POSITION column: 17049618,41991681
+POSITION x: 21204877,41991681
+POSITION x: 22918236,41991681
+POSITION x: 24631594,41991681
+POSITION x: 27989497,41991681
+POSITION x: 29702856,41991681
+POSITION x: 31416214,41991681
+POSITION column: 17049618,41100391
+POSITION x: 21204877,41100391
+POSITION x: 22918236,41100391
+POSITION x: 24631594,41100391
+POSITION x: 27989497,41100391
+POSITION x: 29702856,41100391
+POSITION x: 31416214,41100391
+]
+============================================================
+============================================================
+TEST 4: Fliptest
+============================================================
+[5
 POSITION row head: 21564812,49122001
 POSITION col head 1: 25334349,49122001
 POSITION col head 2: 29571335,49122001
@@ -68,9 +102,9 @@ POSITION d: 30966706,45032281
 ]
 ============================================================
 ============================================================
-TEST 4: sdaps spanning a multicol environment
+TEST 5: sdaps spanning a multicol environment
 ============================================================
-[5
+[6
 POSITION row head: 8027786,48407655
 POSITION col head 1: 11692970,48407655
 POSITION col head 2: 15668823,48407655
@@ -101,73 +135,73 @@ POSITION n: 31097273,44452282
 ]
 ============================================================
 ============================================================
-TEST 5: sdaps not splitting with huge penalty
+TEST 6: sdaps not splitting with huge penalty
 ============================================================
-[6
+[7
 POSITION a: 17941286,48230711
 POSITION a: 17941286,31296201
 ]
 ============================================================
 ============================================================
-TEST 6: sdaps should discourage being split over pages
+TEST 7: sdaps should discourage being split over pages
 ============================================================
-[7] [8
+[8] [9
 POSITION a: 31974364,48230711
 POSITION a: 31974364,40209101
-]
-============================================================
-============================================================
-TEST 7: sdaps with rotated header
-============================================================
-[9
-POSITION row head: 26535775,46450597
-POSITION col head 1: 30471222,46450597
-POSITION col head 2: 31636398,46450597
-POSITION row head 1: 25937759,45559307
-POSITION a: 30174745,45559307
-POSITION b: 31319987,45559307
-POSITION row head 2: 25937759,44668017
-POSITION c: 30194679,44668017
-POSITION d: 31319987,44668017
-POSITION row head 3: 25937759,43776727
-POSITION e: 30194679,43776727
-POSITION f: 31409690,43776727
 ]
 ============================================================
 ============================================================
 TEST 8: sdaps with rotated header
 ============================================================
 [10
-POSITION row head: 24298857,46450597
-POSITION col head 1: 28234304,46450597
-POSITION col head 2: 29399480,46450597
-POSITION row head 1: 23700841,45559307
-POSITION a: 27937827,45559307
-POSITION b: 29083069,45559307
-POSITION row head 2: 23700841,44668017
-POSITION c: 27957761,44668017
-POSITION d: 29083069,44668017
-POSITION row head 3: 23700841,43776727
-POSITION e: 27957761,43776727
-POSITION f: 29172772,43776727
-POSITION row head: 24298857,34173009
-POSITION col head 1: 28234304,34173009
-POSITION col head 2 with extra long text: 29497821,34173009
-POSITION row head 1: 23700841,33281719
-POSITION a: 27937827,33281719
-POSITION b: 29083069,33281719
-POSITION row head 2: 23700841,32390429
-POSITION c: 27957761,32390429
-POSITION d: 29083069,32390429
-POSITION row head 3: 23700841,31499139
-POSITION e: 27957761,31499139
-POSITION f: 29172772,31499139
+POSITION row head: 26356675,46450597
+POSITION col head 1: 30229790,46450597
+POSITION col head 2: 31484516,46450597
+POSITION row head 1: 25758659,45559307
+POSITION a: 30050387,45559307
+POSITION b: 31285179,45559307
+POSITION row head 2: 25758659,44668017
+POSITION c: 30070321,44668017
+POSITION d: 31285179,44668017
+POSITION row head 3: 25758659,43776727
+POSITION e: 30070321,43776727
+POSITION f: 31374882,43776727
 ]
 ============================================================
 ============================================================
-TEST 9: sdaps with multiline row header
+TEST 9: sdaps with rotated header
 ============================================================
 [11
+POSITION row head: 23988635,46450597
+POSITION col head 1: 27861750,46450597
+POSITION col head 2: 29182037,46450597
+POSITION row head 1: 23390619,45559307
+POSITION a: 27682347,45559307
+POSITION b: 28982700,45559307
+POSITION row head 2: 23390619,44668017
+POSITION c: 27702281,44668017
+POSITION d: 28982700,44668017
+POSITION row head 3: 23390619,43776727
+POSITION e: 27702281,43776727
+POSITION f: 29072403,43776727
+POSITION row head: 23988635,34173009
+POSITION col head 1: 27861750,34173009
+POSITION col head 2 with extra long text: 29247598,34173009
+POSITION row head 1: 23390619,33281719
+POSITION a: 27682347,33281719
+POSITION b: 28982700,33281719
+POSITION row head 2: 23390619,32390429
+POSITION c: 27702281,32390429
+POSITION d: 28982700,32390429
+POSITION row head 3: 23390619,31499139
+POSITION e: 27702281,31499139
+POSITION f: 29072403,31499139
+]
+============================================================
+============================================================
+TEST 10: sdaps with multiline row header
+============================================================
+[12
 POSITION A row: 7126699,48230711
 POSITION end of it: 25517698,47339421
 POSITION a: 29712825,47785066
@@ -214,9 +248,9 @@ POSITION b: 31954430,27652126
 ]
 ============================================================
 ============================================================
-TEST 10: sdaps modifying separation
+TEST 11: sdaps modifying separation
 ============================================================
-[12
+[13
 POSITION A row: 7342578,46077848
 POSITION end of it: 23895673,45186558
 POSITION a: 28739610,45632203
@@ -260,7 +294,7 @@ POSITION Another row: 8118005,12067605
 POSITION end of it: 23895673,11176315
 POSITION a: 28739610,11552192
 POSITION b: 31630025,11552192
-] [13
+] [14
 POSITION A row: 7342578,47339421
 POSITION end of it: 23895673,46448131
 POSITION a: 28739610,46893776
@@ -307,9 +341,9 @@ POSITION b: 31630025,27975041
 ]
 ============================================================
 ============================================================
-TEST 11: sdaps with special contents
+TEST 12: sdaps with special contents
 ============================================================
-[14
+[15
 POSITION row head: 22087078,49122001
 POSITION col head 1: 25726048,49122001
 POSITION col head 2: 29701901,49122001
@@ -322,9 +356,9 @@ POSITION d: 31097273,46707273
 ]
 ============================================================
 ============================================================
-TEST 12: baseline handling at the top
+TEST 13: baseline handling at the top
 ============================================================
-[15
+[16
 POSITION col 1: 15121598,48230711
 POSITION x: 6591363,45485079
 POSITION col 1: 29154676,48230711
@@ -332,9 +366,9 @@ POSITION x: 20624441,45485079
 ]
 ============================================================
 ============================================================
-TEST 13: baseline handling at the bottom
+TEST 14: baseline handling at the bottom
 ============================================================
-[16
+[17
 POSITION x: 6591363,46376369
 POSITION M: 13607902,46376369
 POSITION x: 20624441,46376369
@@ -342,9 +376,9 @@ POSITION M: 27640980,46376369
 ]
 ============================================================
 ============================================================
-TEST 14: baseline handling between rows
+TEST 15: baseline handling between rows
 ============================================================
-[17
+[18
 POSITION col 1: 8105059,49122001
 POSITION a: 8663208,48194830
 POSITION c: 8683142,47267659
@@ -380,9 +414,9 @@ POSITION rule: 27640980,41730193
 ]
 ============================================================
 ============================================================
-TEST 15: baselineskip handling at the top
+TEST 16: baselineskip handling at the top
 ============================================================
-[18
+[19
 POSITION row head: 8054000,48230711
 POSITION col head 1: 11692970,48230711
 POSITION col head 2: 15668823,48230711

@@ -139,6 +139,28 @@
 
 \end{MYTESTPAGE}
 
+\begin{MYTESTPAGE}{Cells can be right/left aligned using hfill/vfill}
+  \begin{sdapsarray}
+      & \logpos{column} & \logpos{column} \\
+    head & \hfill\logpos{x} & \hfill\logpos{x} \\
+    head & \logpos{x} & \logpos{x} \\
+    head & \logpos{x}\hfill{} & \logpos{x}\hfill{} \\
+    head &\hfill\logpos{x}&\hfill\logpos{x}\\
+    head &\logpos{x}&\logpos{x}\\
+    head &\logpos{x}\hfill{}\kern 0pt&\logpos{x}\hfill{}\kern 0pt%
+  \end{sdapsarray}
+
+  \begin{sdapsarray}[flip]
+      & \logpos{column} & \logpos{column} \\
+    head & \hfill\logpos{x} & \hfill\logpos{x} \\
+    head & \logpos{x} & \logpos{x} \\
+    head & \logpos{x}\hfill{} & \logpos{x}\hfill{} \\
+    head &\hfill\logpos{x}&\hfill\logpos{x}\\
+    head &\logpos{x}&\logpos{x}\\
+    head &\logpos{x}\hfill{}\kern 0pt&\logpos{x}\hfill{}\kern 0pt%
+  \end{sdapsarray}
+\end{MYTESTPAGE}
+
 
 \begin{MYTESTPAGE}{Fliptest}
   % Simple flip test. First non-flipped then flipped version.
