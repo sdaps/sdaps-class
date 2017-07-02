@@ -205,7 +205,7 @@
     % Grab post end hook
     \sdaps_context_get:nN { _context_hook_post_end } \l_tmpa_tl
 
-    \sdaps_context_clear:
+    \_sdaps_context_clear:
     \seq_gpop_left:NN \g__sdaps_contexts_seq \g__sdaps_current_context_tl
     \seq_gpop_left:NN \g__sdaps_context_ids_seq \l__sdaps_tmpa_tl
 
@@ -347,7 +347,7 @@
   \sdaps_context_append:nnn { _context_hook_post_end } { #1 } { }
 }
 
-\cs_new_protected_nopar:Nn \sdaps_context_clear:
+\cs_new_protected_nopar:Nn \_sdaps_context_clear:
 {
   \prop_gclear:N \g__sdaps_current_context_prop
 }
