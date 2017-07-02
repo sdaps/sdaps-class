@@ -185,6 +185,10 @@
     \seq_gput_left:NV \g__sdaps_contexts_seq \g__sdaps_current_context_tl
     \seq_gput_left:NV \g__sdaps_context_ids_seq \g__sdaps_current_context_id_tl
 
+    % Clear the hooks
+    \sdaps_context_put:nn { _context_hook_end } {}
+    \sdaps_context_put:nn { _context_hook_post_end } {}
+
     \tl_gset:Nn \g__sdaps_current_context_id_tl { #1 }
   \group_end:
 }
