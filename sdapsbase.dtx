@@ -199,7 +199,11 @@
   } {
 
     \group_begin:
-    % TODO: Pre context end hook
+    \sdaps_context_get:nN { _context_hook_end } \l_tmpa_tl
+    \tl_if_eq:VnF \l_tmpa_tl { \q_no_value } { \tl_use:N \l_tmpa_tl }
+
+    % Grab post end hook
+    \sdaps_context_get:nN { _context_hook_post_end } \l_tmpa_tl
 
     \sdaps_context_clear:
     \seq_gpop_left:NN \g__sdaps_contexts_seq \g__sdaps_current_context_tl
@@ -211,7 +215,7 @@
     \tl_gclear:N \g__sdaps_current_context_tl
     \tl_gset:NV \g__sdaps_current_context_id_tl \l__sdaps_tmpa_tl
 
-    % TODO: Post context end hook
+    \tl_if_eq:VnF \l_tmpa_tl { \q_no_value } { \tl_use:N \l_tmpa_tl }
     \group_end:
   }
 }
@@ -333,6 +337,16 @@
   \sdaps_context_append:nnn { #1 } { #2 } { , }
 }
 
+\cs_new_protected_nopar:Nn \sdaps_context_hook_end:n
+{
+  \sdaps_context_append:nnn { _context_hook_end } { #1 } { }
+}
+
+\cs_new_protected_nopar:Nn \sdaps_context_hook_post_end:n
+{
+  \sdaps_context_append:nnn { _context_hook_post_end } { #1 } { }
+}
+
 \cs_new_protected_nopar:Nn \sdaps_context_clear:
 {
   \prop_gclear:N \g__sdaps_current_context_prop
@@ -388,6 +402,12 @@
 \int_new:N \g__sdaps_qobject_id_int
 \int_gzero:N \g__sdaps_qobject_id_int
 
+\cs_new_protected_nopar:Nn \_sdaps_qobject_post_hook:
+{
+  \seq_gpop_right:NN \g__sdaps_qobject_id_seq \l__sdaps_tmpa_tl
+  \int_gset:NV \g__sdaps_qobject_id_int \l__sdaps_tmpa_tl
+}
+
 \cs_new_protected_nopar:Nn \sdaps_qobject_begin:nnn
 {
   \int_gincr:N \g__sdaps_qobject_id_int
@@ -399,15 +419,15 @@
   \sdaps_context_begin:n {#1}
     \sdaps_context_put:nV {id} \l__sdaps_tmpa_tl
     \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpa_tl. ~ \exp_not:n{#3}}
+    \sdaps_context_hook_post_end:n { \_sdaps_qobject_post_hook: }
 }
 \cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV }
 
 
 \cs_new_protected_nopar:Nn \sdaps_qobject_end:n
 {
+  % End the context in question, everything else is done from the close hook
   \sdaps_context_end:n {#1}
-  \seq_gpop_right:NN \g__sdaps_qobject_id_seq \l__sdaps_tmpa_tl
-  \int_gset:NV \g__sdaps_qobject_id_int \l__sdaps_tmpa_tl
 }
 
 \cs_new_protected_nopar:Nn \sdaps_qobject_begin:nn
