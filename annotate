@@ -1,0 +1,12 @@
+#!/bin/sh
+
+rm -rf build/testproject
+ADD=''
+for f in build/local/*; do
+  ADD="$ADD --add $f"
+done
+
+../sdaps/sdaps.py build/testproject setup_tex examples/testclassic.tex $ADD || exit 1
+../sdaps/sdaps.py build/testproject annotate || exit 1
+
+evince build/testproject/annotated_questionnaire.pdf
