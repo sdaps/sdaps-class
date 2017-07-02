@@ -50,6 +50,18 @@ fashion.
 
     Begins a context which automatically ends together with the current TeX group.
 
+.. macro:: \sdaps_context_hook_end:n
+
+    Register a token list which will be executed at the end of the current
+    context. This is primarily useful as a context might be ended implicitly
+    in some circumstances.
+
+.. macro:: \sdaps_context_hook_post_end:n
+
+    Register a token list which will be executed *after* the end of the current
+    context has ended (i.e. in the parent context). This is primarily useful
+    as a context might be ended implicitly in some circumstances.
+
 Managing context variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -73,10 +85,6 @@ Managing context variables
     that was defined earlier (e.g. ``width`` or ``height``).
 
     Generally it is a good idea to use this macro as nested options are common.
-
-.. macro:: \sdaps_context_clear:
-
-    Completely clear the context.
 
 
 Defining questions and headings
