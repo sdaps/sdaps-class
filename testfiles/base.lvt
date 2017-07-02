@@ -60,7 +60,7 @@
     \cfoot{\sdaps_page_end:}
   \ExplSyntaxOff
 
-  \begin{OMIT}
+  \OMIT
     % Some font stuff
     $ a + b $
 
@@ -69,13 +69,12 @@
 
       % Redirect output to log file instead of .sdaps file
       \iow_close:N \g_sdaps_infofile_iow
-      \global\let\g_sdaps_infofile_iow=\c_term_iow
+      \global\let\g_sdaps_infofile_iow=\c_log_iow
 
     \ExplSyntaxOff
 
     \textbackslash
-
-  \end{OMIT}
+  \TIMO
 
   % NOTE: This test has to be in global scope as of now!
   \SEPARATOR

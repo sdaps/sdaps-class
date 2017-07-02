@@ -36,7 +36,7 @@ encoded: \startC ,32,49,89,23,00,02,91,\stop ,
 black-white: 21123223212121133121214131213121222222222141212123311120
 [2
 QObject-Choice=1. A choice question
-Box[1]=Checkbox,2,89.62619pt,731.56454pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[1]=Checkbox,2,89.62619pt,731.56894pt,9.95845pt,9.95845pt,box,1.00374pt,,
 ]
 ============================================================
 ============================================================
@@ -50,9 +50,9 @@ encoded: \startC ,32,49,89,23,00,03,97,\stop ,
 black-white: 21123223212121133121214131213121222212122341111323311120
 [3
 QObject-Choice=2. A choice question
-Box[2]=Checkbox,3,100.57622pt,746.31589pt,9.95845pt,14.22636pt,box,1.00374pt,,
-Box[2]=Checkbox,3,114.18465pt,753.42908pt,9.95845pt,28.45274pt,box,1.00374pt,testvar,
-Box[2]=Checkbox,3,127.79308pt,760.54227pt,9.95845pt,42.67912pt,box,1.00374pt,testvar,testval
+Box[2]=Checkbox,3,100.57619pt,746.31589pt,9.95845pt,14.22636pt,box,1.00374pt,,
+Box[2]=Checkbox,3,114.18097pt,753.42908pt,9.95845pt,28.45274pt,box,1.00374pt,testvar,
+Box[2]=Checkbox,3,127.78575pt,760.54227pt,9.95845pt,42.67912pt,box,1.00374pt,testvar,testval
 ]
 ============================================================
 ============================================================
@@ -66,8 +66,8 @@ encoded: \startC ,32,49,89,23,00,04,0,\stop ,
 black-white: 21123223212121133121214131213121222212132221222223311120
 [4
 QObject-Choice=3. A choice question
-Box[3]=Checkbox,4,100.57622pt,753.42908pt,9.95845pt,14.22636pt,box,1.00374pt,,
-Box[3]=Checkbox,4,114.18465pt,760.54227pt,9.95845pt,28.45274pt,box,1.00374pt,,
+Box[3]=Checkbox,4,100.57619pt,753.42908pt,9.95845pt,14.22636pt,box,1.00374pt,,
+Box[3]=Checkbox,4,114.18097pt,760.54227pt,9.95845pt,28.45274pt,box,1.00374pt,,
 ]
 ============================================================
 ============================================================
@@ -81,24 +81,24 @@ encoded: \startC ,32,49,89,23,00,05,6,\stop ,
 black-white: 21123223212121133121214131213121222213122212221323311120
 [5
 QObject-Choice=4. A choice question
-Box[4]=Checkbox,5,159.84755pt,756.84644pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,170.85652pt,727.62146pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,178.04225pt,698.00894pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,185.2097pt,668.39644pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,194.29005pt,638.76456pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,201.9028pt,609.17145pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,224.35782pt,580.10144pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,271.19269pt,552.55698pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,307.436pt,524.16096pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[4]=Checkbox,5,159.84755pt,486.84644pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,170.85652pt,457.62146pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,178.04225pt,428.00894pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,185.2097pt,398.39644pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,194.29005pt,368.76456pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,201.9028pt,339.17145pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,224.35782pt,310.10144pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,271.19269pt,282.55698pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[4]=Checkbox,5,307.436pt,254.16096pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,159.8442pt,756.84886pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,170.8182pt,727.62465pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,178.05121pt,698.01256pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,185.2262pt,668.40045pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,194.30817pt,638.76895pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,201.89821pt,609.17624pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,224.35254pt,580.1072pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,271.24644pt,552.56648pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,307.50041pt,524.17236pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[4]=Checkbox,5,159.8442pt,486.84886pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,170.8182pt,457.62465pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,178.05121pt,428.01256pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,185.2262pt,398.40045pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,194.30817pt,368.76895pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,201.89821pt,339.17624pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,224.35254pt,310.1072pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,271.24644pt,282.56648pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[4]=Checkbox,5,307.50041pt,254.17236pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
 ]
 ============================================================
 ============================================================
@@ -112,14 +112,14 @@ encoded: \startC ,32,49,89,23,00,06,12,\stop ,
 black-white: 21123223212121133121214131213121222212221311223223311120
 [6
 QObject-Choice=5. A choice question
-Box[5]=Checkbox,6,89.62619pt,758.76456pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[5]=Checkbox,6,99.58463pt,758.76456pt,9.95845pt,9.95845pt,box,2.00749pt,,
-Box[5]=Checkbox,6,89.62619pt,745.16455pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[5]=Checkbox,6,99.58463pt,745.16455pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
-Box[5]=Checkbox,6,89.62619pt,731.56454pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[5]=Checkbox,6,99.58463pt,731.56454pt,9.95845pt,9.95845pt,box,2.00749pt,,
-Box[5]=Checkbox,6,89.62619pt,717.96454pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[5]=Checkbox,6,99.58463pt,717.96454pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
+Box[5]=Checkbox,6,89.62619pt,758.76895pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[5]=Checkbox,6,99.58463pt,758.76895pt,9.95845pt,9.95845pt,box,2.00749pt,,
+Box[5]=Checkbox,6,89.62619pt,745.16895pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[5]=Checkbox,6,99.58463pt,745.16895pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
+Box[5]=Checkbox,6,89.62619pt,731.56894pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[5]=Checkbox,6,99.58463pt,731.56894pt,9.95845pt,9.95845pt,box,2.00749pt,,
+Box[5]=Checkbox,6,89.62619pt,717.96893pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[5]=Checkbox,6,99.58463pt,717.96893pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
 ]
 ============================================================
 ============================================================
@@ -136,40 +136,40 @@ encoded: \startC ,32,49,89,23,00,07,18,\stop ,
 black-white: 21123223212121133121214131213121222212231222321123311120
 [7
 QObject-Choice=6. A choice question
-Box[6]=Checkbox,7,89.62619pt,758.76456pt,9.95845pt,9.95845pt,box,1.00374pt,,
-POSITION X: 5930953,49154890
-Box[6]=Checkbox,7,89.62619pt,738.55898pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[6]=Checkbox,7,103.23462pt,740.69293pt,14.22636pt,14.22636pt,box,1.00374pt,,
-Box[6]=Checkbox,7,121.11096pt,740.69293pt,28.45274pt,14.22636pt,box,1.00374pt,,
-Box[6]=Checkbox,7,153.21368pt,747.80612pt,14.22636pt,28.45274pt,box,1.00374pt,,
-Box[6]=Checkbox,7,89.62619pt,709.10625pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,103.23462pt,711.2402pt,14.22636pt,14.22636pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,121.11096pt,711.2402pt,28.45274pt,14.22636pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,153.21368pt,718.3534pt,14.22636pt,28.45274pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,89.62619pt,688.90067pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,44403383
-Box[6]=Checkbox,7,148.0263pt,688.90067pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,44403383
-Box[6]=Checkbox,7,89.62619pt,644.10057pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,42080212
-Box[6]=Checkbox,7,148.0263pt,644.10057pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,42080212
-Box[6]=Checkbox,7,89.62619pt,599.30048pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,37918497
-Box[6]=Checkbox,7,148.0263pt,599.30048pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,37918497
-Box[6]=Checkbox,7,89.62619pt,554.50038pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,35595326
-Box[6]=Checkbox,7,148.0263pt,554.50038pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,35595326
-Box[6]=Checkbox,7,89.62619pt,509.70029pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,33403718
-Box[6]=Checkbox,7,148.0263pt,509.70029pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,33403718
-Box[6]=Checkbox,7,89.62619pt,464.90019pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,28978877
-Box[6]=Checkbox,7,148.0263pt,464.90019pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,28978877
+Box[6]=Checkbox,7,89.62619pt,758.76895pt,9.95845pt,9.95845pt,box,1.00374pt,,
+POSITION X: 5873742,49074045
+Box[6]=Checkbox,7,89.62619pt,738.56337pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[6]=Checkbox,7,103.23097pt,740.69733pt,14.22636pt,14.22636pt,box,1.00374pt,,
+Box[6]=Checkbox,7,121.10367pt,740.69733pt,28.45274pt,14.22636pt,box,1.00374pt,,
+Box[6]=Checkbox,7,153.20274pt,747.81052pt,14.22636pt,28.45274pt,box,1.00374pt,,
+Box[6]=Checkbox,7,89.62619pt,709.11064pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,103.23097pt,711.2446pt,14.22636pt,14.22636pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,121.10367pt,711.2446pt,28.45274pt,14.22636pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,153.20274pt,718.35779pt,14.22636pt,28.45274pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,89.62619pt,688.90506pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,41668589
+Box[6]=Checkbox,7,148.0225pt,688.90506pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,41668589
+Box[6]=Checkbox,7,89.62619pt,644.10509pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,39341595
+Box[6]=Checkbox,7,148.0225pt,644.10509pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,39341595
+Box[6]=Checkbox,7,89.62619pt,599.30511pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,35179658
+Box[6]=Checkbox,7,148.0225pt,599.30511pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,35179658
+Box[6]=Checkbox,7,89.62619pt,554.50514pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,32728993
+Box[6]=Checkbox,7,148.0225pt,554.50514pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,32728993
+Box[6]=Checkbox,7,89.62619pt,509.70517pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,30533562
+Box[6]=Checkbox,7,148.0225pt,509.70517pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,30533562
+Box[6]=Checkbox,7,89.62619pt,464.9052pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 5873742,26108499
+Box[6]=Checkbox,7,148.0225pt,464.9052pt,54.74998pt,43.79999pt,box,1.00374pt,,
+POSITION Minipage: 9700803,26108499
 ]
 ============================================================
 ============================================================
