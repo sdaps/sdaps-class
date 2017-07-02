@@ -435,6 +435,13 @@
   \sdaps_qobject_begin:nnn { unnamed_qobject } { #1 } { #2 }
 }
 
+\cs_new_protected_nopar:Nn \sdaps_qobject_begin_local:nn
+{
+  % Empty local context which automatically closes the qobject
+  \sdaps_context_begin_local:
+    \sdaps_qobject_begin:nnn { unnamed_local_qobject } { #1 } { #2 }
+}
+
 \cs_new_protected_nopar:Nn \sdaps_qobject_end:
 {
   \sdaps_qobject_end:n { unnamed_qobject }
