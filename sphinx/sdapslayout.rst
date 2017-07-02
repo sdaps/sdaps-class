@@ -22,6 +22,7 @@ be created directly with sdapsarray.
     SDAPS context and can for example be modified globally for the document.
 
     :kwarg align:         named alignment group, by default \env{choicearay} environments are aligned if the layouter and orientation match
+    :kwarg noalign:       disable alignment (same as setting ``align`` to an empty value)
     :kwarg horizontal:    set horizontal mode where each question is one row (default)
     :kwarg layouter:      set the sdapsarray layouter (e.g. rotated for rotated column headers)
     :kwarg text:          override the normal header (not useful currently!)
