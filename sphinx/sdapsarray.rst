@@ -20,7 +20,6 @@ Things that are *not* possible currently:
 
  * Row or column backgrounds
  * Grid lines
- * Modifying the spacings in between rows or columns
 
 .. warning::
     You should *not* add a trailing ``\\`` to finish the last row. This can confuse
@@ -63,6 +62,32 @@ Things that are *not* possible currently:
     \end{multicols}
 
 
+Layout and formatting considerations
+------------------------------------
+
+The following hold true inside the environment:
+
+ * The row headers are set into a :macro:`\\vtop` with the left over width from
+   the cells. This vertical box is later re-set into a :macro:`\\vbox`. The
+   effect is that the interrow skip is calculated between the last element of
+   the previous row and the first element of the next row. this means you must
+   be careful to not insert invisible content at the start of the vertical box.
+   (e.g. by adding a :macro:`\\leavevmode`).
+ * The exception to the above rule is the start of the environment (i.e. the
+   header row) for which the top baseline information is (currently) discarded!
+ * Each cell is set into an :macro:`\\hbox` with the last skip in the box removed
+   again (i.e. trailing space). You can use :macro:`\\hfill` to align the box to
+   the left/right but need to prevent the :macro:`\\hfill` to be removed again
+   for left alignment (e.g. by adding a ``\kern 0pt``).
+ * Column headers behave like cells but a special layouter can be assigned to
+   them.
+ * Row headers and column headers will usually be set on a common baseline. The
+   exception to this is if the column header contains multiple boxes/lines. In
+   that case the cells will be centered ignoring the baselines of both cells
+   and row header.
+ * A penalty of 10 is inserted between rows.
+
+
 sdapsarray environment
 ----------------------
 
@@ -85,7 +110,7 @@ sdapsarray environment
     :kwarg keepenv: Do not modify the parser to consume ``&`` and ``\\`` for alignment.
         Instead, the user must use :macro:`\\sdaps_array_alignment:` and :macro:`\\sdaps_array_newline:`.
         This is only useful for writing custom environments which use :environ:`sdapsarray` internally.
-        Normal users should simply put any nested `array` environment into :macro:`\\\\sdapsnested`
+        Normal users should simply put any nested `array` environment into :macro:`\\sdapsnested`
         to prevent issues (see below).
 
     :kwarg colsep: Spacing added on the left/right of every cell. This defaults to `6pt`.
