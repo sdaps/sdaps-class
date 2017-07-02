@@ -48,7 +48,7 @@ fashion.
 
 .. macro:: \sdaps_context_begin_local:
 
-    Begins a context which automatically ends together with the current TeX group
+    Begins a context which automatically ends together with the current TeX group.
 
 Managing context variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -97,6 +97,11 @@ Defining questions and headings
 .. macro:: \sdaps_qobject_begin:nn { type } { title }
 
     Same as :macro:`\sdaps_qobject_begin:nnn`  but without giving a context name.
+
+.. macro:: \sdaps_qobject_begin_local:nn { type } { title }
+
+    Same as :macro:`\sdaps_qobject_begin:nnn`  but will automatically end with
+    the current TeX group (using :macro:`\sdaps_context_begin_local:`).
 
 .. macro:: \sdaps_qobject_end:
 
