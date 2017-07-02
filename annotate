@@ -6,7 +6,10 @@ for f in build/local/*; do
   ADD="$ADD --add $f"
 done
 
-../sdaps/sdaps.py build/testproject setup_tex "$1" $ADD || exit 1
+INFILE=$1
+shift
+
+../sdaps/sdaps.py build/testproject setup_tex "$INFILE" $ADD "$@" || exit 1
 ../sdaps/sdaps.py build/testproject annotate || exit 1
 
 evince build/testproject/annotated_questionnaire.pdf
