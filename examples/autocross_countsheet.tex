@@ -1,0 +1,92 @@
+\documentclass[english,a4,landscape]{sdapsclassic}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+
+%\author{FSG}
+\title{Cone sheet}
+
+\ExplSyntaxOn
+\newcommand{\countboxes}[2]{
+  \sdaps_qobject_begin:nnn { countboxes } { Choice } { #1 }
+  \sdaps_context_append:nnn { var } { #1 } { _ }
+
+  \vbox{
+    \vspace{1ex}
+    \hbox{\int_step_inline:nnnn { 1 } { 1 } { #2 } { \sdaps_answer:n { 1_##1 } \sdaps_checkbox:nn {1_##1 } { } {} \int_compare:nT { ##1 < #2 } { ~ } } }
+    \vspace{0.5ex}
+    \hbox{ \int_step_inline:nnnn { 1 } { 1 } { #2 } { \sdaps_answer:n { 1_##1 } \sdaps_checkbox:nn {2_##1 } { } {}  \int_compare:nT { ##1 < #2 } { ~ } } }
+    \vspace*{0pt}
+  }
+
+  \sdaps_qobject_end:n { countboxes }
+}
+
+\newcommand{\mytextbox}[3]{
+  \sdaps_qobject_begin:nnn { mytextbox } { Text } { #3 }
+
+  \dim_set:Nn \l_tmpa_dim { #1 }
+  \dim_set:Nn \l_tmpb_dim { #1 }
+  \dim_set:Nn \l_tmpa_dim { 0pt }
+  \dim_set:Nn \l_tmpb_dim { \l_tmpb_dim }
+  \sdaps_textbox_hstretch:nVVnn { #3 } \l_tmpa_dim \l_tmpb_dim { #2 } { 1 }
+
+  \sdaps_qobject_end:n { mytextbox }
+}
+
+\newcommand{\inlinefilltextbox}[2]{
+  \sdaps_qobject_begin:nnn { inlinetextbox } { Text } { #2 }
+
+  \dim_set:Nn \l_tmpa_dim { #1 }
+  \dim_set:Nn \l_tmpb_dim { #1 }
+  \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+  \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+  \sdaps_textbox_hstretch:nVVnn { #2 } \l_tmpa_dim \l_tmpb_dim { 1pt } { 1 }
+
+  \sdaps_qobject_end:n { inlinetextbox }
+}
+
+\newcommand{\carline}[1]{
+    \sdaps_context_begin:
+    \sdaps_context_append:nnn { var } { #1 } { _ }
+      % The checkboxes are 3.5cm + 1pt
+      \mytextbox{0.7cm + 2pt + 0.5ex}{2cm}{num} & %to be filled with the car numbers in advance or by hand (OCR?, identification by barcode?)  
+      \countboxes{1_cones}{ 10 } &
+      \countboxes{1_oc}{ 2 } &
+      \countboxes{1_ms}{ 2 } &
+      \countboxes{2_cones}{ 10 } &
+      \countboxes{2_oc}{ 2 } &
+      \countboxes{2_ms}{ 2 } &
+      \countboxes{2_onces}{ 10 } &
+      \countboxes{2_oc}{ 2 } &
+      \countboxes{2_ms}{ 2 }
+    \sdaps_context_end:
+}
+
+\ExplSyntaxOff
+
+\begin{document}
+  \begin{questionnaire}
+
+  \begin{multicols}{2}
+    Track Marshal Position: \inlinefilltextbox{1.2cm}{position}
+
+    Track Marshal Names: \inlinefilltextbox{1.2cm}{names}
+  \end{multicols}
+
+  \begin{tabular}{c|ccc|ccc|ccc}
+    Car No. & Run 1 Cones & OC & MS & Run 2 Cones & OC & MS & Re-Run Cones & OC & MS \\ \hline
+    \carline{car_1} \\
+    \carline{car_2} \\
+    \carline{car_3} \\
+    \carline{car_4} \\
+    \carline{car_5} \\
+    \carline{car_6} \\
+    \carline{car_7} \\
+    \carline{car_8} \\
+    \carline{car_9} \\
+    \carline{car_10} \\
+    \carline{car_11}
+  \end{tabular}
+
+\end{questionnaire}
+\end{document}

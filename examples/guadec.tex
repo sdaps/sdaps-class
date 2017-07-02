@@ -1,0 +1,159 @@
+\documentclass[
+  % Babel language, also used to load translations
+  english,
+  % Use A4 paper size, you can change this to eg. letterpaper if you need
+  % the letter format. The normal methods to modify the paper size should
+  % be picked up by SDAPS automatically.
+  % a4paper, % setting this might break the example scan unfortunately
+  % letterpaper
+  %
+  % If you need it, you can add a custom barcode at the center
+  globalid=Flatpak,
+  %
+  % And the following adds a per sheet barcode at the bottom left
+  %print_questionnaire_id,
+  %
+  % You can choose between twoside and oneside. twoside is the default, and
+  % requires the document to be printed and scanned in duplex mode.
+  %oneside,
+  %
+  % With SDAPS 1.1.6 and newer you can choose the mode used when recognizing
+  % checkboxes. valid modes are "checkcorrect" (default), "check" and
+  % "fill".
+  %checkmode=checkcorrect,
+  %
+  % The following options make sense so that we can get a better feel for the
+  % final look.
+  pagemark,
+  style=qr,
+  stamp]{sdapsclassic}
+
+\author{}
+\title{GUADEC Workshop Evaluation}
+
+
+\begin{document}
+
+  \begin{questionnaire}
+
+%    \section{About you}
+
+%    \begin{choicequestion}[cols=4]{Are you a foundation member?}
+%      % Hack until this is properly supported somehow.
+%      % Multiple answers are possible, but *shrug*
+%      \ExplSyntaxOn
+%      \sdaps_context_set:n {checkbox={ellipse}}
+%      \ExplSyntaxOff
+%      \choiceitem{Member}
+%      \choiceitem{Not a member}
+%      \choiceitem{Planning to be come one}
+%    \end{choicequestion}
+
+%    \begin{choicequestion}[cols=6]{What is our occupation?}
+%      \ExplSyntaxOn
+%      \sdaps_context_set:n {checkbox={ellipse}}
+%      \ExplSyntaxOff
+%      \choiceitem{Student}
+%      \choicemulticolitem{2}{Software development}
+%      \choiceitemtext{1.2cm}{3}{Other:}
+%    \end{choicequestion}
+
+
+    \section{General}
+
+    \begin{markgroup}{Please rate the workshop overall}
+      \markline{Was the workshop well prepared?}{very well}{not at all}
+      \markline{Was the workshop well structured?}{very well}{not at all}
+    \end{markgroup}
+
+    \begin{markgroup}{Performance of the instructor}
+      \markline{Was the instructor motivated?}{very motivated}{not motivated}
+      \markline{How well did the instructor respond to questions?}{very well}{really bad}
+      %\markline{Did the instructor keep eye contact?}{always}{never}
+      \markline{Was the instructor easy to understand?}{always}{never}
+      \markline{Was the instructor prepared?}{very well}{really bad}
+    \end{markgroup}
+
+    \begin{markgroup}{If applicable, please rate the hands on sessions}
+      \markline{Were they well prepared?}{very well}{not at all}
+      \markline{How detailed were the provided guides?}{too detailed}{too imprecise}
+      \markline{Were the tutors able to help you if you got stuck?}{always}{never}
+      \markline{Was the complexity appropriate for your experience?}{too complex}{too easy}
+      \markline{Were the tasks at a reasonable pace for you?}{too quickly}{too slowly}
+    \end{markgroup}
+
+
+    \textbox*{4cm}{Please comment on the hands on sessions (e.g. good parts, bad parts, possible improvements)}
+
+    \section{Materials}
+
+    \begin{choicequestion}[cols=3]{What materials were used during the workshop?}
+      \choiceitem{Slides}
+      \choiceitem{Handouts}
+      \choiceitem{Blackboard}
+      \choiceitem{Online Documentation}
+      \choiceitem{Prepared project files}
+      \choiceitemtext{1.2cm}{1}{Other}
+    \end{choicequestion}
+    \begin{markgroup}{Please rate the slides (if applicable)}
+      \markline{Were the slides detailed enough?}{absolutely}{not at all}
+      \markline{Were the slides easy to understand?}{very easy}{not at all}
+      \markline{Were the slides well structured?}{very well}{not at all}
+      \markline{Were the slides well integrated into the workshop?}{very well}{not at all}
+    \end{markgroup}
+
+    \begin{markgroup}{Please rate other workshop material (if applicable)}
+      \markline{Were the handouts detailed enough?}{absolutely}{not at all}
+      \markline{Were the handouts easy to understand?}{very easy}{not at all}
+      \markline{Were the handouts well structured?}{very well}{not at all}
+      \markline{Were the handouts well integrated into the workshop?}{very well}{not at all}
+    \end{markgroup}
+    \textbox*{3cm}{Please comment on the material (e.g. good parts, bad parts, possible improvements)}
+
+    \section{Overall impression}
+
+    \singlemark{Did you enjoy this workshop}{very much}{not at all}
+
+    \singlemark{Would you recommend this workshops to others?}{absolutely}{never}
+
+    \singlemark{How do you rate the workshop organization (by the GUADEC team)?}{excellent}{poor}
+
+    \textbox*{6cm}{Do you have any other comments?}
+
+    \singlemark{Do you think that workshops at GUADEC are a good idea?}{absolutely}{not at all}
+
+
+%    * Hands on
+%    * Preparation of Tutors
+%    * Required preparation for Workshop
+%    * Struktur
+
+
+%    * Beurteilung nach:
+%      - Niveau
+%      - Umfang
+%      - Tempo
+%      - ?
+%    * Materialien (Folien/Blackboard/…)
+%      - ausführlich genug
+%      - verständlich
+%      - strukturiert
+%      - zur wiederholung geeignet
+
+%    * Gesamtnote
+
+%    * Dozent
+%      - engagiert/motiviert
+%      - beantwortet fragen
+%      - theorie/praxis?
+%      - blickkontakt
+%      - vorbereitung?
+%      - "wird wesentliches herausgearbeitet"
+%      - Darbietung insgesamt
+
+
+
+  \end{questionnaire}
+
+\end{document}
+

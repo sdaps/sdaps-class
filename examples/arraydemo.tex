@@ -1,0 +1,283 @@
+\documentclass[
+  % Babel language, also used to load translations
+  english,
+  % Use A4 paper size, you can change this to eg. letterpaper if you need
+  % the letter format. The normal methods to modify the paper size should
+  % be picked up by SDAPS automatically.
+  % a4paper, % setting this might break the example scan unfortunately
+  % letterpaper
+  %
+  % If you need it, you can add a custom barcode at the center
+  %globalid=SDAPS,
+  %
+  % And the following adds a per sheet barcode at the bottom left
+  print_questionnaire_id,
+  %
+  % You can choose between twoside and oneside. twoside is the default, and
+  % requires the document to be printed and scanned in duplex mode.
+  oneside,
+  %
+  % With SDAPS 1.1.6 and newer you can choose the mode used when recognizing
+  % checkboxes. valid modes are "checkcorrect" (default), "check" and
+  % "fill".
+  %checkmode=checkcorrect,
+  %
+  % The following options make sense so that we can get a better feel for the
+  % final look.
+  pagemark,
+  stamp]{sdapsclassic}
+
+\usepackage{listings}
+\usepackage{multicol}
+
+\author{asdf}
+\title{blub}
+
+% Test support for repeating the environment.
+\ExplSyntaxOn
+%\seq_gset_from_clist:Nn \g__sdaps_questionnaire_ids_seq {a,b,c}
+\ExplSyntaxOff
+
+\showboxdepth=10
+\showboxbreadth=10000
+\tracingoutput=1
+\tracingonline=1
+
+\begin{document}
+
+  \begin{questionnaire}
+
+\begin{verbatim}
+This is a test to check that verbatim works inside the questionnaire environment.
+@_öäü*'%asdf
+\end{verbatim}
+
+    So, we can just demonstrate the sdapsarray environment quickly:
+   \begin{sdapsarray}
+      row head &
+        col head &
+        col head 2 \\
+     \vspace*{-\parskip}\vspace{-1em}
+     \begin{lstlisting}
+This lstlistings is in the row header %&_\^
+Note that verbatim would require more code right now.
+\end{lstlisting}\vspace{-1em}
+      &
+        cell 1 &
+        cell 2
+      \\
+      row head3 & cell 3 & cell 4
+    \end{sdapsarray}
+
+    Now something similar but flipping it and with rotated headers. The main
+    difference is that instead of the verbatim we put a tabular environment into
+    the header.
+   \begin{sdapsarray}[flip,layouter=rotated,align=testalign]
+      row head &
+        col head &
+        col head 2 \\
+     \sdapsnested{\begin{tabular}{cc} a & b \\ c & d \end{tabular}} &
+        cell 1 &
+        cell 2
+      \\
+      row head3 & cell 3 & cell 4
+    \end{sdapsarray}
+
+    And a third test, we align this to the previous one! So if you have multiple
+    choicearray questions you can make sure they all line up neatly (they will
+    do so by default).
+   \begin{sdapsarray}[align=testalign]
+       & a & b \\
+     This is a lot of text to show that it will correctly wrap too.
+     Note that we can use math $f(x) = y$ and \verb:\verb ?=!_\: for example
+       & c & d
+    \end{sdapsarray}
+
+    The main disadvantages with this environment are:
+    \begin{itemize}
+      \item no row/column coloring support
+      \item no support for grid lines
+      \item no support for column or row spanning (unlikely to ever happen)
+    \end{itemize}
+
+    The big advantage is that you can easily create questions in a tabular
+    fashion that contain fragile content and are stacked vertically instead of
+    horizontally. Especially the second thing is hard to manage as it can be
+    rather complicated to keep track of the metadata in that case.
+
+    \section{Backward Compatbility}
+
+    The following commands are implemented on top of the new commands and provide
+    seemless backward compatbility to a lot of features of the old class. Some
+    things are currently (and some may never) be implemented though. Also, the
+    forms will not look identical.
+
+    \textbox*{2cm}{asdf}
+
+    \singlemark[var=testvar]{Hallo}{lower}{upper}
+
+    \begin{choicequestion}[cols=3]{Which of the following OMR tools have you heard about?}
+      \choiceitem{SDAPS}
+      \choicemulticolitem{2}{ asdf }
+      \choiceitem{QueXF}
+
+      % Insert a text field. The freeform box automatically scales horizontally
+      % The first parameter is the height of the box. The second parameter
+      % is the amount of columns it should span.
+      \choiceitemtext{1.2cm}{2}{Other \LaTeX:}
+      \choicemulticolitem{2}{Auto Multiple Choice}
+    \end{choicequestion}
+
+    % And a more compact way of doing it; similar to markgroup
+    \begin{choicegroup}{Which software do you prefere for the following tasks?}
+      % We have to add the possible choices at the start.
+      \groupaddchoice{\LaTeX}
+      \groupaddchoice{LibreOffice}
+      \groupaddchoice{Microsoft Word}
+      \groupaddchoice{other}
+
+      % After that it is possible to add each question.
+      \choiceline{writing letters}
+      \choiceline{creating tables}
+      \choiceline{typesetting equations}
+    \end{choicegroup}
+
+    \textbox{2cm}{asdf}
+
+    \section{New Commands}
+
+    The choicegroup class is in reality pretty much the new choicearray environment
+    which is renamed. This environment is based on the sdapsarray environment and
+    gets all the features from this. You can now configure a lot of aspects:
+    \begin{itemize}
+      \item Optional argument of the environment:
+        \begin{itemize}
+          \item {\bfseries horizontal/vertical} flags for orientation
+          \item {\bfseries layouter} any of the predefined sdapsarray layouters ("default" or "rotated" currently)
+          \item {\bfseries align} to make different environments have equal column widths
+          \item {\bfseries var} to append "\_param" to the generated variable names
+          \item {\bfseries text} to specify a text for the metadata
+        \end{itemize} 
+      \item Optional argument of the choice command:
+        \begin{itemize}
+          \item {\bfseries var} to append "\_param" to the generated variable name instead of numbering them
+          \item {\bfseries text} to specify a text for the metadata and turn on the parser that support fragile content
+        \end{itemize} 
+      \item Optional argument of the question command:
+        \begin{itemize}
+          \item {\bfseries var} to append "\_param" to the generated variable name instead of numbering them
+          \item {\bfseries text} to specify a text for the metadata and turn on the parser that support fragile content
+        \end{itemize} 
+    \end{itemize} 
+
+    So the same question as above, just with the {\bfseries vertical} option set and {\bfseries rotated} layouter.
+
+    \begin{choicegroup}[vertical,layouter=rotated,var=testchoice]{Which software do you prefere for the following tasks?}
+      % We have to add the possible choices at the start.
+      \groupaddchoice[text=LaTeX,var=latex]{\LaTeX}
+      \groupaddchoice[var=lo]{LibreOffice}
+      \groupaddchoice[var=ms]{Microsoft Word}
+      \groupaddchoice[var=other,text=other]{other, with a nice table: \begin{tabular}{cc} a & b \\ c & d\end{tabular}}
+
+      % After that it is possible to add each question.
+      \choiceline[var=letter]{writing letters}
+      \choiceline[var=asdf,text=asdf]{
+\begin{lstlisting}
+asdf
+\end{lstlisting}}
+      \choiceline[var=eqn]{typesetting equations}
+    \end{choicegroup}
+
+  \newpage
+
+%\twocolumn
+\begin{multicols}{2}
+   \begin{sdapsarray}[layouter=rotated,align=testalign]
+      row head &
+        col head &
+        col head 2 \\
+     row 1 &
+        cell 1 &
+        cell 2
+      \\
+     row 2 & cell & cell \\
+     row 3 & cell & cell \\
+     row 4 & cell & cell \\
+     row 5 & cell & cell \\
+     row 6 & cell & cell \\
+     row 7 & cell & cell \\
+     row 8 & cell & cell \\
+     row 9 & cell & cell \\
+     row 10 & cell & cell \\
+     row 11 & cell & cell \\
+     row 12 & cell & cell \\
+     row 13 & cell & cell \\
+     row 14 & cell & cell \\
+     row 15 & cell & cell \\
+     row 16 & cell & cell \\
+     row 17 & cell & cell \\
+     row 18 & cell & cell \\
+     row 19 & cell & cell \\
+     row 20 & cell & cell \\
+     row 21 & cell & cell \\
+     row 22 & cell & cell \\
+     row 23 & cell & cell \\
+     row 24 & cell & cell \\
+     row 25 & cell & cell \\
+     row 26 & cell & cell \\
+     row 27 & cell & cell \\
+     row 28 & cell & cell \\
+     row 29 & cell & cell \\
+     row 30 & cell & cell \\
+     row 31 & cell & cell \\
+     row 32 & cell & cell \\
+     row 33 & cell & cell \\
+     row 34 & cell & cell \\
+     row 35 & cell & cell \\
+     row 36 & cell & cell \\
+     row 37 & cell & cell \\
+     row 38 & cell & cell \\
+     row 39 & cell & cell \\
+     row 40 & cell & cell \\
+     row 41 & cell & cell \\
+     row 42 & cell & cell \\
+     row 43 & cell & cell \\
+     row 44 & cell & cell \\
+     row 45 & cell & cell \\
+     row 46 & cell & cell \\
+     row 47 & cell & cell \\
+     row 48 & cell & cell \\
+     row 49 & cell & cell \\
+     row 50 & cell & cell \\
+     row 51 & cell & cell \\
+     row 52 & cell & cell \\
+     last (53) & cell & cell
+    \end{sdapsarray}
+blub
+
+\end{multicols}
+
+\newpage
+
+    \begin{rangearray}[var=testrange,other]{A test range question.}
+      \range[var=a]{question}{lower}{upper}{other}
+      \range[var=b,text=question sdaps,lower=lower sdaps,upper=upper sdaps]{question pdf}{lower pdf}{upper pdf}{}
+      \range[var=c,other=other sdaps]{question}{lower3}{upper3}{other pdf}
+    \end{rangearray}
+
+    \begin{markgroup}{What do you think about the following aspects of \LaTeX?}
+      \markline{equation syntax}{bad}{good}
+      \markline{rendered equations}{ugly}{beautiful}
+      \markline{ease of use}{hard}{easy}
+    \end{markgroup}
+
+    \begin{markgroup}{What do you think about the following aspects of \LaTeX?}
+      \markline{equation syntax}{bad}{a}
+      \markline{rendered equations}{ugly}{b}
+      \markline{ease of use}{hard}{c}
+    \end{markgroup}
+
+  \end{questionnaire}
+
+\end{document}
+
