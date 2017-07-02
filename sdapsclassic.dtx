@@ -407,25 +407,26 @@
 %    \begin{macrocode}
 
 
-\bool_new:N \l__sdaps_classic_have_section
-\bool_set_false:N \l__sdaps_classic_have_section
+\bool_new:N \g__sdaps_classic_have_section
+\bool_gset_false:N \g__sdaps_classic_have_section
 \cs_new_eq:NN\_sdapsclassic_origsection\section
 \renewcommand{\section}[1]{
-  \bool_if:NT \l__sdaps_classic_have_section {
+  \bool_if:NT \g__sdaps_classic_have_section {
     \sdaps_qobject_end:n { section }
   }
 
   \_sdapsclassic_origsection{#1}
-  \bool_set_true:N \l__sdaps_classic_have_section
+  \bool_gset_true:N \g__sdaps_classic_have_section
   \sdaps_qobject_begin:nnn { section }{ Head }{ #1 }
 }
 
 \cs_new_protected_nopar:Nn \sdaps_classic_ensure_section: {
-  \bool_if:NF \l__sdaps_classic_have_section {
+  \bool_if:NF \g__sdaps_classic_have_section {
     % This is a bad hack to make the numbering start with zero
-    \int_decr:N \g__sdaps_qobject_id_int
-    \bool_set_true:N \l__sdaps_classic_have_section
+    \int_gdecr:N \g__sdaps_qobject_id_int
+    \bool_gset_true:N \g__sdaps_classic_have_section
     \sdaps_qobject_begin:nnn { section }{ Head }{ }
+      \sdaps_context_hook_end:n { \bool_gset_false:N \g__sdaps_classic_have_section }
   }
 }
 
