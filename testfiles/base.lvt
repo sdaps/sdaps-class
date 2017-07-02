@@ -1,0 +1,342 @@
+\documentclass{scrartcl}
+\input{regression-test}
+
+\OMIT
+\usepackage{sdapsbase}
+% To properly call \sdaps_page_end: for each page.
+\usepackage{scrpage2}
+
+
+\def\logpos#1{\lognamedpos{#1}#1}
+\def\lognamedpos#1{\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+
+\newenvironment{MYTEST}[1]{%
+  \begingroup%
+    \global\advance \gTESTint 1 %
+    \SEPARATOR%
+    \LONGTYPEOUT{%
+      TEST \the\gTESTint: \detokenize{#1}}%
+    \SEPARATOR%
+}{%
+    \SEPARATOR%
+    \LONGTYPEOUT{}%
+  \endgroup%
+}
+
+\newenvironment{OMITPAGE}{%
+  \begingroup%
+    \OMIT%
+}{%
+    \vfil\break%
+    \TIMO%
+  \endgroup%
+}
+
+\newenvironment{MYTESTPAGE}[1]{%
+  \begin{MYTEST}{#1}%
+}{%
+    \vfil\break%
+  \end{MYTEST}%
+}
+
+\newenvironment{MYTESTPAGESHOW}[1]{%
+  \begin{MYTESTPAGE}{#1}%
+    \showoutput%
+}{%
+  \end{MYTESTPAGE}%
+}
+
+
+\TIMO
+
+
+\begin{document}
+  \START
+
+  \ExplSyntaxOn
+    % This needs to be before the document starts
+    \pagestyle{scrheadings}
+    \clearscrheadings
+    \cfoot{\sdaps_page_end:}
+  \ExplSyntaxOff
+
+  \begin{OMIT}
+    % Some font stuff
+    $ a + b $
+
+    % Enable writing out information.
+    \ExplSyntaxOn
+
+      % Redirect output to log file instead of .sdaps file
+      \iow_close:N \g_sdaps_infofile_iow
+      \global\let\g_sdaps_infofile_iow=\c_term_iow
+
+    \ExplSyntaxOff
+
+    \textbackslash
+
+  \end{OMIT}
+
+  % NOTE: This test has to be in global scope as of now!
+  \SEPARATOR
+  \TYPE{Setting overrides throws no errors}
+  \SEPARATOR
+
+    % This needs to test specific/unspecific QID and then matching all elements, by
+    % variable name and by variable name and value.
+    % We don't test values here, these tests are elsewhere and it is safe to modify
+    % the overrides here to add items for other tests
+    \ExplSyntaxOn
+      \sdaps_overrides_init:n{
+        *={
+            *={},
+            var1={},
+            var2&val1={},
+        },
+        qid1={
+            *={},
+            var1={},
+            var2&val1={},
+        },
+        testoverrideqid={
+            *={height=5mm},
+            testvar={height=10mm},
+            testvar&testval={height=15mm},
+        },
+      }
+    \ExplSyntaxOff
+
+  \SEPARATOR
+
+
+  \begin{MYTESTPAGE}{Initialize SDAPS}
+    \ExplSyntaxOn
+      \sdaps_begin:
+    \ExplSyntaxOff
+    Start of the document
+  \end{MYTESTPAGE}
+
+  \begin{MYTEST}{Test nested unwrapping of context scopes}
+    \ExplSyntaxOn
+      {
+        \sdaps_context_begin_local:
+          \sdaps_context_begin:
+            \sdaps_context_set:n {test=value}
+            \sdaps_context_begin:n { testcontext }
+              \sdaps_context_get:nN { test } \l_tmpa_tl
+              \tl_if_eq:VnTF \l_tmpa_tl { value } {} { \ERROR }
+      }
+      \sdaps_context_get:nN { test } \l_tmpa_tl
+      \tl_if_eq:VnTF \l_tmpa_tl { value } { \ERROR } { }
+
+      {
+        \sdaps_context_begin_local:
+          \sdaps_context_set:n {test=value1}
+          \sdaps_context_begin:n { testcontext1 }
+            \sdaps_context_set:n {test=value2}
+              \sdaps_context_begin:n { testcontext2 }
+
+                % value2
+                \sdaps_context_get:nN { test } \l_tmpa_tl
+                \tl_if_eq:VnTF \l_tmpa_tl { value2 } { } { \ERROR }
+
+          \sdaps_context_end:n { testcontext1 }
+
+          % value1
+          \sdaps_context_get:nN { test } \l_tmpa_tl
+          \tl_if_eq:VnTF \l_tmpa_tl { value1 } { } { \ERROR }
+      }
+      % And cleared again
+      \sdaps_context_get:nN { test } \l_tmpa_tl
+      \tl_if_eq:VnTF \l_tmpa_tl { value } { \ERROR } {}
+    \ExplSyntaxOff
+  \end{MYTEST}
+
+  \begin{MYTESTPAGE}{Check metadata error handling}
+    \ExplSyntaxOn
+      % First output a checkbox without metadata writing
+      \noindent\sdaps_checkbox:nn {} {} \newline
+
+      % Enable metadata writing (active for all other tests from now on)
+      % But without setting a QID
+      \sdaps_context_set:n{*={writepos}}
+      \sdaps_checkbox:nn {} {} \newline
+
+      % Now start a choicequestion
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+        \sdaps_checkbox:nn {} {}
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+  \begin{MYTESTPAGE}{Check whether overrides are working}
+    \ExplSyntaxOn
+      \sdaps_set_questionnaire_id:n{testoverrideqid}
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+
+        \sdaps_checkbox:nn {} {} {}~
+
+        \sdaps_checkbox:nn { testvar } {} {}~
+
+        \sdaps_checkbox:nn { testvar } { testval } {}
+      }
+
+      % Reset QID back to normal
+      \sdaps_set_questionnaire_id:n{testqid}
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+  \begin{MYTESTPAGE}{Check whether context appending is working}
+    \ExplSyntaxOn
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+        \sdaps_context_append:nn { * } { height=5mm }
+
+        \sdaps_checkbox:nn {} {} {}~
+
+        \sdaps_context_append:nn { checkbox } { height=10mm }
+        \sdaps_checkbox:nn {} {}
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+  \begin{MYTESTPAGE}{Check different checkbox designs and font sizes}
+    \ExplSyntaxOn
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+
+        \noindent\tiny          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \scriptsize    Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \footnotesize  Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \small         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \normalsize    Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \large         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \Large         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \huge          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \Huge          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text
+        \par
+
+        \sdaps_context_append:nn { checkbox } { ellipse }
+
+        \noindent\tiny          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \scriptsize    Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \footnotesize  Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \small         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \normalsize    Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \large         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \Large         Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \huge          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
+        \Huge          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text
+        \par
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+  \begin{MYTESTPAGE}{Checkbox line width, form and fill setting}
+    \ExplSyntaxOn
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+
+        \noindent \sdaps_context_set:n { checkbox={ box,fill=red } }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { checkbox={ box,linewidth=2bp,fill=red } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ ellipse,fill=red } }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { checkbox={ ellipse,linewidth=2bp,fill=red } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ form=box,fill=red } }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { checkbox={ form=box,linewidth=2bp,fill=red } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ form=ellipse,fill=red } }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { checkbox={ form=ellipse,linewidth=2bp,fill=red } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        The~above~checkboxes~should~be~filled~red.~The~right~column~has~thicker~
+        line~widths.~Box/Ellipse~style~iterate.
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+
+  \begin{MYTESTPAGE}{Checkbox overlays}
+    \ExplSyntaxOn
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+
+        \noindent \sdaps_context_set:n { checkbox={ centered_text={\logpos{X}} } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ draw_check } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,width=5mm,height=5mm } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,width=10mm,height=5mm } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,width=5mm,height=10mm } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ draw_check,ellipse } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=5mm,height=5mm } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=10mm,height=5mm } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=5mm,height=10mm } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {} {} ~
+        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_checkbox:nn {} {}\newline
+
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
+
+  \begin{MYTEST}{Finish the SDAPS document, only modifies global state}
+    \ExplSyntaxOn
+      \sdaps_end:
+
+      \bool_if:NF \g__sdaps_last_page_bool { \ERROR }
+    \ExplSyntaxOff
+  \end{MYTEST}
+
+  \begin{MYTESTPAGE}{Flush out the last page (writes the page number)}
+    % Finish the last page
+  \end{MYTESTPAGE}
+
+\end{document}
+
