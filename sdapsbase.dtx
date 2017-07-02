@@ -1339,7 +1339,7 @@
         % process.
         \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
           \pgfmathsetbasenumberlength{4}
-          \pgfmathdectobase{\paddedpage}{\thepage}{10}% Yes, padding to 4 chars the hard way
+          \pgfmathdectobase{\paddedpage}{\int_use:N\g_sdaps_page_int}{10}% Yes, padding to 4 chars the hard way
           \node(barcode)[anchor=south~east,outer~sep=0,inner~sep=0]{
             \qrcode_render:nx {version=2,level=H,padding,height=10mm} {\tl_use:N\g_sdaps_survey_id_tl\paddedpage}
           };
@@ -1380,7 +1380,7 @@
         % process.
         \begin{scope}[shift={($(\paperwidth, 0) + (-\g_sdaps_edge_right_margin_dim, \g_sdaps_edge_bottom_margin_dim) + (-\c_sdaps_barcode_hpad_dim, \c_sdaps_barcode_vpad_dim)$)}]
           \pgfmathsetbasenumberlength{4}
-          \pgfmathdectobase{\paddedpage}{\thepage}{10}% Yes, padding to 4 chars the hard way
+          \pgfmathdectobase{\paddedpage}{\int_use:N\g_sdaps_page_int}{10}% Yes, padding to 4 chars the hard way
           \node(barcode)[anchor=south~east,outer~sep=0,inner~sep=0]{
             \X = \c_sdaps_barcode_bar_width_dim
             \bcorr = \c_sdaps_barcode_bcorr_dim
