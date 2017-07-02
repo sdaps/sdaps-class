@@ -1,0 +1,93 @@
+\documentclass{minimal}
+\input{regression-test}
+
+\OMIT
+\usepackage{sdapsbase}
+\usepackage{sdapspdf}
+
+
+\def\logpos#1{\lognamedpos{#1}#1}
+\def\lognamedpos#1{\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+
+\newenvironment{MYTEST}[1]{%
+  \begingroup%
+    \global\advance \gTESTint 1 %
+    \SEPARATOR%
+    \LONGTYPEOUT{%
+      TEST \the\gTESTint: \detokenize{#1}}%
+    \SEPARATOR%
+}{%
+    \SEPARATOR%
+    \LONGTYPEOUT{}%
+  \endgroup%
+}
+
+\newenvironment{OMITPAGE}{%
+  \begingroup%
+    \OMIT%
+}{%
+    \vfil\break%
+    \TIMO%
+  \endgroup%
+}
+
+\newenvironment{MYTESTPAGE}[1]{%
+  \begin{MYTEST}{#1}%
+}{%
+    \vfil\break%
+  \end{MYTEST}%
+}
+
+\newenvironment{MYTESTPAGESHOW}[1]{%
+  \begin{MYTESTPAGE}{#1}%
+    \showoutput%
+}{%
+  \end{MYTESTPAGE}%
+}
+
+\TIMO
+
+
+\begin{document}
+  \START
+
+  \begin{OMITPAGE}
+    % Some font stuff
+    $ a + b $
+
+    \textbackslash
+  \end{OMITPAGE}
+
+  \OMIT
+  \begin{Form}
+  \TIMO
+
+    \begin{MYTESTPAGESHOW}{PDF Forms}
+      \ExplSyntaxOn
+
+        % Set the pdf_form option for all boxes (*)
+        \sdaps_context_append:nn{*}{pdf_form=true}
+
+        % Or for checkboxes and textboxes separately
+        %\sdaps_context_append:nn{checkbox}{pdf_form=true}
+        %\sdaps_context_append:nn{textbox}{pdf_form=true}
+
+        \noindent \sdaps_checkbox:nn {} {} {}~
+        \sdaps_context_set:n{checkbox={checkboxsymbol=5}}
+        \sdaps_checkbox:nn {} {} {}~
+        \sdaps_context_set:n{checkbox={default=true}}
+        \sdaps_checkbox:nn {} {} {}~
+        \sdaps_context_set:n{checkbox={default=true,checkboxsymbol=5}}
+        \sdaps_checkbox:nn {} {} {}
+
+        \sdaps_textbox_vhstretch:nnn { text } { 4cm } { 0 }
+
+      \ExplSyntaxOff
+    \end{MYTESTPAGESHOW}
+
+
+  \end{Form}
+
+\OMIT
+\end{document}
+\TIMO
