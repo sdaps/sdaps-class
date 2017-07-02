@@ -761,7 +761,7 @@
 
      % Position of page and baseline offset
     \dim_set:Nn \l_sdaps_x_dim { \hoffset }
-    \dim_set:Nn \l_sdaps_y_dim { \voffset + \l_sdaps_checkbox_height_dim - 0.5\l_sdaps_checkbox_height_dim + 0.9ex }
+    \dim_set:Nn \l_sdaps_y_dim { \voffset + \l_sdaps_checkbox_height_dim - \dim_eval:n { 0.5\l_sdaps_checkbox_height_dim - 0.8ex } }
 
     % Size
     \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim }
@@ -789,7 +789,7 @@
     }
 
 
-    \tikz[baseline={0.5\l_sdaps_checkbox_height_dim-0.9ex}]{%
+    \tikz[baseline={0.5\l_sdaps_checkbox_height_dim-0.8ex}]{%
       \str_if_eq_x:nnT {\l_sdaps_checkbox_form_tl} {box} {
         \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0.5\l_sdaps_checkbox_linewidth_dim) rectangle +($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim)-(\l_sdaps_checkbox_linewidth_dim,\l_sdaps_checkbox_linewidth_dim)$);%
       }
