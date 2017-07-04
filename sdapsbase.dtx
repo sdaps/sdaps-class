@@ -961,13 +961,13 @@
   \if_mode_math:
     \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { math }
   \else:
+  \tex_par:D
   \if_mode_horizontal:
-    \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { inner }
+    \msg_error:nnnn { sdapsbase } { textbox_wrong_mode } { vhstretch } { horizontal }
   \else:
   % Go into vertical mode by ending the current paragraph and insert
   % \cs{widowpenalty} so that we don't get an unwelcome page break. It is
   % assumed that any explanation for the textbox will be on top.
-  \tex_par:D
   \tex_penalty:D \tex_widowpenalty:D
 
   \group_begin:%
