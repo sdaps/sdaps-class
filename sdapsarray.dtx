@@ -341,7 +341,7 @@
   }
 }
 
-\cs_new_protected_nopar:Nn \sdaps_array_row:NNn
+\cs_new_protected_nopar:Nn \sdaps_array_row:NN
 {
   \if_mode_vertical:
   \else:
@@ -352,7 +352,7 @@
   \_sdaps_array_check_insert_header:N \g_tmpa_bool
   % XXX: \l_tmpa_dim is the height to the first baseline in the box. Note that
   %      we use the real baseline in the case of the header row!
-  \l__sdaps_array_row_tl #1 #2 { #3 } \l_tmpb_box \l_tmpa_dim
+  \l__sdaps_array_row_tl #1 #2 \l_tmpb_box \l_tmpa_dim
 
   \bool_if:NT \g_sdaps_array_first_row_bool {
     % Stow away the box for later use (before rewriting it to save the position)
@@ -399,7 +399,7 @@
     \bool_if:NTF \g_tmpa_bool {
       \box_use:N \g_sdaps_array_header_box
     } {
-     \hbox_to_wd:nn { #3 } {\vrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt \hfil}
+     \hrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt
     }
     \nobreak
     % Insert the calculated interline skip (in the same way the TeX would do it,
@@ -555,23 +555,23 @@
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNnNN
+\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNNN
 {
   % #1: A vbox with baseline on the *first* item containing the row header
   %     (\vtop in plain TeX).
   % #2: Data cells packed into an hbox. Each of these needs to be set to the
   %     correct width and inserted.
-  % #3: The width that the finally produced hbox should have
-  %     (will be the current line width).
-  % #4: The box register to store the resulting hbox in. The depth of this box
+  % #3: The box register to store the resulting hbox in. The depth of this box
   %     needs to be correct to calculate the interline glue to the following
   %     row.
-  % #5: A dim register to store the height of the box in for the purpose of
+  % #4: A dim register to store the height of the box in for the purpose of
   %     calculating the interline glue in front of the produced row.
   %
-  % The macro should create an hbox which is exactly #3 wide and store it in
-  % the box register #4. The box will be used while in vertical mode and may
-  % be inserted multiple times in the case of the header row.
+  % { \dim_use:N\@totalleftmargin } { \dim_use:N\linewidth }
+  % The macro should create an hbox which is exactly \linewidth wide and also
+  % contains internal indentation by \@totalleftmargin into the box register #3.
+  % The box will be used while in vertical mode and may% be inserted multiple
+  % times in the case of the header row.
   % To simplify the iteration it is guaranteed that the data cell boxes are not
   % completely empty. This means the code can simply unbox until it sees a box
   % that is void.
@@ -670,8 +670,7 @@
   \seq_gclear:N \g_tmpa_seq
 
   % Calculate the space that is left for the header column
-  \dim_set:Nn \l_tmpa_dim { #3 }
-  \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim - \coffin_wd:N \l_tmpa_coffin - 2\l_sdaps_sdapsarray_colsep_dim }
+  \dim_set:Nn \l_tmpa_dim { \linewidth - \coffin_wd:N \l_tmpa_coffin - 2\l_sdaps_sdapsarray_colsep_dim }
   \tl_gset:Nx \g_sdaps_array_local_data_new_tl { \dim_use:N \l_tmpa_dim }
 
   % TODO: The \hfil here is a hack to prevent a warning if the vbox is empty.
@@ -688,8 +687,8 @@
     \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
   }
 
-  \hbox_set:Nn #4 { \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
-  \dim_set:Nn #5 { \l_tmpb_dim }
+  \hbox_set:Nn #3 { \skip_horizontal:N \@totalleftmargin \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
+  \dim_set:Nn #4 { \l_tmpb_dim }
 }
 
 
@@ -699,7 +698,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_default:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNnNN },
+  row = { \_sdaps_array_row_ltr:NNNN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -710,7 +709,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_rotated:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNnNN },
+  row = { \_sdaps_array_row_ltr:NNNN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -846,7 +845,7 @@
   % We are in the environment scope again here
   % Output the last line if the cells were non-empty.
   \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
-    \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+    \sdaps_array_row:NN \l_tmpa_box \l_tmpb_box
   }
   \bool_set_false:N \l__sdaps_sdapsarray_have_content_bool
 
@@ -1100,7 +1099,7 @@
         \_sdaps_sdapsarray_pop_last_hbox_unpack:NN \l_tmpa_box \l_sdaps_sdapsarray_headers_box
         \_sdaps_sdapsarray_pop_last_box:NN \l_tmpb_box \l_sdaps_sdapsarray_boxlist_head_box
         \bool_do_while:nn { ! \box_if_empty_p:N \l_tmpa_box || ! \box_if_empty_p:N \l_tmpb_box } {
-          \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+          \sdaps_array_row:NN \l_tmpa_box \l_tmpb_box
 
           \sdaps_array_row_start:
 
@@ -1120,7 +1119,7 @@
       % We are in the environment scope again here
       % Output the last line if the cells were non-empty.
       \bool_if:NT \l__sdaps_sdapsarray_have_content_bool {
-        \sdaps_array_row:NNn \l_tmpa_box \l_tmpb_box { \dim_use:N\hsize }
+        \sdaps_array_row:NN \l_tmpa_box \l_tmpb_box
       }
     }
 

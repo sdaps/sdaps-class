@@ -188,7 +188,7 @@ identical.
       rowhead = { \_sdaps_array_rowhead_default:Nw },
       colhead = { \_sdaps_array_cell_default:Nw },
       cell = { \_sdaps_array_cell_default:Nw },
-      row = { \_sdaps_array_row_ltr:NNnNN },
+      row = { \_sdaps_array_row_ltr:NNNN },
       end = { \_sdaps_array_end_default: },
     }
 
@@ -198,7 +198,7 @@ identical.
       rowhead = { \_sdaps_array_rowhead_default:Nw },
       colhead = { \_sdaps_array_cell_rotated:Nw },
       cell = { \_sdaps_array_cell_default:Nw },
-      row = { \_sdaps_array_row_ltr:NNnNN },
+      row = { \_sdaps_array_row_ltr:NNNN },
       end = { \_sdaps_array_end_default: },
     }
 
