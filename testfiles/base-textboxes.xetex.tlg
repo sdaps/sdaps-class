@@ -275,7 +275,7 @@ Box[1]=Textbox,0,89.62619pt,730.36528pt,418.25555pt,56.9055pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
-TEST 11: vhstretch: error in math and inner modes
+TEST 11: vhstretch: error in math and horizontal modes
 ============================================================
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -299,25 +299,7 @@ l. ......aps_textbox_vhstretch:nn { text } { 0cm }
 !
 ! sdapsbase error: "textbox_wrong_mode"
 ! 
-! Impossible to layout a vhstretch textbox in inner mode.
-! 
-! See the sdapsbase documentation for further information.
-! 
-! Type <return> to continue.
-!...............................................  
-l. ......aps_textbox_vhstretch:nn { text } { 0cm }
-                                                  }
-|'''''''''''''''''''''''''''''''''''''''''''''''
-| LaTeX does not know anything more about this error, sorry.
-| 
-| Try typing <return> to proceed.
-| If that doesn't work, type X <return> to quit.
-|...............................................
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!
-! sdapsbase error: "textbox_wrong_mode"
-! 
-! Impossible to layout a vhstretch textbox in inner mode.
+! Impossible to layout a vhstretch textbox in horizontal mode.
 ! 
 ! See the sdapsbase documentation for further information.
 ! 

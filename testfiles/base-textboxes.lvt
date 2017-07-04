@@ -258,7 +258,7 @@
   \ExplSyntaxOff
 \end{MYTESTPAGE}
 
-\begin{MYTESTPAGE}{vhstretch: error in math and inner modes}
+\begin{MYTESTPAGE}{vhstretch: error in math and horizontal modes}
   \ExplSyntaxOn
     % Reset counting
     \int_gzero:N \g__sdaps_qobject_id_int
@@ -267,10 +267,6 @@
     \ExplSyntaxOff
     \ExplSyntaxOn
     $\sdaps_textbox_vhstretch:nn { text } { 0cm }$
-
-    \ExplSyntaxOff
-    \ExplSyntaxOn
-    \vbox{\sdaps_textbox_vhstretch:nn { text } { 0cm }}
 
     \ExplSyntaxOff
     \ExplSyntaxOn
