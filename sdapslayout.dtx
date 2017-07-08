@@ -293,6 +293,8 @@
 \tl_new:N \l_sdaps_choicearray_layouter_tl
 \tl_new:N \l_sdaps_choicearray_align_tl
 \tl_new:N \l_sdaps_choicearray_extra_tl
+\tl_new:N \l_sdaps_choicearray_qobject_type_tl
+\tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Choice }
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -418,7 +420,7 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_choicearray_process_question_head: {
-  \sdaps_qobject_begin:nnV { choicearray_question } { Choice } \l_sdaps_question_text_tl
+  \sdaps_qobject_begin:nnV { choicearray_question } \l_sdaps_choicearray_qobject_type_tl \l_sdaps_question_text_tl
 
   \tl_if_empty:NF \l_sdaps_question_var_tl {
    \sdaps_context_append:nVn { var } \l_sdaps_question_var_tl { _ }
@@ -780,8 +782,14 @@
     \seq_gclear:N \g_sdaps_choices_text_seq
 
     % Define new commands
-    \newcommand \choice [ 1 ] [] {
-      \_sdaps_choicearray_process_choice:nw { ##1 }
+    \tl_if_eq:VnTF \l_sdaps_choicearray_qobject_type_tl { Option } {
+      \newcommand \option [ 1 ] [] {
+        \_sdaps_choicearray_process_choice:nw { ##1 }
+      }
+    } {
+      \newcommand \choice [ 1 ] [] {
+        \_sdaps_choicearray_process_choice:nw { ##1 }
+      }
     }
     \newcommand \question [ 1 ] [] {
       \_sdaps_choicearray_process_question:nw { ##1 }
@@ -801,7 +809,18 @@
   \group_end:
 }
 
-
+\newenvironment { optionarray } [ 2 ] []
+{
+  \group_begin:
+    \sdaps_context_begin_local:
+      \sdaps_checkbox_set_type:n { singlechoice }
+      \tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Option }
+      \choicearray[#1] { #2 }
+}
+{
+      \endchoicearray
+  \group_end:
+}
 
 \newenvironment { rangearray } [ 2 ] []
 {

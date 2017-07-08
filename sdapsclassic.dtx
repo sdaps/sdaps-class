@@ -848,6 +848,32 @@
   \group_end:
 }
 
+\newenvironment { optiongroup } [ 2 ] []
+{
+  \group_begin:
+
+    \question{#2}
+
+    % Undefine the question (and option) commands in local scope so that they
+    % can be redefined by optionarray without any issues.
+    % Note that \cs_undefine:N works in global scope, so we cannot use it here.
+    \cs_set_eq:NN\question\tex_undefined:D
+    \cs_set_eq:NN\option\tex_undefined:D
+
+    \begin{optionarray}[#1]{#2}
+      % XXX: This is a bit of a hack, set in global scope because the optionarray
+      %      environment does evil things with scopes.
+      \cs_gset_eq:NN\groupaddoption\option
+      \cs_gset_eq:NN\optionline\question
+}
+{
+      \cs_gset_eq:NN\groupaddoption\undefined
+      \cs_gset_eq:NN\optionline\undefined
+
+    \end{optionarray}
+  \group_end:
+}
+
 \newenvironment { markgroup } [ 2 ] []
 {
   \group_begin:
