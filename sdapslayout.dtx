@@ -292,6 +292,7 @@
 \tl_new:N \l_sdaps_choicearray_text_tl
 \tl_new:N \l_sdaps_choicearray_layouter_tl
 \tl_new:N \l_sdaps_choicearray_align_tl
+\tl_new:N \l_sdaps_choicearray_extra_tl
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -330,7 +331,7 @@
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:nn #1#2
 {
-  \keys_set:nn { sdaps / choicearray } { #1 }
+  \keys_set_known:nnN { sdaps / choicearray } { #1 } \l_sdaps_choicearray_extra_tl
 
   \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
     \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
@@ -476,6 +477,7 @@
 \tl_new:N \l_sdaps_rangearray_var_tl
 \tl_new:N \l_sdaps_rangearray_text_tl
 \tl_new:N \l_sdaps_rangearray_align_tl
+\tl_new:N \l_sdaps_rangearray_extra_tl
 \int_new:N \l_sdaps_rangearray_rangecount_int
 \bool_new:N \l_sdaps_rangearray_other_bool
 \tl_new:N \g_sdaps_question_var_tl
@@ -508,7 +510,7 @@
 
 \cs_new_protected_nopar:Npn \_sdaps_rangearray_preprocess:nn #1#2
 {
-  \keys_set:nn { sdaps / rangearray } { #1 }
+  \keys_set_known:nnN { sdaps / rangearray } { #1 } \l_sdaps_rangearray_extra_tl
 
   \tl_if_empty:NTF \l_sdaps_rangearray_text_tl {
     \sdaps_qobject_begin:nnn { rangearray } { Head } { #2 }
@@ -787,7 +789,7 @@
 
     \group_begin:
 
-      \tl_set:Nx \l_tmpb_tl {keepenv,layouter=\tl_use:N\l_sdaps_choicearray_layouter_tl,align=\l_sdaps_choicearray_align_tl\bool_if:NF\l_sdaps_choicearray_horizontal_bool{,flip}}
+      \tl_set:Nx \l_tmpb_tl {keepenv,layouter=\tl_use:N\l_sdaps_choicearray_layouter_tl,align=\l_sdaps_choicearray_align_tl\bool_if:NF\l_sdaps_choicearray_horizontal_bool{,flip},\l_sdaps_choicearray_extra_tl}
       \expandafter\sdapsarray\expandafter[\l_tmpb_tl]
 }
 {
@@ -826,7 +828,7 @@
 
     \group_begin:
 
-      \tl_set:Nx \l_tmpb_tl {keepenv,align=\l_sdaps_rangearray_align_tl}
+      \tl_set:Nx \l_tmpb_tl {keepenv,align=\l_sdaps_rangearray_align_tl,\l_sdaps_rangearray_extra_tl}
       \expandafter\sdapsarray\expandafter[\l_tmpb_tl]
 }
 {
