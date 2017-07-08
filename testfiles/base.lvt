@@ -195,7 +195,7 @@
 
         \sdaps_checkbox:nn {} {} {}~
 
-        \sdaps_context_append:nn { checkbox } { height=10mm }
+        \sdaps_context_append:nn { multichoice } { height=10mm }
         \sdaps_checkbox:nn {} {}
       }
     \ExplSyntaxOff
@@ -217,7 +217,7 @@
         \Huge          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text
         \par
 
-        \sdaps_context_append:nn { checkbox } { ellipse }
+        \sdaps_context_append:nn { multichoice } { ellipse }
 
         \noindent\tiny          Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
         \scriptsize    Text~with~underhang~ \sdaps_checkbox:nn {} {} {}~Text~with~underhang \newline
@@ -238,24 +238,24 @@
       {
         \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
 
-        \noindent \sdaps_context_set:n { checkbox={ box,fill=red } }
+        \noindent \sdaps_context_set:n { multichoice={ box,fill=red } }
         \sdaps_checkbox:nn {} {}
-        \sdaps_context_set:n { checkbox={ box,linewidth=2bp,fill=red } }
+        \sdaps_context_set:n { multichoice={ box,linewidth=2bp,fill=red } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ ellipse,fill=red } }
+        \sdaps_context_set:n { multichoice={ ellipse,fill=red } }
         \sdaps_checkbox:nn {} {}
-        \sdaps_context_set:n { checkbox={ ellipse,linewidth=2bp,fill=red } }
+        \sdaps_context_set:n { multichoice={ ellipse,linewidth=2bp,fill=red } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ form=box,fill=red } }
+        \sdaps_context_set:n { multichoice={ form=box,fill=red } }
         \sdaps_checkbox:nn {} {}
-        \sdaps_context_set:n { checkbox={ form=box,linewidth=2bp,fill=red } }
+        \sdaps_context_set:n { multichoice={ form=box,linewidth=2bp,fill=red } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ form=ellipse,fill=red } }
+        \sdaps_context_set:n { multichoice={ form=ellipse,fill=red } }
         \sdaps_checkbox:nn {} {}
-        \sdaps_context_set:n { checkbox={ form=ellipse,linewidth=2bp,fill=red } }
+        \sdaps_context_set:n { multichoice={ form=ellipse,linewidth=2bp,fill=red } }
         \sdaps_checkbox:nn {} {}\newline
 
         The~above~checkboxes~should~be~filled~red.~The~right~column~has~thicker~
@@ -264,61 +264,96 @@
     \ExplSyntaxOff
   \end{MYTESTPAGE}
 
+  \begin{MYTESTPAGE}{multichoice/singlechoice switching}
+    \ExplSyntaxOn
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+
+        \noindent
+        \sdaps_checkbox_set_type:n { multichoice }
+        \sdaps_context_set:n { multichoice={ fill=red }, singlechoice={} }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { multichoice={ linewidth=2bp,fill=red }, singlechoice={} }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_checkbox_set_type:n { singlechoice }
+        \sdaps_context_set:n { singlechoice={ fill=red }, multichoice={} }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { singlechoice={ linewidth=2bp,fill=red }, multichoice={} }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_checkbox_set_type:n { multichoice }
+        \sdaps_context_set:n { multichoice={ form=box,fill=red }, singlechoice={} }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { mulitchoice={ form=box,linewidth=2bp,fill=red }, singlechoice={} }
+        \sdaps_checkbox:nn {} {}\newline
+
+        \sdaps_checkbox_set_type:n { singlechoice }
+        \sdaps_context_set:n { singlechoice={ fill=red }, multichoice={} }
+        \sdaps_checkbox:nn {} {}
+        \sdaps_context_set:n { singlechoice={ linewidth=2bp,fill=red }, multichoice={} }
+        \sdaps_checkbox:nn {} {}\newline
+
+        The~above~checkboxes~should~be~filled~red.~The~right~column~has~thicker~
+        line~widths.~Box/Ellipse~style~iterate.
+      }
+    \ExplSyntaxOff
+  \end{MYTESTPAGE}
 
   \begin{MYTESTPAGE}{Checkbox overlays}
     \ExplSyntaxOn
       {
         \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
 
-        \noindent \sdaps_context_set:n { checkbox={ centered_text={\logpos{X}} } }
+        \noindent \sdaps_context_set:n { multichoice={ centered_text={\logpos{X}} } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ draw_check } }
+        \sdaps_context_set:n { multichoice={ draw_check } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,width=5mm,height=5mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,width=5mm,height=5mm } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,width=10mm,height=5mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,width=10mm,height=5mm } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,width=5mm,height=10mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,width=5mm,height=10mm } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ draw_check,ellipse } }
+        \sdaps_context_set:n { multichoice={ draw_check,ellipse } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=5mm,height=5mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,ellipse,width=5mm,height=5mm } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=10mm,height=5mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,ellipse,width=10mm,height=5mm } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ draw_check,ellipse,width=5mm,height=10mm } }
+        \sdaps_context_set:n { multichoice={ draw_check,ellipse,width=5mm,height=10mm } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},text_align={t},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {}\newline
 
-        \sdaps_context_set:n { checkbox={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedright\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {} {} ~
-        \sdaps_context_set:n { checkbox={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
+        \sdaps_context_set:n { multichoice={ text={\raggedleft\logpos{Minipage}~more~text},text_align={b},width=5em,height=4em,text_padding=0pt } }
         \sdaps_checkbox:nn {} {}\newline
 
       }

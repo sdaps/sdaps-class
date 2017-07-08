@@ -123,11 +123,8 @@ Box[5]=Checkbox,6,99.58463pt,717.49313pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
 ]
 ============================================================
 ============================================================
-TEST 8: Checkbox overlays
+TEST 8: multichoice/singlechoice switching
 ============================================================
-Underfull \hbox (badness 10000) in paragraph at lines 273--326
-\hbox(0.0+0.0)x418.25555
-.\glue(\rightskip) 0.0
 ** Code 128 ** input: testqid
 encoded: \startB ,84,69,83,84,81,73,68,67,\stop ,
 black-white: 21121412411211221411421212411212114214211214122114112223311120
@@ -137,48 +134,21 @@ black-white: 21123223212121133121214131213121222212231222321123311120
 [7
 QObject-Choice=6. A choice question
 Box[6]=Checkbox,7,89.62619pt,758.29315pt,9.95845pt,9.95845pt,box,1.00374pt,,
-POSITION X: 5930953,49123996
-Box[6]=Checkbox,7,89.62619pt,738.08757pt,9.95845pt,9.95845pt,box,1.00374pt,,
-Box[6]=Checkbox,7,103.23462pt,740.22153pt,14.22636pt,14.22636pt,box,1.00374pt,,
-Box[6]=Checkbox,7,121.11096pt,740.22153pt,28.45274pt,14.22636pt,box,1.00374pt,,
-Box[6]=Checkbox,7,153.21368pt,747.33472pt,14.22636pt,28.45274pt,box,1.00374pt,,
-Box[6]=Checkbox,7,89.62619pt,708.63484pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,103.23462pt,710.7688pt,14.22636pt,14.22636pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,121.11096pt,710.7688pt,28.45274pt,14.22636pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,153.21368pt,717.88199pt,14.22636pt,28.45274pt,ellipse,1.00374pt,,
-Box[6]=Checkbox,7,89.62619pt,688.42926pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,44372489
-Box[6]=Checkbox,7,148.0263pt,688.42926pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,44372489
-Box[6]=Checkbox,7,89.62619pt,643.62917pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,42049318
-Box[6]=Checkbox,7,148.0263pt,643.62917pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,42049318
-Box[6]=Checkbox,7,89.62619pt,598.82907pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 6005305,37887603
-Box[6]=Checkbox,7,148.0263pt,598.82907pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9832615,37887603
-Box[6]=Checkbox,7,89.62619pt,554.02898pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,35564432
-Box[6]=Checkbox,7,148.0263pt,554.02898pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,35564432
-Box[6]=Checkbox,7,89.62619pt,509.22888pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,33372824
-Box[6]=Checkbox,7,148.0263pt,509.22888pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,33372824
-Box[6]=Checkbox,7,89.62619pt,464.42879pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 5873742,28947983
-Box[6]=Checkbox,7,148.0263pt,464.42879pt,54.75014pt,43.80011pt,box,1.00374pt,,
-POSITION Minipage: 9701052,28947983
+Box[6]=Checkbox,7,99.58463pt,758.29315pt,9.95845pt,9.95845pt,box,2.00749pt,,
+Box[6]=Checkbox,7,89.62619pt,744.69315pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,99.58463pt,744.69315pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
+Box[6]=Checkbox,7,89.62619pt,731.09314pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[6]=Checkbox,7,99.58463pt,731.09314pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[6]=Checkbox,7,89.62619pt,717.49313pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[6]=Checkbox,7,99.58463pt,717.49313pt,9.95845pt,9.95845pt,ellipse,2.00749pt,,
 ]
 ============================================================
 ============================================================
-TEST 9: Finish the SDAPS document, only modifies global state
+TEST 9: Checkbox overlays
 ============================================================
-============================================================
-============================================================
-TEST 10: Flush out the last page (writes the page number)
-============================================================
+Underfull \hbox (badness 10000) in paragraph at lines 308--361
+\hbox(0.0+0.0)x418.25555
+.\glue(\rightskip) 0.0
 ** Code 128 ** input: testqid
 encoded: \startB ,84,69,83,84,81,73,68,67,\stop ,
 black-white: 21121412411211221411421212411212114214211214122114112223311120
@@ -186,7 +156,58 @@ black-white: 21121412411211221411421212411212114214211214122114112223311120
 encoded: \startC ,32,49,89,23,00,08,24,\stop ,
 black-white: 21123223212121133121214131213121222213221231122223311120
 [8
-Pages=8
+QObject-Choice=7. A choice question
+Box[7]=Checkbox,8,89.62619pt,758.29315pt,9.95845pt,9.95845pt,box,1.00374pt,,
+POSITION X: 5930953,49123996
+Box[7]=Checkbox,8,89.62619pt,738.08757pt,9.95845pt,9.95845pt,box,1.00374pt,,
+Box[7]=Checkbox,8,103.23462pt,740.22153pt,14.22636pt,14.22636pt,box,1.00374pt,,
+Box[7]=Checkbox,8,121.11096pt,740.22153pt,28.45274pt,14.22636pt,box,1.00374pt,,
+Box[7]=Checkbox,8,153.21368pt,747.33472pt,14.22636pt,28.45274pt,box,1.00374pt,,
+Box[7]=Checkbox,8,89.62619pt,708.63484pt,9.95845pt,9.95845pt,ellipse,1.00374pt,,
+Box[7]=Checkbox,8,103.23462pt,710.7688pt,14.22636pt,14.22636pt,ellipse,1.00374pt,,
+Box[7]=Checkbox,8,121.11096pt,710.7688pt,28.45274pt,14.22636pt,ellipse,1.00374pt,,
+Box[7]=Checkbox,8,153.21368pt,717.88199pt,14.22636pt,28.45274pt,ellipse,1.00374pt,,
+Box[7]=Checkbox,8,89.62619pt,688.42926pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 6005305,44372489
+Box[7]=Checkbox,8,148.0263pt,688.42926pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9832615,44372489
+Box[7]=Checkbox,8,89.62619pt,643.62917pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 6005305,42049318
+Box[7]=Checkbox,8,148.0263pt,643.62917pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9832615,42049318
+Box[7]=Checkbox,8,89.62619pt,598.82907pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 6005305,37887603
+Box[7]=Checkbox,8,148.0263pt,598.82907pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9832615,37887603
+Box[7]=Checkbox,8,89.62619pt,554.02898pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 5873742,35564432
+Box[7]=Checkbox,8,148.0263pt,554.02898pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9701052,35564432
+Box[7]=Checkbox,8,89.62619pt,509.22888pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 5873742,33372824
+Box[7]=Checkbox,8,148.0263pt,509.22888pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9701052,33372824
+Box[7]=Checkbox,8,89.62619pt,464.42879pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 5873742,28947983
+Box[7]=Checkbox,8,148.0263pt,464.42879pt,54.75014pt,43.80011pt,box,1.00374pt,,
+POSITION Minipage: 9701052,28947983
+]
+============================================================
+============================================================
+TEST 10: Finish the SDAPS document, only modifies global state
+============================================================
+============================================================
+============================================================
+TEST 11: Flush out the last page (writes the page number)
+============================================================
+** Code 128 ** input: testqid
+encoded: \startB ,84,69,83,84,81,73,68,67,\stop ,
+black-white: 21121412411211221411421212411212114214211214122114112223311120
+** Code 128 ** input: 324989230009
+encoded: \startC ,32,49,89,23,00,09,30,\stop ,
+black-white: 21123223212121133121214131213121222222121321212323311120
+[9
+Pages=9
 ]
 ============================================================
 (.aux)
