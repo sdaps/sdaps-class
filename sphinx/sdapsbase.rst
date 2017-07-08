@@ -174,7 +174,7 @@ possible to fill in names into text fields for printing.
 
 Commands which adhere to overrides are currently:
 
-* all ``checkboxes``
+* all ``multichoice`` or ``singlechoice`` checkboxes
 * all ``textboxes``
 
 There is only one command to set the overrides string:
@@ -260,7 +260,7 @@ Option              Description
 linewidth           The width of the outline (default: 1bp)
 width               The width of the checkbox (default 3.5mm)
 height              The height of the checkbox (default: 3.5mm)
-form                The form, either `box` or `ellipse` (default: `box`, usually set internally)
+form                The form, either `box` or `ellipse` (default: `box` for `multichoice` and `ellipse` for `singlechoice`)
 prefix              The variable prefix from the question to prepend (for internal use)
 value               The value of the checkbox (for internal use)
 fill                The colour to fill the checkbox with (default: `white`)
@@ -282,9 +282,11 @@ There is only one user facing command to render a checkbox:
   * Variable name
   * Value
 
-The behaviour of the checkbox should be changed through the context. This can be done
-globally at the start by simply setting a few flags. As an example the following
-modifies the linewidth for all boxes, and the size of checkboxes:
+The behaviour of the checkbox should be changed through the context. On a first
+level this works by using `\\sdaps_checkbox_set_type:n` and setting either
+`singlechoice` or `multichoice`. Other than that you can also change the style
+for `singlechoice` and `multichoice` through the context and overrides. The
+following example demonstrates the use of context modification.
 
 .. sdaps:: Example showing modification of the context for checkbox rendering
 
@@ -297,7 +299,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
-    \sdaps_context_append:nn { checkbox } { fill=red }
+    \sdaps_context_append:nn { multichoice } { fill=red }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
@@ -306,7 +308,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
 
 
     \hspace{1em}
-    \sdaps_context_set:n { checkbox={ellipse} }
+    \sdaps_context_set:n { multichoice={ellipse} }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
@@ -314,7 +316,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
-    \sdaps_context_append:nn { checkbox } { fill=red }
+    \sdaps_context_append:nn { multichoice } { fill=red }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
@@ -323,7 +325,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
 
     \newline
 
-    \sdaps_context_set:n { * = { centered_text = X }, checkbox = { width=5mm, height=5mm} }
+    \sdaps_context_set:n { * = { centered_text = X }, multichoice = { width=5mm, height=5mm} }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
@@ -339,7 +341,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
-    \sdaps_context_set:n { checkbox={draw_check} }
+    \sdaps_context_set:n { multichoice={draw_check} }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
@@ -347,7 +349,7 @@ modifies the linewidth for all boxes, and the size of checkboxes:
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
-    \sdaps_context_append:nn { checkbox } { fill=red }
+    \sdaps_context_append:nn { multichoice } { fill=red }
     \sdaps_checkbox:nn {} {}
 
     \hspace{1em}
