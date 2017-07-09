@@ -139,7 +139,8 @@ Generic commands are also provided to write to
 
     Write given text to metadatafile at shipout. Some output may be reordered due
     to this, but all SDAPS classes ensure that the metadata can still be decoded
-    correctly.
+    correctly. As this macro leaves elements in the output stream it can affect
+    layouting in a few cases (e.g. row headers of :environ:`sdapsarray`).
 
     The tokens **will not be expanded** again before writing. This implies that coordinates
     cannot be written using this macro.
@@ -152,7 +153,8 @@ Generic commands are also provided to write to
 
     Write given text to metadatafile at shipout. Some output may be reordered due
     to this, but all SDAPS classes ensure that the metadata can still be decoded
-    correctly.
+    correctly. As this macro leaves elements in the output stream it can affect
+    layouting in a few cases (e.g. row headers of :environ:`sdapsarray`).
 
     The tokens **will be expanded** again before writing. This implies that coordinates
     can be written using this macro if one takes care not to protect them from
