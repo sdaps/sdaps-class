@@ -520,7 +520,7 @@
     \sdaps_qobject_begin:nnV { rangearray } { Head } \l_sdaps_rangearray_text_tl
   }
 
-  \sdaps_context_set:n {checkbox={ellipse}}
+  \sdaps_checkbox_set_type:n { singlechoice }
 
   \tl_if_empty:NF \l_sdaps_rangearray_var_tl {
     \sdaps_context_append:nVn { var } \l_sdaps_rangearray_var_tl { _ }
