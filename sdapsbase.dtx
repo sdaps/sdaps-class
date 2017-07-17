@@ -1301,6 +1301,7 @@
 
 
 \tl_new:N \g_sdaps_style_tl
+\tl_new:N \g_sdaps_checkmode_tl
 \dim_new:N \g_sdaps_edge_left_margin_dim
 \dim_new:N \g_sdaps_edge_right_margin_dim
 \dim_new:N \g_sdaps_edge_top_margin_dim
@@ -1313,6 +1314,7 @@
 
 
 \tl_gset:Nn \g_sdaps_style_tl { code128 }
+\tl_gset:Nn \g_sdaps_checkmode_tl { checkcorrect }
 \dim_gset:Nn \g_sdaps_edge_left_margin_dim { 10mm }
 \dim_gset:Nn \g_sdaps_edge_right_margin_dim { 10mm }
 \dim_gset:Nn \g_sdaps_edge_top_margin_dim { 12mm }
@@ -1628,7 +1630,7 @@
     PageSize=\the\paperwidth, \the\paperheight
   }
   \sdaps_info_write:x{Style=\g_sdaps_style_tl}
-  \sdaps_info_write:x{CheckMode=checkcorrect}
+  \sdaps_info_write:x{CheckMode=\g_sdaps_checkmode_tl}
 
   \int_gset:Nn \g_sdaps_page_int { 0 }
 }
