@@ -106,11 +106,14 @@ Macros
         \singlemarkother{A range question with 7 answers}{lower}{upper}{other}
 
 
-.. macro:: \textbox*{height}{question}
+.. macro:: \textbox*[kwargs]{height}{question}
 
     :arg *: If given, the textbox is scalable in height
     :arg height: The height of the text including a unit. If the `*` parameter is given, then this is the minimal height only
     :arg question: The question text, may not contain fragile content
+
+    :kwarg text: The question text for the metadata
+    :kwarg var: The variable name for this textbox (to be appended to context)
 
     .. todo:: :macro:`\\textbox` should be able to handle an optional keyword
         argument and then allow the question text to include fragile content.

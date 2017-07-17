@@ -426,23 +426,37 @@
 }
 
 
+\tl_new:N \l_sdaps_classic_textbox_var_tl
+\tl_new:N \l_sdaps_classic_textbox_text_tl
+\keys_define:nn { sdapsclassic / textbox }
+{
+  var        .tl_set:N   = \l_sdaps_classic_textbox_var_tl,
+  text       .tl_set:N   = \l_sdaps_classic_textbox_text_tl,
+}
 
 % With star non-expanding, without start expanding
 \providecommand{\textbox}{\@ifstar
-    {\_sdaps_classic_textbox:nnn\c_false_bool}%
-    {\_sdaps_classic_textbox:nnn\c_true_bool}%
+    {\bool_set_false:N \l_tmpa_bool \_sdaps_classic_textbox }
+    {\bool_set_true:N \l_tmpa_bool \_sdaps_classic_textbox }
 }
-\cs_new_protected_nopar:Nn\_sdaps_classic_textbox:nnn
+
+\providecommand{\_sdaps_classic_textbox}[3][]
 {
+  \keys_set:nn { sdapsclassic / textbox } { #1 }
+
   \sdaps_classic_ensure_section:
   \question{#3}
 
-  \sdaps_qobject_begin:nnn { textbox } { Text } { #3 }
+  \tl_if_empty:NTF \l_sdaps_classic_textbox_text_tl {
+    \sdaps_qobject_begin:nnn { textbox } { Text } { #3 }
+  } {
+    \sdaps_qobject_begin:nnV { textbox } { Text } \l_sdaps_classic_textbox_text_tl
+  }
 
-  \bool_if:NTF #1 {
-    \sdaps_textbox_vhstretch:nnn {} { #2 } { 1 }
+  \bool_if:NTF \l_tmpa_bool {
+    \sdaps_textbox_vhstretch:Vnn \l_sdaps_classic_textbox_var_tl { #2 } { 1 }
   }{
-    \sdaps_textbox_vhstretch:nnn {} { #2 } { 0 }
+    \sdaps_textbox_vhstretch:Vnn \l_sdaps_classic_textbox_var_tl { #2 } { 0 }
   }
 
   \sdaps_qobject_end:n { textbox }
