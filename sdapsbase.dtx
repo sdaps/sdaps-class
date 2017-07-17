@@ -1377,7 +1377,7 @@
         \tl_if_empty:VF \g__sdaps_questionnaire_id_tl {
           \begin{scope}[shift={($(\g_sdaps_edge_left_margin_dim, \g_sdaps_edge_bottom_margin_dim)$)}]
             \node(barcode)[anchor=south~west,outer~sep=0,inner~sep=0]{
-              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g__sdaps_questionnaire_id_tl
+              \qrcode_render:nV {nolink,version=2,level=H,padding,height=10mm} \g__sdaps_questionnaire_id_tl
             };
           \end{scope}
         }
@@ -1388,14 +1388,14 @@
           \pgfmathsetbasenumberlength{4}
           \pgfmathdectobase{\paddedpage}{\int_use:N\g_sdaps_page_int}{10}% Yes, padding to 4 chars the hard way
           \node(barcode)[anchor=south~east,outer~sep=0,inner~sep=0]{
-            \qrcode_render:nx {version=2,level=H,padding,height=10mm} {\tl_use:N\g_sdaps_survey_id_tl\paddedpage}
+            \qrcode_render:nx {nolink,version=2,level=H,padding,height=10mm} {\tl_use:N\g_sdaps_survey_id_tl\paddedpage}
           };
         \end{scope}
 
         \tl_if_empty:VF \g_sdaps_global_id_tl {
           \begin{scope}[shift={($(\paperwidth/2-\g_sdaps_edge_right_margin_dim/2+\g_sdaps_edge_left_margin_dim/2, \g_sdaps_edge_bottom_margin_dim)$)}]
             \node(barcode)[anchor=south,outer~sep=0,inner~sep=0]{
-              \qrcode_render:nV {version=2,level=H,padding,height=10mm} \g_sdaps_global_id_tl
+              \qrcode_render:nV {nolink,version=2,level=H,padding,height=10mm} \g_sdaps_global_id_tl
             };
           \end{scope}
         }
