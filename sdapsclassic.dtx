@@ -463,6 +463,62 @@
   var        .tl_set:N   = \l_sdaps_singlemark_var_tl,
 }
 
+\cs_new_protected_nopar:Nn \_sdaps_classic_dummy_checkbox_prepare:NN
+{
+  \group_begin:
+    \sdaps_context_begin_local:
+    \sdaps_context_append:nn { singlechoice } { writepos=false }
+    \sdaps_context_append:nn { multichoice } { writepos=false }
+    \bool_if:NT #1 {
+      \sdaps_context_append:nn { singlechoice } { draw_check=true }
+      \sdaps_context_append:nn { multichoice } { draw_check=true }
+    }
+    \bool_if:NT #2 {
+      \sdaps_context_append:nn { singlechoice } { fill=black }
+      \sdaps_context_append:nn { multichoice } { fill=black }
+    }
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_classic_dummy_checkbox_single:
+{
+    \sdaps_checkbox_set_type:n { singlechoice }
+    \sdaps_checkbox:nn { } { }
+  \group_end:
+  \ignorespaces
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_classic_dummy_checkbox_multi:
+{
+    \sdaps_checkbox_set_type:n { multichoice }
+    \sdaps_checkbox:nn { } { }
+  \group_end:
+  \ignorespaces
+}
+
+\providecommand{\checkbox}{
+  \_sdaps_classic_dummy_checkbox_prepare:NN \c_false_bool \c_false_bool
+  \@ifstar
+    \_sdaps_classic_dummy_checkbox_single:
+    \_sdaps_classic_dummy_checkbox_multi:
+}
+\providecommand{\checkedbox}{%
+  \_sdaps_classic_dummy_checkbox_prepare:NN \c_true_bool \c_false_bool
+  \@ifstar
+    \_sdaps_classic_dummy_checkbox_single:
+    \_sdaps_classic_dummy_checkbox_multi:
+}
+\providecommand{\filledbox}{%
+  \_sdaps_classic_dummy_checkbox_prepare:NN \c_false_bool \c_true_bool
+  \@ifstar
+    \_sdaps_classic_dummy_checkbox_single:
+    \_sdaps_classic_dummy_checkbox_multi:
+}
+\providecommand{\correctedbox}{%
+  \_sdaps_classic_dummy_checkbox_prepare:NN \c_true_bool \c_true_bool
+  \@ifstar
+    \_sdaps_classic_dummy_checkbox_single:
+    \_sdaps_classic_dummy_checkbox_multi:
+}
 
 \providecommand*{\singlemark}[4][]{%
   \sdaps_classic_ensure_section:

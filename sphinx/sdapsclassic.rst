@@ -40,6 +40,30 @@ print_questionnaire_id      Enable printing of questionnaire IDs
 Macros
 ------
 
+.. macro:: \checkbox*
+
+    :arg *: If given, a single choice checkbox is shown instead of a multi choice.
+
+    Shows an unchecked checkbox for demonstration purposes.
+
+.. macro:: \checkedbox*
+
+    :arg *: If given, a single choice checkbox is shown instead of a multi choice.
+
+    Shows a checked checkbox for demonstration purposes.
+
+.. macro:: \filledbox*
+
+    :arg *: If given, a single choice checkbox is shown instead of a multi choice.
+
+    Shows a filled checkbox for demonstration purposes.
+
+.. macro:: \correctedbox*
+
+    :arg *: If given, a single choice checkbox is shown instead of a multi choice.
+
+    Shows a filled and checked checkbox for demonstration purposes.
+
 .. macro:: \singlemark[kwargs]{question}{lower}{upper}
 
     A simple "mark" question, i.e. a range. The command does not currently allow adding
