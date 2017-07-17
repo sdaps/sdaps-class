@@ -73,9 +73,7 @@ Macros
     :arg lower: The text for the lower label
     :arg upper: The text for the upper label
 
-    :kwarg text: The question text for the metadata, if set then `question` may contain fragile content.
-    :kwarg lower: The lower label text for the metadata, if set then `lower` may contain fragile content.
-    :kwarg upper: The upper label text for the metadata, if set then `upper` may contain fragile content.
+    :kwarg var: The variable for the question (to be appended to context).
 
     .. sdaps:: Simplest form of a range question
         :sdapsclassic:
@@ -93,10 +91,7 @@ Macros
     :arg upper: The text for the upper label
     :arg other: The text for the other label
 
-    :kwarg text: The question text for the metadata, if set then `question` may contain fragile content.
-    :kwarg lower: The lower label text for the metadata, if set then `lower` may contain fragile content.
-    :kwarg upper: The upper label text for the metadata, if set then `upper` may contain fragile content.
-    :kwarg other: The other label text for the metadata, if set then `other` may contain fragile content.
+    :kwarg var: The variable for the question (to be appended to context).
 
     .. sdaps:: A range question with an alternative answer
         :sdapsclassic:
@@ -112,7 +107,7 @@ Macros
     :arg height: The height of the text including a unit. If the `*` parameter is given, then this is the minimal height only
     :arg question: The question text, may not contain fragile content
 
-    :kwarg text: The question text for the metadata
+    :kwarg text: The question text for the metadata. Fragile content is currently *not* supported.
     :kwarg var: The variable name for this textbox (to be appended to context)
 
     .. todo:: :macro:`\\textbox` should be able to handle an optional keyword
