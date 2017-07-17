@@ -783,16 +783,45 @@
 \iow_new:N \l__sdaps_questionnaire_iow
 \bool_new:N \l__sdaps_questionnaire_parse_direct_bool
 
-\def\questionnaire{
+\bool_new:N \l__sdaps_questionnaire_info_bool
 
-  \hypersetup{%
-    pdfauthor     = \@author,%
-    pdftitle      = \@title,%
-    pdfsubject    = sdaps questionnaire \@title,%
-    pdfkeywords   = sdaps questionnaire \@title%
-  }%
-  %
+\keys_define:nn { sdaps / questionnaire }
+{
+  info         .bool_set:N  = \l__sdaps_questionnaire_info_bool,
+  info         .default:n   = true,
+  info         .initial:n   = true,
 
+  noinfo       .meta:n  = { info=false },
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_classic_show_info:
+{
+  \bool_if:NT \l__sdaps_questionnaire_info_bool {
+    \begin{info}
+      \translate{infotext}\\
+      \tl_if_eq:VnTF \g_sdaps_checkmode_tl { checkcorrect } {
+        \begin{tabularx}{\textwidth}{llcX}
+            \translate{info-cross}: & \checkedbox &\quad & \translate{info-select} \\
+            \translate{info-correct}: & \correctedbox & & \translate{info-mark} \\
+        \end{tabularx}
+      } {
+        \PackageError{sdaps}{Sorry, there is no help text for the checkmode you have choosen right now! Please pass the noinfo optional argument to the questionnaire environment!}\@ehb %
+      }
+    \end{info}
+  }
+  \ignorespaces
+}
+
+\newenvironment { questionnaire } [ 1 ] []
+{
+  \keys_set:nn { sdaps / questionnaire } { #1 }
+
+  \hypersetup{
+    pdfauthor     = \@author,
+    pdftitle      = \@title,
+    pdfsubject    = sdaps questionnaire \@title,
+    pdfkeywords   = sdaps questionnaire \@title
+  }
 
   % If we only have one questionnaire ID, then parse the environment directly,
   % otherwise write it into a temporary file and input it multiple times.
@@ -816,6 +845,7 @@
 
     % And, begin the questionnaire
     \sdaps_begin:
+      \_sdaps_classic_show_info:
   } {
     \bool_set_false:N \l__sdaps_questionnaire_parse_direct_bool
 
@@ -829,9 +859,7 @@
     }
     \verbatim@start
   }
-}
-
-\def\endquestionnaire{
+} {
   \bool_if:NTF \l__sdaps_questionnaire_parse_direct_bool {
         % Just end everything, nothing else to do.
       \sdaps_end:
@@ -847,6 +875,7 @@
       \seq_map_inline:Nn \g_sdaps_questionnaire_ids_seq {
         \sdaps_set_questionnaire_id:n { ##1 }
         \sdaps_begin:
+          \_sdaps_classic_show_info:
           \input{ \c_job_name_tl . questionnaire }
         \sdaps_end:
         \newpage
