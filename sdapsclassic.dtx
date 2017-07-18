@@ -601,6 +601,10 @@
 {
   var        .tl_set:N   = \l_sdaps_choicequestion_var_tl,
   text       .tl_set:N   = \l_sdaps_choicequestion_text_tl,
+  colsep     .dim_set:N  = \l_sdaps_choicequestion_colsep_dim,
+  colsep     .initial:n  = 6pt,
+  rowsep     .dim_set:N  = \l_sdaps_choicequestion_rowsep_dim,
+  rowsep     .initial:n  = 2pt,
   cols       .int_set:N  = \l_sdaps_choicequestion_cols_int,
   cols       .initial:n  = 3,
 }
@@ -669,7 +673,7 @@
   \fi:
 
   \choicequestion_widowpenalty
-  \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
+  \vbox:n { \skip_horizontal:N \@totalleftmargin \box_use:N \l__sdaps_classic_choicequestion_coffin }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
   \sdaps_qobject_end:n { choicequestion }
 
@@ -689,7 +693,8 @@
   % Is linewidth the right thing here?
   \int_compare:nT { \l__sdaps_classic_choiceitem_col_int + #2 > \l__sdaps_classic_choiceitem_cols_int } {
     % We can only typeset a coffin in vertical mode if we use the box function
-    \vbox:n { \box_use:N \l__sdaps_classic_choicequestion_coffin }
+    \vbox:n { \skip_horizontal:N \@totalleftmargin \box_use:N \l__sdaps_classic_choicequestion_coffin }
+    \skip_vertical:N \l_sdaps_choicequestion_rowsep_dim
     \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
     \choicequestion_clubpenalty
     \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
@@ -717,8 +722,11 @@
   \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}~ \tl_trim_spaces:n { #2 }
+    \begin{minipage}[t]{\l_tmpa_dim}
+      \usekomafont{choiceitemfont}\hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}\  }
+      \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
+        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \tl_trim_spaces:n { #2 }
+      \end{addmargin}
     \end{minipage}
   }
 
