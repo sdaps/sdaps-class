@@ -28,6 +28,9 @@ be created directly with sdapsarray.
     :kwarg text:          override the normal header (not useful currently!)
     :kwarg var:           if set appends the variable name to the newly created scope ('_' separator is added automatically)
     :kwarg vertical:      set vertical mode where each question is one column
+    :kwarg type:          the question type "multichoice" or "singlechoice"
+    :kwarg multichoice:   switch to multichoice "Choice" question mode
+    :kwarg singlechoice:  switch to singlechoice "Option" question mode
 
 
     The choicearray environment represents a tabular layout for a set of multiple

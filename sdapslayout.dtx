@@ -286,15 +286,14 @@
 %
 %    \begin{macrocode}
 
-
+\tl_new:N \l_sdaps_choicearray_qobject_type_tl
 \bool_new:N \l_sdaps_choicearray_horizontal_bool
 \tl_new:N \l_sdaps_choicearray_var_tl
 \tl_new:N \l_sdaps_choicearray_text_tl
 \tl_new:N \l_sdaps_choicearray_layouter_tl
 \tl_new:N \l_sdaps_choicearray_align_tl
 \tl_new:N \l_sdaps_choicearray_extra_tl
-\tl_new:N \l_sdaps_choicearray_qobject_type_tl
-\tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Choice }
+\tl_new:N \l_sdaps_choicearray_type_tl
 \tl_new:N \l_sdaps_choice_var_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
@@ -315,6 +314,12 @@
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_choicearray_align_tl,
   align      .initial:n  = { choicearray\bool_if:NTF\l_sdaps_choicearray_horizontal_bool{horizontal}{vertical}\tl_use:N\l_sdaps_choicearray_layouter_tl },
+
+  type       .choices:nn  = { multichoice, singlechoice } { \tl_set:Nx \l_sdaps_choicearray_type_tl { \l_keys_choice_tl } },
+  type       .initial:n   = { multichoice },
+
+  singlechoice .meta:n   = { type=singlechoice },
+  multichoice  .meta:n   = { type=multichoice },
 
   noalign    .meta:n  = { align= },
 }
@@ -343,6 +348,13 @@
 
   \tl_if_empty:NF \l_sdaps_choicearray_var_tl {
     \sdaps_context_append:nVn { var } \l_sdaps_choicearray_var_tl { _ }
+  }
+
+  \sdaps_checkbox_set_type:V \l_sdaps_choicearray_type_tl
+  \tl_if_eq:VnTF \l_sdaps_choicearray_type_tl { multichoice } {
+    \tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Choice }
+  } {
+    \tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Option }
   }
 }
 \cs_generate_variant:Nn \_sdaps_choicearray_preprocess:nn { Vn }
@@ -782,14 +794,8 @@
     \seq_gclear:N \g_sdaps_choices_text_seq
 
     % Define new commands
-    \tl_if_eq:VnTF \l_sdaps_choicearray_qobject_type_tl { Option } {
-      \newcommand \option [ 1 ] [] {
-        \_sdaps_choicearray_process_choice:nw { ##1 }
-      }
-    } {
-      \newcommand \choice [ 1 ] [] {
-        \_sdaps_choicearray_process_choice:nw { ##1 }
-      }
+    \newcommand \choice [ 1 ] [] {
+      \_sdaps_choicearray_process_choice:nw { ##1 }
     }
     \newcommand \question [ 1 ] [] {
       \_sdaps_choicearray_process_question:nw { ##1 }
@@ -811,15 +817,10 @@
 
 \newenvironment { optionarray } [ 2 ] []
 {
-  \group_begin:
-    \sdaps_context_begin_local:
-      \sdaps_checkbox_set_type:n { singlechoice }
-      \tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Option }
-      \choicearray[#1] { #2 }
+  \choicearray[singlechoice,#1] { #2 }
 }
 {
-      \endchoicearray
-  \group_end:
+  \endchoicearray
 }
 
 \newenvironment { rangearray } [ 2 ] []
