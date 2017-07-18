@@ -1,0 +1,57 @@
+SDAPS Class and Package repository
+==================================
+
+This repository contains LaTeX classes and packages to create machine readable
+questionnaires. Metadata is generated for the whole document and it is
+possible to process created forms fully automatically using the SDAPS main
+program.
+As of now, this package is included in the SDAPS unstable (1.9.0) distribution.
+
+Features
+========
+
+ * Flexible metadata generation
+ * Different question types:
+   - Freeform text
+   - Multiple Choice Questions
+     * may contain freeform text fields
+       (TODO: some people would like a combined checkbox + textfield)
+     * standalone
+     * as a list (to be implemented)
+     * array with questions in rows
+     * array with questions in columns
+   - Single Choice Qeustions:
+     * standalone (to be implemented)
+     * as a list (to be implemented)
+     * array with questions in rows
+     * array with questions in columns
+   - Range (1-n answers with optionally further choices):
+     * standalone
+     * array with questions in rows
+ * Array layout features (used for questions in arrays):
+   - Can flow over multiple pages and repeats the header automatically
+   - Optional document wide alignment of array environments
+   - Has complex layout features like rotating the headers to safe space
+   - Ability to exchange rows and columns on the fly
+ * PDF form generation
+ * Complex document wide and local setting handling
+ * Possibility to pre-fill questionnaires directly in LaTeX
+   (not yet easily usable by end users)
+
+Documentation
+=============
+
+The most up to date documentation is in the sphinx directory. An online copy
+can be found at http://sdaps.org/class-doc. The documentation in the files
+is outdated at this point and likely to be stripped down rather than extended.
+
+Created Files
+-------------
+
+ * sdapsbase.sty: Base functionality on which everything else is build.
+ * sdapsclassic.cls: Class for creating questionnaires
+                     (currently the only propery of using these packages)
+ * sdapspdf.sty: Makes any SDAPS document into a PDF form
+ * sdapsarray.sty: Base functionality for tabular like layouts
+ * sdapslayout.sty: Base functionality for complex question layouts
+ * code128.tex: Code 128 barcode renderer (re-licensed upstream copy)
