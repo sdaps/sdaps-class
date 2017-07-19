@@ -426,7 +426,7 @@
     \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpa_tl. ~ \exp_not:n{#3}}
     \sdaps_context_hook_post_end:n { \_sdaps_qobject_post_hook: }
 }
-\cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV }
+\cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV, nVV, nVn }
 
 
 \cs_new_protected_nopar:Nn \sdaps_qobject_end:n
@@ -851,7 +851,7 @@
   \group_end:%
   \ignorespaces
 }
-\cs_generate_variant:Nn \sdaps_checkbox:nn { Vn }
+\cs_generate_variant:Nn \sdaps_checkbox:nn { Vn, VV, nV }
 
 
 \cs_new_protected_nopar:Nn \sdaps_overlay_check:

@@ -295,10 +295,11 @@
 \tl_new:N \l_sdaps_choicearray_extra_tl
 \tl_new:N \l_sdaps_choicearray_type_tl
 \tl_new:N \l_sdaps_choice_var_tl
+\tl_new:N \l_sdaps_choice_val_tl
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
 \tl_new:N \l_sdaps_question_text_tl
-\seq_new:N \g_sdaps_choices_var_seq
+\seq_new:N \g_sdaps_choices_cell_seq
 \seq_new:N \g_sdaps_choices_text_seq
 
 \keys_define:nn { sdaps / choicearray }
@@ -327,6 +328,7 @@
 \keys_define:nn { sdaps / choicearray / choice }
 {
   var        .tl_set:N   = \l_sdaps_choice_var_tl,
+  val        .tl_set:N   = \l_sdaps_choice_val_tl,
   text       .tl_set:N   = \l_sdaps_choice_text_tl,
 }
 
@@ -391,11 +393,12 @@
   \leavevmode
 
   \tl_clear:N \l_sdaps_choice_var_tl
+  \tl_clear:N \l_sdaps_choice_val_tl
   \tl_clear:N \l_sdaps_choice_text_tl
 
   \keys_set:nn { sdaps / choicearray / choice } { #1 }
 
-  \seq_gput_right:Nx \g_sdaps_choices_var_seq { \l_sdaps_choice_var_tl }
+  \seq_gput_right:Nx \g_sdaps_choices_cell_seq { \exp_not:n { \sdaps_checkbox:nn } { \l_sdaps_choice_var_tl } { \l_sdaps_choice_val_tl } }
 
   \tl_if_empty:NTF \l_sdaps_choice_text_tl {
     % We need to leave a command in the stream that grabs the next parameter
@@ -444,9 +447,9 @@
     \sdaps_answer:f { ##1 }
   }
 
-  \seq_map_inline:Nn \g_sdaps_choices_var_seq {
+  \seq_map_inline:Nn \g_sdaps_choices_cell_seq {
     \sdaps_array_alignment:
-    \sdaps_checkbox:nn { ##1 } {  }
+    ##1
   }
 
   \sdaps_qobject_end:n { choicearray_question }
@@ -790,7 +793,7 @@
 
     \_sdaps_choicearray_preprocess:Vn \l_tmpa_tl { #2 }
     % Clear the variables
-    \seq_gclear:N \g_sdaps_choices_var_seq
+    \seq_gclear:N \g_sdaps_choices_cell_seq
     \seq_gclear:N \g_sdaps_choices_text_seq
 
     % Define new commands

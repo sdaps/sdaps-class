@@ -593,6 +593,11 @@
 
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~macros. }
 
+\msg_new:nnn { sdapsclassic } { choicequestion_no_text } { Textboxes~cannot~be~used~in~singlechoice~questions.\\
+It~is~currently~not~supported~to~use~text~answers~in~single~choice~questions.~Until~support~is~added~
+you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
+
+\tl_new:N \l_sdaps_choicquestion_type_tl
 \tl_new:N \l_sdaps_choicequestion_var_tl
 \tl_new:N \l_sdaps_choicequestion_text_tl
 \int_new:N \l_sdaps_choicequestion_cols_int
@@ -607,15 +612,23 @@
   rowsep     .initial:n  = 2pt,
   cols       .int_set:N  = \l_sdaps_choicequestion_cols_int,
   cols       .initial:n  = 3,
+
+  type       .choices:nn  = { multichoice, singlechoice } { \tl_set:Nx \l_sdaps_choicquestion_type_tl { \l_keys_choice_tl } },
+  type       .initial:n   = { multichoice },
+
+  singlechoice .meta:n    = { type=singlechoice },
+  multichoice  .meta:n    = { type=multichoice },
 }
 
 
 \tl_new:N \l_sdaps_choicequestion_choice_var_tl
+\tl_new:N \l_sdaps_choicequestion_choice_val_tl
 \tl_new:N \l_sdaps_choicequestion_choice_text_tl
 
 \keys_define:nn { sdaps / choicequestion / choice }
 {
   var        .tl_set:N   = \l_sdaps_choicequestion_choice_var_tl,
+  val        .tl_set:N   = \l_sdaps_choicequestion_choice_val_tl,
   text       .tl_set:N   = \l_sdaps_choicequestion_choice_text_tl,
 }
 
@@ -633,11 +646,18 @@
   \question{#2}%
 
   % Setup the context
-  \tl_if_empty:NTF \l_sdaps_choicequestion_text_tl {
-    \sdaps_qobject_begin:nnn { choicequestion } { choice } { #2 }
+  \tl_if_eq:VnTF \l_sdaps_choicearray_type_tl { multichoice } {
+    \tl_set:Nn \l_tmpa_tl { Choice }
   } {
-    \sdaps_qobject_begin:nnV { choicequestion } { choice } \l_sdaps_choicequestion_text_tl
+    \tl_set:Nn \l_tmpa_tl { Option }
   }
+  \tl_if_empty:NTF \l_sdaps_choicequestion_text_tl {
+    \sdaps_qobject_begin:nVn { choicequestion } \l_tmpa_tl { #2 }
+  } {
+    \sdaps_qobject_begin:nVV { choicequestion } \l_tmpa_tl \l_sdaps_choicequestion_text_tl
+  }
+
+  \sdaps_checkbox_set_type:V \l_sdaps_choicquestion_type_tl
 
   \sdaps_context_append:nVn { var } \l_sdaps_choicequestion_var_tl { _ }
 
@@ -709,6 +729,7 @@
 
 \providecommand*{\choiceitem}[2][]{%
   \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_val_tl
   \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
 
   \keys_set:nn { sdaps / choicequestion / choice } { #1 }
@@ -723,7 +744,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}[t]{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}\  }
+      \usekomafont{choiceitemfont}\hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
       \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
         \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \tl_trim_spaces:n { #2 }
       \end{addmargin}
@@ -736,6 +757,7 @@
 
 \providecommand*{\choicemulticolitem}[3][]{ %
   \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_val_tl
   \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
 
   \keys_set:nn { sdaps / choicequestion / choice } { #1 }
@@ -750,7 +772,7 @@
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:Vn \l_sdaps_choicequestion_choice_var_tl {} {}~ \tl_trim_spaces:n { #3 }
+      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}~ \tl_trim_spaces:n { #3 }
     \end{minipage}
   }
 
@@ -760,9 +782,16 @@
 
 \providecommand{\choiceitemtext}[4][]{%
   \tl_clear:N \l_sdaps_choicequestion_choice_var_tl
+  \tl_clear:N \l_sdaps_choicequestion_choice_val_tl
   \tl_clear:N \l_sdaps_choicequestion_choice_text_tl
 
   \keys_set:nn { sdaps / choicequestion / choice } { #1 }
+  % TODO: Warn if val has been set here
+
+  % If not multichoice then warn
+  \tl_if_eq:VnF \l_sdaps_choicquestion_type_tl { multichoice } {
+    \msg_error:nn { sdapsclassic } { choicequestion_no_text }
+  }
 
   \tl_if_empty:NTF \l_sdaps_choicequestion_choice_text_tl {
    \sdaps_answer:n { #4 }
@@ -956,11 +985,11 @@
 
     \question{#2}
 
-    % Undefine the question (and option) commands in local scope so that they
+    % Undefine the question (and choice) commands in local scope so that they
     % can be redefined by optionarray without any issues.
     % Note that \cs_undefine:N works in global scope, so we cannot use it here.
     \cs_set_eq:NN\question\tex_undefined:D
-    \cs_set_eq:NN\option\tex_undefined:D
+    \cs_set_eq:NN\choice\tex_undefined:D
 
     \begin{optionarray}[#1]{#2}
       % XXX: This is a bit of a hack, set in global scope because the optionarray

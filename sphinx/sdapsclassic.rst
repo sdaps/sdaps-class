@@ -185,6 +185,9 @@ Environments
     :kwarg cols: Number of columns
     :kwarg var: Variable name for this question (to be appended to context).
     :kwarg text: Replacement text for metadata
+    :kwarg type:          the question type "multichoice" or "singlechoice"
+    :kwarg multichoice:   switch to multichoice "Choice" question mode
+    :kwarg singlechoice:  switch to singlechoice "Option" question mode
 
     The content should only contain :macro:`\\choiceitem`, :macro:`\\choicemulticolitem` and :macro:`\\choiceitemtext`.
 
@@ -202,7 +205,8 @@ Environments
         A possible choice in a :environ:`choicequestion`. Will span exactly one column.
 
         :param text: The text for the choice. Fragile content is currently *not* supported.
-        :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg var: Variable name for this answer for multichoice (to be appended to context).
+        :kwarg val: Value for this answer for singlechoice.
         :kwarg text: Replacement text for metadata.
 
     .. macro:: \choicemulticolitem[kwargs]{cols}{text}
@@ -211,13 +215,16 @@ Environments
 
         :param cols: The number of columns to span.
         :param text: The text for the choice. Fragile content is currently *not* supported.
-        :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg var: Variable name for this answer for multichoice (to be appended to context).
+        :kwarg val: Value for this answer for singlechoice.
         :kwarg text: Replacement text for metadata.
 
     .. macro:: \choiceitemtext[kwargs]{height}{cols}{text}
 
         A possible freeform choice in a :environ:`choicequestion`. The text field
         will be of height `height` and it will span exactly `cols` columns.
+
+        The text item can currently only be used in multichoice environments.
 
         :param cols: The number of columns to span.
         :param text: The text for the choice. Fragile content is currently *not* supported.
@@ -281,34 +288,43 @@ Environments
 
     .. note:: The choicegroup environment is an alias for the :environ:`choicearray` environment. At this
         point the only difference is that the choicegroup environment correctly prints the
-        header and that it uses the command aliases :macro:`\\groupaddchoice` and :macro:`\\choiceline`.
+        header and that it creates the :macro:`\\groupaddchoice` and :macro:`\\choiceline` aliases.
 
-    .. macro:: \groupaddchoice[kwargs]{text}
+    .. macro:: \choice[kwargs]{text}
 
         A possible choice inside inside the group.
 
         :param text: The choices (header) text.
         :kwarg text: A replacement text for the metadata, if set fragile content is
             permitted inside the `text` argument.
-        :kwarg var: Variable name for this answer (to be appended to context).
+        :kwarg var: Variable name for this answer for multichoice (to be appended to context).
+        :kwarg val: Value for this answer for singlechoice.
 
-    .. macro:: \choiceline[kwargs]{text}
+    .. macro:: \groupaddchoice[kwargs]{text}
 
-        A single question inside the group. All choices need to be defined earlier using :macro:`\\groupaddchoice`.
+        Alias for :macro:`\\choice` for compatibility.
+
+    .. macro:: \question[kwargs]{text}
+
+        A single question inside the group. All choices need to be defined earlier using :macro:`\\choice`.
 
         :param text: Question text.
         :kwarg text: A replacement text for the metadata, if set fragile content is
             permitted inside the `text` argument.
         :kwarg var: Variable name for this question (to be appended to context).
 
+    .. macro:: \choiceline[kwargs]{text}
+
+        Alias for :macro:`\\question` for compatibility.
+
     .. sdaps:: Example of a choicegroup environment
         :sdapsclassic:
 
         \begin{choicegroup}{A group of questions}
-          \groupaddchoice{Choice 1}
-          \groupaddchoice{Choice 2}
-          \choiceline{Question one}
-          \choiceline{Question two}
+          \choice{Choice 1}
+          \choice{Choice 2}
+          \question{Question one}
+          \question{Question two}
         \end{choicegroup}
         
         \begin{choicegroup}{Another group of questions which is automatically aligned to the first}
