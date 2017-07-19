@@ -16,6 +16,8 @@ The following question types exists for your use:
 * :macro:`\\textbox`: A large and optionally scalable textbox for freeform content
 * :environ:`choicequestion`: A multiple choice question with a number of answers
 * :environ:`choicegroup`: A list of multiple choice questions layed out in rows (or columns)
+* :environ:`optionquestion`: A single choice question with a number of answers
+* :environ:`optiongroup`: A list of single choice questions layed out in rows (or columns)
 * :environ:`markgroup`: A list of range or mark questions layed out in rows (or columns)
 
 You should only use ``\section{}`` for structuring the document.
@@ -231,6 +233,12 @@ Environments
         :kwarg var: Variable name for this question (to be appended to context).
         :kwarg text: Replacement text for metadata.
 
+.. environ::
+    \begin{optionquestion}[kwargs]{text}
+      content
+    \end{optionquestion}
+
+    Alias for :environ:`choicequestion` which simply sets it into ``singlechoice`` mode by default.
 
 .. environ::
     \begin{info}
@@ -344,7 +352,12 @@ Environments
           \choiceline{Question two}
         \end{choicegroup}
 
+.. environ::
+    \begin{optiongroup}[kwargs]{text}
+      content
+    \end{optiongroup}
 
+    Alias for :environ:`choicegroup` which simply sets it into ``singlechoice`` mode by default.
 
 
 
