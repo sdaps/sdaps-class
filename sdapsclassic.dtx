@@ -749,10 +749,10 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \begin{minipage}[t]{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
+    \begin{minipage}{\l_tmpa_dim}
+      \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
       \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
-        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \tl_trim_spaces:n { #2 }
+        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \usekomafont{choiceitemfont} \tl_trim_spaces:n { #2 }
       \end{addmargin}
     \end{minipage}
   }
@@ -778,7 +778,10 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}\strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}~ \tl_trim_spaces:n { #3 }
+      \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
+      \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
+        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \usekomafont{choiceitemfont} \tl_trim_spaces:n { #3 }
+      \end{addmargin}
     \end{minipage}
   }
 
@@ -809,13 +812,15 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
     \begin{minipage}{\l_tmpa_dim}
-      \usekomafont{choiceitemfont}
-      \dim_set:Nn \l_tmpa_dim { #2 }
-      \dim_set:Nn \l_tmpb_dim { #2 }
-      \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
-      \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
-      \strut\ignorespaces \tl_trim_spaces:n { #4 } ~
-      \sdaps_textbox_hstretch:VVVnn \l_sdaps_choicequestion_choice_var_tl \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+      \begin{addmargin}{\l_sdaps_choicequestion_colsep_dim}
+        \usekomafont{choiceitemfont}
+        \dim_set:Nn \l_tmpa_dim { #2 }
+        \dim_set:Nn \l_tmpb_dim { #2 }
+        \dim_set:Nn \l_tmpa_dim { 0.5 \l_tmpa_dim - 0.8ex }
+        \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
+        \strut\ignorespaces \tl_trim_spaces:n { #4 } ~
+        \sdaps_textbox_hstretch:VVVnn \l_sdaps_choicequestion_choice_var_tl \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+      \end{addmargin}
     \end{minipage}
   }
 
