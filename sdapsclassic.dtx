@@ -701,6 +701,12 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \vspace{\parskip}
 }
 
+\newenvironment{optionquestion}[2][]{
+  \choicequestion[singlechoice,#1]{#2}
+} {
+  \endchoicequestion
+}
+
 \cs_new_protected_nopar:Nn \_sdaps_classic_line_shipout_add:Nn
 {
   % We have to be in vertical mode at this point.
