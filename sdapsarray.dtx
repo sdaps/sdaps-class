@@ -332,9 +332,9 @@
 \cs_new_protected_nopar:Nn \_sdaps_array_calc_interlineskip:nnN
 {
   \dim_compare:nNnTF { #1 } > { -1000pt } {
-    \skip_set:Nn #3 { \l_sdaps_sdapsarray_baselineskip_skip - #1 - #2 }
-    \dim_compare:nNnF { #3 } > { \l_sdaps_sdapsarray_lineskiplimit_dim } {
-      \skip_set:Nn #3 { \l_sdaps_sdapsarray_lineskip_skip }
+    \skip_set:Nn #3 { \baselineskip - #1 - #2 }
+    \dim_compare:nNnF { #3 } > { \lineskiplimit } {
+      \skip_set:Nn #3 { \lineskip + \l_sdaps_sdapsarray_rowsep_dim }
     }
   } {
     \skip_set:Nn #3 { 0pt }
@@ -729,9 +729,7 @@
 \tl_new:N \l_sdaps_sdapsarray_align_tl
 \bool_new:N \l_sdaps_sdapsarray_keepenv_bool
 \dim_new:N \l_sdaps_sdapsarray_colsep_dim
-\skip_new:N \l_sdaps_sdapsarray_baselineskip_skip
-\skip_new:N \l_sdaps_sdapsarray_lineskip_skip
-\dim_new:N \l_sdaps_sdapsarray_lineskiplimit_dim
+\dim_new:N \l_sdaps_sdapsarray_rowsep_dim
 
 \keys_define:nn { sdaps / sdapsarray }
 {
@@ -748,16 +746,8 @@
 
   colsep         .dim_set:N  = \l_sdaps_sdapsarray_colsep_dim,
   colsep         .initial:n  = 6pt,
-
-  % The following features are not considered stable!
-  % Note that .initial is expanded here so it is wrong to have the definitions
-  % here.
-  baselineskip   .skip_set:N = \l_sdaps_sdapsarray_baselineskip_skip,
-  %baselineskip   .initial:n  = \tex_baselineskip:D,
-  lineskip       .skip_set:N = \l_sdaps_sdapsarray_lineskip_skip,
-  %lineskip       .initial:n  = \tex_lineskip:D,
-  lineskiplimit  .dim_set:N  = \l_sdaps_sdapsarray_lineskiplimit_dim,
-  %lineskiplimit  .initial:n  = \tex_lineskiplimit:D,
+  rowsep         .dim_set:N  = \l_sdaps_sdapsarray_rowsep_dim,
+  rowsep         .initial:n  = 0pt,
 }
 
 
@@ -1038,10 +1028,6 @@
 
     % This needs to be initialized here as otherwise the values would be
     % expanded at import time.
-    \skip_set:Nn \l_sdaps_sdapsarray_baselineskip_skip { \tex_baselineskip:D }
-    \skip_set:Nn \l_sdaps_sdapsarray_lineskip_skip { \tex_lineskip:D }
-    \dim_set:Nn \l_sdaps_sdapsarray_lineskiplimit_dim { \tex_lineskiplimit:D }
-
     \keys_set:nV { sdaps / sdapsarray } \l_tmpa_tl
 
     \sdaps_array_begin:VV \l_sdaps_sdapsarray_layouter_tl \l_sdaps_sdapsarray_align_tl
