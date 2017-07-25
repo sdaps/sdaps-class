@@ -334,11 +334,12 @@
   \dim_compare:nNnTF { #1 } > { -1000pt } {
     \skip_set:Nn #3 { \baselineskip - #1 - #2 }
     \dim_compare:nNnF { #3 } > { \lineskiplimit } {
-      \skip_set:Nn #3 { \lineskip + \l_sdaps_sdapsarray_rowsep_dim }
+      \skip_set:Nn #3 { \lineskip }
     }
   } {
     \skip_set:Nn #3 { 0pt }
   }
+  \skip_set:Nn #3 { #3 + \l_sdaps_sdapsarray_rowsep_dim }
 }
 
 \cs_new_protected_nopar:Nn \sdaps_array_row:NN
