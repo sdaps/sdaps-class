@@ -133,20 +133,20 @@
     \bool_gset_true:N \g__sdaps_array_info_open
 
     % Also ensures toc file exists (i.e. is readable)
-    \iow_open:Nn \g__sdaps_array_info_iow { \jobname.sdapsarraytoc }
-    \file_if_exist:nTF { \jobname.sdapsarraytic } {
+    \iow_open:Nn \g__sdaps_array_info_iow { \c_sys_jobname_str .sdapsarraytoc }
+    \file_if_exist:nTF { \c_sys_jobname_str .sdapsarraytic } {
       % Copy into toc file, then open that.
-      \ior_open:Nn \g__sdaps_array_info_ior { \jobname.sdapsarraytic }
+      \ior_open:Nn \g__sdaps_array_info_ior { \c_sys_jobname_str .sdapsarraytic }
 
       \ior_str_map_inline:Nn \g__sdaps_array_info_ior { \iow_now:Nn \g__sdaps_array_info_iow { ##1 } }
       \ior_close:N \g__sdaps_array_info_ior
 
-      \ior_open:Nn \g__sdaps_array_info_ior { \jobname.sdapsarraytoc }
+      \ior_open:Nn \g__sdaps_array_info_ior { \c_sys_jobname_str .sdapsarraytoc }
     } {
     }
     \iow_close:N \g__sdaps_array_info_iow
 
-    \iow_open:Nn \g__sdaps_array_info_iow { \jobname.sdapsarraytic }
+    \iow_open:Nn \g__sdaps_array_info_iow { \c_sys_jobname_str .sdapsarraytic }
   }
 }
 
