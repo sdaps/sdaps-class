@@ -913,7 +913,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
     % Write content into a file, see "verbatim" documentation for more information.
     % TODO: Allow multiple temporary files by postfixing with integer?
-    \iow_open:Nn \l__sdaps_questionnaire_iow { \c_job_name_tl . questionnaire }
+    \iow_open:Nn \l__sdaps_questionnaire_iow { \c_sys_jobname_str . questionnaire }
     \cs_set_eq:NN\do\@makeother\dospecials
     \catcode`\^^M\active
     \def\verbatim@processline{
@@ -938,7 +938,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
         \sdaps_set_questionnaire_id:n { ##1 }
         \sdaps_begin:
           \_sdaps_classic_show_info:
-          \input{ \c_job_name_tl . questionnaire }
+          \input{ \c_sys_jobname_str . questionnaire }
         \sdaps_end:
         \newpage
 
