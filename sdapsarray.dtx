@@ -464,7 +464,8 @@
   } {
     \dim_set:Nn \l_tmpa_dim { \g_sdaps_array_local_data_tl }
   }
-  \vbox_set_top:Nn #1 \bgroup
+  % \vbox_set_top:Nw is still missing as of 2017-08-11
+  \tex_setbox:D #1 \tex_vtop:D \bgroup
     \raggedleft
     \hsize=\dim_use:N\l_tmpa_dim
     % swallow group opening token
@@ -473,12 +474,14 @@
 
 \cs_new_protected_nopar:Npn \_sdaps_array_cell_default:Nw #1
 {
-  \hbox_set:Nn #1 \bgroup
+  \hbox_set:Nw #1 \bgroup
     % swallow group opening token
+    \group_insert_after:N \hbox_set_end:
     \tex_let:D\next=
 }
 
 \cs_new:Nn \_sdaps_array_cell_rotated_end: {
+    \hbox_set_end:
     \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
     \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
 
@@ -505,14 +508,15 @@
     \seq_gpush:Nn \g_sdaps_array_overhangs_left_seq { 0pt }
     \seq_gpush:Nx \g_sdaps_array_overhangs_right_seq { \dim_use:N \l_tmpa_dim }
   \egroup
+  \hbox_set_end:
 }
 
 % Only sane for header row
 \cs_new_protected_nopar:Npn \_sdaps_array_cell_rotated:Nw #1
 {
-  \hbox_set:Nn #1 \bgroup
-    \hbox_set:Nn \l_tmpa_box
-    \bgroup %\strut
+  \hbox_set:Nw #1 \bgroup
+    \hbox_set:Nw \l_tmpa_box
+    \bgroup
     \group_insert_after:N \_sdaps_array_cell_rotated_end:
     % swallow group opening token
     \tex_let:D\next=
@@ -809,7 +813,8 @@
 
   % Start an hbox to stow away the cells.
   % The rest of the setup happens in the alignment handler
-  \hbox_set:Nn \l_tmpb_box \bgroup
+  \hbox_set:Nw \l_tmpb_box \bgroup
+    \group_insert_after:N \hbox_set_end:
     \bool_set_true:N \l__sdaps_sdapsarray_in_top_group_bool
 }
 
