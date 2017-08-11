@@ -121,12 +121,12 @@
 \newif\if@sdaps@draft\@sdaps@drafttrue
 \DeclareOption{final}{\@sdaps@draftfalse}
 
-\tl_gset:Nn\g_sdaps_style_tl{code128}%
+\tl_gset:Nn\g_sdaps_style_tl{qr}%
 
 
 \DefineFamily{SDAPS}
 \DefineFamilyMember{SDAPS}
-\DefineFamilyKey{SDAPS}{style}[code128]%
+\DefineFamilyKey{SDAPS}{style}[qr]%
 {%
   \KOMA@set@ncmdkey{style}{@tempa}{%
     {code128}{0},%
