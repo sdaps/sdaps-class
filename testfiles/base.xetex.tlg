@@ -16,6 +16,8 @@ PrintQuestionnaireId=0
 PageSize=597.50793pt,845.04694pt
 Style=code128
 CheckMode=checkcorrect
+GlobalID=
+GlobalIDLabel=
 ]
 ============================================================
 ============================================================
@@ -26,7 +28,7 @@ TEST 2: Test nested unwrapping of context scopes
 TEST 3: Check metadata error handling
 ============================================================
 *************************************************
-* sdaps warning: "no_qid"
+* sdapsbase warning: "no_qid"
 * 
 * Trying to output metadata but no question ID is set on the context. Did you
 * start a question? Supressing the output!
@@ -210,4 +212,4 @@ black-white: 21123223212121133121214131213121222222121321212323311120
 Pages=9
 ]
 ============================================================
-(.aux)
+(base.aux)
