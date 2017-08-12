@@ -465,11 +465,12 @@
     \dim_set:Nn \l_tmpa_dim { \g_sdaps_array_local_data_tl }
   }
   % \vbox_set_top:Nw is still missing as of 2017-08-11
-  \tex_setbox:D #1 \tex_vtop:D \bgroup \group_begin:\bgroup
-    \group_insert_after:N \group_end:
-    \group_insert_after:N \egroup
+  \tex_setbox:D #1 \tex_vtop:D \bgroup
     \raggedleft
     \hsize=\dim_use:N\l_tmpa_dim
+    \group_begin:\bgroup
+    \group_insert_after:N \group_end:
+    \group_insert_after:N \egroup
     % swallow group opening token
     \tex_let:D\next=
 }
