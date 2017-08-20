@@ -924,6 +924,8 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 } {
   \bool_if:NTF \l__sdaps_questionnaire_parse_direct_bool {
         % Just end everything, nothing else to do.
+        % Make sure we always end the current paragraph.
+        \par
       \sdaps_end:
 
     \group_end:
@@ -939,6 +941,8 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
         \sdaps_begin:
           \_sdaps_classic_show_info:
           \input{ \c_sys_jobname_str . questionnaire }
+          % Make sure we always end the current paragraph.
+          \par
         \sdaps_end:
         \newpage
 
