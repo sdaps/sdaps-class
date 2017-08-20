@@ -938,6 +938,20 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
     \group_begin:
       \seq_map_inline:Nn \g_sdaps_questionnaire_ids_seq {
         \sdaps_set_questionnaire_id:n { ##1 }
+
+        % Reset a lot of global LaTeX counters
+        \@ifundefined{c@page}{}{\setcounter{page}{1}}
+        \@ifundefined{c@part}{}{\setcounter{part}{0}}
+        \@ifundefined{c@chapter}{}{\setcounter{chapter}{0}}
+        \@ifundefined{c@paragraph}{}{\setcounter{paragraph}{0}}
+        \@ifundefined{c@subparagraph}{}{\setcounter{subparagraph}{0}}
+        \@ifundefined{c@section}{}{\setcounter{section}{0}}
+        \@ifundefined{c@subsection}{}{\setcounter{subsection}{0}}
+        \@ifundefined{c@subsubsection}{}{\setcounter{subsubsection}{0}}
+        \@ifundefined{c@equation}{}{\setcounter{equation}{0}}
+        \@ifundefined{c@figure}{}{\setcounter{figure}{0}}
+        \@ifundefined{c@table}{}{\setcounter{table}{0}}
+
         \sdaps_begin:
           \_sdaps_classic_show_info:
           \input{ \c_sys_jobname_str . questionnaire }
