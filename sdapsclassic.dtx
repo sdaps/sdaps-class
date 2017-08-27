@@ -323,6 +323,8 @@
 \renewcommand{\author}[1]{\def\@author{#1}\sdaps_info_write:x{Author=\unexpanded{#1}}}
 \renewcommand{\title}[1]{\def\@title{#1}\sdaps_info_write:x{Title=\unexpanded{#1}}}
 
+\newcommand\qid{\tl_use:N \g__sdaps_questionnaire_id_tl}
+
 \def\question#1{%
   \tl_if_empty:nTF{#1}{
     \refstepcounter{subsection}%
