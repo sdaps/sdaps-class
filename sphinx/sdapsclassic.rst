@@ -185,6 +185,8 @@ Environments
 
     :param text: Text of the choice question. Fragile content is currently *not* supported.
     :kwarg cols: Number of columns
+    :kwarg colsep: Spacing added on the left/right of every cell. This defaults to `6pt`.
+    :kwarg rowsep: Extra distance between rows. This defaults to `0pt`.
     :kwarg var: Variable name for this question (to be appended to context).
     :kwarg text: Replacement text for metadata
     :kwarg type:          the question type "multichoice" or "singlechoice"
