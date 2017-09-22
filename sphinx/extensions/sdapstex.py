@@ -62,7 +62,10 @@ try:
 except:
     from sphinx.util import ensuredir
 
-from sphinx.util.compat import Directive
+try:
+    from docutils.parsers.rst import Directive
+except:
+    from sphinx.util.compat import Directive
 
 class SDAPSExtError(SphinxError):
     category = 'SDAPS extension error'

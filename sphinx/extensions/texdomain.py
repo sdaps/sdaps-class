@@ -402,7 +402,7 @@ def html_depart_desc_texparameter(self, node):
 
 
 def setup(app):
-    app.domains['tex'] = TeXDomain
+    app.add_domain(TeXDomain)
 
     app.add_node(desc_texenvcontent,
                  html=(html_visit_desc_texenvcontent, html_depart_desc_texenvcontent),
