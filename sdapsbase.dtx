@@ -422,13 +422,15 @@
 {
   \int_gincr:N \g__sdaps_object_id_int
   \seq_gput_right:NV \g__sdaps_object_id_seq \g__sdaps_object_id_int
+  \tl_set:Nx \l__sdaps_tmpa_tl { \int_use:N \g__sdaps_object_id_int }
   \int_gzero:N \g__sdaps_object_id_int
 
   \tl_set:Nx \l__sdaps_tmpb_tl { \seq_use:Nn \g__sdaps_object_id_seq {.} }
 
   \sdaps_context_begin:n {#1}
-    \sdaps_context_put:nV {id} \l__sdaps_tmpa_tl
-    \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpa_tl. ~ \exp_not:n{#3}}
+    \sdaps_context_put:nV {id} \l__sdaps_tmpb_tl
+    \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpb_tl. ~ \exp_not:n{#3}}
+    \sdaps_context_append:nVn { _implicit_var } \l__sdaps_tmpa_tl { _ }
     \sdaps_context_hook_post_end:n { \_sdaps_qobject_post_hook: }
 }
 \cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV, nVV, nVn }
@@ -456,6 +458,26 @@
 {
   \sdaps_qobject_end:n { unnamed_qobject }
 }
+
+\cs_new_protected_nopar:Nn \sdaps_qobject_append_var:n
+{
+  % If the given variable name starts with _ then include the implicitly
+  % generated variable name.
+  \tl_if_head_eq_charcode:nNTF { #1 } _ {
+    \sdaps_context_get:nN { _implicit_var } \l__sdaps_tmpa_tl
+    \tl_if_eq:VnF \l__sdaps_tmpa_tl { \q_no_value } {
+      \sdaps_context_append:nVn { _var } \l__sdaps_tmpa_tl { _ }
+    }
+
+    \sdaps_context_append:nnn { _var } { #1 } { }
+  } {
+    \sdaps_context_append:nnn { _var } { #1 } { _ }
+  }
+
+  % We have a proper variable name now, delete the implicit one
+  \sdaps_context_remove:n { _implicit_var }
+}
+\cs_generate_variant:Nn \sdaps_qobject_append_var:n { V }
 
 \msg_new:nnn { sdapsbase } { no_qid } { Trying~to~output~metadata~but~no~question~ID~is~set~on~the~context.~Did~you~start~a~question?~Supressing~the~output! }
 
@@ -491,22 +513,47 @@
 \cs_generate_variant:Nn \sdaps_range:nnn { nnf }
 \cs_generate_variant:Nn \sdaps_range:nnn { nnV }
 
-\cs_new_protected_nopar:Nn \sdaps_generate_var:nN
-{
-  \sdaps_context_get:nN { var } \l__sdaps_tmpa_tl
+\cs_generate_variant:Nn \tl_if_head_eq_charcode:nNT { VN }
 
-  \tl_if_empty:nTF { #1 } {
-    % If no variable name is given in the last step, then just leave it out,
-    % there is pretty much no way it is going to be unique this way.
-    \tl_set:Nn #2 {}
-  } {
-    \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
-      \tl_set:Nn #2 { #1 }
+\cs_new_protected_nopar:Nn \_sdaps_generate_var:nN
+{
+  \sdaps_context_get:nN { _var } \l__sdaps_tmpa_tl
+
+  \tl_if_eq:VnT \l__sdaps_tmpa_tl { \q_no_value } {
+    \tl_set_eq:NN \l__sdaps_tmpa_tl \l__sdaps_tmpb_tl
+    \tl_set_eq:NN \l__sdaps_tmpb_tl \q_no_value
+  }
+
+  \tl_set:Nn \l__sdaps_tmpa_tl { #1 }
+
+  % Generate a variable name if there is none (with _ prefix)
+  \tl_if_empty:VT \l__sdaps_tmpa_tl {
+    \tl_set:Nx \l__sdaps_tmpa_tl { _ \int_eval:n { \g__sdaps_object_id_int + 1 } }
+  }
+
+  % Prepend any implicitly generated variable names if prefixed by _
+  \tl_if_head_eq_charcode:VNT \l__sdaps_tmpa_tl _ {
+    \sdaps_context_get:nN { _implicit_var } \l__sdaps_tmpb_tl
+    \tl_if_eq:VnTF \l__sdaps_tmpb_tl { \q_no_value } {
+      \tl_remove_once:Nn \l__sdaps_tmpa_tl { _ }
     } {
-      \tl_put_right:Nn \l__sdaps_tmpa_tl {_}
-      \tl_put_right:Nn \l__sdaps_tmpa_tl {#1}
-      \tl_set:NV #2 \l__sdaps_tmpa_tl
+      \tl_put_left:NV \l__sdaps_tmpa_tl \l__sdaps_tmpb_tl
     }
+  }
+
+  \sdaps_context_get:nN { _var } \l__sdaps_tmpb_tl
+  \tl_if_eq:VnF \l__sdaps_tmpb_tl { \q_no_value } {
+    \tl_put_left:Nn \l__sdaps_tmpa_tl { _ }
+    \tl_put_left:NV \l__sdaps_tmpa_tl \l__sdaps_tmpb_tl
+  }
+
+  \tl_set:NV #2 \l__sdaps_tmpa_tl
+}
+
+\cs_new_protected_nopar:Nn \_sdaps_box_inc_object_id:
+{
+  \bool_if:NT \l_sdaps_box_writepos_bool {
+    \int_gincr:N \g__sdaps_object_id_int
   }
 }
 
@@ -794,7 +841,7 @@
           \dim_use:N \l_sdaps_height_dim,
           \tl_to_str:N\l_sdaps_checkbox_form_tl,
           \dim_use:N \l_sdaps_checkbox_linewidth_dim,
-          #1,#2
+          #1,\tl_if_empty:nTF { #2 } { \int_use:N \g__sdaps_object_id_int } { #2 }
         }
       }
     }
@@ -836,7 +883,7 @@
 {
   \group_begin:%
 
-    \sdaps_generate_var:nN { #1 } \l_sdaps_var_tl
+    \_sdaps_generate_var:nN { #1 } \l_sdaps_var_tl
 
     \sdaps_context_get:nN { checkboxtype } \l__sdaps_tmpa_tl
     \tl_if_eq:VnTF \l__sdaps_tmpa_tl { multichoice } {
@@ -850,6 +897,8 @@
     \__sdaps_append_override_options:NVn \l_sdaps_parse_unknown_tl \l_sdaps_var_tl { #2 }
 
     \keys_set_known:nVN { sdaps / checkbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
+
+    \_sdaps_box_inc_object_id:
 
     \__sdaps_checkbox_internal:Vn \l_sdaps_var_tl { #2 }
   \group_end:%
@@ -959,13 +1008,15 @@
 {
   \tl_set:Nn \l_sdaps_parse_unknown_tl {}
 
-  \sdaps_generate_var:nN { #1 } \l_sdaps_var_tl
+  \_sdaps_generate_var:nN { #1 } \l_sdaps_var_tl
 
   \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
   \__sdaps_append_from_context:nN { textbox } \l_sdaps_parse_unknown_tl
   \__sdaps_append_override_options:NVn \l_sdaps_parse_unknown_tl \l_sdaps_var_tl { }
 
   \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
+
+  \_sdaps_box_inc_object_id:
 }
 
 \cs_new_protected_nopar:Nn \sdaps_textbox_vhstretch:nnn
