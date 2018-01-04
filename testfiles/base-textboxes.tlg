@@ -312,4 +312,4 @@ l. ......aps_textbox_vhstretch:nn { text } { 0cm }
 QObject-Text=1. 
 ]
 ============================================================
-(base-textboxes.aux)
+(.aux)

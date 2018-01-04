@@ -17,7 +17,7 @@ Completed box being shipped out [2]
 ....\special{color pop}
 ..\glue 20.40001
 ..\glue(\lineskip) 0.0
-..\vbox(595.80026+0.0)x418.25555, glue set 525.31981fil
+..\vbox(595.80026+0.0)x418.25555, glue set 525.31975fil
 ...\write-{\exp_not:n {QObject-Text=1. }}
 ...\glue(\topskip) 0.0
 ...\hbox(14.22636+5.69054)x418.25555, glue set 219.08627fill
@@ -82,16 +82,16 @@ Completed box being shipped out [2]
 ....\glue(\rightskip) 0.0
 ...\penalty 150
 ...\glue(\lineskip) 1.0
-...\hbox(10.95+0.0)x418.25555, glue set 417.45557fill
-....\rule(10.95+*)x0.4
+...\hbox(10.95003+0.0)x418.25555, glue set 417.45557fill
+....\rule(10.95003+*)x0.4
 ....\glue 0.0 plus 1.0fill
-....\rule(10.95+*)x0.4
+....\rule(10.95003+*)x0.4
 ....\penalty 10000
 ....\glue 0.0 plus 1.0fil
 ....\penalty -10000
 ....\glue(\rightskip) 0.0
 ...\glue(\lineskip) 1.0
-...\hbox(14.22636+11.38109)x418.25555, glue set 215.26123fil
+...\hbox(14.22636+11.38109)x418.25555, glue set 215.26122fil
 ....\hbox(0.0+11.38109)x0.0, glue set - 0.4fil
 .....\rule(*+11.38109)x0.4
 .....\glue 0.0 plus 1.0fil minus 1.0fil
@@ -140,7 +140,7 @@ Completed box being shipped out [2]
 .......\special{pdf:code Q }
 .......\special{pdf:code q }
 .......\special{pdf:code Q }
-.......\write-{Box[1]=Textbox,\int_use:N \g_sdaps_page_int ,89.62619pt,727.67535pt,1\ETC.}
+.......\write-{Box[1]=Textbox,\int_use:N \g_sdaps_page_int ,89.62619pt,727.67532pt,1\ETC.}
 .......\special{pdf:code Q }
 .......\hbox(0.0+0.0)x0.0
 ........\pdfsavepos
@@ -155,7 +155,7 @@ Completed box being shipped out [2]
 .....\rule(*+11.38109)x0.4
 ....\pdfsavepos
 ....\write*{POSITION at70mm: \the \pdflastxpos ,\the \pdflastypos }
-....\kern 1.82504
+....\kern 1.82506
 ....\rule(14.22636+5.69054)x2.0
 ....\penalty 10000
 ....\glue 0.0 plus 1.0fil
@@ -163,14 +163,14 @@ Completed box being shipped out [2]
 ....\glue(\rightskip) 0.0
 ...\penalty 150
 ...\glue(\lineskip) 1.0
-...\hbox(10.95+0.0)x418.25555, glue set 219.08627fil
-....\hbox(10.95+0.0)x0.0, glue set - 0.4fil
-.....\rule(10.95+*)x0.4
+...\hbox(10.95003+0.0)x418.25555, glue set 219.08627fil
+....\hbox(10.95003+0.0)x0.0, glue set - 0.4fil
+.....\rule(10.95003+*)x0.4
 .....\glue 0.0 plus 1.0fil minus 1.0fil
 ....\glue 199.16928
-....\hbox(10.95+0.0)x0.0, glue set - 0.4fil
+....\hbox(10.95003+0.0)x0.0, glue set - 0.4fil
 .....\glue 0.0 plus 1.0fil minus 1.0fil
-.....\rule(10.95+*)x0.4
+.....\rule(10.95003+*)x0.4
 ....\penalty 10000
 ....\glue(\parfillskip) 0.0 plus 1.0fil
 ....\glue(\rightskip) 0.0
@@ -184,8 +184,8 @@ Completed box being shipped out [2]
 ...\special{color pop}
 QObject-Text=1. 
 Box[1]=Textbox,0,89.62619pt,760.54225pt,418.25555pt,19.9169pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,727.67535pt,199.16928pt,19.9169pt,1.00374pt,text,
-POSITION at70mm: 18926500,46756593
+Box[1]=Textbox,0,89.62619pt,727.67532pt,199.16928pt,19.9169pt,1.00374pt,text,
+POSITION at70mm: 18926500,46756591
 ============================================================
 ============================================================
 TEST 2: hstretch: check only specified width is used
@@ -203,8 +203,8 @@ TEST 3: hbox: check alignment
 ============================================================
 [4
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.27295pt,11.8041pt,10.74194pt,1.00374pt,text,
-Box[1]=Textbox,0,492.18677pt,758.02484pt,15.69498pt,11.74202pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.26807pt,11.80168pt,10.73706pt,1.00374pt,text,
+Box[1]=Textbox,0,492.18675pt,758.02847pt,15.69499pt,11.61913pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
@@ -212,8 +212,8 @@ TEST 4: hbox: inside a formular
 ============================================================
 [5
 QObject-Text=1. 
-Box[1]=Textbox,0,213.1426pt,748.45341pt,23.3673pt,13.74223pt,1.00374pt,text,
-Box[1]=Textbox,0,237.70988pt,760.54225pt,270.17186pt,19.9169pt,1.00374pt,text,
+Box[1]=Textbox,0,213.14265pt,748.45341pt,23.36002pt,13.62665pt,1.00374pt,text,
+Box[1]=Textbox,0,237.70267pt,760.54225pt,270.17908pt,19.9169pt,1.00374pt,text,
 POSITION lineend: 33284538,48910558
 ]
 ============================================================
@@ -222,7 +222,7 @@ TEST 5: vhstretch: full page box
 ============================================================
 [6
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,595.18303pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,595.17229pt,1.00374pt,text,
 ] [7]
 ============================================================
 ============================================================
@@ -230,8 +230,8 @@ TEST 6: vhstretch: box that are exactly 200pt high
 ============================================================
 [8
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.56529pt,208.62778pt,200.0pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,539.34805pt,208.62778pt,200.0pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.55699pt,208.62778pt,200.0pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,539.32901pt,208.62778pt,200.0pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
@@ -246,10 +246,10 @@ POSITION bottom: 5873742,36014801
 ============================================================
 TEST 8: vhstretch: bottom has a depth of 0.5ex
 ============================================================
-> \prevdepth=2.35973pt.
+> \prevdepth=2.35728pt.
 [10
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,200.0pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,200.0pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
@@ -257,11 +257,11 @@ TEST 9: vhstretch: With surrounding paragraphs
 ============================================================
 [11
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,697.44255pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,637.31981pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,539.04706pt,418.25555pt,56.9055pt,1.00374pt,text,
-Box[1]=Textbox,0,89.62619pt,440.7743pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,697.42351pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,637.29002pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,539.0065pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,440.72298pt,418.25555pt,56.9055pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
@@ -269,9 +269,9 @@ TEST 10: vhstretch: Keeping together with the previous paragraph
 ============================================================
 [12
 QObject-Text=1. 
-Box[1]=Textbox,0,89.62619pt,757.56529pt,418.25555pt,595.18303pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,757.55699pt,418.25555pt,595.17229pt,1.00374pt,text,
 ] [13
-Box[1]=Textbox,0,89.62619pt,730.36528pt,418.25555pt,56.9055pt,1.00374pt,text,
+Box[1]=Textbox,0,89.62619pt,730.35698pt,418.25555pt,56.9055pt,1.00374pt,text,
 ]
 ============================================================
 ============================================================
@@ -317,4 +317,4 @@ l. ......aps_textbox_vhstretch:nn { text } { 0cm }
 QObject-Text=1. 
 ]
 ============================================================
-(base-textboxes.aux)
+(.aux)
