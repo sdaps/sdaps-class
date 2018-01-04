@@ -100,7 +100,12 @@
         testoverrideqid={
             *={height=5mm},
             testvar={height=10mm},
+            3_testvar={height=12.5mm},
             testvar&testval={height=15mm},
+
+            prefix_1={height=7mm},
+            prefix_testvar={height=10mm},
+            prefix_testvar&testval={height=15mm},
         },
       }
     \ExplSyntaxOff
@@ -169,8 +174,10 @@
     \ExplSyntaxOff
   \end{MYTESTPAGE}
 
-  \begin{MYTESTPAGE}{Check whether overrides are working}
+  \begin{MYTESTPAGE}{Check whether overrides and variable generation are working}
     \ExplSyntaxOn
+      \noindent
+
       \sdaps_set_questionnaire_id:n{testoverrideqid}
       {
         \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
@@ -178,6 +185,23 @@
         \sdaps_checkbox:nn {} {} {}~
 
         \sdaps_checkbox:nn { testvar } {} {}~
+
+        \sdaps_checkbox:nn { _testvar } {} {}~
+
+        \sdaps_checkbox:nn { testvar } { testval } {}
+      }
+
+      \newline
+
+      {
+        \sdaps_qobject_begin_local:nn {Choice} { A~choice~question }
+        \sdaps_qobject_append_var:n { prefix }
+
+        \sdaps_checkbox:nn {} {} {}~
+
+        \sdaps_checkbox:nn { testvar } {} {}~
+
+        \sdaps_checkbox:nn { _testvar } {} {}~
 
         \sdaps_checkbox:nn { testvar } { testval } {}
       }
