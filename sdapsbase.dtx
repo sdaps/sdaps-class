@@ -692,10 +692,6 @@
 \g_sdaps_linewidth_dim=1bp
 \tl_new:N \g__sdaps_checkbox_last_info_tl
 
-\int_new:N \g__sdaps_checkbox_num_int
-\int_set:Nn \g__sdaps_checkbox_num_int 0
-
-
 \int_new:N \g__sdaps_textbox_num_int
 \int_set:Nn \g__sdaps_textbox_num_int 0
 
@@ -748,7 +744,6 @@
 \tl_new:N \l_sdaps_checkbox_form_tl
 \tl_new:N \l_sdaps_checkbox_fill_tl
 \tl_new:N \l_sdaps_checkbox_var_tl
-\tl_new:N \l_sdaps_checkbox_var_prefix_tl
 \tl_new:N \l_sdaps_checkbox_value_tl
 \bool_new:N \l_sdaps_checkbox_draw_check_bool
 
@@ -775,7 +770,6 @@
   height       .dim_set:N   = \l_sdaps_checkbox_height_dim,
   height       .initial:n   = 3.5mm,
   form         .choices:nn  = { box, ellipse } { \tl_set:Nx \l_sdaps_checkbox_form_tl { \l_keys_choice_tl } },
-  prefix       .tl_set:N    = \l_sdaps_checkbox_var_prefix_tl,
   value        .tl_set:N    = \l_sdaps_checkbox_value_tl,
 
   fill         .tl_set:N    = \l_sdaps_checkbox_fill_tl,
@@ -865,9 +859,6 @@
         \seq_map_inline:Nn \g__sdaps_checkbox_overlays_seq {##1}
       \end{scope}
     }
-  }
-  \bool_if:NT \l_sdaps_checkbox_calcpos_bool {
-    \int_gincr:N\g__sdaps_checkbox_num_int
   }
 }
 \cs_generate_variant:Nn \__sdaps_checkbox_internal:nn { Vn }
@@ -961,7 +952,6 @@
 
 \dim_new:N  \l_sdaps_textbox_linewidth_dim
 \tl_new:N   \l_sdaps_textbox_var_tl
-\tl_new:N   \l_sdaps_textbox_var_prefix_tl
 \tl_new:N   \l_sdaps_textbox_fill_tl
 \bool_new:N \l_sdaps_textbox_writepos_tl
 
@@ -970,7 +960,6 @@
 {
   linewidth    .dim_set:N   = \l_sdaps_textbox_linewidth_dim,
   linewidth    .initial:n   = 1bp,
-  prefix       .tl_set:N    = \l_sdaps_textbox_var_prefix_tl,
 
   fill         .tl_set:N    = \l_sdaps_textbox_fill_tl,
   fill         .initial:n   = { white },
