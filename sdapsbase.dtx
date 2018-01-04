@@ -709,8 +709,7 @@
 
 \tl_new:N \l_sdaps_parse_unknown_tl
 
-\bool_new:N \l_sdaps_checkbox_calcpos_bool
-\bool_new:N \l_sdaps_checkbox_writepos_bool
+\bool_new:N \l_sdaps_box_writepos_bool
 
 
 % Internal overlays
@@ -752,7 +751,7 @@
   text_padding .initial:n   = {2bp},
 
 
-  writepos     .bool_set:N  = \l_sdaps_checkbox_writepos_bool,
+  writepos     .bool_set:N  = \l_sdaps_box_writepos_bool,
   writepos     .default:n   = true,
   writepos     .initial:n   = false,
 
@@ -779,7 +778,7 @@
     \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim }
     \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_checkbox_height_dim }
 
-    \bool_if:NT \l_sdaps_checkbox_writepos_bool {
+    \bool_if:NT \l_sdaps_box_writepos_bool {
       % pdflast[xy]pos is the PDF position of the baseline at the start of the box
       % excluding the page origin offset.
       \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
@@ -940,7 +939,7 @@
   text_padding .initial:n   = {2bp},
 
 
-  writepos     .bool_set:N  = \l_sdaps_textbox_writepos_bool,
+  writepos     .bool_set:N  = \l_sdaps_box_writepos_bool,
   writepos     .default:n   = true,
   writepos     .initial:n   = false,
 }
@@ -1070,7 +1069,7 @@
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
         \end{scope}
 
-        \bool_if:NT \l_sdaps_textbox_writepos_bool {
+        \bool_if:NT \l_sdaps_box_writepos_bool {
           \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
           \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
             \msg_warning:nn { sdapsbase } { no_qid }
@@ -1159,7 +1158,7 @@
         \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
       \end{scope}
 
-      \bool_if:NT \l_sdaps_textbox_writepos_bool {
+      \bool_if:NT \l_sdaps_box_writepos_bool {
         \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
         \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
           \msg_warning:nn { sdapsbase } { no_qid }
@@ -1199,7 +1198,7 @@
 
     % pdflast[xy]pos is the PDF position of the top left corner excluding the
     % origin
-    \bool_if:NT \l_sdaps_textbox_writepos_bool {
+    \bool_if:NT \l_sdaps_box_writepos_bool {
       \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
       \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
         \msg_warning:nn { sdapsbase } { no_qid }
