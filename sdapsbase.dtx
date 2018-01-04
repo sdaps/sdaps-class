@@ -290,6 +290,11 @@
   \sdaps_context_put:nn { #1 } { \undefined }
 }
 
+\cs_new_protected_nopar:Nn \sdaps_context_remove:n
+{
+  \prop_gremove:Nn \g__sdaps_current_context_prop { #1 }
+}
+
 \msg_new:nnn { sdapsbase } { context_key_broken } { Keys ~ may ~ not ~ contain ~ any ~ special ~ tokens! ~ However ~ the ~ key ~ #1 ~ does ~ contain ~ tokens ~ that ~ are ~ not ~ permissible! }
 % Directly set a certain key
 \cs_new_protected_nopar:Nn \sdaps_context_put:nn
