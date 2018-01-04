@@ -606,6 +606,43 @@
 
   \end{multicols}
 
+  \begin{multicols}{4}
+    \begin{sdapsarray}
+        & \logpos{col 1} & col 2 \\
+      2 & \logpos{a} & a \\
+      3 & \logpos{c} & a
+    \end{sdapsarray}
+    \lognamedpos{rule} x\hrule
+
+    \columnbreak
+
+    \begin{sdapsarray}
+        & \logpos{col 1} & col 2 \\
+        & \logpos{a} & a \\
+        & \logpos{c} & a
+    \end{sdapsarray}
+    \lognamedpos{rule} x\hrule
+
+    \columnbreak
+
+    \begin{sdapsarray}
+        & \logpos{col 1} & col 2 \\
+        & \logpos{a} & a \\
+        & \logpos{c} & d
+    \end{sdapsarray}
+    \lognamedpos{rule} x\hrule
+
+    \columnbreak
+
+    \begin{sdapsarray}
+        & \logpos{col 1} & col 2 \\
+        & \logpos{a} & g \\
+        & \logpos{c} & d
+    \end{sdapsarray}
+    \lognamedpos{rule} x\hrule
+
+  \end{multicols}
+
 \end{MYTESTPAGE}
 
 
