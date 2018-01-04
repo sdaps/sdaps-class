@@ -299,7 +299,9 @@
 \tl_new:N \l_sdaps_choice_text_tl
 \tl_new:N \l_sdaps_question_var_tl
 \tl_new:N \l_sdaps_question_text_tl
+\clist_new:N \l_sdaps_question_range_clist
 \int_new:N \g_sdaps_choices_box_int
+\seq_new:N \g_sdaps_choices_filter_seq
 \seq_new:N \g_sdaps_choices_cell_seq
 \seq_new:N \g_sdaps_choices_text_seq
 
@@ -337,6 +339,9 @@
 {
   var        .tl_set:N   = \l_sdaps_question_var_tl,
   text       .tl_set:N   = \l_sdaps_question_text_tl,
+
+  range      .clist_set:N   = \l_sdaps_question_range_clist,
+  range      .initial:n = {...}
 }
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:nn #1#2
@@ -402,10 +407,17 @@
   \int_gincr:N \g_sdaps_choices_box_int
 
   \tl_if_empty:NT \l_sdaps_choice_var_tl {
+    % Prefix with _ to force prefixing with generated variable
     \tl_set:Nx \l_sdaps_choice_var_tl { \int_use:N \g_sdaps_choices_box_int }
   }
   \tl_if_empty:NT \l_sdaps_choice_val_tl {
     \tl_set:Nx \l_sdaps_choice_val_tl { \int_use:N \g_sdaps_choices_box_int }
+  }
+
+  \tl_if_eq:VnTF \l_sdaps_choicearray_type_tl { multichoice } {
+    \seq_gput_right:NV \g_sdaps_choices_filter_seq \l_sdaps_choice_var_tl
+  } {
+    \seq_gput_right:NV \g_sdaps_choices_filter_seq \l_sdaps_choice_val_tl
   }
 
   \seq_gput_right:Nx \g_sdaps_choices_cell_seq { \exp_not:n { \sdaps_checkbox:nn } { _ \l_sdaps_choice_var_tl } { \l_sdaps_choice_val_tl } }
@@ -453,13 +465,51 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_choicearray_process_question_tail: {
+  \seq_gclear:N \g_tmpa_seq
+  % l_tmpa_bool is whether we are in a run (i.e. ...)
+  \bool_set_false:N \l_tmpa_bool
+
+  \clist_gset_eq:NN \g_tmpa_clist \l_sdaps_question_range_clist
+  \clist_gpop:NN \g_tmpa_clist \l_tmpa_tl
+
+  \seq_map_inline:Nn \g_sdaps_choices_filter_seq {
+    \tl_if_eq:VnT \l_tmpa_tl { ... } {
+      \bool_set_true:N \l_tmpa_bool
+      \clist_gpop:NN \g_tmpa_clist \l_tmpa_tl
+    }
+
+    \tl_if_eq:VnTF \l_tmpa_tl { ##1 } {
+      \seq_gput_right:Nn \g_tmpa_seq { \c_true_bool }
+      \bool_set_false:N \l_tmpa_bool
+      \clist_gpop:NN \g_tmpa_clist \l_tmpa_tl
+    } {
+      % Append if we are handling a run of items and the current item is not
+      % the last one.
+      \bool_if:NTF \l_tmpa_bool {
+        \seq_gput_right:Nn \g_tmpa_seq { \c_true_bool }
+      } {
+        % Otherwise, ignore this item
+        \seq_gput_right:Nn \g_tmpa_seq { \c_false_bool }
+      }
+    }
+  }
+
+  \seq_gset_eq:NN \g_tmpb_seq \g_tmpa_seq
+
   \seq_map_inline:Nn \g_sdaps_choices_text_seq {
-    \sdaps_answer:f { ##1 }
+    \seq_gpop_left:NN \g_tmpa_seq \l_tmpa_tl
+    \tl_if_eq:VnT \l_tmpa_tl { \c_true_bool } {
+      \sdaps_answer:f { ##1 }
+    }
   }
 
   \seq_map_inline:Nn \g_sdaps_choices_cell_seq {
     \sdaps_array_alignment:
-    ##1
+
+    \seq_gpop_left:NN \g_tmpb_seq \l_tmpa_tl
+    \tl_if_eq:VnT \l_tmpa_tl { \c_true_bool } {
+      ##1
+    }
   }
 
   \sdaps_qobject_end:n { choicearray_question }
@@ -803,6 +853,7 @@
 
     \_sdaps_choicearray_preprocess:Vn \l_tmpa_tl { #2 }
     % Clear the variables
+    \seq_gclear:N \g_sdaps_choices_filter_seq
     \seq_gclear:N \g_sdaps_choices_cell_seq
     \seq_gclear:N \g_sdaps_choices_text_seq
 
