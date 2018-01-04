@@ -408,23 +408,23 @@
 %
 %    \begin{macrocode}
 
-\seq_new:N \g__sdaps_qobject_id_seq
-\int_new:N \g__sdaps_qobject_id_int
-\int_gzero:N \g__sdaps_qobject_id_int
+\seq_new:N \g__sdaps_object_id_seq
+\int_new:N \g__sdaps_object_id_int
+\int_gzero:N \g__sdaps_object_id_int
 
 \cs_new_protected_nopar:Nn \_sdaps_qobject_post_hook:
 {
-  \seq_gpop_right:NN \g__sdaps_qobject_id_seq \l__sdaps_tmpa_tl
-  \int_gset:NV \g__sdaps_qobject_id_int \l__sdaps_tmpa_tl
+  \seq_gpop_right:NN \g__sdaps_object_id_seq \l__sdaps_tmpa_tl
+  \int_gset:NV \g__sdaps_object_id_int \l__sdaps_tmpa_tl
 }
 
 \cs_new_protected_nopar:Nn \sdaps_qobject_begin:nnn
 {
-  \int_gincr:N \g__sdaps_qobject_id_int
-  \seq_gput_right:NV \g__sdaps_qobject_id_seq \g__sdaps_qobject_id_int
-  \int_gzero:N \g__sdaps_qobject_id_int
+  \int_gincr:N \g__sdaps_object_id_int
+  \seq_gput_right:NV \g__sdaps_object_id_seq \g__sdaps_object_id_int
+  \int_gzero:N \g__sdaps_object_id_int
 
-  \tl_set:Nx \l__sdaps_tmpa_tl { \seq_use:Nn \g__sdaps_qobject_id_seq {.} }
+  \tl_set:Nx \l__sdaps_tmpb_tl { \seq_use:Nn \g__sdaps_object_id_seq {.} }
 
   \sdaps_context_begin:n {#1}
     \sdaps_context_put:nV {id} \l__sdaps_tmpa_tl
