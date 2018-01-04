@@ -268,8 +268,8 @@ def render_sdaps(self, node):
     if os.path.isfile(outfn):
         return relfn, 'Compile was not started as output exists'
 
-    if hasattr(self.builder, '_sdaps_warned'):
-        return None, 'Compile was not started due to prior warnings'
+#    if hasattr(self.builder, '_sdaps_warned'):
+#        return None, 'Compile was not started due to prior warnings'
 
     ensuredir(os.path.dirname(outfn))
     curdir = os.getcwd()
