@@ -1,0 +1,291 @@
+\documentclass{scrartcl}
+\input{regression-test}
+
+\OMIT
+\usepackage{sdapslayout}
+\usepackage{multicol}
+
+
+\def\logpos#1{\lognamedpos{#1}#1}
+\def\lognamedpos#1{\leavevmode\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+
+\newenvironment{MYTEST}[1]{%
+  \begingroup%
+    \global\advance \gTESTint 1 %
+    \SEPARATOR%
+    \LONGTYPEOUT{%
+      TEST \the\gTESTint: \detokenize{#1}}%
+    \SEPARATOR%
+}{%
+    \SEPARATOR%
+    \LONGTYPEOUT{}%
+  \endgroup%
+}
+
+\newenvironment{OMITPAGE}{%
+  \begingroup%
+    \OMIT%
+}{%
+    \vfil\break%
+    \TIMO%
+  \endgroup%
+}
+
+\newenvironment{MYTESTPAGE}[1]{%
+  \begin{MYTEST}{#1}%
+}{%
+    \vfil\break%
+  \end{MYTEST}%
+}
+
+\newenvironment{MYTESTPAGESHOW}[1]{%
+  \begin{MYTESTPAGE}{#1}%
+    \showoutput%
+}{%
+  \end{MYTESTPAGE}%
+}
+
+\TIMO
+
+
+\begin{document}
+\START
+
+\begin{OMITPAGE}
+  % Some font stuff
+  $ a + b $
+
+  \textbackslash
+
+  % Open some extra temporary files
+  \begin{sdapsarray}
+    a & b & c \\
+    d & e & f
+  \end{sdapsarray}
+
+  % Enable writing out information.
+  \ExplSyntaxOn
+
+    % Redirect output to log file instead of .sdaps file
+    \iow_close:N \g_sdaps_infofile_iow
+    \global\let\g_sdaps_infofile_iow=\c_log_iow
+
+    % Enable position writing
+    \sdaps_context_set:n{*={writepos}}
+  \ExplSyntaxOff
+\end{OMITPAGE}
+
+
+\begin{MYTESTPAGE}{Basic choicearray}
+  \begin{choicearray}[noalign]{Question}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{qa}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{Basic singlechoice choicearray}
+  \begin{choicearray}[noalign,singlechoice]{Question}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{qa}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{choicearray range filtering}
+  \begin{choicearray}[noalign]{Question}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question[range={...,2}]{start-2}
+    \question[range={2,...}]{2-end}
+    \question[range={1,...,2}]{1-2}
+    \question[range={1,3}]{1 and 3}
+    \question[range={...,1,3}]{range to 1 and 3}
+    \question[range={1,2,...}]{1 and 2 plus end}
+  \end{choicearray}
+
+  \begin{choicearray}[noalign,type=multichoice]{Question}
+    \choice[var=a]{a}
+    \choice[var=b]{b}
+    \choice[var=c]{c}
+    \question[range={...,b}]{start-2}
+    \question[range={b,...}]{2-end}
+    \question[range={a,...,b}]{1-2}
+    \question[range={a,c}]{1 and 3}
+    \question[range={...,a,c}]{range to 1 and 3}
+    \question[range={a,b,...}]{1 and 2 plus end}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{choicearray range filtering for singlechoice}
+  \begin{choicearray}[noalign,singlechoice]{Question}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question[range={...,2}]{start-2}
+    \question[range={2,...}]{2-end}
+    \question[range={1,...,2}]{1-2}
+    \question[range={1,3}]{1 and 3}
+    \question[range={...,1,3}]{range to 1 and 3}
+    \question[range={1,2,...}]{1 and 2 plus end}
+  \end{choicearray}
+
+  \begin{choicearray}[noalign,type=singlechoice]{Question}
+    \choice[val=11]{a}
+    \choice[val=12]{b}
+    \choice[val=13]{c}
+    \question[range={...,12}]{start-2}
+    \question[range={12,...}]{2-end}
+    \question[range={11,...,12}]{1-2}
+    \question[range={11,13}]{1 and 3}
+    \question[range={...,11,13}]{range to 1 and 3}
+    \question[range={11,12,...}]{1 and 2 plus end}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{choicearray with fragile content}
+  \begin{choicearray}[noalign]{Question}
+    \choice[text=verbatim]{\verb^verbatim^}
+    \choice{b}
+    \choice{c}
+    \question[text=qa]{\verb^qa^}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{choicearray with variables in different places}
+  \begin{choicearray}[noalign]{Question}
+    \choice{a}
+    \choice[var=ab]{b}
+    \choice{c}
+    \question{qa}
+    \question[var=qb]{qb}
+    \question{qc}
+  \end{choicearray}
+
+  \begin{choicearray}[noalign,var=test]{Question}
+    \choice{a}
+    \choice[var=ab]{b}
+    \choice{c}
+    \question{qa}
+    \question[var=qb]{qb}
+    \question{qc}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{vertical choicearray}
+  \begin{choicearray}[noalign,vertical]{Question}
+    \choice[text=verbatim]{\verb^verbatim^}
+    \choice{b}
+    \choice{c}
+    \question[text=qa]{\verb^qa^}
+    \question[range={2}]{qb only 2}
+    \question{qc}
+  \end{choicearray}
+\end{MYTESTPAGE}
+
+
+\begin{MYTESTPAGE}{choicearray alignment}
+  \begin{choicearray}{Question}
+    \choice{long string}
+    \choice{b}
+    \choice{c}
+    \question{qa}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+  \begin{choicearray}{Question aligned to previous}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{qa}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+\hrule
+
+  \begin{choicearray}[vertical]{Vertical question aligned with next}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{qa}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+  \begin{choicearray}[vertical]{Vertical question}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{different long string}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+\hrule
+
+  \begin{choicearray}[align=aligntest,vertical]{Vertical question aligned to next}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{yet another long string}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+  \begin{choicearray}[align=aligntest]{Question aligned to previous}
+    \choice{a}
+    \choice{b}
+    \choice{c}
+    \question{yet another long string}
+    \question{qb}
+    \question{qc}
+  \end{choicearray}
+
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{rangearray}
+  \begin{rangearray}{Question}
+    \range{qa}{lower}{upper}
+    \range{qb}{lower}{upper}
+    \range[lower=textlower,upper=textupper,text=question text]{\verb^qc^}{\verb^lower^}{\verb^upper^}
+  \end{rangearray}
+
+  \begin{rangearray}[other]{Question}
+    \range{qa}{lower}{upper}{other}
+    \range{qb}{lower}{upper}{other}
+    \range[lower=textlower,upper=textupper,other=textother,text=question text]{\verb^qc^}{\verb^lower^}{\verb^upper^}{\verb^other^}
+  \end{rangearray}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{rangearray with variable names}
+  \begin{rangearray}{Question}
+    \range{qa}{lower}{upper}
+    \range[var=qb]{qb}{lower}{upper}
+    \range{qc}{lower}{upper}
+  \end{rangearray}
+
+  \begin{rangearray}[var=question,other]{Question}
+    \range{qa}{lower}{upper}{other}
+    \range[var=qb]{qb}{lower}{upper}{other}
+    \range{qc}{lower}{upper}{other}
+  \end{rangearray}
+\end{MYTESTPAGE}
+
+
+\end{document}
+
