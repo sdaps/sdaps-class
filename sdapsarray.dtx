@@ -691,12 +691,14 @@
   % baseline with the cells
   \dim_compare:nNnTF { \l_tmpa_dim } = { \l_tmpb_dim } {
     \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
+    \dim_set:Nn #4 { \coffin_ht:N \l_tmpb_coffin }
   } {
     \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
+    % XXX: Assume that the header is higher than the content cells
+    \dim_set:Nn #4 { \l_tmpb_dim }
   }
 
   \hbox_set:Nn #3 { \skip_horizontal:N \@totalleftmargin \coffin_typeset:Nnnnn \l_tmpb_coffin { H } { l } { 0pt } { 0pt } }
-  \dim_set:Nn #4 { \l_tmpb_dim }
 }
 
 
