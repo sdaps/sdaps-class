@@ -131,6 +131,20 @@ Defining questions and headings
 
 You can write further metadata using the following macros:
 
+.. macro:: \sdaps_qobject_append_var:n { var }
+
+    Appends the given string to the variable name of the question. An ``_``
+    will be used to separate the new variable name with any piece that was
+    defined earlier (either on the same question or on a surrounding question
+    object).
+
+    If ``var`` starts with an underscore (``_``) then an implicit variable name
+    for all surrounding question object (i.e. headings/sections) will be
+    generated based on their automatic numbering. This is similar to the
+    mechanism used by :env:`choicearray` to ensure that the different questions
+    can always be told appart, even if the user did not specify a variable name
+    for all of them.
+
 .. macro:: \sdaps_answer:n { answer text }
 
     Write metadata for an answer which belongs to the current question (context)
