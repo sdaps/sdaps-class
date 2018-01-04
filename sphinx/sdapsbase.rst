@@ -67,11 +67,15 @@ Managing context variables
 
 .. macro:: \sdaps_context_put:n { key }
 
-    Delete the given variable (or key) from the context
+    Set the given variable (or key) to ``\\undefined``.
 
 .. macro:: \sdaps_context_put:nn { key } { value }
 
     Set the given variable to the given value (Variants: ``nV``)
+
+.. macro:: \sdaps_context_remove:n { key }
+
+    Remove the given variable from the context.
 
 .. macro:: \sdaps_context_set:n { key=value, key={a=b, c=d} }
 
@@ -85,6 +89,16 @@ Managing context variables
     that was defined earlier (e.g. ``width`` or ``height``).
 
     Generally it is a good idea to use this macro as nested options are common.
+
+    Identical to :macro:`\\sdaps_context_append:nnn` with "``,``" as the separator.
+
+.. macro:: \sdaps_context_append:nnn { key } { value } { separator }
+
+    Append the value to the given ``key`` in the context. If ``key`` is set,
+    inserts ``separator`` between them. If key is not set, simply sets the
+    ``key`` to the given value.
+
+    :Variants: ``nVn``
 
 
 Defining questions and headings
