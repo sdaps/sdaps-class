@@ -1012,8 +1012,11 @@
 {
 %    \end{macrocode}
 %
-% At first we need to ensure that we are currently neither in inner nor math mode.
-% The scaling feature simply does not work in either of these two modes.
+% At first we need to ensure that we are not in math mode. We also error out if
+% switching into vertical mode (by inserting a paragraph break) fails.
+%
+% The scaling feature will likely fail in inner vertical mode, but it is still
+% permissible.
 %
 %    \begin{macrocode}
   \if_mode_math:
