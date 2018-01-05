@@ -76,11 +76,13 @@ Macros
     :arg upper: The text for the upper label
 
     :kwarg var: The variable for the question (to be appended to context).
+    :kwarg count: The number of checkboxes (default: ``markcheckboxcount``).
 
     .. sdaps:: Simplest form of a range question
         :sdapsclassic:
 
         \singlemark{A range question}{lower}{upper}
+        \singlemark[count=6]{A range question with 6 answers}{lower}{upper}
         \setcounter{markcheckboxcount}{7}
         \singlemark{A range question with 7 answers}{lower}{upper}
 
@@ -94,11 +96,13 @@ Macros
     :arg other: The text for the other label
 
     :kwarg var: The variable for the question (to be appended to context).
+    :kwarg count: The number of checkboxes (default: ``markcheckboxcount``).
 
     .. sdaps:: A range question with an alternative answer
         :sdapsclassic:
 
         \singlemarkother{A range question}{lower}{upper}{other}
+        \singlemarkother[count=6]{A range question with 6 answers}{lower}{upper}{other}
         \setcounter{markcheckboxcount}{7}
         \singlemarkother{A range question with 7 answers}{lower}{upper}{other}
 
