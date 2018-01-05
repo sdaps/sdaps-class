@@ -543,7 +543,7 @@
   \sdaps_checkbox_set_type:n { singlechoice }
 
   \tl_if_empty:NF \l_sdaps_singlemark_var_tl {
-    \sdaps_context_append:nVn { var } \l_sdaps_singlemark_var_tl { _ }
+    \sdaps_qobject_append_var:V \l_sdaps_singlemark_var_tl
   }
 
   \sdaps_range:nnn{lower}{0}{#3}
@@ -551,7 +551,7 @@
 
   \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}X}
     {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
-      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { ##1 } { ##1 } & }
+      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { _ ##1 } { ##1 } & }
     {\usekomafont{singlemarkchoicefont}#4}\\%
   \end{tabularx}%
 
@@ -571,7 +571,7 @@
   \sdaps_checkbox_set_type:n { singlechoice }
 
   \tl_if_empty:NF \l_sdaps_singlemark_var_tl {
-    \sdaps_context_append:nVn { var } \l_sdaps_singlemark_var_tl { _ }
+    \sdaps_qobject_append_var:V \l_sdaps_singlemark_var_tl
   }
 
   \sdaps_range:nnn{lower}{0}{#3}
@@ -580,9 +580,9 @@
 
   \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\themarkcheckboxcount}{c}XX}
     {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
-      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { ##1 } { ##1 } & }
+      \int_step_inline:nnnn { 1 } { 1 } { \themarkcheckboxcount } { \sdaps_checkbox:nn { _ ##1 } { ##1 } & }
     {\usekomafont{singlemarkchoicefont}#4} &
-    {\usekomafont{singlemarkchoicefont}\sdaps_checkbox:nn { 0 } { 0 } {} ~ #5}\\%
+    {\usekomafont{singlemarkchoicefont}\sdaps_checkbox:nn { _0 } { 0 } {} ~ #5}\\%
   \end{tabularx}%
 
   \sdaps_qobject_end:n { singlemark }
@@ -661,7 +661,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \sdaps_checkbox_set_type:V \l_sdaps_choicquestion_type_tl
 
-  \sdaps_context_append:nVn { var } \l_sdaps_choicequestion_var_tl { _ }
+  \sdaps_qobject_append_var:V \l_sdaps_choicequestion_var_tl
 
 
   \dim_set:Nn \l__sdaps_classic_choiceitem_pad_dim { 1ex }
