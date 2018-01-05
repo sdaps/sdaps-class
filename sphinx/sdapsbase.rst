@@ -141,7 +141,7 @@ You can write further metadata using the following macros:
     If ``var`` starts with an underscore (``_``) then an implicit variable name
     for all surrounding question object (i.e. headings/sections) will be
     generated based on their automatic numbering. This is similar to the
-    mechanism used by :env:`choicearray` to ensure that the different questions
+    mechanism used by :environ:`choicearray` to ensure that the different questions
     can always be told appart, even if the user did not specify a variable name
     for all of them.
 
