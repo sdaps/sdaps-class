@@ -407,30 +407,48 @@ but they will work if a replacement text is specified.
 Variables
 ---------
 
-.. sdaps:: A choicegroup example using variables. Notice that the boxes in the metadata have variables named e.g. "flower_adam_alice"
+.. sdaps:: A choicegroup example using variables. Notice that the boxes in the metadata
+     have variables named e.g. "flower_adam_alice". The first group of questions does
+     not have a common prefix. The second group of questions has the common "flowerd" prefix.
     :sdapsclassic:
     :metadata:
+
+    \begin{choicegroup}{A group of questions}
+      \groupaddchoice[var=alice]{Choice "alice"}
+      \groupaddchoice[var=eve]{Choice "eve"}
+      \groupaddchoice{Unnamed choice}
+      \choiceline[var=adam]{Question "adam"}
+      \choiceline[var=bob]{Question "bob"}
+      \choiceline{Unnamed question}
+    \end{choicegroup}
 
     \begin{choicegroup}[var=flower]{A group of questions with variable "flower"}
       \groupaddchoice[var=alice]{Choice "alice"}
       \groupaddchoice[var=eve]{Choice "eve"}
+      \groupaddchoice{Unnamed choice}
       \choiceline[var=adam]{Question "adam"}
       \choiceline[var=bob]{Question "bob"}
+      \choiceline{Unnamed question}
     \end{choicegroup}
 
-.. todo:: This is still somewhat broken. If the parameter is missing somewhere then
-    it will not be filled in with a proper value automatically!
 
-
-.. sdaps:: A markgroup example using variables. The variable is e.g. "car_alice" and the boxes have a value assigned to them. The "_dummy" is an implementation detail and should be ignored.
+.. sdaps:: A markgroup example using variables. The variable is e.g. "car_alice"
+     and the boxes have a value assigned to them. Grouping is handled as in the
+     previous case, adding the prefix when given.
     :sdapsclassic:
     :metadata:
+
+    \begin{markgroup}{A group of questions}
+      \markline[var=alice]{Question "alice"}{lower}{upper}
+      \markline[var=bob]{Question "bob"}{lower}{upper}
+      \markline{Unnamed question}{lower}{upper}
+    \end{markgroup}
 
     \begin{markgroup}[var=car]{A group of questions with variable "car"}
       \markline[var=alice]{Question "alice"}{lower}{upper}
       \markline[var=bob]{Question "bob"}{lower}{upper}
+      \markline{Unnamed question}{lower}{upper}
     \end{markgroup}
 
-.. todo:: Check that the _dummy should be there, pretty sure this is correct.
 
 
