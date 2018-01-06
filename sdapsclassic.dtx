@@ -484,8 +484,7 @@
 {
   \group_begin:
     \sdaps_context_begin_local:
-    \sdaps_context_append:nn { singlechoice } { writepos=false }
-    \sdaps_context_append:nn { multichoice } { writepos=false }
+    \sdaps_context_disable_writing:
     \bool_if:NT #1 {
       \sdaps_context_append:nn { singlechoice } { draw_check=true }
       \sdaps_context_append:nn { multichoice } { draw_check=true }
@@ -918,7 +917,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \fi
 
   % Enable all metadata writing by default
-  \sdaps_context_set:n{*={writepos}}
+  \sdaps_context_enable_writing:
 
   \int_compare:nTF { \seq_count:N \g_sdaps_questionnaire_ids_seq <= 1 } {
     \bool_set_true:N \l__sdaps_questionnaire_parse_direct_bool
@@ -983,6 +982,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
         \newpage
 
         % Close the output file now (after the page has been shipped out)
+        % XXX: This is a bit of a hack, as disabling metadata writing has side effects
         \iow_close:N \g_sdaps_infofile_iow
 
       }

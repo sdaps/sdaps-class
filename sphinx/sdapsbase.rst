@@ -50,6 +50,20 @@ fashion.
 
     Begins a context which automatically ends together with the current TeX group.
 
+.. macro:: \sdaps_context_enable_writing:
+
+    Enable metadata writing for the remainder of the current context. Note that
+    this package disables writing at start and you need to enable it before
+    calling :macro:`\\sdaps_begin:` (and :macro:`\\sdaps_end:`). Classes such as
+    the :ref:`sdapsclassic` will enable metadata writing for you.
+
+.. macro:: \sdaps_context_disable_writing:
+
+    Disable metadata writing for the remainder of the current context. Note that
+    disabling metadata writing may have some side effects with regard to
+    variables and automatic numbering of questions and answers. The exact
+    behaviour is currently *not* well defined.
+
 .. macro:: \sdaps_context_hook_end:n
 
     Register a token list which will be executed at the end of the current
@@ -298,7 +312,6 @@ centered_text       Text to overlay over the checkmark (default: `none`)
 text                Text to overlay over the checkmark using a minipage (default: `none`)
 text_align          The minipage alignment of the overlay (default: `c`)
 text_padding        The minipages padding from the outside border of the box (default: `2bp`)
-writepos            Whether to output metadata (default: `false`, but set e.g. by sdapsclassic)
 ellipse             Pass as a short form for `form=ellipse`
 box                 Pass as a short form for `form=box`
 =================== ===================================================================

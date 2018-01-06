@@ -155,10 +155,13 @@
 \seq_new:N \g__sdaps_context_ids_seq
 \seq_new:N \g__sdaps_contexts_seq
 
+% Global metadata write enable variable managed by context
+\bool_new:N \g_sdaps_write_enable_bool
+\bool_gset_false:N \g_sdaps_write_enable_bool
 
-\cs_new_protected_nopar:Nn \sdaps_context_to_tl:N
+\cs_new_protected_nopar:Nn \_sdaps_context_to_tl:N
 {
-  \tl_clear:N #1
+  \tl_set:Nx #1 {_write_enable=\bool_if:NTF\g_sdaps_write_enable_bool{\c_true_bool}{\c_false_bool}}
   \prop_map_inline:Nn \g__sdaps_current_context_prop {
     % Could we remove some of the braces in the TL?
     \tl_if_eq:nnTF { \undefined } { ##2 } {
@@ -167,8 +170,6 @@
       \tl_put_right:Nn #1 {,{##1}={##2}}
     }
   }
-  % Remove leading comma again
-  \tl_remove_once:Nn #1 {,}
 }
 
 
@@ -179,7 +180,7 @@
 
   \group_begin:
     % Serialize the current context
-    \sdaps_context_to_tl:N \l__sdaps_tmpa_tl
+    \_sdaps_context_to_tl:N \l__sdaps_tmpa_tl
     \tl_gset:NV \g__sdaps_current_context_tl \l__sdaps_tmpa_tl
     % Stuff it away in our sequence
     \seq_gput_left:NV \g__sdaps_contexts_seq \g__sdaps_current_context_tl
@@ -215,6 +216,10 @@
 
     % Unpack context token list
     \sdaps_context_set:V \g__sdaps_current_context_tl
+
+    \sdaps_context_get:nN { _write_enable } \l_tmpb_tl
+    \bool_gset:Nn \g_sdaps_write_enable_bool { \l_tmpb_tl }
+    \sdaps_context_remove:n { _write_enable }
 
     \tl_gclear:N \g__sdaps_current_context_tl
     \tl_gset:NV \g__sdaps_current_context_id_tl \l__sdaps_tmpa_tl
@@ -327,6 +332,12 @@
   \prop_get:NnN \g__sdaps_current_context_prop { #1 } #2
 }
 
+\cs_new_protected_nopar:Nn \sdaps_context_gget:nN
+{
+  \prop_get:NnN \g__sdaps_current_context_prop { #1 } \l_tmpa_tl
+  \tl_gset_eq:NN #2 \l_tmpa_tl
+}
+
 \cs_new_protected_nopar:Nn \sdaps_context_append:nnn
 {
   \sdaps_context_get:nN { #1 } \l__sdaps_tmpa_tl
@@ -354,6 +365,16 @@
 \cs_new_protected_nopar:Nn \sdaps_context_hook_post_end:n
 {
   \sdaps_context_append:nnn { _context_hook_post_end } { #1 } { }
+}
+
+\cs_new_protected_nopar:Nn \sdaps_context_enable_writing:
+{
+  \bool_gset_true:N \g_sdaps_write_enable_bool
+}
+
+\cs_new_protected_nopar:Nn \sdaps_context_disable_writing:
+{
+  \bool_gset_false:N \g_sdaps_write_enable_bool
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_context_clear:
@@ -552,7 +573,7 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_box_inc_object_id:
 {
-  \bool_if:NT \l_sdaps_box_writepos_bool {
+  \bool_if:NT \g_sdaps_write_enable_bool {
     \int_gincr:N \g__sdaps_object_id_int
   }
 }
@@ -703,24 +724,28 @@
 
 %    \end{macrocode}
 %
-% We need to be able to output data into the .sdaps file. On startup this
-% output is enabled by default.
+% We need to be able to output data into the .sdaps file. On startup the
+% output is opened but writing is disabled. Note that the write enabled
+% variable is managed by the context.
 %
 %    \begin{macrocode}
 
 \iow_new:N \g_sdaps_infofile_iow
 \iow_open:Nn \g_sdaps_infofile_iow { \c_sys_jobname_str . sdaps }
 
-
 \cs_new_protected_nopar:Nn \sdaps_info_write:n
 {
-  \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
+  \bool_if:NT \g_sdaps_write_enable_bool {
+    \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
+  }
 }
 \cs_generate_variant:Nn \sdaps_info_write:n { x }
 
 \cs_new_protected_nopar:Nn \sdaps_info_write_x:n
 {
-  \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
+  \bool_if:NT \g_sdaps_write_enable_bool {
+    \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
+  }
 }
 \cs_generate_variant:Nn \sdaps_info_write_x:n { x }
 
@@ -750,8 +775,6 @@
 \tl_set:Nn \l_sdaps_checkbox_form_tl { box }
 
 \tl_new:N \l_sdaps_parse_unknown_tl
-
-\bool_new:N \l_sdaps_box_writepos_bool
 
 
 % Internal overlays
@@ -791,11 +814,6 @@
   text_padding .dim_set:N   = \l_sdaps_overlay_minipage_pad_dim,
   text_padding .initial:n   = {2bp},
 
-
-  writepos     .bool_set:N  = \l_sdaps_box_writepos_bool,
-  writepos     .default:n   = true,
-  writepos     .initial:n   = false,
-
   ellipse    .meta:n  = { form=ellipse },
   box        .meta:n  = { form=box },
 }
@@ -819,7 +837,7 @@
     \dim_set:Nn \l_sdaps_width_dim { \l_sdaps_checkbox_width_dim }
     \dim_set:Nn \l_sdaps_height_dim { \l_sdaps_checkbox_height_dim }
 
-    \bool_if:NT \l_sdaps_box_writepos_bool {
+    \bool_if:NT \g_sdaps_write_enable_bool {
       % pdflast[xy]pos is the PDF position of the baseline at the start of the box
       % excluding the page origin offset.
       \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
@@ -953,7 +971,6 @@
 \dim_new:N  \l_sdaps_textbox_linewidth_dim
 \tl_new:N   \l_sdaps_textbox_var_tl
 \tl_new:N   \l_sdaps_textbox_fill_tl
-\bool_new:N \l_sdaps_textbox_writepos_tl
 
 
 \keys_define:nn { sdaps / textbox }
@@ -975,11 +992,6 @@
   text_align   .initial:n   = {c},
   text_padding .dim_set:N   = \l_sdaps_overlay_minipage_pad_dim,
   text_padding .initial:n   = {2bp},
-
-
-  writepos     .bool_set:N  = \l_sdaps_box_writepos_bool,
-  writepos     .default:n   = true,
-  writepos     .initial:n   = false,
 }
 
 
@@ -1112,7 +1124,7 @@
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
         \end{scope}
 
-        \bool_if:NT \l_sdaps_box_writepos_bool {
+        \bool_if:NT \g_sdaps_write_enable_bool {
           \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
           \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
             \msg_warning:nn { sdapsbase } { no_qid }
@@ -1201,7 +1213,7 @@
         \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
       \end{scope}
 
-      \bool_if:NT \l_sdaps_box_writepos_bool {
+      \bool_if:NT \g_sdaps_write_enable_bool {
         \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
         \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
           \msg_warning:nn { sdapsbase } { no_qid }
@@ -1241,7 +1253,7 @@
 
     % pdflast[xy]pos is the PDF position of the top left corner excluding the
     % origin
-    \bool_if:NT \l_sdaps_box_writepos_bool {
+    \bool_if:NT \g_sdaps_write_enable_bool {
       \sdaps_context_get:nN {id} \l__sdaps_tmpa_tl
       \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
         \msg_warning:nn { sdapsbase } { no_qid }

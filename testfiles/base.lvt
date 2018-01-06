@@ -115,7 +115,9 @@
 
   \begin{MYTESTPAGE}{Initialize SDAPS}
     \ExplSyntaxOn
+      \sdaps_context_enable_writing:
       \sdaps_begin:
+      \sdaps_context_disable_writing:
     \ExplSyntaxOff
     Start of the document
   \end{MYTESTPAGE}
@@ -163,7 +165,7 @@
 
       % Enable metadata writing (active for all other tests from now on)
       % But without setting a QID
-      \sdaps_context_set:n{*={writepos}}
+      \sdaps_context_enable_writing:
       \sdaps_checkbox:nn {} {} \newline
 
       % Now start a choicequestion

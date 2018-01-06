@@ -154,7 +154,7 @@ Box[8]=Checkbox,7,99.58463pt,717.49313pt,9.95845pt,9.95845pt,ellipse,2.00749pt,8
 ============================================================
 TEST 9: Checkbox overlays
 ============================================================
-Underfull \hbox (badness 10000) in paragraph at lines 332--385
+Underfull \hbox (badness 10000) in paragraph at lines 334--387
 \hbox(0.0+0.0)x418.25555
 .\glue(\rightskip) 0.0
 ** Code 128 ** input: testqid

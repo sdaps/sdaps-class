@@ -63,7 +63,7 @@
   \global\let\g_sdaps_infofile_iow=\c_log_iow
 
   \sdaps_begin:
-  \sdaps_context_set:n{*={writepos}}
+  \sdaps_context_enable_writing:
   \ExplSyntaxOff
 
   \textbackslash
