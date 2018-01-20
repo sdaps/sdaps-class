@@ -50,7 +50,7 @@ Created Files
 
  * sdapsbase.sty: Base functionality on which everything else is build.
  * sdapsclassic.cls: Class for creating questionnaires
-                     (currently the only propery of using these packages)
+                     (currently the only property of using these packages)
  * sdapspdf.sty: Makes any SDAPS document into a PDF form
  * sdapsarray.sty: Base functionality for tabular like layouts
  * sdapslayout.sty: Base functionality for complex question layouts
