@@ -11,6 +11,8 @@ The rangearray is not quite as powerful, as it does not expose some of the
 sdapsarray options to the user. Note that much more complex custom layouts can
 be created directly with sdapsarray.
 
+.. warning:: The documentation here is currently incomplete! Pleases refer to the sdapsclassic :environ:`choicegroup` and :environ:`markgroup` documentation!
+
 .. environ::
     \begin{choicearray}[kwargs]{text}
     \end{choicearray}
