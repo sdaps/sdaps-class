@@ -326,8 +326,9 @@
     \tex_let:D\next=
 }
 
-\box_new:N \g_sdaps_array_header_box
-\dim_new:N \g_sdaps_array_header_dim
+% XXX: Could this live in local scope instead?
+\box_new:N \g__sdaps_array_header_box
+\dim_new:N \g__sdaps_array_header_dim
 
 \cs_new_protected_nopar:Nn \_sdaps_array_calc_interlineskip:nnN
 {
@@ -357,9 +358,8 @@
 
   \bool_if:NT \g_sdaps_array_first_row_bool {
     % Stow away the box for later use (before rewriting it to save the position)
-    \box_gset_eq:NN \g_sdaps_array_header_box \l_tmpb_box
-    % and also insert now
-    \dim_set:Nn \g_sdaps_array_header_dim { \box_ht:N \g_sdaps_array_header_box + \box_dp:N \g_sdaps_array_header_box }
+    \box_gset_eq:NN \g__sdaps_array_header_box \l_tmpb_box
+    \dim_gset:Nn \g__sdaps_array_header_dim { \box_ht:N \g__sdaps_array_header_box + \box_dp:N \g__sdaps_array_header_box }
   }
 
   \hbox_set:Nn \l_tmpb_box {
@@ -391,16 +391,16 @@
 
     % Calculate interlineksip_for_row and interlineskip_for_header
     \_sdaps_array_calc_interlineskip:nnN { \prevdepth } { \l_tmpa_dim } \l_tmpa_skip
-    \_sdaps_array_calc_interlineskip:nnN { \box_dp:N \g_sdaps_array_header_box } { \l_tmpa_dim } \l_tmpb_skip
+    \_sdaps_array_calc_interlineskip:nnN { \box_dp:N \g__sdaps_array_header_box } { \l_tmpa_dim } \l_tmpb_skip
     \nointerlineskip
     \skip_vertical:n { \l_tmpa_skip - \l_tmpb_skip }
-    \kern -\g_sdaps_array_header_dim
+    \kern -\g__sdaps_array_header_dim
 
     % Inser the real or fake box
     \bool_if:NTF \g_tmpa_bool {
-      \box_use:N \g_sdaps_array_header_box
+      \box_use:N \g__sdaps_array_header_box
     } {
-     \hrule height \box_ht:N \g_sdaps_array_header_box depth \box_dp:N \g_sdaps_array_header_box width 0pt
+     \hrule height \box_ht:N \g__sdaps_array_header_box depth \box_dp:N \g__sdaps_array_header_box width 0pt
     }
     \nobreak
     % Insert the calculated interline skip (in the same way the TeX would do it.
@@ -417,7 +417,7 @@
 \cs_new_protected_nopar:Nn \sdaps_array_end:
 {
   \l__sdaps_array_end_tl
-  \box_clear:N \g_sdaps_array_header_box
+  \box_gclear:N \g__sdaps_array_header_box
 }
 
 %    \end{macrocode}
