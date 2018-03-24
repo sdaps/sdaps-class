@@ -328,6 +328,7 @@ Environments
         :kwarg text: A replacement text for the metadata, if set fragile content is
             permitted inside the `text` argument.
         :kwarg var: Variable name for this question (to be appended to context).
+        :kwarg range: Specify which chekcboxes to show. Needs ot be given an **in order list** of variables (multichoice) or values (singlechoice) also allowing specifying `...` for any amount of items.
 
     .. macro:: \choiceline[kwargs]{text}
 
@@ -358,6 +359,46 @@ Environments
           \groupaddchoice{Choice 2}
           \choiceline{Question one}
           \choiceline{Question two}
+        \end{choicegroup}
+
+    .. sdaps:: Example of choice filtering
+        :sdapsclassic:
+
+        \begin{choicegroup}[colsep=2pt,singlechoice]{Please select a date}
+          \groupaddchoice{1}
+          \groupaddchoice{2}
+          \groupaddchoice{3}
+          \groupaddchoice{4}
+          \groupaddchoice{5}
+          \groupaddchoice{6}
+          \groupaddchoice{7}
+          \groupaddchoice{8}
+          \groupaddchoice{9}
+          \groupaddchoice{10}
+          \groupaddchoice{11}
+          \groupaddchoice{12}
+          \groupaddchoice{13}
+          \groupaddchoice{14}
+          \groupaddchoice{15}
+          \groupaddchoice{16}
+          \groupaddchoice{17}
+          \groupaddchoice{19}
+          \groupaddchoice{20}
+          \groupaddchoice{21}
+          \groupaddchoice{22}
+          \groupaddchoice{23}
+          \groupaddchoice{24}
+          \groupaddchoice{25}
+          \groupaddchoice{26}
+          \groupaddchoice{27}
+          \groupaddchoice{28}
+          \groupaddchoice{29}
+          \groupaddchoice{30}
+          \groupaddchoice{31}
+          % Note that the automatically assigned values match the choices.
+          \question{Day}
+          \question[range={...,12}]{Month}
+          \question[range={2,5,...,9,28,...}]{Range}
         \end{choicegroup}
 
 .. environ::
