@@ -320,9 +320,6 @@
   \sdaps_info_write:x{\unexpanded{#1}=\unexpanded{#2}}
 }
 
-\renewcommand{\author}[1]{\def\@author{#1}\sdaps_info_write:x{Author=\unexpanded{#1}}}
-\renewcommand{\title}[1]{\def\@title{#1}\sdaps_info_write:x{Title=\unexpanded{#1}}}
-
 \newcommand\qid{\tl_use:N \g__sdaps_questionnaire_id_tl}
 
 \def\question#1{%
@@ -919,6 +916,9 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   % Enable all metadata writing by default
   \sdaps_context_enable_writing:
+
+  \sdaps_info_write:x{Author=\exp_not:o{\@author}}
+  \sdaps_info_write:x{Title=\exp_not:o{\@title}}
 
   \int_compare:nTF { \seq_count:N \g_sdaps_questionnaire_ids_seq <= 1 } {
     \bool_set_true:N \l__sdaps_questionnaire_parse_direct_bool
