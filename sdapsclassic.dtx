@@ -680,8 +680,9 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \sdaps_checkbox_set_type:V \l_sdaps_choicquestion_type_tl
 
-  \sdaps_qobject_append_var:V \l_sdaps_choicequestion_var_tl
-
+  \tl_if_empty:NF \l_sdaps_choicequestion_var_tl {
+    \sdaps_qobject_append_var:V \l_sdaps_choicequestion_var_tl
+  }
 
   \dim_set:Nn \l__sdaps_classic_choiceitem_pad_dim { 1ex }
 
