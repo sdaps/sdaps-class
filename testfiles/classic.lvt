@@ -1,0 +1,99 @@
+\documentclass{sdapsclassic}
+\input{regression-test}
+
+\OMIT
+
+
+\def\logpos#1{\lognamedpos{#1}#1}
+\def\lognamedpos#1{\leavevmode\pdfsavepos\write128{POSITION #1: \the\pdflastxpos,\the\pdflastypos}}
+
+\newenvironment{MYTEST}[1]{%
+  \begingroup%
+    \global\advance \gTESTint 1 %
+    \SEPARATOR%
+    \LONGTYPEOUT{%
+      TEST \the\gTESTint: \detokenize{#1}}%
+    \SEPARATOR%
+}{%
+    \SEPARATOR%
+    \LONGTYPEOUT{}%
+  \endgroup%
+}
+
+\newenvironment{OMITPAGE}{%
+  \begingroup%
+    \OMIT%
+}{%
+    \vfil\break%
+    \TIMO%
+  \endgroup%
+}
+
+\newenvironment{MYTESTPAGE}[1]{%
+  \begin{MYTEST}{#1}%
+}{%
+    \vfil\break%
+  \end{MYTEST}%
+}
+
+\newenvironment{MYTESTPAGESHOW}[1]{%
+  \begin{MYTESTPAGE}{#1}%
+    \showoutput%
+}{%
+  \end{MYTESTPAGE}%
+}
+
+\author{}
+\title{}
+
+\chead[header]{header}
+\cfoot[footer to disable qr code]{footer to disable qr code}
+
+\begin{document}
+
+  \ExplSyntaxOn
+
+    % Redirect output to log file instead of .sdaps file
+    \iow_close:N \g_sdaps_infofile_iow
+    \global\let\g_sdaps_infofile_iow=\c_log_iow
+
+  \ExplSyntaxOff
+
+  \begin{questionnaire}[noinfo]
+    % Some font stuff
+    $ a + b $
+    \textbackslash
+
+\vfil\break
+\TIMO
+
+\START
+
+\begin{MYTESTPAGE}{singlemark}
+  \singlemark{question}{lower}{upper}
+  \singlemark[count=7]{question}{lower}{upper}
+  \singlemarkother[count=7]{question}{lower}{upper}{other}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{choicequestion}
+  \begin{choicequestion}[cols=7]{Question}
+    \choiceitem{a}
+    \choiceitem[var=b,text=btext]{b}
+    \choicemulticolitem[text=ctext]{2}{c}
+    \choiceitemtext[text=dtext]{3cm}{3}{d}
+  \end{choicequestion}
+
+  \begin{choicequestion}[cols=7,var=qvar,singlechoice]{Question}
+    \choiceitem{a}
+    \choiceitem[val=10,text=btext]{b}
+    \choicemulticolitem[text=ctext]{3}{c}
+    \choicemulticolitem[text=ctext]{3}{c}
+  \end{choicequestion}
+
+\end{MYTESTPAGE}
+
+\OMIT
+  \end{questionnaire}
+
+\end{document}
+\TIMO
