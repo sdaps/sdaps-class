@@ -642,6 +642,8 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_before_other: {
+  % Insert an extra empty column for further spacing
+  \sdaps_array_alignment:
   \sdaps_array_alignment:
   \leavevmode
   \sdaps_answer:V \g_sdaps_question_othertext_tl
@@ -652,6 +654,8 @@
 
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_question: {
+  % Insert an extra empty column for further spacing
+  \sdaps_array_alignment:
   \tl_if_empty:NTF \g_sdaps_question_lowertext_tl {
     \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_lower:n
   } {
