@@ -119,6 +119,11 @@
 %
 %    \begin{macrocode}
 
+% This will change in early 2018, but the new code apparently does not
+% provide the old name of the definition.
+% i.e. this is a bad hack and should be removed latest in 2019 or so
+\cs_if_exist:NF \ior_str_get:NN { \cs_new_eq:NN \ior_str_get:NN \ior_get_str:NN }
+
 \bool_new:N \g__sdaps_array_info_open
 \bool_gset_false:N \g__sdaps_array_info_open
 \iow_new:N \g__sdaps_array_info_iow
@@ -157,7 +162,7 @@
 {
   \bool_gset_eq:NN #1 \c_false_bool
   \ior_if_eof:NF \g__sdaps_array_info_ior {
-    \ior_get_str:NN \g__sdaps_array_info_ior \l_tmpa_tl
+    \ior_str_get:NN \g__sdaps_array_info_ior \l_tmpa_tl
 
     \tl_if_eq:NNF \g__sdaps_array_last_row_tl \c_empty_tl {
       \tl_if_eq:NNF \g__sdaps_array_last_row_tl \l_tmpa_tl {
