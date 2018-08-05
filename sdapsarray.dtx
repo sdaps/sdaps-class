@@ -157,7 +157,7 @@
 {
   \bool_gset_eq:NN #1 \c_false_bool
   \ior_if_eof:NF \g__sdaps_array_info_ior {
-    \ior_str_get:NN \g__sdaps_array_info_ior \l_tmpa_tl
+    \ior_get_str:NN \g__sdaps_array_info_ior \l_tmpa_tl
 
     \tl_if_eq:NNF \g__sdaps_array_last_row_tl \c_empty_tl {
       \tl_if_eq:NNF \g__sdaps_array_last_row_tl \l_tmpa_tl {
