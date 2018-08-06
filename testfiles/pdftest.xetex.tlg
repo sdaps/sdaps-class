@@ -31,7 +31,7 @@ Completed box being shipped out [2]
 .....\special{color pop}
 ...\glue 0.0
 ...\glue(\lineskip) 0.0
-...\vbox(578.15999+0.0)x469.75499, glue set 449.66837fil
+...\vbox(578.15999+0.0)x469.75499, glue set 449.67595fil
 ....\special{pdf:obj @OBJpdfdocencoding<</Type/Encoding/Differences[24/breve/caron\ETC.}
 ....\special{pdf:obj @OBJZaDb<</Type/Font/Subtype/Type1/Name/ZaDb/BaseFont/ZapfDin\ETC.}
 ....\special{pdf:obj @OBJHelv<</Type/Font/Subtype/Type1/Name/Helv/BaseFont/Helveti\ETC.}
@@ -39,11 +39,11 @@ Completed box being shipped out [2]
 ....\special{pdf:obj @corder []}
 ....\special{pdf:obj @aform <</Fields @afields/DR<</Font<</ZaDb @OBJZaDb/Helv @OBJ\ETC.}
 ....\special{pdf:put @catalog <</AcroForm @aform>>}
-....\glue(\topskip) 1.57634
-....\hbox(8.42366+1.53477)x469.75499, glue set 419.92126fil
-.....\hbox(8.42366+1.53477)x9.95844
+....\glue(\topskip) 1.57278
+....\hbox(8.42722+1.53122)x469.75499, glue set 419.93124fil
+.....\hbox(8.42722+1.53122)x9.95844
 ......\pdfsavepos
-......\hbox(9.95844+0.0)x9.95844, shifted 1.53477
+......\hbox(9.95844+0.0)x9.95844, shifted 1.53122
 .......\glue 0.0
 .......\hbox(0.0+0.0)x0.0
 ........\special{pdf:bcontent}
@@ -123,10 +123,10 @@ Completed box being shipped out [2]
 ........\special{pdf:code Q }
 ........\special{pdf:econtent}
 ........\glue 0.0 plus 1.0fil minus 1.0fil
-.....\glue 3.33333 plus 1.66666 minus 1.11111
-.....\hbox(8.42366+1.53477)x9.95844
+.....\glue 3.33 plus 1.665 minus 1.11
+.....\hbox(8.42722+1.53122)x9.95844
 ......\pdfsavepos
-......\hbox(9.95844+0.0)x9.95844, shifted 1.53477
+......\hbox(9.95844+0.0)x9.95844, shifted 1.53122
 .......\glue 0.0
 .......\hbox(0.0+0.0)x0.0
 ........\special{pdf:bcontent}
@@ -206,10 +206,10 @@ Completed box being shipped out [2]
 ........\special{pdf:code Q }
 ........\special{pdf:econtent}
 ........\glue 0.0 plus 1.0fil minus 1.0fil
-.....\glue 3.33333 plus 1.66666 minus 1.11111
-.....\hbox(8.42366+1.53477)x9.95844
+.....\glue 3.33 plus 1.665 minus 1.11
+.....\hbox(8.42722+1.53122)x9.95844
 ......\pdfsavepos
-......\hbox(9.95844+0.0)x9.95844, shifted 1.53477
+......\hbox(9.95844+0.0)x9.95844, shifted 1.53122
 .......\glue 0.0
 .......\hbox(0.0+0.0)x0.0
 ........\special{pdf:bcontent}
@@ -289,10 +289,10 @@ Completed box being shipped out [2]
 ........\special{pdf:code Q }
 ........\special{pdf:econtent}
 ........\glue 0.0 plus 1.0fil minus 1.0fil
-.....\glue 3.33333 plus 1.66666 minus 1.11111
-.....\hbox(8.42366+1.53477)x9.95844
+.....\glue 3.33 plus 1.665 minus 1.11
+.....\hbox(8.42722+1.53122)x9.95844
 ......\pdfsavepos
-......\hbox(9.95844+0.0)x9.95844, shifted 1.53477
+......\hbox(9.95844+0.0)x9.95844, shifted 1.53122
 .......\glue 0.0
 .......\hbox(0.0+0.0)x0.0
 ........\special{pdf:bcontent}
@@ -376,17 +376,17 @@ Completed box being shipped out [2]
 .....\glue(\parfillskip) 0.0 plus 1.0fil
 .....\glue(\rightskip) 0.0
 ....\penalty 150
-....\glue(\baselineskip) 3.14583
-....\vbox(7.3194+0.0)x469.75499
-.....\hbox(7.3194+0.0)x469.75499, glue set 469.75499fill
-......\rule(7.3194+0.0)x0.0
+....\glue(\baselineskip) 3.1418
+....\vbox(7.32698+0.0)x469.75499
+.....\hbox(7.32698+0.0)x469.75499, glue set 469.75499fill
+......\rule(7.32698+0.0)x0.0
 ......\pdfsavepos
 ......\write1{\noexpand \pgfsyspdfmark {textboxtop0}{\the \pdflastxpos }{\the \pdflastypos \ETC.}
 ......\penalty 10000
 ......\glue(\parfillskip) 0.0 plus 1.0fil
 ......\glue(\rightskip) 0.0 plus 1.0fill
 ....\penalty 10000
-....\cleaders 106.49162
+....\cleaders 106.48404
 .....\hbox(0.0+0.0)x0.0
 ....\penalty 10000
 ....\cleaders 0.0
@@ -482,10 +482,10 @@ Completed box being shipped out [2]
 ......\glue(\parfillskip) 0.0 plus 1.0fil
 ......\glue(\rightskip) 0.0
 ....\penalty 10000
-....\glue -2.15277
+....\glue -2.155
 ....\penalty 10000
-....\hbox(0.0+2.15277)x0.0
-.....\rule(0.0+2.15277)x0.0
+....\hbox(0.0+2.155)x0.0
+.....\rule(0.0+2.155)x0.0
 ....\glue 0.0 plus 1.0fil
 ....\glue 0.0
 ...\glue(\baselineskip) 0.0
