@@ -827,6 +827,7 @@
 \cs_new_protected_nopar:Nn \__sdaps_checkbox_internal:nn
 {
   \mbox{
+    \@RTLfalse\beginL
     \pdfsavepos
 
      % Position of page and baseline offset
@@ -877,6 +878,7 @@
         \seq_map_inline:Nn \g__sdaps_checkbox_overlays_seq {##1}
       \end{scope}
     }
+    \endL
   }
 }
 \cs_generate_variant:Nn \__sdaps_checkbox_internal:nn { Vn }
@@ -1071,11 +1073,13 @@
     \dim_set:Nn \l__sdaps_textbox_ht_dim { 1.7ex }
 
     \vbox:n {
+      \@RTLfalse\beginL
       \leftskip=0pt
       \rightskip=0pt plus 1fill
       \noindent
       \tex_vrule:D height \l__sdaps_textbox_ht_dim depth 0pt width 0pt
       \pgfsys@markposition{textboxtop\int_use:N\g__sdaps_textbox_num_int}
+      \endL
     }
 
     \tex_penalty:D 10000
@@ -1092,6 +1096,7 @@
     \nointerlineskip
 
     \vbox:n {
+      \@RTLfalse\beginL
       \noindent
       \leftskip=0pt plus 1fill
       \rightskip=0pt
@@ -1142,6 +1147,7 @@
           }
         }
       \end{tikzpicture}
+      \endL
     }
 
     % We are done here, but we need the correct depth, so skip around a bit
@@ -1172,6 +1178,7 @@
 \cs_new_protected_nopar:Nn \sdaps_textbox_hstretch:nnnnn
 {
   \group_begin:
+    \@RTLfalse\beginL
 
     \__sdaps_textbox_prepare:n { #1 }
 
@@ -1234,6 +1241,7 @@
 
     \int_gincr:N\g__sdaps_textbox_num_int
 
+  \endL
   \group_end:
 }
 

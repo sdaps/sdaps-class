@@ -557,10 +557,10 @@
   \sdaps_range:nnn{lower}{0}{#3}
   \sdaps_range:nnn{upper}{\int_use:N\l_sdaps_singlemark_count_int-1}{#4}
 
-  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\int_use:N\l_sdaps_singlemark_count_int}{c}X}
-    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
+  \begin{tabularx}{\linewidth}{X*{\int_use:N\l_sdaps_singlemark_count_int}{c}X}
+    {\hfill\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
       \int_step_inline:nnnn { 1 } { 1 } { \int_use:N\l_sdaps_singlemark_count_int } { \sdaps_checkbox:nn { _ ##1 } { ##1 } & }
-    {\usekomafont{singlemarkchoicefont}#4}\\%
+    {\usekomafont{singlemarkchoicefont}#4\hfill}\\%
   \end{tabularx}%
 
   \sdaps_qobject_end:n { singlemark }
@@ -593,11 +593,11 @@
   \sdaps_range:nnn{upper}{\int_use:N\l_sdaps_singlemark_count_int-1}{#4}
   \sdaps_answer:n{#5}
 
-  \begin{tabularx}{\linewidth}{>{\raggedleft}X*{\int_use:N\l_sdaps_singlemark_count_int}{c}XX}
-    {\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
+  \begin{tabularx}{\linewidth}{X*{\int_use:N\l_sdaps_singlemark_count_int}{c}XX}
+    {\hfill\usekomafont{singlemarkchoicefont}\strut\ignorespaces#3} &
       \int_step_inline:nnnn { 1 } { 1 } { \int_use:N\l_sdaps_singlemark_count_int } { \sdaps_checkbox:nn { _ ##1 } { ##1 } & }
     {\usekomafont{singlemarkchoicefont}#4} &
-    {\usekomafont{singlemarkchoicefont}\sdaps_checkbox:nn { _0 } { 0 } {} ~ #5}\\%
+    {\usekomafont{singlemarkchoicefont}\sdaps_checkbox:nn { _0 } { 0 } {} ~ #5\hfill}\\%
   \end{tabularx}%
 
   \sdaps_qobject_end:n { singlemark }
@@ -768,11 +768,14 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \begin{minipage}{\l_tmpa_dim}
-      \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
-      \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
-        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \usekomafont{choiceitemfont} \tl_trim_spaces:n { #2 }
-      \end{addmargin}
+    \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
+    \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
+    \hskip \l_sdaps_choicequestion_colsep_dim
+    \hbox_unpack_clear:N \l_tmpa_box
+    \begin{minipage}[t]{\dim_eval:n { \l_tmpa_dim - \l_tmpb_dim - 2\l_sdaps_choicequestion_colsep_dim}}
+%      \begin{addmargin}[ }]{\l_sdaps_choicequestion_colsep_dim}
+        \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #2 }
+%      \end{addmargin}
     \end{minipage}
   }
 
@@ -796,11 +799,12 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \dim_set:Nn \l_tmpa_dim { #2\linewidth / \l__sdaps_classic_choiceitem_cols_int - \l__sdaps_classic_choiceitem_pad_dim + #2 \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
 
   \hcoffin_set:Nn \l_tmpa_coffin {
-    \begin{minipage}{\l_tmpa_dim}
-      \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
-      \begin{addmargin}[\dim_eval:n { \box_wd:N \l_tmpa_box + \l_sdaps_choicequestion_colsep_dim }]{\l_sdaps_choicequestion_colsep_dim}
-        \noindent \hbox_overlap_left:n { \hbox_unpack_clear:N \l_tmpa_box } \usekomafont{choiceitemfont} \tl_trim_spaces:n { #3 }
-      \end{addmargin}
+    \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
+    \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
+    \hskip \l_sdaps_choicequestion_colsep_dim
+    \hbox_unpack_clear:N \l_tmpa_box
+    \begin{minipage}[t]{\dim_eval:n { \l_tmpa_dim - \l_tmpb_dim - 2\l_sdaps_choicequestion_colsep_dim}}
+      \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #3 }
     \end{minipage}
   }
 
