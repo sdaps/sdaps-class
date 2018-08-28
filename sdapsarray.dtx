@@ -122,7 +122,7 @@
 % This will change in early 2018, but the new code apparently does not
 % provide the old name of the definition.
 % i.e. this is a bad hack and should be removed latest in 2019 or so
-\cs_if_exist:NF \ior_str_get:NN { \cs_new_eq:NN \ior_str_get:NN \ior_get_str:NN }
+\cs_if_exist:NF \ior_str_get:NN { \cs_set_eq:Nc \ior_str_get:NN { ior_get_str:NN } }
 
 \bool_new:N \g__sdaps_array_info_open
 \bool_gset_false:N \g__sdaps_array_info_open
