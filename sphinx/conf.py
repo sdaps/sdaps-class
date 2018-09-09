@@ -126,13 +126,22 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+#html_theme = 'classic'
+html_theme = 'sphinx_materialdesign_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'header_links' : [
+        ('SDAPS', '/', True, 'home'),
+    ],
+    'primary_color': 'teal',
+    # Values: Same as primary_color. (Default: pink)
+    'accent_color': 'orange',
+}
+
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
