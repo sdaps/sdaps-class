@@ -433,6 +433,34 @@
 \int_new:N \g__sdaps_object_id_int
 \int_gzero:N \g__sdaps_object_id_int
 
+\cs_new_protected_nopar:Nn \_sdaps_qobject_end_hook:
+{
+  % Take the current implicit variable
+  \sdaps_context_get:nN { _implicit_var } \l__sdaps_tmpa_tl
+
+  % Prepend explicit variable name; we assume that either _implicit_var or _var
+  % have a proper value.
+  \sdaps_context_get:nN { _var } \l__sdaps_tmpb_tl
+  \tl_if_eq:VnF \l__sdaps_tmpb_tl { \q_no_value } {
+    \tl_if_eq:VnTF \l__sdaps_tmpa_tl { \q_no_value } {
+      \tl_clear:N \l__sdaps_tmpa_tl
+    } {
+      \tl_put_left:Nn \l__sdaps_tmpa_tl { _ }
+    }
+    \tl_put_left:NV \l__sdaps_tmpa_tl \l__sdaps_tmpb_tl
+  }
+
+  \sdaps_context_get:nN { id } \l__sdaps_tmpb_tl
+
+  \tl_if_eq:VnTF \l__sdaps_tmpb_tl { \q_no_value } {
+    \msg_warning:nn { sdapsbase } { no_qid }
+  } {
+    \sdaps_info_write_x:x{
+      Variable[\l__sdaps_tmpb_tl]=\l__sdaps_tmpa_tl
+    }
+  }
+}
+
 \cs_new_protected_nopar:Nn \_sdaps_qobject_post_hook:
 {
   \seq_gpop_right:NN \g__sdaps_object_id_seq \l__sdaps_tmpa_tl
@@ -452,6 +480,7 @@
     \sdaps_context_put:nV {id} \l__sdaps_tmpb_tl
     \sdaps_info_write:x {QObject-#2=\tl_use:N\l__sdaps_tmpb_tl. ~ \exp_not:n{#3}}
     \sdaps_context_append:nVn { _implicit_var } \l__sdaps_tmpa_tl { _ }
+    \sdaps_context_hook_end:n { \_sdaps_qobject_end_hook: }
     \sdaps_context_hook_post_end:n { \_sdaps_qobject_post_hook: }
 }
 \cs_generate_variant:Nn \sdaps_qobject_begin:nnn { nnV, nVV, nVn }
