@@ -538,16 +538,9 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_generate_var:nN
 {
-  \sdaps_context_get:nN { _var } \l__sdaps_tmpa_tl
-
-  \tl_if_eq:VnT \l__sdaps_tmpa_tl { \q_no_value } {
-    \tl_set_eq:NN \l__sdaps_tmpa_tl \l__sdaps_tmpb_tl
-    \tl_set_eq:NN \l__sdaps_tmpb_tl \q_no_value
-  }
-
   \tl_set:Nn \l__sdaps_tmpa_tl { #1 }
 
-  % Generate a variable name if there is none (with _ prefix)
+  % Generate a variable name if there is none (prepended with _ prefix)
   \tl_if_empty:VT \l__sdaps_tmpa_tl {
     \tl_set:Nx \l__sdaps_tmpa_tl { _ \int_eval:n { \g__sdaps_object_id_int + 1 } }
   }
@@ -562,6 +555,7 @@
     }
   }
 
+  % Prepend explicit variable name
   \sdaps_context_get:nN { _var } \l__sdaps_tmpb_tl
   \tl_if_eq:VnF \l__sdaps_tmpb_tl { \q_no_value } {
     \tl_put_left:Nn \l__sdaps_tmpa_tl { _ }
