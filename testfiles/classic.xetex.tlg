@@ -16,40 +16,40 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\strutbox' on input line ....
 [2
-QObject-Head=0. 
-QObject-range=0.1. question
-Range-lower[0.1]=0,lower
-Range-upper[0.1]=4,upper
-Box[0.1]=Checkbox,0,249.85788pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_1,1
-Box[0.1]=Checkbox,0,271.81631pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_2,2
-Box[0.1]=Checkbox,0,293.77475pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_3,3
-Box[0.1]=Checkbox,0,315.73318pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_4,4
-Box[0.1]=Checkbox,0,337.69162pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_5,5
-Variable[0.1]=0_1
-QObject-range=0.2. question
-Range-lower[0.2]=0,lower
-Range-upper[0.2]=6,upper
-Box[0.2]=Checkbox,0,227.89944pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_1,1
-Box[0.2]=Checkbox,0,249.85788pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_2,2
-Box[0.2]=Checkbox,0,271.81631pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_3,3
-Box[0.2]=Checkbox,0,293.77475pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_4,4
-Box[0.2]=Checkbox,0,315.73318pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_5,5
-Box[0.2]=Checkbox,0,337.69162pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_6,6
-Box[0.2]=Checkbox,0,359.65005pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_7,7
-Variable[0.2]=0_2
-QObject-range=0.3. question
-Range-lower[0.3]=0,lower
-Range-upper[0.3]=6,upper
-Answer[0.3]=other
-Box[0.3]=Checkbox,0,166.2625pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_1,1
-Box[0.3]=Checkbox,0,188.22093pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_2,2
-Box[0.3]=Checkbox,0,210.17937pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_3,3
-Box[0.3]=Checkbox,0,232.1378pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_4,4
-Box[0.3]=Checkbox,0,254.09624pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_5,5
-Box[0.3]=Checkbox,0,276.05467pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_6,6
-Box[0.3]=Checkbox,0,298.0131pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_7,7
-Box[0.3]=Checkbox,0,443.24547pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_0,0
-Variable[0.3]=0_3
+[10]QObject-Head=0. 
+[11]QObject-range=0.1. question
+[12]Range-lower[0.1]=0,lower
+[13]Range-upper[0.1]=4,upper
+[24]Box[0.1]=Checkbox,0,249.85788pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_1,1
+[25]Box[0.1]=Checkbox,0,271.81631pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_2,2
+[26]Box[0.1]=Checkbox,0,293.77475pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_3,3
+[27]Box[0.1]=Checkbox,0,315.73318pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_4,4
+[28]Box[0.1]=Checkbox,0,337.69162pt,752.3514pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_1_5,5
+[29]Variable[0.1]=0_1
+[30]QObject-range=0.2. question
+[31]Range-lower[0.2]=0,lower
+[32]Range-upper[0.2]=6,upper
+[47]Box[0.2]=Checkbox,0,227.89944pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_1,1
+[48]Box[0.2]=Checkbox,0,249.85788pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_2,2
+[49]Box[0.2]=Checkbox,0,271.81631pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_3,3
+[50]Box[0.2]=Checkbox,0,293.77475pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_4,4
+[51]Box[0.2]=Checkbox,0,315.73318pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_5,5
+[52]Box[0.2]=Checkbox,0,337.69162pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_6,6
+[53]Box[0.2]=Checkbox,0,359.65005pt,712.3476pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_2_7,7
+[54]Variable[0.2]=0_2
+[55]QObject-range=0.3. question
+[56]Range-lower[0.3]=0,lower
+[57]Range-upper[0.3]=6,upper
+[58]Answer[0.3]=other
+[75]Box[0.3]=Checkbox,0,166.2625pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_1,1
+[76]Box[0.3]=Checkbox,0,188.22093pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_2,2
+[77]Box[0.3]=Checkbox,0,210.17937pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_3,3
+[78]Box[0.3]=Checkbox,0,232.1378pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_4,4
+[79]Box[0.3]=Checkbox,0,254.09624pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_5,5
+[80]Box[0.3]=Checkbox,0,276.05467pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_6,6
+[81]Box[0.3]=Checkbox,0,298.0131pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_7,7
+[82]Box[0.3]=Checkbox,0,443.24547pt,672.3438pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_3_0,0
+[83]Variable[0.3]=0_3
 ]
 ============================================================
 ============================================================
@@ -64,25 +64,25 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\strutbox' on input line ....
 [3
-QObject-Choice=0.4. Question
-Answer[0.4]=a
-Answer[0.4]=btext
-Answer[0.4]=ctext
-Answer[0.4]=dtext
-Box[0.4]=Checkbox,0,42.98857pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_1,1
-Box[0.4]=Checkbox,0,118.4522pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,b,2
-Box[0.4]=Checkbox,0,193.91582pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_3,3
-Box[0.4]=Textbox,0,354.57631pt,753.12051pt,199.9431pt,85.35825pt,1.00374pt,0_4_4,
-Variable[0.4]=0_4
-QObject-Option=0.5. Question
-Answer[0.5]=a
-Answer[0.5]=btext
-Answer[0.5]=ctext
-Answer[0.5]=ctext
-Box[0.5]=Checkbox,0,42.98857pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_1,1
-Box[0.5]=Checkbox,0,118.4522pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_2,10
-Box[0.5]=Checkbox,0,193.91582pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_3,3
-Box[0.5]=Checkbox,0,42.98857pt,621.29237pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_4,4
-Variable[0.5]=qvar
+[84]QObject-Choice=0.4. Question
+[85]Answer[0.4]=a
+[87]Answer[0.4]=btext
+[89]Answer[0.4]=ctext
+[91]Answer[0.4]=dtext
+[86]Box[0.4]=Checkbox,0,42.98857pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_1,1
+[88]Box[0.4]=Checkbox,0,118.4522pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,b,2
+[90]Box[0.4]=Checkbox,0,193.91582pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_3,3
+[92]Box[0.4]=Textbox,0,354.57631pt,753.12051pt,199.9431pt,85.35825pt,1.00374pt,0_4_4,
+[93]Variable[0.4]=0_4
+[94]QObject-Option=0.5. Question
+[95]Answer[0.5]=a
+[97]Answer[0.5]=btext
+[99]Answer[0.5]=ctext
+[101]Answer[0.5]=ctext
+[96]Box[0.5]=Checkbox,0,42.98857pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_1,1
+[98]Box[0.5]=Checkbox,0,118.4522pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_2,10
+[100]Box[0.5]=Checkbox,0,193.91582pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_3,3
+[102]Box[0.5]=Checkbox,0,42.98857pt,621.29237pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_4,4
+[103]Variable[0.5]=qvar
 ]
 ============================================================

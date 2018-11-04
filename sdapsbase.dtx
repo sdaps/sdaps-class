@@ -755,11 +755,14 @@
 
 \iow_new:N \g_sdaps_infofile_iow
 \iow_open:Nn \g_sdaps_infofile_iow { \c_sys_jobname_str . sdaps }
+\int_new:N \g__sdaps_infofile_line_int
+\int_gset:Nn \g__sdaps_infofile_line_int { 0 }
 
 \cs_new_protected_nopar:Nn \sdaps_info_write:n
 {
   \bool_if:NT \g_sdaps_write_enable_bool {
-    \iow_shipout:Nn \g_sdaps_infofile_iow { #1 }
+    \int_gincr:N \g__sdaps_infofile_line_int
+    \iow_shipout:Nx \g_sdaps_infofile_iow { [ \int_use:N \g__sdaps_infofile_line_int ] \exp_not:n { #1 } }
   }
 }
 \cs_generate_variant:Nn \sdaps_info_write:n { x }
@@ -767,7 +770,8 @@
 \cs_new_protected_nopar:Nn \sdaps_info_write_x:n
 {
   \bool_if:NT \g_sdaps_write_enable_bool {
-    \iow_shipout_x:Nn \g_sdaps_infofile_iow { #1 }
+    \int_gincr:N \g__sdaps_infofile_line_int
+    \iow_shipout_x:Nx \g_sdaps_infofile_iow { [ \int_use:N \g__sdaps_infofile_line_int ] \exp_not:n { #1 } }
   }
 }
 \cs_generate_variant:Nn \sdaps_info_write_x:n { x }
