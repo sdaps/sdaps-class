@@ -630,7 +630,9 @@
   \sdaps_array_alignment:
   \leavevmode
   \sdaps_range:nnV { lower } { 0 } \g_sdaps_question_lowertext_tl
-  \hfill
+  \sdaps_if_rtl:F {
+    \hfill
+  }
   \ignorespaces
 }
 
@@ -638,6 +640,9 @@
   \sdaps_array_alignment:
   \leavevmode
   \sdaps_range:nnV { upper } { \l_sdaps_rangearray_rangecount_int - 1 } \g_sdaps_question_uppertext_tl
+  \sdaps_if_rtl:T {
+    \hfill
+  }
   \ignorespaces
 }
 
@@ -647,7 +652,11 @@
   \sdaps_array_alignment:
   \leavevmode
   \sdaps_answer:V \g_sdaps_question_othertext_tl
-  \sdaps_checkbox:nn { } { 0 } {} ~ {}
+  \sdaps_if_rtl:TF {
+    \hfill
+  } {
+    \sdaps_checkbox:nn { } { 0 } {} ~ {}
+  }
   \ignorespaces
 }
 
@@ -666,13 +675,19 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_lower: {
   % Insert the option checkbox column
+  \sdaps_if_rtl:T {
+    \hfill\kern 0pt
+  }
   \sdaps_array_alignment:
   \leavevmode
+  % Seems like right to left writing mode is not started without a paragraph
+  \sdaps_if_rtl:T { \beginR }
   % Assume we have at least one checkbox
   \sdaps_checkbox:nn { } { 1 }
   \int_step_inline:nnnn { 2 } { 1 } { \l_sdaps_rangearray_rangecount_int } {
     \hspace{1em} \sdaps_checkbox:nn { } { ##1 }
   }
+  \sdaps_if_rtl:T { \endR }
 
   \tl_if_empty:NTF \g_sdaps_question_uppertext_tl {
     \cs_set_eq:NN \l_tmpa_token \_sdaps_rangearray_process_question_grab_upper:n
@@ -683,7 +698,9 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_upper: {
-  \hfill\kern 0pt
+  \sdaps_if_rtl:F {
+    \hfill\kern 0pt
+  }
 
   \bool_if:NTF \l_sdaps_rangearray_other_bool {
     \tl_if_empty:NTF \g_sdaps_question_othertext_tl {
@@ -698,7 +715,11 @@
 }
 
 \cs_new_protected_nopar:Nn \_sdaps_rangearray_process_question_after_other: {
-  \hfill\kern 0pt
+  \sdaps_if_rtl:TF {
+    {} ~ \sdaps_checkbox:nn { } { 0 } {}
+  } {
+    \hfill\kern 0pt
+  }
   \ignorespaces
 }
 

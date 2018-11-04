@@ -96,6 +96,7 @@
 \ExplSyntaxOff
 
 \RequirePackage{xparse}
+\RequirePackage{sdapsbase}
 
 
 \ExplSyntaxOn
@@ -130,6 +131,7 @@
 \ior_new:N \g__sdaps_array_info_ior
 
 \cs_generate_variant:Nn \int_set:Nn { Nf }
+\cs_generate_variant:Nn \coffin_join:NnnNnnnn { NnVNnVnn }
 
 \cs_new_protected_nopar:Nn \_sdaps_array_open_tmpfiles:
 {
@@ -469,7 +471,11 @@
   }
   % \vbox_set_top:Nw is still missing as of 2017-08-11
   \tex_setbox:D #1 \tex_vtop:D \bgroup
-    \raggedleft
+    \sdaps_if_rtl:TF {
+      \raggedright
+    } {
+      \raggedleft
+    }
     \hsize=\dim_use:N\l_tmpa_dim
     \group_begin:\bgroup
     \group_insert_after:N \group_end:
@@ -566,7 +572,7 @@
   \seq_gclear:N \g_sdaps_array_overhangs_right_seq
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_array_row_ltr:NNNN
+\cs_new_protected_nopar:Nn \_sdaps_array_row:NNNN
 {
   % #1: A vbox with baseline on the *first* item containing the row header
   %     (\vtop in plain TeX).
@@ -657,13 +663,15 @@
       % to center it.
       \hbox_set_to_wd:Nnn \l_tmpb_box \l_tmpa_dim { \hfil \hbox_unpack:N #2 \hfil }
 
-      % This loops works backward, so attach the cell on the right side of
-      % the coffin.
-      % Note that we make sure here that the order is correct again (as the
-      % metadata currently relys on the correct order).
-      %\coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { 1em } { 0pt }
-      %\coffin_set_eq:NN \l_tmpa_coffin \l_tmpb_coffin
-      \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpb_box \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpa_box }
+      % This loops works backward, so attach the cell on the right side.
+      % We used to make sure that it is layed out in order, but that is now
+      % obsolete and doing it out of order is simpler in RTL mode.
+      \sdaps_if_rtl:TF {
+        % The boxes are shown on the page from LTR
+        \hbox_set:Nn \l_tmpa_box { \box_use:N \l_tmpa_box \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpb_box \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } }
+      } {
+        \hbox_set:Nn \l_tmpa_box { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpb_box \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \box_use:N \l_tmpa_box }
+      }
 
       % Grab next cell
       \box_set_to_last:N #2
@@ -671,7 +679,6 @@
 
     % Get the coffin out of the nested scope by placing it into the box and
     % placing that into it again ...
-    %\coffin_typeset:Nnnnn \l_tmpa_coffin { H } { l } { 0pt } { 0pt }
     \box_use:N \l_tmpa_box
   }
   \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N #2 }
@@ -686,16 +693,24 @@
   % TODO: The \hfil here is a hack to prevent a warning if the vbox is empty.
   %       Unfortunately checking for an empty box does not work for some reason.
   \dim_set:Nn \l_tmpb_dim { \box_ht:N #1 }
-  \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
+  \sdaps_if_rtl:TF {
+    \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } }
+    \tl_set:Nn \l_tmpa_tl { l }
+    \tl_set:Nn \l_tmpb_tl { r }
+  } {
+    \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
+    \tl_set:Nn \l_tmpa_tl { r }
+    \tl_set:Nn \l_tmpb_tl { l }
+  }
   \dim_set:Nn \l_tmpa_dim { \coffin_ht:N \l_tmpb_coffin }
 
   % If the first/last baseline differ then center the vbox, otherwise align the
   % baseline with the cells
   \dim_compare:nNnTF { \l_tmpa_dim } = { \l_tmpb_dim } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { H } { r } \l_tmpa_coffin { H } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
+    \coffin_join:NnVNnVnn \l_tmpb_coffin { H } \l_tmpa_tl \l_tmpa_coffin { H } \l_tmpb_tl { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
     \dim_set:Nn #4 { \coffin_ht:N \l_tmpb_coffin }
   } {
-    \coffin_join:NnnNnnnn \l_tmpb_coffin { vc } { r } \l_tmpa_coffin { vc } { l } { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
+    \coffin_join:NnVNnVnn \l_tmpb_coffin { vc } \l_tmpa_tl \l_tmpa_coffin { vc } \l_tmpb_tl { \l_sdaps_sdapsarray_colsep_dim } { 0pt }
     % XXX: Assume that the header is higher than the content cells
     \dim_set:Nn #4 { \l_tmpb_dim }
   }
@@ -710,7 +725,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_default:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNNN },
+  row = { \_sdaps_array_row:NNNN },
   end = { \_sdaps_array_end_default: },
 }
 
@@ -721,7 +736,7 @@
   rowhead = { \_sdaps_array_rowhead_default:Nw },
   colhead = { \_sdaps_array_cell_rotated:Nw },
   cell = { \_sdaps_array_cell_default:Nw },
-  row = { \_sdaps_array_row_ltr:NNNN },
+  row = { \_sdaps_array_row:NNNN },
   end = { \_sdaps_array_end_default: },
 }
 
