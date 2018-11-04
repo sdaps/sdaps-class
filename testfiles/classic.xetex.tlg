@@ -69,9 +69,9 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [87]Answer[0.4]=btext
 [89]Answer[0.4]=ctext
 [91]Answer[0.4]=dtext
-[86]Box[0.4]=Checkbox,0,42.98857pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_1,1
-[88]Box[0.4]=Checkbox,0,118.4522pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,b,2
-[90]Box[0.4]=Checkbox,0,193.91582pt,716.47227pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_3,3
+[86]Box[0.4]=Checkbox,0,42.98857pt,715.42062pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_1,1
+[88]Box[0.4]=Checkbox,0,118.4522pt,715.42062pt,9.95845pt,9.95845pt,box,1.00374pt,b,2
+[90]Box[0.4]=Checkbox,0,193.91582pt,715.42062pt,9.95845pt,9.95845pt,box,1.00374pt,0_4_3,3
 [92]Box[0.4]=Textbox,0,354.57631pt,753.12051pt,199.9431pt,85.35825pt,1.00374pt,0_4_4,
 [93]Variable[0.4]=0_4
 [94]QObject-Option=0.5. Question
@@ -79,10 +79,10 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [97]Answer[0.5]=btext
 [99]Answer[0.5]=ctext
 [101]Answer[0.5]=ctext
-[96]Box[0.5]=Checkbox,0,42.98857pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_1,1
-[98]Box[0.5]=Checkbox,0,118.4522pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_2,10
-[100]Box[0.5]=Checkbox,0,193.91582pt,634.89238pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_3,3
-[102]Box[0.5]=Checkbox,0,42.98857pt,621.29237pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_4,4
+[96]Box[0.5]=Checkbox,0,42.98857pt,635.89236pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_1,1
+[98]Box[0.5]=Checkbox,0,118.4522pt,635.89236pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_2,10
+[100]Box[0.5]=Checkbox,0,193.91582pt,635.89236pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_3,3
+[102]Box[0.5]=Checkbox,0,42.98857pt,622.29236pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_4,4
 [103]Variable[0.5]=qvar
 ]
 ============================================================
