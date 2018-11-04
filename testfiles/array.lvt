@@ -141,7 +141,7 @@
 
 \begin{MYTESTPAGE}{Cells can be right/left aligned using hfill/vfill}
   \begin{sdapsarray}
-      & \logpos{column} & \logpos{column} \\
+    {} & \logpos{column} & \logpos{column} \\
     head & \hfill\logpos{x} & \hfill\logpos{x} \\
     head & \logpos{x} & \logpos{x} \\
     head & \logpos{x}\hfill{} & \logpos{x}\hfill{} \\
@@ -309,7 +309,7 @@
   % The row headers can be multiline and should properly flow as paragraphs.
   % They are ragged right though towards the cells.
   \begin{sdapsarray}
-      & col 1 & col 2 \\
+    {} & col 1 & col 2 \\
     \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
     \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
     \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
@@ -347,7 +347,7 @@
 \begin{MYTESTPAGE}{sdapsarray inside an addmargin environment}
   \begin{addmargin}{5em}
     \begin{sdapsarray}
-        & col 1 & col 2 \\
+      {} & col 1 & col 2 \\
       \logpos{A row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
       \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
       \logpos{Another row} header with a lot of text which will wrap over multiple lines. And here comes the \logpos{end of it}. & \logpos{a} & \logpos{b} \\
@@ -466,7 +466,7 @@
     Filler text above baseline.
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & a & b \\
       3 & c & d
     \end{sdapsarray}
@@ -477,7 +477,7 @@
     Text going underneath the baseline.
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & a & b \\
       3 & c & d
     \end{sdapsarray}
@@ -489,7 +489,7 @@
 \begin{MYTESTPAGE}{baseline handling at the bottom}
   \begin{multicols}{4}
     \begin{sdapsarray}
-       & col 1 & col 2 \\
+      {} & col 1 & col 2 \\
       2 & a & b \\
       3 & c & d
     \end{sdapsarray}
@@ -498,7 +498,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & col 1 & col 2 \\
+      {} & col 1 & col 2 \\
       2 & a & b \\
       3 & c & d
     \end{sdapsarray}
@@ -508,7 +508,7 @@
 
     % The last row contains a g to go below the baseline
     \begin{sdapsarray}
-        & col 1 & col 2 \\
+      {} & col 1 & col 2 \\
       2 & a & b \\
       3 & c & g
     \end{sdapsarray}
@@ -518,7 +518,7 @@
 
     % The last row contains a g to go below the baseline
     \begin{sdapsarray}
-        & col 1 & col 2 \\
+      {} & col 1 & col 2 \\
       2 & a & b \\
       3 & c & g
     \end{sdapsarray}
@@ -534,7 +534,7 @@
   %       baseline)
   \begin{multicols}{4}
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & b \\
       3 & \logpos{c} & d
     \end{sdapsarray}
@@ -543,7 +543,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2g \\
+      {} & \logpos{col 1} & col 2g \\
       2 & \logpos{a} & b \\
       3 & \logpos{c} & d
     \end{sdapsarray}
@@ -552,7 +552,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & bg \\
       3 & \logpos{c} & d
     \end{sdapsarray}
@@ -561,7 +561,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & b \\
       3 & \logpos{c} & dg
     \end{sdapsarray}
@@ -571,7 +571,7 @@
 
   \begin{multicols}{4}
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & b \\
       3 & \logpos{c} & d
     \end{sdapsarray}
@@ -589,7 +589,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       g & \logpos{a} & b \\
       3 & \logpos{c} & d
     \end{sdapsarray}
@@ -598,7 +598,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & b \\
       g & \logpos{c} & d
     \end{sdapsarray}
@@ -608,7 +608,7 @@
 
   \begin{multicols}{4}
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
       2 & \logpos{a} & a \\
       3 & \logpos{c} & a
     \end{sdapsarray}
@@ -617,7 +617,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
         & \logpos{a} & a \\
         & \logpos{c} & a
     \end{sdapsarray}
@@ -626,7 +626,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
         & \logpos{a} & a \\
         & \logpos{c} & d
     \end{sdapsarray}
@@ -635,7 +635,7 @@
     \columnbreak
 
     \begin{sdapsarray}
-        & \logpos{col 1} & col 2 \\
+      {} & \logpos{col 1} & col 2 \\
         & \logpos{a} & g \\
         & \logpos{c} & d
     \end{sdapsarray}
