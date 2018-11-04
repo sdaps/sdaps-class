@@ -4,8 +4,8 @@ sdapslayout package
 This package provides a set of more complex layouting options on top of the
 sdapsarray package. The following environments are provided:
 
- * :environ:`choicearray`
- * :environ:`rangearray`
+* :environ:`choicearray`
+* :environ:`rangearray`
 
 The rangearray is not quite as powerful, as it does not expose some of the
 sdapsarray options to the user. Note that much more complex custom layouts can

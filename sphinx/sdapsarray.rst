@@ -7,18 +7,18 @@ to tabularx. It is less flexible in the types of layouts that can be realized bu
 a lot more powerful otherwise. The `sdapsarray` environment has the following
 features:
 
- * All :environ:`sdapsarray` environments in the document can be aligned to each other
- * The environment can span multiple pages
- * Headers will be repeated when page splits are encountered
- * The rows/columns can be swapped on the fly
- * Different ``layouter`` can be plugged in to modify the rendering
- * Fragile content can be used without further preparation
- * Contained content is executed exactly once (important for metadata generation)
+* All :environ:`sdapsarray` environments in the document can be aligned to each other
+* The environment can span multiple pages
+* Headers will be repeated when page splits are encountered
+* The rows/columns can be swapped on the fly
+* Different ``layouter`` can be plugged in to modify the rendering
+* Fragile content can be used without further preparation
+* Contained content is executed exactly once (important for metadata generation)
 
 Things that are *not* possible currently:
 
- * Row or column backgrounds
- * Grid lines
+* Row or column backgrounds
+* Grid lines
 
 .. warning::
     The :environ:`sdapsarray` is **not** a ``tabular`` like environment. It behaves
@@ -69,25 +69,25 @@ Layout and formatting considerations
 
 The following hold true inside the environment:
 
- * The row headers are set into a :macro:`\\vtop` with the left over width from
-   the cells. This vertical box is later re-set into a :macro:`\\vbox`. The
-   effect is that the interrow skip is calculated between the last element of
-   the previous row and the first element of the next row. this means you must
-   be careful to not insert invisible content at the start of the vertical box.
-   (e.g. by adding a :macro:`\\leavevmode`).
- * The exception to the above rule is the start of the environment (i.e. the
-   header row) for which the top baseline information is (currently) discarded!
- * Each cell is set into an :macro:`\\hbox` with the last skip in the box removed
-   again (i.e. trailing space). You can use :macro:`\\hfill` to align the box to
-   the left/right but need to prevent the :macro:`\\hfill` to be removed again
-   for left alignment (e.g. by adding a ``\kern 0pt``).
- * Column headers behave like cells but a special layouter can be assigned to
-   them.
- * Row headers and column headers will usually be set on a common baseline. The
-   exception to this is if the column header contains multiple boxes/lines. In
-   that case the cells will be centered ignoring the baselines of both cells
-   and row header.
- * A penalty of 10 is inserted between rows.
+* The row headers are set into a :macro:`\\vtop` with the left over width from
+  the cells. This vertical box is later re-set into a :macro:`\\vbox`. The
+  effect is that the interrow skip is calculated between the last element of
+  the previous row and the first element of the next row. this means you must
+  be careful to not insert invisible content at the start of the vertical box.
+  (e.g. by adding a :macro:`\\leavevmode`).
+* The exception to the above rule is the start of the environment (i.e. the
+  header row) for which the top baseline information is (currently) discarded!
+* Each cell is set into an :macro:`\\hbox` with the last skip in the box removed
+  again (i.e. trailing space). You can use :macro:`\\hfill` to align the box to
+  the left/right but need to prevent the :macro:`\\hfill` to be removed again
+  for left alignment (e.g. by adding a ``\kern 0pt``).
+* Column headers behave like cells but a special layouter can be assigned to
+  them.
+* Row headers and column headers will usually be set on a common baseline. The
+  exception to this is if the column header contains multiple boxes/lines. In
+  that case the cells will be centered ignoring the baselines of both cells
+  and row header.
+* A penalty of 10 is inserted between rows.
 
 
 sdapsarray environment
