@@ -615,6 +615,8 @@
 It~is~currently~not~supported~to~use~text~answers~in~single~choice~questions.~Until~support~is~added~
 you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
+\msg_new:nnn { sdapsclassic } { choicequestion_unknown_key } { The~key~'#1'~is~unknown.\\If~you~are~migrating~from~the~old~class~then~you~need~to~add~'cols='~to~specify~the~number~of~columns. }
+
 \tl_new:N \l_sdaps_choicquestion_type_tl
 \tl_new:N \l_sdaps_choicequestion_var_tl
 \tl_new:N \l_sdaps_choicequestion_text_tl
@@ -636,6 +638,8 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   singlechoice .meta:n    = { type=singlechoice },
   multichoice  .meta:n    = { type=multichoice },
+
+  unknown .code:n = \msg_error:nnV { sdapsclassic } { choicequestion_unknown_key } \l_keys_key_tl
 }
 
 
