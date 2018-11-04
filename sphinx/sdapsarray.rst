@@ -14,7 +14,6 @@ features:
  * Different ``layouter`` can be plugged in to modify the rendering
  * Fragile content can be used without further preparation
  * Contained content is executed exactly once (important for metadata generation)
- * Cells are rendered as much in-order as possible  (important for metadata generation)
 
 Things that are *not* possible currently:
 
@@ -22,8 +21,11 @@ Things that are *not* possible currently:
  * Grid lines
 
 .. warning::
-    You should *not* add a trailing ``\\`` to finish the last row. This can confuse
-    the class in some situation and may cause a fatal warning.
+    The :environ:`sdapsarray` is **not** a ``tabular`` like environment. It behaves
+    in similar ways, but there are fundamental differences, causing some issues:
+
+    * If the **first cell must not be empty**. Either pass optional parameters ``[]`` or put ``{}`` into the cell. This is caused by the way TeX parses the input and is hard to fix.
+    * You **must not add a trailing ``\\``** to the last row.
 
 .. sdaps:: Example of a sdapsarray environment
 
