@@ -8,6 +8,15 @@ Welcome to sdaps-class's documentation!
 
 Contents:
 
+Usage Guides
+------------
+.. toctree::
+    :maxdepth: 2
+
+    customlayout
+
+Reference documentation
+-----------------------
 .. toctree::
     :maxdepth: 2
 
