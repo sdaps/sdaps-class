@@ -164,7 +164,7 @@ TEMPLATE = r'''
   \vbox{\hfill\pgfsys@markposition{targetbottom}}
 
   \iow_new:N \g_targetinfo
-  \iow_open:Nn \g_targetinfo { \c_job_name_tl . targetinfo }
+  \iow_open:Nn \g_targetinfo { \c_sys_jobname_str . targetinfo }
 
   \pgfsys@getposition{pgfpageorigin}{\pageorigin}
   \pgfsys@getposition{targettop}{\tmp}
@@ -215,7 +215,7 @@ TEMPLATE_SDAPSCLASSIC = r'''
   \vbox{\hfill\pgfsys@markposition{targetbottom}}
 
   \iow_new:N \g_targetinfo
-  \iow_open:Nn \g_targetinfo { \c_job_name_tl . targetinfo }
+  \iow_open:Nn \g_targetinfo { \c_sys_jobname_str . targetinfo }
 
   \pgfsys@getposition{pgfpageorigin}{\pageorigin}
   \pgfsys@getposition{targettop}{\tmp}
