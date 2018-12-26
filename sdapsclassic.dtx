@@ -884,14 +884,28 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 {
   \bool_if:NT \l__sdaps_questionnaire_info_bool {
     \begin{info}
-      \translate{infotext}\\
+      \translate{infotext} \\[1ex]
       \tl_if_eq:VnTF \g_sdaps_checkmode_tl { checkcorrect } {
-        \begin{tabularx}{\textwidth}{llcX}
-            \translate{info-cross}: & \checkedbox &\quad & \translate{info-select} \\
-            \translate{info-correct}: & \correctedbox & & \translate{info-mark} \\
+        \begin{tabularx}{\textwidth}{lXllll}
+          \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} & \hspace{1em} \correctedbox {} & \translate{info-corrected} \\
+          \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} & \hspace{1em} \correctedbox* {} & \translate{info-corrected} \\
         \end{tabularx}
       } {
-        \PackageError{sdaps}{Sorry, there is no help text for the checkmode you have choosen right now! Please pass the noinfo optional argument to the questionnaire environment!}\@ehb %
+        \tl_if_eq:VnTF \g_sdaps_checkmode_tl { check } {
+          \begin{tabularx}{\textwidth}{lXll}
+            \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} \\
+            \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} \\
+          \end{tabularx}
+        } {
+          \tl_if_eq:VnTF \g_sdaps_checkmode_tl { fill } {
+            \begin{tabularx}{\textwidth}{lXll}
+              \checkbox & \strut \translate{info-multi} & \hspace{2em} \filledbox {} & \translate{info-fill} \\
+              \checkbox* & \strut \translate{info-single} & \hspace{2em} \filledbox* {} & \translate{info-fill} \\
+            \end{tabularx}
+          } {
+            \PackageError{sdaps}{Sorry, there is no help text for the checkmode you have choosen right now! Please pass the noinfo optional argument to the questionnaire environment!}\@ehb %
+          }
+        }
       }
     \end{info}
   }
