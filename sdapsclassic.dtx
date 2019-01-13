@@ -355,16 +355,24 @@
 
 \newenvironment{info}{%
   \group_begin:
-    \par
-    \noindent\hrule height 1pt%
-    \nobreak
-    \vspace{-\parskip}
-    \vspace{0.5ex}
+    {
+      \par
+      % Prevent top skip glue from being inserted at the start of the page
+      \topskip=0
+      \noindent\hrule height 1pt%
+      \nobreak
+      \vspace{-\parskip}
+      \nobreak
+      \vspace{0.5ex}
+      \nobreak
+    }
 }{%
     \par
     \nobreak
     \vspace{-\parskip}
+    \nobreak
     \vspace{0.5ex}
+    \nobreak
     \noindent\hrule height 1pt
   \group_end:
 }
