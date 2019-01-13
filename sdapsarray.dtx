@@ -497,7 +497,6 @@
     \dim_set:Nn \l_tmpa_dim { \box_ht:N \l_tmpa_box }
     \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
 
-    % sin(70°)
     \dim_set:Nn \l_tmpa_dim { \l_sdaps_sdapsarray_angle_sine_tl \l_tmpa_dim }
     \dim_set:Nn \l_tmpb_dim { \l_sdaps_sdapsarray_angle_sine_tl \l_tmpb_dim }
 
@@ -505,11 +504,11 @@
 
     \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
     \rlap{
-      \skip_horizontal:n { -\l_tmpa_dim + 0.5\l_tmpb_dim }
+      \skip_horizontal:n { -\l_tmpa_dim }
       \box_use:N \l_tmpa_box
     }
     \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
-    % dummy skip to remove
+    % dummy skip that will be removed again by other code
     \skip_horizontal:n { 0pt }
 
     \dim_set:Nn \l_tmpa_dim { \l_tmpa_dim + \l_tmpb_dim }

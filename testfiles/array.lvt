@@ -273,7 +273,7 @@
   % But for example "row head" is higher than "col head X".
   \begin{sdapsarray}[layouter=rotated]
     \logpos{row head} &
-      \logpos{col head 1} &
+      \lognamedpos{col head 1}\sdapsnested{$\left( \begin{array}{cc} a & b \\ c & d \end{array} \right) + \log{\alpha}$} &
       \logpos{col head 2} \\
     \logpos{row head 1} & \logpos{a} & \logpos{b} \\
     \logpos{row head 2} & \logpos{c} & \logpos{d} \\
