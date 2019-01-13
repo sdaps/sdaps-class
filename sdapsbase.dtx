@@ -1769,13 +1769,6 @@
   \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}
 
   \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
-
-  % Empty vbox, so that an empty page will not be supressed by LaTeX
-  % FIXME: Does this always work? Should we force a new page after this?
-  %        Should the class enforce the correct page count by using
-  %        cleardoublepage internally?
-  \par\tex_prevdepth:D=-1000pt
-  \vbox:n {}
 }
 
 
