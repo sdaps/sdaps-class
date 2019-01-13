@@ -498,10 +498,10 @@
     \dim_set:Nn \l_tmpb_dim { \box_dp:N \l_tmpa_box }
 
     % sin(70°)
-    \dim_set:Nn \l_tmpa_dim { 0.93969262078590838405 \l_tmpa_dim }
-    \dim_set:Nn \l_tmpb_dim { 0.93969262078590838405 \l_tmpb_dim }
+    \dim_set:Nn \l_tmpa_dim { \l_sdaps_sdapsarray_angle_sine_tl \l_tmpa_dim }
+    \dim_set:Nn \l_tmpb_dim { \l_sdaps_sdapsarray_angle_sine_tl \l_tmpb_dim }
 
-    \box_rotate:Nn \l_tmpa_box { 70 }
+    \box_rotate:Nn \l_tmpa_box { \l_sdaps_sdapsarray_angle_int }
 
     \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
     \rlap{
@@ -755,6 +755,8 @@
 \tl_new:N \l_sdaps_sdapsarray_layouter_tl
 \tl_new:N \l_sdaps_sdapsarray_align_tl
 \bool_new:N \l_sdaps_sdapsarray_keepenv_bool
+\int_new:N \l_sdaps_sdapsarray_angle_int
+\tl_new:N \l_sdaps_sdapsarray_angle_sine_tl
 \dim_new:N \l_sdaps_sdapsarray_colsep_dim
 \dim_new:N \l_sdaps_sdapsarray_rowsep_dim
 
@@ -771,6 +773,11 @@
   keepenv    .initial:n  = false,
   keepenv    .default:n  = true,
 
+  angle          .code:n     = {
+    \int_set:Nn \l_sdaps_sdapsarray_angle_int {#1}
+    \tl_set:Nx \l_sdaps_sdapsarray_angle_sine_tl { \fp_to_decimal:n {sind(#1)}}
+  },
+  angle          .initial:n  = 70,
   colsep         .dim_set:N  = \l_sdaps_sdapsarray_colsep_dim,
   colsep         .initial:n  = 6pt,
   rowsep         .dim_set:N  = \l_sdaps_sdapsarray_rowsep_dim,

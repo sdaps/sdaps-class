@@ -279,6 +279,15 @@
     \logpos{row head 2} & \logpos{c} & \logpos{d} \\
     \logpos{row head 3} & \logpos{e} & \logpos{f}
   \end{sdapsarray}
+
+  \begin{sdapsarray}[layouter=rotated,angle=45]
+    \logpos{row head} &
+      \logpos{col head 1} &
+      \logpos{col head 2} \\
+    \logpos{row head 1} & \logpos{a} & \logpos{b} \\
+    \logpos{row head 2} & \logpos{c} & \logpos{d} \\
+    \logpos{row head 3} & \logpos{e} & \logpos{f}
+  \end{sdapsarray}
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{sdapsarray with rotated header}

@@ -27,6 +27,7 @@ be created directly with sdapsarray.
     :kwarg noalign:       disable alignment (same as setting ``align`` to an empty value)
     :kwarg horizontal:    set horizontal mode where each question is one row (default)
     :kwarg layouter:      set the sdapsarray layouter (e.g. rotated for rotated column headers)
+    :kwarg angle:         set the angle of the column headers when in rotated mode
     :kwarg text:          override the normal header (not useful currently!)
     :kwarg var:           if set appends the variable name to the newly created scope ('_' separator is added automatically)
     :kwarg vertical:      set vertical mode where each question is one column

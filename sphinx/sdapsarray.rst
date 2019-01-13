@@ -106,6 +106,7 @@ sdapsarray environment
           header which will line break automatically (this is the default)
         * ``rotated``: Similar to default but rotates the column headers
 
+    :kwarg angle: The angle of the header when in ``rotated`` mode
     :kwarg align: An arbitrary string to align multiple :environ:`sdapsarray` environments
         to each other. All environments with the same string will be
         aligned. (default: no alignment)

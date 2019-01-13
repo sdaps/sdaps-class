@@ -361,6 +361,13 @@ Environments
           \choiceline{Question two}
         \end{choicegroup}
 
+        \begin{choicegroup}[layouter=rotated,angle=45,vertical]{A group of questions with a smaller angle}
+          \groupaddchoice{Choice 1}
+          \groupaddchoice{Choice 2}
+          \choiceline{Question one}
+          \choiceline{Question two}
+        \end{choicegroup}
+
     .. sdaps:: Example of choice filtering
         :sdapsclassic:
 
