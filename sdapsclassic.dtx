@@ -208,10 +208,15 @@
 %-------------------------------------------------------------------------------
 % geometry package
 \RequirePackage{geometry}
-\geometry{hmargin=13mm}
-\geometry{vmargin=25mm}
-%\geometry{top=21mm}
-%\geometry{bottom=25mm}
+% Corner mark postions plus 2mm, except for the header
+\geometry{top=12mm}
+\geometry{bottom=14mm}
+\geometry{hmargin=12mm}
+\geometry{includeheadfoot}
+\geometry{headheight=2\baselineskip}
+\geometry{headsep=\baselineskip}
+% QR code size plus 2mm
+\geometry{footskip=12mm}
 
 % ifthen package
 \RequirePackage{ifthen}
@@ -235,11 +240,10 @@
 \RequirePackage{environ}
 
 % headers and footers
-\usepackage{scrpage2}
-\clearscrheadings
-  \chead[\@author\\\@title]{\@author\\\@title}
-  \cfoot{\sdapspagemark}
-\pagestyle{scrheadings}
+\usepackage{scrlayer-scrpage}
+\clearpairofpagestyles
+\chead*{\@author\\\@title}
+\cfoot*{\sdapspagemark}
 
 % hyperrefs
 \RequirePackage{url}
