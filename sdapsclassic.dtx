@@ -213,7 +213,7 @@
 \geometry{bottom=14mm}
 \geometry{hmargin=12mm}
 \geometry{includeheadfoot}
-\geometry{headheight=2\baselineskip}
+\geometry{headheight=\baselineskip}
 \geometry{headsep=\baselineskip}
 % QR code size plus 2mm
 \geometry{footskip=12mm}
@@ -242,7 +242,7 @@
 % headers and footers
 \usepackage{scrlayer-scrpage}
 \clearpairofpagestyles
-\chead*{\@author\\\@title}
+\chead*{\@title}
 \cfoot*{\sdapspagemark}
 
 % hyperrefs
@@ -362,7 +362,7 @@
     {
       \par
       % Prevent top skip glue from being inserted at the start of the page
-      \topskip=0
+      \topskip=0pt
       \noindent\hrule height 1pt%
       \nobreak
       \vspace{-\parskip}
