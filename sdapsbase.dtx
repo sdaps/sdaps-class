@@ -1423,6 +1423,7 @@
 
 
 \tl_gset:Nn \g_sdaps_style_tl { code128 }
+\tl_gset:Nn \g_sdaps_twoside_barcode_tl { both }
 \tl_gset:Nn \g_sdaps_checkmode_tl { checkcorrect }
 \dim_gset:Nn \g_sdaps_edge_left_margin_dim { 10mm }
 \dim_gset:Nn \g_sdaps_edge_right_margin_dim { 10mm }
@@ -1678,20 +1679,38 @@
           \sdaps_draw_codes:
         } {
 
-          \bool_if:NT \g_sdaps_twoside_bool {
+          \bool_if:NTF \g_sdaps_twoside_bool {
             \int_if_odd:VT \g_sdaps_page_int {
+              % This should no happen; draw a barcode though to keep things
+              % somewhat sane.
               \msg_warning:nn { sdapsbase } { odd_page_count }
+              \sdaps_draw_codes:
+            } {
+              % Even page (i.e. back) has a barcode except in "front" mode
+              \str_if_eq:VnF \g_sdaps_twoside_barcode_tl { front } {
+                \sdaps_draw_codes:
+              }
             }
+          } {
+            \sdaps_draw_codes:
           }
-
-          \sdaps_draw_codes:
         }
 
         % TODO: Check whether the page count is as expected?
       } {
         \bool_if:NTF \g_sdaps_twoside_bool {
-          \int_if_odd:VF \g_sdaps_page_int {
+          \str_if_eq:VnTF \g_sdaps_twoside_barcode_tl { both } {
             \sdaps_draw_codes:
+          } {
+            \str_if_eq:VnTF \g_sdaps_twoside_barcode_tl { front } {
+              \int_if_odd:VT \g_sdaps_page_int {
+                \sdaps_draw_codes:
+              }
+            } { % And back is the only thing left
+              \int_if_odd:VF \g_sdaps_page_int {
+                \sdaps_draw_codes:
+              }
+            }
           }
         } {
           \sdaps_draw_codes:

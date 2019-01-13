@@ -35,6 +35,10 @@ checkmode                   The mode for checkbox recognition can be any of:
                              * **checkcorrect**: check to mark, fill to correct (unmark) (default)
                              * **check**: check or fill to mark
                              * **fill**: fill to mark
+twoside_barcode             Where to draw barcodes if in twoside/duplex mode:
+                             * **both**: draw on front and back (default)
+                             * **front**: only draw on the front of the page
+                             * **back**: only draw on the back of the page
 globalid                    A global identifier to be printed on the document (as barcode)
 globalidlabel               The label for the barcode (only code128)
 no_print_questionnaire_id   Disable printing of questionnaire IDs

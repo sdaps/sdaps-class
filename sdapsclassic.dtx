@@ -142,6 +142,22 @@
   \fi
 }
 
+\DefineFamilyKey{SDAPS}{twoside_barcode}[both]%
+{%
+  \KOMA@set@ncmdkey{twoside_barcode}{@tempa}{%
+    {both}{0},%
+    {front}{1},%
+    {back}{2}%
+  }{#1}%
+  \ifcase \@tempa\relax
+    \tl_gset:Nn\g_sdaps_twoside_barcode_tl{both}%
+  \or
+    \tl_gset:Nn\g_sdaps_twoside_barcode_tl{front}%
+  \or
+    \tl_gset:Nn\g_sdaps_twoside_barcode_tl{back}%
+  \fi
+}
+
 \DefineFamilyKey{SDAPS}{checkmode}[checkcorrect]%
 {%
   \KOMA@set@ncmdkey{checkmode}{@tempa}{%
