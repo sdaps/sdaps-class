@@ -273,8 +273,8 @@
   % But for example "row head" is higher than "col head X".
   \begin{sdapsarray}[layouter=rotated]
     \logpos{row head} &
-      \lognamedpos{col head 1}\sdapsnested{$\left( \begin{array}{cc} a & b \\ c & d \end{array} \right) + \log{\alpha}$} &
-      \logpos{col head 2} \\
+      \lognamedpos{col head 1}\sdapsnested{$\frac{1}{\left( \begin{array}{cc} a & b \\ c & d \end{array} \right) + \log{\alpha}}$} &
+      \lognamedpos{col head 2}\sdapsnested{$\log{\alpha} + \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$} \\
     \logpos{row head 1} & \logpos{a} & \logpos{b} \\
     \logpos{row head 2} & \logpos{c} & \logpos{d} \\
     \logpos{row head 3} & \logpos{e} & \logpos{f}

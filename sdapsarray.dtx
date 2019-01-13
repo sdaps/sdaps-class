@@ -502,12 +502,16 @@
 
     \box_rotate:Nn \l_tmpa_box { \l_sdaps_sdapsarray_angle_int }
 
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+    % We want the baseline of the box to be centered, that only works if we
+    % leave the same space both ways.
+    % That is not ideal, but we cannot move the cell content accordingly.
+    \dim_set:Nn \l_tmpb_dim { \dim_max:nn { \l_tmpa_dim } { \l_tmpb_dim } }
+    \skip_horizontal:n { \l_tmpb_dim }
     \rlap{
       \skip_horizontal:n { -\l_tmpa_dim }
       \box_use:N \l_tmpa_box
     }
-    \skip_horizontal:n { 0.5\l_tmpa_dim + 0.5\l_tmpb_dim }
+    \skip_horizontal:n { \l_tmpb_dim }
     % dummy skip that will be removed again by other code
     \skip_horizontal:n { 0pt }
 
