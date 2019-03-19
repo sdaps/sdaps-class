@@ -23,4 +23,8 @@ sourcefiles     = { "*.ins", "*.dtx", "code128.tex" }
 installfiles    = { "*.sty", "*.cls", "*.tex" }
 
 kpse.set_program_name ("kpsewhich")
-dofile (kpse.lookup ("l3build.lua"))
+if not release_date then
+  l3build = kpse.lookup ("l3build.lua")
+  assert (l3build, "l3build is not installed!")
+  dofile (kpse.lookup ("l3build.lua"))
+end
