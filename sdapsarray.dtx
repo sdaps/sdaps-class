@@ -684,7 +684,7 @@
     % placing that into it again ...
     \box_use:N \l_tmpa_box
   }
-  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_clear:N #2 }
+  \hcoffin_set:Nn \l_tmpa_coffin { \box_use_drop:N #2 }
 
   \seq_gconcat:NNN \g_sdaps_array_shared_colwidths_seq \g_tmpa_seq \g_sdaps_array_shared_colwidths_seq
   \seq_gclear:N \g_tmpa_seq
