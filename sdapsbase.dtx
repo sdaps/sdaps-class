@@ -1012,9 +1012,17 @@
 %
 %    \begin{macrocode}
 
+\sdaps_context_set:n { textboxtype=textbox }
+\cs_new_protected_nopar:Nn \sdaps_textbox_set_type:n
+{
+  \sdaps_context_set:n { textboxtype={#1} }
+}
+\cs_generate_variant:Nn \sdaps_textbox_set_type:n { V }
+
 \dim_new:N  \l_sdaps_textbox_linewidth_dim
 \tl_new:N   \l_sdaps_textbox_var_tl
 \tl_new:N   \l_sdaps_textbox_fill_tl
+\tl_new:N   \l__sdaps_textbox_boxtype_tl
 
 
 \keys_define:nn { sdaps / textbox }
@@ -1055,8 +1063,15 @@
 
   \_sdaps_generate_var:nN { #1 } \l_sdaps_var_tl
 
+  \sdaps_context_get:nN { textboxtype } \l__sdaps_tmpa_tl
+  \tl_if_eq:VnTF \l__sdaps_tmpa_tl { codebox } {
+    \tl_set:Nn \l__sdaps_textbox_boxtype_tl { Codebox }
+  } {
+    \tl_set:Nn \l__sdaps_textbox_boxtype_tl { Textbox }
+  }
+
   \__sdaps_append_from_context:nN { * } \l_sdaps_parse_unknown_tl
-  \__sdaps_append_from_context:nN { textbox } \l_sdaps_parse_unknown_tl
+  \__sdaps_append_from_context:VN \l__sdaps_tmpa_tl \l_sdaps_parse_unknown_tl
   \__sdaps_append_override_options:NVn \l_sdaps_parse_unknown_tl \l_sdaps_var_tl { }
 
   \keys_set_known:nVN { sdaps / textbox } \l_sdaps_parse_unknown_tl \l_sdaps_parse_unknown_tl
@@ -1177,7 +1192,7 @@
             \msg_warning:nn { sdapsbase } { no_qid }
           } {
             \sdaps_info_write_x:x {
-              Box[\l__sdaps_tmpa_tl]=Textbox,
+              Box[\l__sdaps_tmpa_tl]=\l__sdaps_textbox_boxtype_tl,
               \exp_not:n{\int_use:N\g_sdaps_page_int},
               \dim_use:N \l_sdaps_x_dim,
               \dim_use:N \l_sdaps_y_dim,
@@ -1268,7 +1283,7 @@
           \msg_warning:nn { sdapsbase } { no_qid }
         } {
           \sdaps_info_write_x:x {
-            Box[\l__sdaps_tmpa_tl]=Textbox,
+            Box[\l__sdaps_tmpa_tl]=\l__sdaps_textbox_boxtype_tl,
             \exp_not:n{\int_use:N\g_sdaps_page_int},
             \dim_use:N \l_sdaps_x_dim,
             \dim_use:N \l_sdaps_y_dim,
@@ -1309,7 +1324,7 @@
         \msg_warning:nn { sdapsbase } { no_qid }
       } {
         \sdaps_info_write_x:x {
-          Box[\l__sdaps_tmpa_tl]=Textbox,
+          Box[\l__sdaps_tmpa_tl]=\l__sdaps_textbox_boxtype_tl,
           \exp_not:n{\int_use:N\g_sdaps_page_int},
           \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
           \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
