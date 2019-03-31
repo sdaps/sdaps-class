@@ -1399,10 +1399,13 @@
 \int_new:N \g_sdaps_page_int
 \int_set:Nn \g_sdaps_page_int { 0 }
 
+% Disabling recognition disables all drawings related to automatic recognition
+\bool_new:N \g_sdaps_recognition_bool
 \bool_new:N \g_sdaps_draft_bool
 \bool_new:N \g_sdaps_twoside_bool
 \bool_new:N \g_sdaps_print_questionnaire_id_bool
 
+\bool_set:Nn \g_sdaps_recognition_bool \c_true_bool
 \bool_set:Nn \g_sdaps_draft_bool \c_true_bool
 \bool_set:Nn \g_sdaps_twoside_bool \c_false_bool
 \bool_set:Nn \g_sdaps_print_questionnaire_id_bool \c_false_bool
@@ -1582,7 +1585,8 @@
 
 % This needs to be called once for each page!
 \cs_new_protected_nopar:Nn \sdaps_page_end: {
-  \group_begin:
+  \bool_if:NTF \g_sdaps_recognition_bool {
+    \group_begin:
 
     \int_gincr:N\g_sdaps_page_int%
 
@@ -1726,7 +1730,10 @@
       }
     \end{tikzpicture}
 
-  \group_end:
+    \group_end:
+  } {
+    \int_gincr:N\g_sdaps_page_int
+  }
 }
 
 

@@ -110,6 +110,9 @@
 % option processing
 %-------------------------------------------------------------------------------
 
+% Whether the main SDAPS program will be used
+\DeclareOption{disable_recognition}{\bool_gset_false:N\g_sdaps_recognition_bool}
+
 % Whether sdaps should print the questionnaire id
 \DeclareOption{no_print_questionnaire_id}{\bool_gset_false:N\g_sdaps_print_questionnaire_id_bool\seq_gset_from_clist:Nn \g_sdaps_questionnaire_ids_seq {{}}}
 \DeclareOption{print_questionnaire_id}{\bool_gset_true:N\g_sdaps_print_questionnaire_id_bool\seq_gset_from_clist:Nn \g_sdaps_questionnaire_ids_seq {{NONE}}}

@@ -35,6 +35,10 @@ checkmode                   The mode for checkbox recognition can be any of:
                              * **checkcorrect**: check to mark, fill to correct (unmark) (default)
                              * **check**: check or fill to mark
                              * **fill**: fill to mark
+disable_recognition         Disable all recognition related page markings. This must not be used
+                            when intending to ues the SDAPS program for optical mark recognition.
+                            An example use case would be creating a PDF form using the SDAPS
+                            LaTeX classes. (default: not set)
 twoside_barcode             Where to draw barcodes if in twoside/duplex mode:
                              * **both**: draw on front and back (default)
                              * **front**: only draw on the front of the page
