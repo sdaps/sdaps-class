@@ -125,7 +125,6 @@ will match each checkbox to one answer in the order that it finds the defintions
     \let\mycheckbox\sdaps_checkbox:nn
     \let\myanswer\sdaps_answer:n
     \let\myquestionend\sdaps_qobject_end:n
-    \let\mytextbox\sdaps_qobject_end:n
     \ExplSyntaxOff
 
     \myquestionbegin{name}{Choice}{Attended events}
@@ -165,7 +164,6 @@ The checkbox style change will be in effect for the scope of the question.
     \let\mycheckbox\sdaps_checkbox:nn
     \let\myanswer\sdaps_answer:n
     \let\myquestionend\sdaps_qobject_end:n
-    \let\mytextbox\sdaps_qobject_end:n
     \let\mysetcheckboxtype\sdaps_checkbox_set_type:n
     \ExplSyntaxOff
 
@@ -211,7 +209,6 @@ done with a zero based index (i.e. the first checkbox is 0, the second 1, …).
     \let\myanswer\sdaps_answer:n
     \let\myrange\sdaps_range:nnn
     \let\myquestionend\sdaps_qobject_end:n
-    \let\mytextbox\sdaps_qobject_end:n
     \let\mysetcheckboxtype\sdaps_checkbox_set_type:n
     \ExplSyntaxOff
 
