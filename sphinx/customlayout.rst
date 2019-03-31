@@ -275,7 +275,7 @@ nice wrapper. This can be used to create QR code read fields.
         }
         \ExplSyntaxOff
 
-    \myquestionbegin{name}{Codebox}{This is a QR code question}
+    \myquestionbegin{name}{Text}{This is a QR code question}
     \mysettextboxtype{codebox}
 
     Place barcode sticker into the box:
