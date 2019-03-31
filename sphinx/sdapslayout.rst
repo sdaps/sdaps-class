@@ -23,7 +23,7 @@ be created directly with sdapsarray.
     environment. These keyword parameters default to the values provided in the
     SDAPS context and can for example be modified globally for the document.
 
-    :kwarg align:         named alignment group, by default \env{choicearay} environments are aligned if the layouter and orientation match
+    :kwarg align:         named alignment group, set to a common name to align multiple environments to each other
     :kwarg noalign:       disable alignment (same as setting ``align`` to an empty value)
     :kwarg horizontal:    set horizontal mode where each question is one row (default)
     :kwarg layouter:      set the sdapsarray layouter (e.g. rotated for rotated column headers)

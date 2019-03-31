@@ -278,12 +278,12 @@ Environments
     .. sdaps:: A group of range questions (used to be called mark)
         :sdapsclassic:
 
-        \begin{markgroup}{A set of mark questions}
+        \begin{markgroup}[align=mygroupalignment]{A set of mark questions}
           \markline{First question}{lower}{upper}
           \markline{Second question}{lower 2}{upper 2}
         \end{markgroup}
 
-        \begin{markgroup}{Another set of mark questions which is automatically aligned to the first}
+        \begin{markgroup}[align=mygroupalignment]{Another set of mark questions which is aligned to the first}
           \markline{First question}{a}{c}
           \markline{Second question}{b}{d}
         \end{markgroup}

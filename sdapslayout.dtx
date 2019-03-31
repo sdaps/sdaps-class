@@ -317,7 +317,7 @@
   layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_choicearray_align_tl,
-  align      .initial:n  = { choicearray\bool_if:NTF\l_sdaps_choicearray_horizontal_bool{horizontal}{vertical}\tl_use:N\l_sdaps_choicearray_layouter_tl },
+  align      .initial:n  = { },
 
   type       .choices:nn  = { multichoice, singlechoice } { \tl_set:Nx \l_sdaps_choicearray_type_tl { \l_keys_choice_tl } },
   type       .initial:n   = { multichoice },
@@ -570,7 +570,7 @@
   count      .int_set:N  = \l_sdaps_rangearray_rangecount_int,
   count      .initial:n  = 5,
   align      .tl_set:N   = \l_sdaps_rangearray_align_tl,
-  align      .initial:n  = { rangearray\bool_if:NTF\l_sdaps_rangearray_other_bool{optcol}{nooptcol}\int_use:N\l_sdaps_rangearray_rangecount_int },
+  align      .initial:n  = { },
   other      .bool_set:N = \l_sdaps_rangearray_other_bool,
   other      .default:n  = true,
   other      .initial:n  = false,
