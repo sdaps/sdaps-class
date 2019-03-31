@@ -1337,12 +1337,12 @@
     }
 
     \dim_set:Nn \l_sdaps_x_dim { 0pt }
-    \dim_set:Nn \l_sdaps_y_dim { 0pt }
+    \dim_set:Nn \l_sdaps_y_dim { \l__sdaps_textbox_ht_dim + \l__sdaps_textbox_pad_dim }
 
     % The textbox (rendered on the background)
     \begin{tikzpicture}[overlay]
       % Draw the rectangle
-      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(0, \l__sdaps_textbox_ht_dim) + (0, \l__sdaps_textbox_pad_dim) + (0.5\l_sdaps_textbox_linewidth_dim, -0.5\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%
