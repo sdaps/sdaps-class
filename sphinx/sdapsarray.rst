@@ -152,8 +152,9 @@ sdapsarray environment
             \ExplSyntaxOff
 
         \begin{multicols}{2}
+            % Note that the & must not be the first character (if we don't pass an optional parameter)
             \begin{sdapsarray}
-               & col 1 & col 2 \\
+              {} & col 1 & col 2 \\
               row header 1 & \sdapsnested{$ \begin{array}{cc} a & b \\ c & d \end{array}$} & cell 2 \\
               \verb^row_header^ & cell 3 & cell 4
             \end{sdapsarray}
