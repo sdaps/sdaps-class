@@ -198,7 +198,7 @@
 
 
 \begin{MYTESTPAGE}{choicearray alignment}
-  \begin{choicearray}{Question}
+  \begin{choicearray}[align=choicearray]{Question}
     \choice{long string}
     \choice{b}
     \choice{c}
@@ -207,7 +207,7 @@
     \question{qc}
   \end{choicearray}
 
-  \begin{choicearray}{Question aligned to previous}
+  \begin{choicearray}[align=choicearray]{Question aligned to previous}
     \choice{a}
     \choice{b}
     \choice{c}
@@ -218,7 +218,7 @@
 
 \hrule
 
-  \begin{choicearray}[vertical]{Vertical question aligned with next}
+  \begin{choicearray}[vertical,align=vertical-choicearray]{Vertical question aligned with next}
     \choice{a}
     \choice{b}
     \choice{c}
@@ -227,7 +227,7 @@
     \question{qc}
   \end{choicearray}
 
-  \begin{choicearray}[vertical]{Vertical question}
+  \begin{choicearray}[vertical,align=vertical-choicearray]{Vertical question}
     \choice{a}
     \choice{b}
     \choice{c}
