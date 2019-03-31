@@ -237,4 +237,50 @@ command, thereby redefining the numeric value. The main different to the
 ``Option`` question is simply how the question will be represented in the
 report.
 
+Codeboxes
+---------
+
+There is experimental support for code boxes, that is not yet available using a
+nice wrapper. This can be used to create QR code read fields.
+
+.. sdaps:: Codebox question and field
+    :sdapsclassic:
+    :metadata:
+    :preamble:
+        % Prepare some stuff so that we can access the specialized commands more easily.
+        \ExplSyntaxOn
+        \let\myquestionbegin\sdaps_qobject_begin:nnn
+        \let\mytexthbox\sdaps_textbox_hbox:nnn
+        \let\myquestionend\sdaps_qobject_end:n
+        \let\mysettextboxtype\sdaps_textbox_set_type:n
+        % Set a global overlay with a nice icon (quite likely, you will just want
+        % to place text into the hbox below rather than just placing spacing).
+        \sdaps_context_set:n {
+          codebox = {
+            centered_text = {
+              \begin{tikzpicture}[yscale=-0.1, xscale=0.1]
+                \path[draw=black,fill=black,stroke=] (-1,0)
+                  -- (-1,5) -- (4,5) -- (4,0) -- cycle(7,0) -- (7,5) -- (12,5) -- (12,0) -- cycle(0,1) -- (3,1) -- (3,4)
+                  -- (0,4) -- cycle(8,1) -- (11,1) -- (11,4) -- (8,4) -- cycle(1,2) -- (1,3) -- (2,3) -- (2,2) -- cycle(5,2) --
+                  (5,3) -- (6,3) -- (6,2) -- cycle(9,2) -- (9,3) -- (10,3) -- (10,2) -- cycle(5,4) -- (5,6) -- (2,6) -- (2,7)
+                  -- (6,7) -- (6,4) -- cycle(0,6) -- (0,7) -- (1,7) -- (1,6) -- cycle(7,6) -- (7,7) -- (8,7) -- (8,6) --
+                  cycle(-1,8) -- (-1,13) -- (4,13) -- (4,8) -- cycle(5,8) -- (5,13) -- (6,13) -- (6,8) -- cycle(7,8) -- (7,9)
+                  -- (8,9) -- (8,10) -- (7,10) -- (7,13) -- (8,13) -- (8,11) -- (9,11) -- (9,10) -- (10,10) -- (10,9) -- (9,9)
+                  -- (9,8) -- cycle(10,9) -- (12,9) -- (12,8) -- (10,8) -- cycle(0,9) -- (3,9) -- (3,12) -- (0,12) --
+                  cycle(1,10) -- (1,11) -- (2,11) -- (2,10) -- cycle(11,10) -- (11,11) -- (12,11) -- (12,10) -- cycle(11,11) --
+                 (10,11) -- (10,12) -- (9,12) -- (9,13) -- (12,13) -- (12,12) -- (11,12) -- cycle;
+               \end{tikzpicture}
+            },
+          }
+        }
+        \ExplSyntaxOff
+
+    \myquestionbegin{name}{Codebox}{This is a QR code question}
+    \mysettextboxtype{codebox}
+
+    Place barcode sticker into the box:
+    % Note that we use hspace + vrule for sizing here, that is a bit weird but
+    % a reasonable method of setting a size
+    \mytexthbox{}{3bp}{ \hspace{8cm} \vrule width 0pt height 3cm depth 2cm }
+    \myquestionend{name}
 
