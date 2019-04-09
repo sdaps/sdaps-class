@@ -1104,6 +1104,13 @@
       \cs_set_eq:NN \_sdaps_sdapsarray_cell:w \sdaps_array_colhead:w
       \_sdaps_sdapsarray_linestart:
     }
+
+  % If we redefine &, then the next character might have the wrong catcode
+  % (i.e. it could still be an alignment character). Execute the alignment
+  % code directly if the next character is &.
+  \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
+    \peek_charcode_remove:NT & { \sdaps_array_alignment: }
+  }
 }
 {
     \bool_if:NTF \l_sdaps_sdapsarray_flip_bool {

@@ -24,7 +24,6 @@ Things that are *not* possible currently:
     The :environ:`sdapsarray` is **not** a ``tabular`` like environment. It behaves
     in similar ways, but there are fundamental differences, causing some issues:
 
-    * If the **first cell must not be empty**. Either pass optional parameters ``[]`` or put ``{}`` into the cell. This is caused by the way TeX parses the input and is hard to fix.
     * You **must not add a trailing ``\\``** to the last row.
 
 .. sdaps:: Example of a sdapsarray environment
@@ -152,9 +151,8 @@ sdapsarray environment
             \ExplSyntaxOff
 
         \begin{multicols}{2}
-            % Note that the & must not be the first character (if we don't pass an optional parameter)
             \begin{sdapsarray}
-              {} & col 1 & col 2 \\
+               & col 1 & col 2 \\
               row header 1 & \sdapsnested{$ \begin{array}{cc} a & b \\ c & d \end{array}$} & cell 2 \\
               \verb^row_header^ & cell 3 & cell 4
             \end{sdapsarray}
