@@ -13,6 +13,7 @@ Usage Guides
 .. toctree::
     :maxdepth: 2
 
+    FAQ
     customlayout
 
 Reference documentation
