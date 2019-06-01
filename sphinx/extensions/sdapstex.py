@@ -292,7 +292,9 @@ def render_sdaps(self, node):
         fd.write(latex)
         fd.close()
 
-        res = compile_target('tmp.tex', cwd=tempdir, inputs=[self.builder.config.sdaps_latex_dir])
+        inputs = [ self.builder.config.sdaps_latex_dir, self.builder.config.sdaps_image_dir ]
+
+        res = compile_target('tmp.tex', cwd=tempdir, inputs=inputs)
         if res != 0:
             self.builder.warn('An error occurred while compiling the LaTeX document')
             self.builder._sdaps_warned = True
@@ -309,6 +311,7 @@ def render_sdaps(self, node):
             y = int(ph - y1)
             w = int(x2 - x1 + 1)
             h = int(y1 - y2 + 1)
+            assert h > 0, "Maybe the LaTeX document has multiple pages?"
 
             res = subprocess.call(
                     ['pdftocairo',
@@ -432,6 +435,7 @@ def depart_sdaps(self,node):
 
 def setup(app):
     app.add_config_value('sdaps_latex_dir', os.path.abspath('../build/local'), ['html'])
+    app.add_config_value('sdaps_image_dir', os.path.abspath('.'), ['html'])
 
     app.add_node(sdaps,
                  html=(html_visit_sdaps, depart_sdaps),
