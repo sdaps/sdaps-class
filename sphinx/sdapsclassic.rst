@@ -30,7 +30,7 @@ Class Options
 =========================== =========================
 Argument                    Description
 =========================== =========================
-style                       The markings style to use. Either "code128", "qr"  (default: code128)
+sdaps_style                 The markings style to use. Either "code128", "qr"  (default: code128)
 checkmode                   The mode for checkbox recognition can be any of:
                              * **checkcorrect**: check to mark, fill to correct (unmark) (default)
                              * **check**: check or fill to mark
