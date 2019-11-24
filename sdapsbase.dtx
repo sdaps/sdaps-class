@@ -1604,6 +1604,7 @@
     \group_begin:
 
     \int_gincr:N\g_sdaps_page_int%
+    \sdaps_info_write:x{Pages=\int_use:N\g_sdaps_page_int}
 
     \normalfont%
 
@@ -1788,7 +1789,11 @@
 }
 
 \cs_new_protected_nopar:Nn \sdaps_end: {
-  \sdaps_info_write_x:n{Pages=\int_use:N\g_sdaps_page_int}
+  % Note that using \sdaps_info_write_x:n may not work in some cases.
+  % For this reason we write the out the Pages counter after each page,
+  % which is fine to do.
+  % Note that this means that the below "hack" to make onesided documents
+  % work even in twoside (duplex) mode may not always work either.
 
   \bool_gset:Nn \g__sdaps_last_page_bool \c_true_bool
 }
