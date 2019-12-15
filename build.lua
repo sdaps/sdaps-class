@@ -19,8 +19,8 @@ checkruns = 3
 checkengines = { "pdftex", "xetex" }
 
 demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
-sourcefiles     = { "*.ins", "*.dtx", "sdapscode128.tex" }
-installfiles    = { "*.sty", "*.cls", "*.tex" }
+sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.dict" }
+installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
 
 kpse.set_program_name ("kpsewhich")
 if not release_date then
