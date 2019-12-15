@@ -63,6 +63,10 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\unhcopy' on input line ....
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\strutbox' on input line ....
 [3
 [84]QObject-Choice=0.4. Question
 [85]Answer[0.4]=a
@@ -84,5 +88,31 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 [100]Box[0.5]=Checkbox,0,192.69606pt,645.68501pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_3,3
 [102]Box[0.5]=Checkbox,0,40.1433pt,632.085pt,9.95845pt,9.95845pt,ellipse,1.00374pt,qvar_4,4
 [103]Variable[0.5]=qvar
+[104]QObject-Choice=0.6. Question
+[105]Answer[0.6]=a \newline a
+[107]Answer[0.6]=b
+[109]Answer[0.6]=c
+[106]Box[0.6]=Checkbox,0,40.1433pt,580.21231pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_1,1
+[108]Box[0.6]=Checkbox,0,116.41968pt,580.21231pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_2,2
+[111]Answer[0.6]=d \newline d
+[113]Answer[0.6]=e
+[110]Box[0.6]=Checkbox,0,40.1433pt,544.83655pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_3,3
+[112]Box[0.6]=Checkbox,0,116.41968pt,544.83655pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_4,4
+[115]Answer[0.6]=g
+[117]Answer[0.6]=g
+[114]Box[0.6]=Checkbox,0,40.1433pt,509.46078pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_5,5
+[116]Box[0.6]=Checkbox,0,116.41968pt,509.46078pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_6,6
+[119]Answer[0.6]=h
+[121]Answer[0.6]=e
+[118]Box[0.6]=Checkbox,0,40.1433pt,472.15727pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_7,7
+[120]Box[0.6]=Textbox,0,126.0986pt,495.63078pt,431.26604pt,56.90549pt,1.00374pt,0_6_8,
+[123]Answer[0.6]=\newline g
+[125]Answer[0.6]=g
+[122]Box[0.6]=Checkbox,0,40.1433pt,436.9553pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_9,9
+[124]Box[0.6]=Checkbox,0,116.41968pt,436.9553pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_10,10
+[127]Answer[0.6]=h
+[126]Box[0.6]=Checkbox,0,40.1433pt,386.05179pt,9.95845pt,9.95845pt,box,1.00374pt,0_6_11,11
+[128]Box[0.6]=Textbox,0,126.0986pt,409.5253pt,431.26604pt,56.90549pt,1.00374pt,0_6_12,
+[129]Variable[0.6]=0_6
 ]
 ============================================================
