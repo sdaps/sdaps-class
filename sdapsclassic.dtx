@@ -638,6 +638,7 @@
 \dim_new:N \l__sdaps_classic_choiceitem_pad_dim
 \int_new:N \l__sdaps_classic_choiceitem_cols_int
 \int_new:N \l__sdaps_classic_choiceitem_col_int
+\dim_new:N \l__sdaps_classic_choicequestion_prevdepth_dim
 \coffin_new:N \l__sdaps_classic_choicequestion_coffin
 
 \msg_new:nnn { sdapsclassic } { choicequestion_wrong_mode } { Mode~should~always~be~vertical~inside~a~choicequestion.\\ This~likely~means~that~the~choicequestion~contains~content~other~than~one~of~the~permissable~macros. }
@@ -720,6 +721,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \int_set:NV \l__sdaps_classic_choiceitem_cols_int \l_sdaps_choicequestion_cols_int
   \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
+  \dim_set:Nn \l__sdaps_classic_choicequestion_prevdepth_dim { 1000pt }
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
 
   % We have to be in vertical mode at this point.
@@ -748,6 +750,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
   \choicequestion_widowpenalty
   \vbox:n { \skip_horizontal:N \@totalleftmargin \box_use:N \l__sdaps_classic_choicequestion_coffin }
+  \prevdepth=\l__sdaps_classic_choicequestion_prevdepth_dim
   \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
   \sdaps_qobject_end:n { choicequestion }
 
@@ -761,7 +764,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \endchoicequestion
 }
 
-\cs_new_protected_nopar:Nn \_sdaps_classic_line_shipout_add:Nn
+\cs_new_protected_nopar:Nn \_sdaps_classic_line_shipout_add:NNn
 {
   % We have to be in vertical mode at this point.
   \if_mode_vertical:
@@ -771,11 +774,13 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \fi:
 
   % Is linewidth the right thing here?
-  \int_compare:nT { \l__sdaps_classic_choiceitem_col_int + #2 > \l__sdaps_classic_choiceitem_cols_int } {
+  \int_compare:nT { \l__sdaps_classic_choiceitem_col_int + #3 > \l__sdaps_classic_choiceitem_cols_int } {
     % We can only typeset a coffin in vertical mode if we use the box function
     \vbox:n { \skip_horizontal:N \@totalleftmargin \box_use:N \l__sdaps_classic_choicequestion_coffin }
+    \prevdepth=\l__sdaps_classic_choicequestion_prevdepth_dim
     \skip_vertical:N \l_sdaps_choicequestion_rowsep_dim
     \coffin_clear:N \l__sdaps_classic_choicequestion_coffin
+    \dim_set:Nn \l__sdaps_classic_choicequestion_prevdepth_dim { 1000pt }
     \choicequestion_clubpenalty
     \int_set:Nn \l__sdaps_classic_choiceitem_col_int { 0 }
   }
@@ -783,8 +788,14 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   \dim_set:Nn \l_tmpa_dim { \linewidth / \l__sdaps_classic_choiceitem_cols_int + \l__sdaps_classic_choiceitem_pad_dim / \l__sdaps_classic_choiceitem_cols_int }
   \dim_set:Nn \l_tmpa_dim { \l__sdaps_classic_choiceitem_col_int \l_tmpa_dim }
 
+  \dim_compare:nNnTF { \coffin_dp:N \l__sdaps_classic_choicequestion_coffin } > { \coffin_dp:N #1 } {
+    \dim_set:Nn \l__sdaps_classic_choicequestion_prevdepth_dim {\dim_min:nn { \l__sdaps_classic_choicequestion_prevdepth_dim } { #2 + \coffin_dp:N \l__sdaps_classic_choicequestion_coffin - \coffin_dp:N #1 } }
+  } {
+    \dim_set:Nn \l__sdaps_classic_choicequestion_prevdepth_dim {\dim_min:nn { \l__sdaps_classic_choicequestion_prevdepth_dim + \coffin_dp:N #1 - \coffin_dp:N \l__sdaps_classic_choicequestion_coffin } { #2 } }
+  }
+
   \coffin_join:NnnNnnnn \l__sdaps_classic_choicequestion_coffin { l } { H } #1 { l } { H } { \l_tmpa_dim } { 0pt }
-  \int_add:Nn \l__sdaps_classic_choiceitem_col_int { #2 }
+  \int_add:Nn \l__sdaps_classic_choiceitem_col_int { #3 }
 }
 
 \providecommand*{\choiceitem}[2][]{%
@@ -806,13 +817,16 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
     \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
     \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
     \hskip \l_sdaps_choicequestion_colsep_dim
-    \hbox_unpack_clear:N \l_tmpa_box
+    \hbox_unpack:N \l_tmpa_box
     \begin{minipage}[t]{\dim_eval:n { \l_tmpa_dim - \l_tmpb_dim - 2\l_sdaps_choicequestion_colsep_dim}}
-      \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #2 }
+      \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #2 }\strut
+      \par
+      \dim_gset:Nn \g_tmpa_dim { \dim_max:nn { \box_dp:N \l_tmpa_box } { \prevdepth } }
+      \unskip
     \end{minipage}
   }
 
-  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { 1 }
+  \_sdaps_classic_line_shipout_add:NNn \l_tmpa_coffin \g_tmpa_dim { 1 }
   \ignorespaces
 }
 
@@ -835,13 +849,16 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
     \hbox_set:Nn \l_tmpa_box { \strut \sdaps_checkbox:VV \l_sdaps_choicequestion_choice_var_tl \l_sdaps_choicequestion_choice_val_tl {}\  }
     \dim_set:Nn \l_tmpb_dim { \box_wd:N \l_tmpa_box }
     \hskip \l_sdaps_choicequestion_colsep_dim
-    \hbox_unpack_clear:N \l_tmpa_box
+    \hbox_unpack:N \l_tmpa_box
     \begin{minipage}[t]{\dim_eval:n { \l_tmpa_dim - \l_tmpb_dim - 2\l_sdaps_choicequestion_colsep_dim}}
-      \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #3 }
+      \noindent \usekomafont{choiceitemfont} \tl_trim_spaces:n { #3 }\strut
+      \par
+      \dim_gset:Nn \g_tmpa_dim { \dim_max:nn { \box_dp:N \l_tmpa_box } { \prevdepth } }
+      \unskip
     \end{minipage}
   }
 
-  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #2 }
+  \_sdaps_classic_line_shipout_add:NNn \l_tmpa_coffin \g_tmpa_dim { #2 }
   \ignorespaces
 }
 
@@ -876,10 +893,13 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
       \dim_set:Nn \l_tmpb_dim { 0.5 \l_tmpb_dim + 0.8ex }
       \strut\ignorespaces \tl_trim_spaces:n { #4 } ~
       \sdaps_textbox_hstretch:VVVnn \l_sdaps_choicequestion_choice_var_tl \l_tmpa_dim \l_tmpb_dim { 0pt } { 1 }
+      \par
+      \dim_gset:Nn \g_tmpa_dim { \prevdepth }
+      \unskip
     \end{minipage}
   }
 
-  \_sdaps_classic_line_shipout_add:Nn \l_tmpa_coffin { #3 }
+  \_sdaps_classic_line_shipout_add:NNn \l_tmpa_coffin \g_tmpa_dim { #3 }
   \ignorespaces
 }
 
