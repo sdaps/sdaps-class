@@ -6,12 +6,58 @@
 -- there is no subdivision
 bundle = "sdaps"
 module = "sdaps"
+modules = { "." }
 
 -- Location of main directory: use Unix-style path separators
 maindir = "."
 
--- Need xparse
---checkdeps = {}
+-- Non-standard settings
+cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
+packtdszip   = true
+unpackdeps   = { }
+
+uploadconfig = {
+  author      = "Benjamin Berg",
+  email       = "benjamin@sipsolutions.net",
+  uploader    = "Benjamin Berg",
+  license     = "lppl1.3c",
+  summary     = "SDAPS package for questionnaire creation",
+  topic       = {"class", "macro-supp", "package-devel", "exam", "pdf-forms", "table-long" },
+  ctanPath    = "/macros/latex/contrib/sdaps",
+  home        = "https://sdaps.org",
+  repository  = "https://github.com/sdaps/sdaps-class/",
+  bugtracker  = "https://github.com/sdaps/sdaps-class/issues",
+  update      = true,
+  version     = "1.9.0",
+  note        = "This is not yet quite stable. Also, please note that this contains a renamed and relicensed code128.tex from the code128 package which is already on CTAN.",
+  description = [[
+This bundle contains LaTeX classes and packages to create machine readable
+questionnaires. Metadata is generated for the whole document and it is
+possible to process created forms fully automatically using the SDAPS main
+program.
+
+Features include:
+ * PDF Form generation
+ * Advanced array like layouting
+   - Can flow over multiple pages and repeats the header automatically
+   - Optional document wide alignment of array environments
+   - Has complex layout features like rotating the headers to safe space
+   - Ability to exchange rows and columns on the fly
+ * Different question types:
+   - Freeform text
+   - Single/multiple choice questions
+   - Range questions
+ * Layouting questions in rows or columns
+ * Possibility to pre-fill questinnaires from LaTeX
+
+Documentation can be found online at https://sdaps.org/class-doc
+]]
+}
+
+-- Should we set any of the deps variables?
+-- typesetdeps = { }
+-- checkdeps   = { }
+-- unpackdeps  = { }
 
 checkruns = 3
 
