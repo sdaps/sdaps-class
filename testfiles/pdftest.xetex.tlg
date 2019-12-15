@@ -52,19 +52,6 @@ Completed box being shipped out [2]
 ........\special{pdf:code 0 g }
 ........\special{pdf:code 0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\special{pdf:code q }
@@ -78,12 +65,14 @@ Completed box being shipped out [2]
 .........\special{pdf:code h }
 .........\special{pdf:code 9.42136 9.42136 m }
 .........\special{pdf:code B }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -103,20 +92,27 @@ Completed box being shipped out [2]
 ............\hbox(9.95845+0.0)x9.95845
 .............\special{pdf:code 0 G }
 .............\special{pdf:code 0 g }
-.............\special{pdf:ann @check1 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
-.............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-..............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+.............\hbox(9.95845+0.0)x9.95845
+..............\special{pdf:ann @check1 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
+..............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+................\glue 0.0 plus 1.0fill
 ...............\glue 0.0 plus 1.0fill
-..............\glue 0.0 plus 1.0fill
-.............\special{pdf:put @afields @check1}
+..............\special{pdf:put @afields @check1}
+.............\glue 0.0
 ...........\special{pdf:etrans}
 ...........\special{pdf:ecolor}
 ...........\special{pdf:ecolor}
 ...........\special{pdf: bcontent}
 ...........\special{pdf:code Q Q Q}
 ...........\special{pdf:code Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\special{pdf:code Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\special{pdf:code Q }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\special{pdf:code n }
@@ -135,19 +131,6 @@ Completed box being shipped out [2]
 ........\special{pdf:code 0 g }
 ........\special{pdf:code 0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\special{pdf:code q }
@@ -161,12 +144,14 @@ Completed box being shipped out [2]
 .........\special{pdf:code h }
 .........\special{pdf:code 9.42136 9.42136 m }
 .........\special{pdf:code B }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -186,20 +171,27 @@ Completed box being shipped out [2]
 ............\hbox(9.95845+0.0)x9.95845
 .............\special{pdf:code 0 G }
 .............\special{pdf:code 0 g }
-.............\special{pdf:ann @check2 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
-.............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-..............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+.............\hbox(9.95845+0.0)x9.95845
+..............\special{pdf:ann @check2 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
+..............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+................\glue 0.0 plus 1.0fill
 ...............\glue 0.0 plus 1.0fill
-..............\glue 0.0 plus 1.0fill
-.............\special{pdf:put @afields @check2}
+..............\special{pdf:put @afields @check2}
+.............\glue 0.0
 ...........\special{pdf:etrans}
 ...........\special{pdf:ecolor}
 ...........\special{pdf:ecolor}
 ...........\special{pdf: bcontent}
 ...........\special{pdf:code Q Q Q}
 ...........\special{pdf:code Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\special{pdf:code Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\special{pdf:code Q }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\special{pdf:code n }
@@ -218,19 +210,6 @@ Completed box being shipped out [2]
 ........\special{pdf:code 0 g }
 ........\special{pdf:code 0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\special{pdf:code q }
@@ -244,12 +223,14 @@ Completed box being shipped out [2]
 .........\special{pdf:code h }
 .........\special{pdf:code 9.42136 9.42136 m }
 .........\special{pdf:code B }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -269,20 +250,27 @@ Completed box being shipped out [2]
 ............\hbox(9.95845+0.0)x9.95845
 .............\special{pdf:code 0 G }
 .............\special{pdf:code 0 g }
-.............\special{pdf:ann @check3 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
-.............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-..............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+.............\hbox(9.95845+0.0)x9.95845
+..............\special{pdf:ann @check3 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
+..............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+................\glue 0.0 plus 1.0fill
 ...............\glue 0.0 plus 1.0fill
-..............\glue 0.0 plus 1.0fill
-.............\special{pdf:put @afields @check3}
+..............\special{pdf:put @afields @check3}
+.............\glue 0.0
 ...........\special{pdf:etrans}
 ...........\special{pdf:ecolor}
 ...........\special{pdf:ecolor}
 ...........\special{pdf: bcontent}
 ...........\special{pdf:code Q Q Q}
 ...........\special{pdf:code Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\special{pdf:code Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\special{pdf:code Q }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\special{pdf:code n }
@@ -301,19 +289,6 @@ Completed box being shipped out [2]
 ........\special{pdf:code 0 g }
 ........\special{pdf:code 0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\special{pdf:code q }
@@ -327,12 +302,14 @@ Completed box being shipped out [2]
 .........\special{pdf:code h }
 .........\special{pdf:code 9.42136 9.42136 m }
 .........\special{pdf:code B }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -352,20 +329,27 @@ Completed box being shipped out [2]
 ............\hbox(9.95845+0.0)x9.95845
 .............\special{pdf:code 0 G }
 .............\special{pdf:code 0 g }
-.............\special{pdf:ann @check4 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
-.............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-..............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+.............\hbox(9.95845+0.0)x9.95845
+..............\special{pdf:ann @check4 height 9.95845pt width 9.95845pt depth 0.0pt <</Subty\ETC.}
+..............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+................\glue 0.0 plus 1.0fill
 ...............\glue 0.0 plus 1.0fill
-..............\glue 0.0 plus 1.0fill
-.............\special{pdf:put @afields @check4}
+..............\special{pdf:put @afields @check4}
+.............\glue 0.0
 ...........\special{pdf:etrans}
 ...........\special{pdf:ecolor}
 ...........\special{pdf:ecolor}
 ...........\special{pdf: bcontent}
 ...........\special{pdf:code Q Q Q}
 ...........\special{pdf:code Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\special{pdf:code Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\special{pdf:code Q }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\special{pdf:code n }
@@ -404,19 +388,6 @@ Completed box being shipped out [2]
 ........\special{pdf:code 0 g }
 ........\special{pdf:code 0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\special{pdf:code q }
@@ -430,12 +401,14 @@ Completed box being shipped out [2]
 .........\special{pdf:code h }
 .........\special{pdf:code -0.5 0.5 m }
 .........\special{pdf:code B }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -455,20 +428,27 @@ Completed box being shipped out [2]
 ............\hbox(109.81102+0.0)x465.75499
 .............\special{pdf:code 0 G }
 .............\special{pdf:code 0 g }
-.............\special{pdf:ann @text5 height 109.81102pt width 465.75499pt depth 0.0pt << /S\ETC.}
-.............\vbox(109.81102+0.0)x465.75499, glue set 109.81102fill
-..............\hbox(0.0+0.0)x465.75499, glue set 465.75499fill
+.............\hbox(109.81102+0.0)x465.75499
+..............\special{pdf:ann @text5 height 109.81102pt width 465.75499pt depth 0.0pt << /S\ETC.}
+..............\vbox(109.81102+0.0)x465.75499, glue set 109.81102fill
+...............\hbox(0.0+0.0)x465.75499, glue set 465.75499fill
+................\glue 0.0 plus 1.0fill
 ...............\glue 0.0 plus 1.0fill
-..............\glue 0.0 plus 1.0fill
-.............\special{pdf:put @afields @text5}
+..............\special{pdf:put @afields @text5}
+.............\glue 0.0
 ...........\special{pdf:etrans}
 ...........\special{pdf:ecolor}
 ...........\special{pdf:ecolor}
 ...........\special{pdf: bcontent}
 ...........\special{pdf:code Q Q Q}
 ...........\special{pdf:code Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\special{pdf:code Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\special{pdf:code Q }
+.........\glue 0.0
 .........\special{pdf:code Q }
 .........\hbox(0.0+0.0)x0.0
 ..........\pdfsavepos

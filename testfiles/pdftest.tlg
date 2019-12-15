@@ -33,7 +33,7 @@ Completed box being shipped out [2]
 ...\vbox(578.15999+0.0)x469.75499, glue set 449.66837fil
 ....\pdfrefobj{<</Type/Encoding/Differences[24/breve/caron/circumflex/dotaccent/hung\ETC.}
 ....\pdfrefobj{<</Type/Font/Subtype/Type1/Name/ZaDb/BaseFont/ZapfDingbats>>}
-....\pdfrefobj{<</Type/Font/Subtype/Type1/Name/Helv/BaseFont/Helvetica/Encoding 15 0\ETC.}
+....\pdfrefobj{<</Type/Font/Subtype/Type1/Name/Helv/BaseFont/Helvetica/Encoding 14 0\ETC.}
 ....\glue(\topskip) 1.57634
 ....\hbox(8.42366+1.53477)x469.75499, glue set 419.92126fil
 .....\hbox(8.42366+1.53477)x9.95844
@@ -46,19 +46,6 @@ Completed box being shipped out [2]
 ........\pdfliteral{0 g }
 ........\pdfliteral{0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\pdfliteral{q }
@@ -72,12 +59,14 @@ Completed box being shipped out [2]
 .........\pdfliteral{h }
 .........\pdfliteral{9.42136 9.42136 m }
 .........\pdfliteral{B }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -92,18 +81,26 @@ Completed box being shipped out [2]
 ..............\hbox(9.95845+0.0)x9.95845
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
-...............\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
-...............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(9.95845+0.0)x9.95845
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+.................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+..................\glue 0.0 plus 1.0fill
 .................\glue 0.0 plus 1.0fill
-................\glue 0.0 plus 1.0fill
-...............\pdfendlink
-...............\write1{\string \HyField@AuxAddToFields {26}}
+................\pdfendlink
+................\write1{\string \HyField@AuxAddToFields {25}}
+...............\glue 0.0
 .............\pdfliteral{Q }
+.............\glue 0.0
 ............\glue 0.0 plus 1.0fil minus 1.0fil
 ...........\pdfliteral{Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\pdfliteral{Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\pdfliteral{Q }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\pdfliteral{n }
@@ -120,19 +117,6 @@ Completed box being shipped out [2]
 ........\pdfliteral{0 g }
 ........\pdfliteral{0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\pdfliteral{q }
@@ -146,12 +130,14 @@ Completed box being shipped out [2]
 .........\pdfliteral{h }
 .........\pdfliteral{9.42136 9.42136 m }
 .........\pdfliteral{B }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -166,18 +152,26 @@ Completed box being shipped out [2]
 ..............\hbox(9.95845+0.0)x9.95845
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
-...............\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
-...............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(9.95845+0.0)x9.95845
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+.................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+..................\glue 0.0 plus 1.0fill
 .................\glue 0.0 plus 1.0fill
-................\glue 0.0 plus 1.0fill
-...............\pdfendlink
-...............\write1{\string \HyField@AuxAddToFields {27}}
+................\pdfendlink
+................\write1{\string \HyField@AuxAddToFields {26}}
+...............\glue 0.0
 .............\pdfliteral{Q }
+.............\glue 0.0
 ............\glue 0.0 plus 1.0fil minus 1.0fil
 ...........\pdfliteral{Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\pdfliteral{Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\pdfliteral{Q }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\pdfliteral{n }
@@ -194,19 +188,6 @@ Completed box being shipped out [2]
 ........\pdfliteral{0 g }
 ........\pdfliteral{0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\pdfliteral{q }
@@ -220,12 +201,14 @@ Completed box being shipped out [2]
 .........\pdfliteral{h }
 .........\pdfliteral{9.42136 9.42136 m }
 .........\pdfliteral{B }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -240,18 +223,26 @@ Completed box being shipped out [2]
 ..............\hbox(9.95845+0.0)x9.95845
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
-...............\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
-...............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(9.95845+0.0)x9.95845
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+.................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+..................\glue 0.0 plus 1.0fill
 .................\glue 0.0 plus 1.0fill
-................\glue 0.0 plus 1.0fill
-...............\pdfendlink
-...............\write1{\string \HyField@AuxAddToFields {28}}
+................\pdfendlink
+................\write1{\string \HyField@AuxAddToFields {27}}
+...............\glue 0.0
 .............\pdfliteral{Q }
+.............\glue 0.0
 ............\glue 0.0 plus 1.0fil minus 1.0fil
 ...........\pdfliteral{Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\pdfliteral{Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\pdfliteral{Q }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\pdfliteral{n }
@@ -268,19 +259,6 @@ Completed box being shipped out [2]
 ........\pdfliteral{0 g }
 ........\pdfliteral{0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\pdfliteral{q }
@@ -294,12 +272,14 @@ Completed box being shipped out [2]
 .........\pdfliteral{h }
 .........\pdfliteral{9.42136 9.42136 m }
 .........\pdfliteral{B }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -314,18 +294,26 @@ Completed box being shipped out [2]
 ..............\hbox(9.95845+0.0)x9.95845
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
-...............\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
-...............\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
-................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+...............\hbox(9.95845+0.0)x9.95845
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
+.................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
+..................\glue 0.0 plus 1.0fill
 .................\glue 0.0 plus 1.0fill
-................\glue 0.0 plus 1.0fill
-...............\pdfendlink
-...............\write1{\string \HyField@AuxAddToFields {29}}
+................\pdfendlink
+................\write1{\string \HyField@AuxAddToFields {28}}
+...............\glue 0.0
 .............\pdfliteral{Q }
+.............\glue 0.0
 ............\glue 0.0 plus 1.0fil minus 1.0fil
 ...........\pdfliteral{Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\pdfliteral{Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\pdfliteral{Q }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\glue 0.0 plus 1.0fil minus 1.0fil
 ........\pdfliteral{n }
@@ -362,19 +350,6 @@ Completed box being shipped out [2]
 ........\pdfliteral{0 g }
 ........\pdfliteral{0.3985 w }
 ........\hbox(0.0+0.0)x0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
-.........\glue 0.0
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\pdfliteral{q }
@@ -388,12 +363,14 @@ Completed box being shipped out [2]
 .........\pdfliteral{h }
 .........\pdfliteral{-0.5 0.5 m }
 .........\pdfliteral{B }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
 .........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
+...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
 ...........\glue 0.0
@@ -408,18 +385,26 @@ Completed box being shipped out [2]
 ..............\hbox(109.81102+0.0)x465.75499
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
-...............\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(text)/FT/Tx/Ff 4096/Q 0/BS<</W 0 /S /S>>/DA(/He\ETC.}
-...............\vbox(109.81102+0.0)x465.75499, glue set 109.81102fill
-................\hbox(0.0+0.0)x465.75499, glue set 465.75499fill
+...............\hbox(109.81102+0.0)x465.75499
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(text)/FT/Tx/Ff 4096/Q 0/BS<</W 0 /S /S>>/DA(/He\ETC.}
+................\vbox(109.81102+0.0)x465.75499, glue set 109.81102fill
+.................\hbox(0.0+0.0)x465.75499, glue set 465.75499fill
+..................\glue 0.0 plus 1.0fill
 .................\glue 0.0 plus 1.0fill
-................\glue 0.0 plus 1.0fill
-...............\pdfendlink
-...............\write1{\string \HyField@AuxAddToFields {30}}
+................\pdfendlink
+................\write1{\string \HyField@AuxAddToFields {29}}
+...............\glue 0.0
 .............\pdfliteral{Q }
+.............\glue 0.0
 ............\glue 0.0 plus 1.0fil minus 1.0fil
 ...........\pdfliteral{Q }
+...........\glue 0.0
+...........\glue 0.0
 ...........\pdfliteral{Q }
+.........\glue 0.0
+.........\glue 0.0
 .........\pdfliteral{Q }
+.........\glue 0.0
 .........\pdfliteral{Q }
 .........\hbox(0.0+0.0)x0.0
 ..........\pdfsavepos
