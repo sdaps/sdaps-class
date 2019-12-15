@@ -19,7 +19,7 @@ checkruns = 3
 checkengines = { "pdftex", "xetex" }
 
 demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
-sourcefiles     = { "*.ins", "*.dtx", "code128.tex" }
+sourcefiles     = { "*.ins", "*.dtx", "sdapscode128.tex" }
 installfiles    = { "*.sty", "*.cls", "*.tex" }
 
 kpse.set_program_name ("kpsewhich")

@@ -54,4 +54,4 @@ Created Files
  * sdapspdf.sty: Makes any SDAPS document into a PDF form
  * sdapsarray.sty: Base functionality for tabular like layouts
  * sdapslayout.sty: Base functionality for complex question layouts
- * code128.tex: Code 128 barcode renderer (re-licensed upstream copy)
+ * sdapscode128.tex: Code 128 barcode renderer (re-licensed upstream copy)
