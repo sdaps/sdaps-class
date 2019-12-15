@@ -90,6 +90,23 @@
     \choicemulticolitem[text=ctext]{3}{c}
   \end{choicequestion}
 
+  % Here we test that baselineskip correctly works on the last baseline of the row
+  \begin{choicequestion}[cols=7]{Question}
+    \baselineskip=2em
+    \choiceitem{a \newline a}
+    \choicemulticolitem{6}{b}
+    \choiceitem{c}
+    \choicemulticolitem{6}{d \newline d}
+    \choiceitem{e}
+    \choicemulticolitem{6}{g}
+    \choiceitem{g}
+    \choiceitemtext{2cm}{6}{h}
+    \choiceitem{e}
+    \choicemulticolitem{6}{\newline g}
+    \choiceitem{g}
+    \choiceitemtext{2cm}{6}{h}
+  \end{choicequestion}
+
 \end{MYTESTPAGE}
 
 \OMIT
