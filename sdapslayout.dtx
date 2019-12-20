@@ -385,6 +385,8 @@
 \tl_new:N \g_sdaps_question_uppertext_tl
 \tl_new:N \g_sdaps_question_othertext_tl
 
+\msg_new:nnn { sdapslayout } { option_not_supported } { The~#1~option~is~not~supported~by~this~environment. }
+
 \keys_define:nn { sdaps / rangearray }
 {
   var        .tl_set:N   = \l_sdaps_rangearray_var_tl,
@@ -393,6 +395,8 @@
   count      .initial:n  = 5,
   align      .tl_set:N   = \l_sdaps_rangearray_align_tl,
   align      .initial:n  = { },
+  % Override and disallow flipping; it does not work currently
+  flip       .code:n     = { \msg_error:nnn { sdapslayout } { option_not_supported } { flip } },
   other      .bool_set:N = \l_sdaps_rangearray_other_bool,
   other      .default:n  = true,
   other      .initial:n  = false,
