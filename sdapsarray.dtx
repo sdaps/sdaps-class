@@ -258,6 +258,11 @@
 
   \keys_set:nf { sdaps / array } { \prop_item:Nn \g__sdaps_array_layouter_prop { #1 } }
 
+  % Force cell layouter instead of column header layouter
+  \bool_if:NT \l_sdaps_sdapsarray_no_header_bool {
+    \tl_set:NV \l__sdaps_array_colhead_tl \l__sdaps_array_cell_tl
+  }
+
   \_sdaps_array_open_tmpfiles:
 
   \tl_gset_eq:NN \g__sdaps_array_last_row_tl \c_empty_tl
@@ -350,33 +355,49 @@
     \msg_error:nn { sdapsarray } { wrong_mode }
   \fi
 
-  % Pagebreak detection
-  \_sdaps_array_check_insert_header:N \g_tmpa_bool
   % XXX: \l_tmpa_dim is the height to the first baseline in the box. Note that
   %      we use the real baseline in the case of the header row!
   \l__sdaps_array_row_tl #1 #2 \l_tmpb_box \l_tmpa_dim
 
-  \bool_if:NT \g_sdaps_array_first_row_bool {
-    % Stow away the box for later use (before rewriting it to save the position)
+  \bool_if:nTF { \g_sdaps_array_first_row_bool && !\l_sdaps_sdapsarray_no_header_bool } {
+    % Stow away the box for later use
     \box_gset_eq:NN \g__sdaps_array_header_box \l_tmpb_box
     \dim_gset:Nn \g__sdaps_array_header_dim { \box_ht:N \g__sdaps_array_header_box + \box_dp:N \g__sdaps_array_header_box }
-  }
+  } {
+    % Pagebreak detection (not needed for header row)
+    \_sdaps_array_check_insert_header:N \g_tmpa_bool
 
-  \hbox_set:Nn \l_tmpb_box {
-    \pdfsavepos
-    \iow_shipout_x:Nn \g__sdaps_array_info_iow {
-      \thepage,
-      \the\pdflastxpos
+    \hbox_set:Nn \l_tmpb_box {
+      \pdfsavepos
+      \iow_shipout_x:Nn \g__sdaps_array_info_iow {
+        \thepage,
+        \the\pdflastxpos
+      }
+      \box_use:N \l_tmpb_box
     }
-    \box_use:N \l_tmpb_box
   }
 
-  \bool_if:NTF \g_sdaps_array_first_row_bool {
-    \bool_gset_false:N \g_sdaps_array_first_row_bool
+  \bool_if:nTF { \g_sdaps_array_first_row_bool || \l_sdaps_sdapsarray_no_header_bool } {
+    \_sdaps_array_calc_interlineskip:nnN { \prevdepth } { \l_tmpa_dim } \l_tmpa_skip
+    \nointerlineskip
+    \skip_vertical:n { \l_tmpa_skip }
+
+    % However do not insert the rowskip in the case of the first line.
+    % We rely on surrounding code to insert proper spacing before/after
+    % the environment.
+    \bool_if:NT \g_sdaps_array_first_row_bool {
+      \skip_vertical:n { - \l_sdaps_sdapsarray_rowsep_dim }
+    }
 
     \box_use:N \l_tmpb_box
-    % Do not ever allow a break after the header line.
-    \nobreak
+    % For the header, insert a \nobreak, otherwise the normal inter-row penalty
+    \bool_if:NTF \l_sdaps_sdapsarray_no_header_bool {
+      \penalty\int_use:N\g_sdaps_array_row_penalty_tl
+    } {
+      \nobreak
+    }
+
+    \bool_gset_false:N \g_sdaps_array_first_row_bool
   } {
     % The idea is simple. Before every line the header is re-inserted (either
     % the real one or an empty box with the same dimensions). In the case that
@@ -755,6 +776,7 @@
 \tl_new:N \l_sdaps_sdapsarray_angle_sine_tl
 \dim_new:N \l_sdaps_sdapsarray_colsep_dim
 \dim_new:N \l_sdaps_sdapsarray_rowsep_dim
+\bool_new:N \l_sdaps_sdapsarray_no_header_bool
 
 \keys_define:nn { sdaps / sdapsarray }
 {
@@ -768,6 +790,9 @@
   keepenv    .bool_set:N   = \l_sdaps_sdapsarray_keepenv_bool,
   keepenv    .initial:n  = false,
   keepenv    .default:n  = true,
+  no_header  .bool_set:N = \l_sdaps_sdapsarray_no_header_bool,
+  no_header  .initial:n  = false,
+  no_header  .default:n  = true,
 
   angle          .code:n     = {
     \int_set:Nn \l_sdaps_sdapsarray_angle_int {#1}
