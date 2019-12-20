@@ -286,6 +286,16 @@
   \end{rangearray}
 \end{MYTESTPAGE}
 
+\begin{MYTESTPAGE}{rangearray over multiple columns}
+  \begin{multicols}{2}
+    \begin{rangearray}{Question}
+      \range{qa}{l}{u}
+      \range{qb}{l}{u}
+      \range{qc}{l}{u}
+      \range{qd}{l}{u}
+    \end{rangearray}
+  \end{multicols}
+\end{MYTESTPAGE}
 
 \end{document}
 
