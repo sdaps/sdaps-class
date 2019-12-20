@@ -114,7 +114,9 @@ sdapsarray environment
         This is only useful for writing custom environments which use :environ:`sdapsarray` internally.
         Normal users should simply put any nested `array` environment into :macro:`\\sdapsnested`
         to prevent issues (see below).
-
+    :kwarg no_header: Disable column header handling and repeating. Note that this
+        setting is independent of whether the ``flip`` option is set. As such, one may
+        need to take its value into account when setting it. (default: ``false``)
     :kwarg colsep: Spacing added on the left/right of every cell. This defaults to `6pt`.
     :kwarg rowsep: Extra spacing added between rows. This defaults to `0pt`.
 
