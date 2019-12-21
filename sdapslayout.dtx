@@ -110,8 +110,6 @@
 
 \tl_new:N \l_sdaps_choicearray_qobject_type_tl
 \bool_new:N \l_sdaps_choicearray_horizontal_bool
-\tl_new:N \l_sdaps_choicearray_var_tl
-\tl_new:N \l_sdaps_choicearray_text_tl
 \tl_new:N \l_sdaps_choicearray_layouter_tl
 \tl_new:N \l_sdaps_choicearray_align_tl
 \tl_new:N \l_sdaps_choicearray_extra_tl
@@ -134,8 +132,6 @@
   horizontal .initial:n  = true,
   vertical   .bool_set_inverse:N = \l_sdaps_choicearray_horizontal_bool,
   vertical   .default:n  = true,
-  var        .tl_set:N   = \l_sdaps_choicearray_var_tl,
-  text       .tl_set:N   = \l_sdaps_choicearray_text_tl,
   layouter   .tl_set:N   = \l_sdaps_choicearray_layouter_tl,
   layouter   .initial:n  = default,
   align      .tl_set:N   = \l_sdaps_choicearray_align_tl,
@@ -166,19 +162,9 @@
   range      .initial:n = {...}
 }
 
-\cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_choicearray_preprocess:n #1
 {
   \keys_set_known:nnN { sdaps / choicearray } { #1 } \l_sdaps_choicearray_extra_tl
-
-  \tl_if_empty:NTF \l_sdaps_choicearray_text_tl {
-    \sdaps_qobject_begin:nnn { choicearray } { Head } { #2 }
-  } {
-    \sdaps_qobject_begin:nnV { choicearray } { Head } \l_sdaps_choicearray_text_tl
-  }
-
-  \tl_if_empty:NF \l_sdaps_choicearray_var_tl {
-    \sdaps_qobject_append_var:V \l_sdaps_choicearray_var_tl
-  }
 
   \sdaps_checkbox_set_type:V \l_sdaps_choicearray_type_tl
   \tl_if_eq:VnTF \l_sdaps_choicearray_type_tl { multichoice } {
@@ -187,12 +173,7 @@
     \tl_set:Nn \l_sdaps_choicearray_qobject_type_tl { Option }
   }
 }
-\cs_generate_variant:Nn \_sdaps_choicearray_preprocess:nn { Vn }
-
-\cs_new_protected_nopar:Npn \_sdaps_choicearray_postprocess:
-{
-  \sdaps_qobject_end:n { choicearray }
-}
+\cs_generate_variant:Nn \_sdaps_choicearray_preprocess:n { V }
 
 \cs_new_protected_nopar:Npn \_sdaps_choicearray_process_choice_insert_tail_after:w {
   \bgroup
@@ -373,8 +354,6 @@
 %    \begin{macrocode}
 
 
-\tl_new:N \l_sdaps_rangearray_var_tl
-\tl_new:N \l_sdaps_rangearray_text_tl
 \tl_new:N \l_sdaps_rangearray_align_tl
 \tl_new:N \l_sdaps_rangearray_extra_tl
 \int_new:N \l_sdaps_rangearray_rangecount_int
@@ -389,8 +368,6 @@
 
 \keys_define:nn { sdaps / rangearray }
 {
-  var        .tl_set:N   = \l_sdaps_rangearray_var_tl,
-  text       .tl_set:N   = \l_sdaps_rangearray_text_tl,
   count      .int_set:N  = \l_sdaps_rangearray_rangecount_int,
   count      .initial:n  = 5,
   align      .tl_set:N   = \l_sdaps_rangearray_align_tl,
@@ -411,28 +388,13 @@
   other      .tl_gset:N   = \g_sdaps_question_othertext_tl,
 }
 
-\cs_new_protected_nopar:Npn \_sdaps_rangearray_preprocess:nn #1#2
+\cs_new_protected_nopar:Npn \_sdaps_rangearray_preprocess:n #1
 {
   \keys_set_known:nnN { sdaps / rangearray } { #1 } \l_sdaps_rangearray_extra_tl
 
-  \tl_if_empty:NTF \l_sdaps_rangearray_text_tl {
-    \sdaps_qobject_begin:nnn { rangearray } { Head } { #2 }
-  } {
-    \sdaps_qobject_begin:nnV { rangearray } { Head } \l_sdaps_rangearray_text_tl
-  }
-
   \sdaps_checkbox_set_type:n { singlechoice }
-
-  \tl_if_empty:NF \l_sdaps_rangearray_var_tl {
-    \sdaps_qobject_append_var:V \l_sdaps_rangearray_var_tl
-  }
 }
-\cs_generate_variant:Nn \_sdaps_rangearray_preprocess:nn { Vn }
-
-\cs_new_protected_nopar:Npn \_sdaps_rangearray_postprocess:
-{
-  \sdaps_qobject_end:n { rangearray }
-}
+\cs_generate_variant:Nn \_sdaps_rangearray_preprocess:n { V }
 
 % Before/After the different parts
 
@@ -685,7 +647,7 @@
 %
 
 
-\newenvironment { choicearray } [ 2 ] []
+\newenvironment { choicearray } [ 1 ] []
 {
   \group_begin:
 
@@ -702,7 +664,7 @@
       }
     }
 
-    \_sdaps_choicearray_preprocess:Vn \l_tmpa_tl { #2 }
+    \_sdaps_choicearray_preprocess:V \l_tmpa_tl
     % Clear the variables
     \seq_gclear:N \g_sdaps_choices_filter_seq
     \seq_gclear:N \g_sdaps_choices_cell_seq
@@ -726,21 +688,19 @@
 {
       \endsdapsarray
     \group_end:
-    % Process keys
-    \_sdaps_choicearray_postprocess:
 
   \group_end:
 }
 
-\newenvironment { optionarray } [ 2 ] []
+\newenvironment { optionarray } [ 1 ] []
 {
-  \choicearray[singlechoice,#1] { #2 }
+  \choicearray[singlechoice,#1]
 }
 {
   \endchoicearray
 }
 
-\newenvironment { rangearray } [ 2 ] []
+\newenvironment { rangearray } [ 1 ] []
 {
   \group_begin:
 
@@ -757,7 +717,7 @@
       }
     }
 
-    \_sdaps_rangearray_preprocess:Vn \l_tmpa_tl { #2 }
+    \_sdaps_rangearray_preprocess:V \l_tmpa_tl
 
     \newcommand \range [ 1 ] [] {
       \_sdaps_rangearray_process_question:nw { ##1 }
@@ -771,8 +731,6 @@
 {
       \endsdapsarray
     \group_end:
-    % Process keys
-    \_sdaps_rangearray_postprocess:
 
   \group_end:
 }
