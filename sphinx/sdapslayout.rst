@@ -68,6 +68,11 @@ be created directly with sdapsarray.
     Inside the environment you need to first define all possible answers with
     choice macro and each question using the question macro.
 
+.. environ::
+    \begin{optionarray}[]
+    \end{optionarray}
+
+    .. todo:: Uh, document this.
 
 .. environ::
     \begin{rangearray}[]
