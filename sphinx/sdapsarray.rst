@@ -24,7 +24,7 @@ Things that are *not* possible currently:
     The :environ:`sdapsarray` is **not** a ``tabular`` like environment. It behaves
     in similar ways, but there are fundamental differences, causing some issues:
 
-    * You **must not add a trailing ``\\``** to the last row.
+    * You **must not** add a trailing ``\\`` to the last row.
 
 .. sdaps:: Example of a sdapsarray environment
 
