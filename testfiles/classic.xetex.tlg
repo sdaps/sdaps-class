@@ -116,3 +116,225 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [129]Variable[0.6]=0_6
 ]
 ============================================================
+============================================================
+TEST 3: choicegroup
+============================================================
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+[4
+[130]QObject-Head=0.7. Inline Header
+[131]QObject-Choice=0.7.1. qa
+[132]Answer[0.7.1]=a
+[133]Answer[0.7.1]=b
+[134]Box[0.7.1]=Checkbox,0,525.44777pt,754.25446pt,9.95845pt,9.95845pt,box,1.00374pt,0_7_1_1,1
+[135]Box[0.7.1]=Checkbox,0,547.4062pt,754.25446pt,9.95845pt,9.95845pt,box,1.00374pt,0_7_1_2,2
+[136]Variable[0.7.1]=0_7_1
+[137]QObject-Choice=0.7.2. qb
+[138]Answer[0.7.2]=a
+[139]Answer[0.7.2]=b
+[140]Box[0.7.2]=Checkbox,0,525.44777pt,740.65445pt,9.95845pt,9.95845pt,box,1.00374pt,0_7_2_1,1
+[141]Box[0.7.2]=Checkbox,0,547.4062pt,740.65445pt,9.95845pt,9.95845pt,box,1.00374pt,0_7_2_2,2
+[142]Variable[0.7.2]=0_7_2
+[143]Variable[0.7]=0_7
+[144]QObject-Head=0.8. Metadata Header
+[145]QObject-Choice=0.8.1. qa
+[146]Answer[0.8.1]=a
+[147]Answer[0.8.1]=b
+[148]Box[0.8.1]=Checkbox,0,525.44777pt,692.78267pt,9.95845pt,9.95845pt,box,1.00374pt,0_8_1_1,1
+[149]Box[0.8.1]=Checkbox,0,547.4062pt,692.78267pt,9.95845pt,9.95845pt,box,1.00374pt,0_8_1_2,2
+[150]Variable[0.8.1]=0_8_1
+[151]QObject-Choice=0.8.2. qb
+[152]Answer[0.8.2]=a
+[153]Answer[0.8.2]=b
+[154]Box[0.8.2]=Checkbox,0,525.44777pt,679.18266pt,9.95845pt,9.95845pt,box,1.00374pt,0_8_2_1,1
+[155]Box[0.8.2]=Checkbox,0,547.4062pt,679.18266pt,9.95845pt,9.95845pt,box,1.00374pt,0_8_2_2,2
+[156]Variable[0.8.2]=0_8_2
+[157]Variable[0.8]=0_8
+[158]QObject-Head=0.9. Header
+[159]QObject-Choice=0.9.1. qa
+[160]Answer[0.9.1]=a
+[161]Answer[0.9.1]=b
+[162]Answer[0.9.1]=c
+[163]Box[0.9.1]=Checkbox,0,503.48933pt,631.31088pt,9.95845pt,9.95845pt,box,1.00374pt,test_1_1,1
+[164]Box[0.9.1]=Checkbox,0,525.44777pt,631.31088pt,9.95845pt,9.95845pt,box,1.00374pt,test_1_b,2
+[165]Box[0.9.1]=Checkbox,0,547.4062pt,631.31088pt,9.95845pt,9.95845pt,box,1.00374pt,test_1_3,3
+[166]Variable[0.9.1]=test_1
+[167]QObject-Choice=0.9.2. qb
+[168]Answer[0.9.2]=a
+[169]Answer[0.9.2]=b
+[170]Answer[0.9.2]=c
+[171]Box[0.9.2]=Checkbox,0,503.48933pt,617.71088pt,9.95845pt,9.95845pt,box,1.00374pt,test_b_1,1
+[172]Box[0.9.2]=Checkbox,0,525.44777pt,617.71088pt,9.95845pt,9.95845pt,box,1.00374pt,test_b_b,2
+[173]Box[0.9.2]=Checkbox,0,547.4062pt,617.71088pt,9.95845pt,9.95845pt,box,1.00374pt,test_b_3,3
+[174]Variable[0.9.2]=test_b
+[175]QObject-Choice=0.9.3. qc
+[176]Answer[0.9.3]=a
+[177]Answer[0.9.3]=b
+[178]Answer[0.9.3]=c
+[179]Box[0.9.3]=Checkbox,0,503.48933pt,604.11087pt,9.95845pt,9.95845pt,box,1.00374pt,test_3_1,1
+[180]Box[0.9.3]=Checkbox,0,525.44777pt,604.11087pt,9.95845pt,9.95845pt,box,1.00374pt,test_3_b,2
+[181]Box[0.9.3]=Checkbox,0,547.4062pt,604.11087pt,9.95845pt,9.95845pt,box,1.00374pt,test_3_3,3
+[182]Variable[0.9.3]=test_3
+[183]Variable[0.9]=test
+]
+============================================================
+============================================================
+TEST 4: optiongroup
+============================================================
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+[5
+[184]QObject-Head=0.10. Inline Header
+[185]QObject-Option=0.10.1. qa
+[186]Answer[0.10.1]=a
+[187]Answer[0.10.1]=b
+[188]Box[0.10.1]=Checkbox,0,525.44777pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_10_1_1,1
+[189]Box[0.10.1]=Checkbox,0,547.4062pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_10_1_2,2
+[190]Variable[0.10.1]=0_10_1
+[191]QObject-Option=0.10.2. qb
+[192]Answer[0.10.2]=a
+[193]Answer[0.10.2]=b
+[194]Box[0.10.2]=Checkbox,0,525.44777pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_10_2_1,1
+[195]Box[0.10.2]=Checkbox,0,547.4062pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_10_2_2,2
+[196]Variable[0.10.2]=0_10_2
+[197]Variable[0.10]=0_10
+[198]QObject-Head=0.11. Metadata Header
+[199]QObject-Option=0.11.1. qa
+[200]Answer[0.11.1]=a
+[201]Answer[0.11.1]=b
+[202]Box[0.11.1]=Checkbox,0,525.44777pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_11_1_1,1
+[203]Box[0.11.1]=Checkbox,0,547.4062pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_11_1_2,2
+[204]Variable[0.11.1]=0_11_1
+[205]QObject-Option=0.11.2. qb
+[206]Answer[0.11.2]=a
+[207]Answer[0.11.2]=b
+[208]Box[0.11.2]=Checkbox,0,525.44777pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_11_2_1,1
+[209]Box[0.11.2]=Checkbox,0,547.4062pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_11_2_2,2
+[210]Variable[0.11.2]=0_11_2
+[211]Variable[0.11]=0_11
+[212]QObject-Head=0.12. Header
+[213]QObject-Option=0.12.1. qa
+[214]Answer[0.12.1]=a
+[215]Answer[0.12.1]=b
+[216]Answer[0.12.1]=c
+[217]Box[0.12.1]=Checkbox,0,503.48933pt,631.31088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_1_1,1
+[218]Box[0.12.1]=Checkbox,0,525.44777pt,631.31088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_1_b,2
+[219]Box[0.12.1]=Checkbox,0,547.4062pt,631.31088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_1_3,3
+[220]Variable[0.12.1]=test_1
+[221]QObject-Option=0.12.2. qb
+[222]Answer[0.12.2]=a
+[223]Answer[0.12.2]=b
+[224]Answer[0.12.2]=c
+[225]Box[0.12.2]=Checkbox,0,503.48933pt,617.71088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_b_1,1
+[226]Box[0.12.2]=Checkbox,0,525.44777pt,617.71088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_b_b,2
+[227]Box[0.12.2]=Checkbox,0,547.4062pt,617.71088pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_b_3,3
+[228]Variable[0.12.2]=test_b
+[229]QObject-Option=0.12.3. qc
+[230]Answer[0.12.3]=a
+[231]Answer[0.12.3]=b
+[232]Answer[0.12.3]=c
+[233]Box[0.12.3]=Checkbox,0,503.48933pt,604.11087pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_3_1,1
+[234]Box[0.12.3]=Checkbox,0,525.44777pt,604.11087pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_3_b,2
+[235]Box[0.12.3]=Checkbox,0,547.4062pt,604.11087pt,9.95845pt,9.95845pt,ellipse,1.00374pt,test_3_3,3
+[236]Variable[0.12.3]=test_3
+[237]Variable[0.12]=test
+]
+============================================================
+============================================================
+TEST 5: markgroup
+============================================================
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\unhcopy' on input line ....
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\strutbox' on input line ....
+[6
+[238]QObject-Head=0.13. Inline Header
+[239]QObject-Range=0.13.1. a
+[240]Range-lower[0.13.1]=0,lower
+[241]Box[0.13.1]=Checkbox,0,424.06308pt,767.85446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_1_1,1
+[242]Box[0.13.1]=Checkbox,0,444.97151pt,767.85446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_1_2,2
+[243]Box[0.13.1]=Checkbox,0,465.87994pt,767.85446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_1_3,3
+[244]Box[0.13.1]=Checkbox,0,486.78838pt,767.85446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_1_4,4
+[245]Box[0.13.1]=Checkbox,0,507.69681pt,767.85446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_1_5,5
+[246]Range-upper[0.13.1]=4,upper
+[247]Variable[0.13.1]=0_13_1
+[248]QObject-Range=0.13.2. b
+[249]Range-lower[0.13.2]=0,lower
+[250]Box[0.13.2]=Checkbox,0,424.06308pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_2_1,1
+[251]Box[0.13.2]=Checkbox,0,444.97151pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_2_2,2
+[252]Box[0.13.2]=Checkbox,0,465.87994pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_2_3,3
+[253]Box[0.13.2]=Checkbox,0,486.78838pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_2_4,4
+[254]Box[0.13.2]=Checkbox,0,507.69681pt,754.25446pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_2_5,5
+[255]Range-upper[0.13.2]=4,upper
+[256]Variable[0.13.2]=0_13_2
+[257]QObject-Range=0.13.3. c
+[258]Range-lower[0.13.3]=0,l
+[259]Box[0.13.3]=Checkbox,0,424.06308pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_3_1,1
+[260]Box[0.13.3]=Checkbox,0,444.97151pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_3_2,2
+[261]Box[0.13.3]=Checkbox,0,465.87994pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_3_3,3
+[262]Box[0.13.3]=Checkbox,0,486.78838pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_3_4,4
+[263]Box[0.13.3]=Checkbox,0,507.69681pt,740.65445pt,9.95845pt,9.95845pt,ellipse,1.00374pt,0_13_3_5,5
+[264]Range-upper[0.13.3]=4,u
+[265]Variable[0.13.3]=0_13_3
+[266]Variable[0.13]=0_13
+[267]QObject-Head=0.14. Inline Header
+[268]QObject-Range=0.14.1. a
+[269]Range-lower[0.14.1]=0,lower
+[270]Box[0.14.1]=Checkbox,0,361.48248pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_1,1
+[271]Box[0.14.1]=Checkbox,0,382.39091pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_2,2
+[272]Box[0.14.1]=Checkbox,0,403.29935pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_3,3
+[273]Box[0.14.1]=Checkbox,0,424.20778pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_4,4
+[274]Box[0.14.1]=Checkbox,0,445.11621pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_5,5
+[275]Range-upper[0.14.1]=4,upper
+[276]Answer[0.14.1]=other
+[277]Box[0.14.1]=Checkbox,0,518.78404pt,706.38268pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_1_6,0
+[278]Variable[0.14.1]=a_1
+[279]QObject-Range=0.14.2. b
+[280]Range-lower[0.14.2]=0,lower
+[281]Box[0.14.2]=Checkbox,0,361.48248pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_1,1
+[282]Box[0.14.2]=Checkbox,0,382.39091pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_2,2
+[283]Box[0.14.2]=Checkbox,0,403.29935pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_3,3
+[284]Box[0.14.2]=Checkbox,0,424.20778pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_4,4
+[285]Box[0.14.2]=Checkbox,0,445.11621pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_5,5
+[286]Range-upper[0.14.2]=4,upper
+[287]Answer[0.14.2]=other
+[288]Box[0.14.2]=Checkbox,0,518.78404pt,692.78267pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_b_6,0
+[289]Variable[0.14.2]=a_b
+[290]QObject-Range=0.14.3. c
+[291]Range-lower[0.14.3]=0,l
+[292]Box[0.14.3]=Checkbox,0,361.48248pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_1,1
+[293]Box[0.14.3]=Checkbox,0,382.39091pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_2,2
+[294]Box[0.14.3]=Checkbox,0,403.29935pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_3,3
+[295]Box[0.14.3]=Checkbox,0,424.20778pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_4,4
+[296]Box[0.14.3]=Checkbox,0,445.11621pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_5,5
+[297]Range-upper[0.14.3]=4,u
+[298]Answer[0.14.3]=other
+[299]Box[0.14.3]=Checkbox,0,518.78404pt,679.18266pt,9.95845pt,9.95845pt,ellipse,1.00374pt,a_3_6,0
+[300]Variable[0.14.3]=a_3
+[301]Variable[0.14]=a
+]
+============================================================
