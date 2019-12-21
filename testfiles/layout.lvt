@@ -77,7 +77,7 @@
 
 
 \begin{MYTESTPAGE}{Basic choicearray}
-  \begin{choicearray}[noalign]{Question}
+  \begin{choicearray}[noalign]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -88,7 +88,7 @@
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{Basic singlechoice choicearray}
-  \begin{choicearray}[noalign,singlechoice]{Question}
+  \begin{choicearray}[noalign,singlechoice]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -100,7 +100,7 @@
 
 
 \begin{MYTESTPAGE}{choicearray range filtering}
-  \begin{choicearray}[noalign]{Question}
+  \begin{choicearray}[noalign]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -112,7 +112,7 @@
     \question[range={1,2,...}]{1 and 2 plus end}
   \end{choicearray}
 
-  \begin{choicearray}[noalign,type=multichoice]{Question}
+  \begin{choicearray}[noalign,type=multichoice]
     \choice[var=a]{a}
     \choice[var=b]{b}
     \choice[var=c]{c}
@@ -126,7 +126,7 @@
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{choicearray range filtering for singlechoice}
-  \begin{choicearray}[noalign,singlechoice]{Question}
+  \begin{choicearray}[noalign,singlechoice]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -138,7 +138,7 @@
     \question[range={1,2,...}]{1 and 2 plus end}
   \end{choicearray}
 
-  \begin{choicearray}[noalign,type=singlechoice]{Question}
+  \begin{choicearray}[noalign,type=singlechoice]
     \choice[val=11]{a}
     \choice[val=12]{b}
     \choice[val=13]{c}
@@ -153,7 +153,7 @@
 
 
 \begin{MYTESTPAGE}{choicearray with fragile content}
-  \begin{choicearray}[noalign]{Question}
+  \begin{choicearray}[noalign]
     \choice[text=verbatim]{\verb^verbatim^}
     \choice{b}
     \choice{c}
@@ -165,16 +165,7 @@
 
 
 \begin{MYTESTPAGE}{choicearray with variables in different places}
-  \begin{choicearray}[noalign]{Question}
-    \choice{a}
-    \choice[var=ab]{b}
-    \choice{c}
-    \question{qa}
-    \question[var=qb]{qb}
-    \question{qc}
-  \end{choicearray}
-
-  \begin{choicearray}[noalign,var=test]{Question}
+  \begin{choicearray}[noalign]
     \choice{a}
     \choice[var=ab]{b}
     \choice{c}
@@ -186,7 +177,7 @@
 
 
 \begin{MYTESTPAGE}{vertical choicearray}
-  \begin{choicearray}[noalign,vertical]{Question}
+  \begin{choicearray}[noalign,vertical]
     \choice[text=verbatim]{\verb^verbatim^}
     \choice{b}
     \choice{c}
@@ -198,7 +189,7 @@
 
 
 \begin{MYTESTPAGE}{choicearray alignment}
-  \begin{choicearray}[align=choicearray]{Question}
+  \begin{choicearray}[align=choicearray]
     \choice{long string}
     \choice{b}
     \choice{c}
@@ -207,7 +198,7 @@
     \question{qc}
   \end{choicearray}
 
-  \begin{choicearray}[align=choicearray]{Question aligned to previous}
+  \begin{choicearray}[align=choicearray]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -218,7 +209,7 @@
 
 \hrule
 
-  \begin{choicearray}[vertical,align=vertical-choicearray]{Vertical question aligned with next}
+  \begin{choicearray}[vertical,align=vertical-choicearray]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -227,7 +218,7 @@
     \question{qc}
   \end{choicearray}
 
-  \begin{choicearray}[vertical,align=vertical-choicearray]{Vertical question}
+  \begin{choicearray}[vertical,align=vertical-choicearray]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -238,7 +229,7 @@
 
 \hrule
 
-  \begin{choicearray}[align=aligntest,vertical]{Vertical question aligned to next}
+  \begin{choicearray}[align=aligntest,vertical]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -247,7 +238,7 @@
     \question{qc}
   \end{choicearray}
 
-  \begin{choicearray}[align=aligntest]{Question aligned to previous}
+  \begin{choicearray}[align=aligntest]
     \choice{a}
     \choice{b}
     \choice{c}
@@ -259,13 +250,13 @@
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{rangearray}
-  \begin{rangearray}{Question}
+  \begin{rangearray}
     \range{qa}{lower}{upper}
     \range{qb}{lower}{upper}
     \range[lower=textlower,upper=textupper,text=question text]{\verb^qc^}{\verb^lower^}{\verb^upper^}
   \end{rangearray}
 
-  \begin{rangearray}[other]{Question}
+  \begin{rangearray}[other]
     \range{qa}{lower}{upper}{other}
     \range{qb}{lower}{upper}{other}
     \range[lower=textlower,upper=textupper,other=textother,text=question text]{\verb^qc^}{\verb^lower^}{\verb^upper^}{\verb^other^}
@@ -273,22 +264,16 @@
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{rangearray with variable names}
-  \begin{rangearray}{Question}
+  \begin{rangearray}
     \range{qa}{lower}{upper}
     \range[var=qb]{qb}{lower}{upper}
     \range{qc}{lower}{upper}
-  \end{rangearray}
-
-  \begin{rangearray}[var=question,other]{Question}
-    \range{qa}{lower}{upper}{other}
-    \range[var=qb]{qb}{lower}{upper}{other}
-    \range{qc}{lower}{upper}{other}
   \end{rangearray}
 \end{MYTESTPAGE}
 
 \begin{MYTESTPAGE}{rangearray over multiple columns}
   \begin{multicols}{2}
-    \begin{rangearray}{Question}
+    \begin{rangearray}
       \range{qa}{l}{u}
       \range{qb}{l}{u}
       \range{qc}{l}{u}

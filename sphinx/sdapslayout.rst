@@ -14,10 +14,8 @@ be created directly with sdapsarray.
 .. warning:: The documentation here is currently incomplete! Pleases refer to the sdapsclassic :environ:`choicegroup` and :environ:`markgroup` documentation!
 
 .. environ::
-    \begin{choicearray}[kwargs]{text}
+    \begin{choicearray}[kwargs]
     \end{choicearray}
-
-    :param text: Text header text for the group (metadata only as of now).
 
     The following optional keyword parameters can be passed to the
     environment. These keyword parameters default to the values provided in the
@@ -28,8 +26,6 @@ be created directly with sdapsarray.
     :kwarg horizontal:    set horizontal mode where each question is one row (default)
     :kwarg layouter:      set the sdapsarray layouter (e.g. rotated for rotated column headers)
     :kwarg angle:         set the angle of the column headers when in rotated mode
-    :kwarg text:          override the normal header (not useful currently!)
-    :kwarg var:           if set appends the variable name to the newly created scope ('_' separator is added automatically)
     :kwarg vertical:      set vertical mode where each question is one column
     :kwarg type:          the question type "multichoice" or "singlechoice"
     :kwarg multichoice:   switch to multichoice "Choice" question mode
@@ -47,7 +43,7 @@ be created directly with sdapsarray.
 
     .. sdaps:: Example of a choicearray environment
 
-        \begin{choicearray}[layouter=rotated]{A group of questions}
+        \begin{choicearray}[layouter=rotated]
           \choice{Choice 1}
           \choice{Choice 2}
           \question{Question one}
@@ -56,7 +52,7 @@ be created directly with sdapsarray.
 
     .. sdaps:: Example of a vertical choicearray environment
 
-        \begin{choicearray}[layouter=rotated,vertical]{A group of questions}
+        \begin{choicearray}[layouter=rotated,vertical]
           \choice{Choice 1}
           \choice{Choice 2}
           \question{Question one}
@@ -74,7 +70,7 @@ be created directly with sdapsarray.
 
 
 .. environ::
-    \begin{rangearray}[]{}
+    \begin{rangearray}[]
     \end{rangearray}
 
     .. todo:: Uh, document this.
