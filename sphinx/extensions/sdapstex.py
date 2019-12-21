@@ -48,6 +48,7 @@ import os
 import subprocess
 import sphinx
 import sphinx.addnodes
+import warnings
 try:
     from hashlib import sha1 as sha
 except ImportError:
@@ -296,7 +297,7 @@ def render_sdaps(self, node):
 
         res = compile_target('tmp.tex', cwd=tempdir, inputs=inputs)
         if res != 0:
-            self.builder.warn('An error occurred while compiling the LaTeX document')
+            warnings.warn('An error occurred while compiling the LaTeX document')
             self.builder._sdaps_warned = True
             relfn = None
         else:
@@ -320,7 +321,7 @@ def render_sdaps(self, node):
                      '-paperw', str(w), '-paperh', str(h),
                      '-svg', os.path.join(tempdir, 'tmp.pdf'), outfn])
             if res:
-                self.builder.warn('SVG conversion failed')
+                warnings.warn('SVG conversion failed')
                 self.builder._sdaps_warned = True
                 return None, 'SVG conversion failed', ''
     finally:
@@ -340,7 +341,7 @@ def html_visit_sdaps(self,node):
         sm = nodes.system_message(info, type='WARNING', level=2,
                                   backrefs=[], source=node['sdaps'])
         sm.walkabout(self)
-        self.builder.warn('display latex %r: \n' % node['sdaps'] + str(exc))
+        warnings.warn('display latex %r: \n' % node['sdaps'] + str(exc))
         raise nodes.SkipNode
 
     self.body.append(self.starttag(node, 'div', CLASS='figure'))
