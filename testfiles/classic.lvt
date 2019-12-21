@@ -109,6 +109,70 @@
 
 \end{MYTESTPAGE}
 
+\begin{MYTESTPAGE}{choicegroup}
+  \begin{choicegroup}{Inline Header}
+    \groupaddchoice{a}
+    \choice{b}
+    \choiceline{qa}
+    \question{qb}
+  \end{choicegroup}
+
+  \begin{choicegroup}[text=Metadata Header]{Replaced Header}
+    \choice{a}
+    \choice{b}
+    \question{qa}
+    \question{qb}
+  \end{choicegroup}
+
+  \begin{choicegroup}[var=test]{Header}
+    \choice{a}
+    \choice[var=b]{b}
+    \choice{c}
+    \question{qa}
+    \question[var=b]{qb}
+    \question{qc}
+  \end{choicegroup}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{optiongroup}
+  \begin{optiongroup}{Inline Header}
+    \groupaddchoice{a}
+    \choice{b}
+    \optionline{qa}
+    \question{qb}
+  \end{optiongroup}
+
+  \begin{optiongroup}[text=Metadata Header]{Replaced Header}
+    \choice{a}
+    \choice{b}
+    \question{qa}
+    \question{qb}
+  \end{optiongroup}
+
+  \begin{optiongroup}[var=test]{Header}
+    \choice{a}
+    \choice[var=b]{b}
+    \choice{c}
+    \question{qa}
+    \question[var=b]{qb}
+    \question{qc}
+  \end{optiongroup}
+\end{MYTESTPAGE}
+
+\begin{MYTESTPAGE}{markgroup}
+  \begin{markgroup}{Inline Header}
+    \range{a}{lower}{upper}
+    \range{b}{lower}{upper}
+    \markline{c}{l}{u}
+  \end{markgroup}
+
+  \begin{markgroup}[other,var=a]{Inline Header}
+    \range{a}{lower}{upper}{other}
+    \range[var=b]{b}{lower}{upper}{other}
+    \markline{c}{l}{u}{other}
+  \end{markgroup}
+\end{MYTESTPAGE}
+
 \OMIT
   \end{questionnaire}
 
