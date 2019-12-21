@@ -1068,12 +1068,30 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 %    \begin{macrocode}
 %
 
+\tl_new:N \l__sdaps_classic_group_var_tl
+\tl_new:N \l__sdaps_classic_group_text_tl
+\tl_new:N \l__sdaps_classic_group_extra_tl
+\keys_define:nn { sdapsclassic / group }
+{
+  var        .tl_set:N   = \l__sdaps_classic_group_var_tl,
+  text       .tl_set:N   = \l__sdaps_classic_group_text_tl,
+}
 
 \newenvironment { choicegroup } [ 2 ] []
 {
   \group_begin:
+    \keys_set_known:nnN { sdapsclassic / group } { #1 } \l__sdaps_classic_group_extra_tl
 
     \_sdaps_classic_question{#2}
+    \tl_if_empty:NTF \l__sdaps_classic_group_text_tl {
+      \sdaps_qobject_begin:nnn { choicegroup } { Head } { #2 }
+    } {
+      \sdaps_qobject_begin:nnV { choicegroup } { Head } \l__sdaps_classic_group_text_tl
+    }
+
+    \tl_if_empty:NF \l__sdaps_classic_group_var_tl {
+      \sdaps_qobject_append_var:V \l__sdaps_classic_group_var_tl
+    }
 
     % Undefine the question (and choice) commands in local scope so that they
     % can be redefined by choicearray without any issues.
@@ -1081,7 +1099,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
     \cs_set_eq:NN\question\tex_undefined:D
     \cs_set_eq:NN\choice\tex_undefined:D
 
-    \begin{choicearray}[#1]{#2}
+    \expandafter\choicearray\expandafter[\l__sdaps_classic_group_extra_tl]{#2}
       % XXX: This is a bit of a hack, set in global scope because the choicearray
       %      environment does evil things with scopes.
       \cs_gset_eq:NN\groupaddchoice\choice
@@ -1091,15 +1109,27 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
       \cs_gset_eq:NN\groupaddchoice\undefined
       \cs_gset_eq:NN\choiceline\undefined
 
-    \end{choicearray}
+    \endchoicearray
+
+    \sdaps_qobject_end:n { choicegroup }
   \group_end:
 }
 
 \newenvironment { optiongroup } [ 2 ] []
 {
   \group_begin:
+    \keys_set_known:nnN { sdapsclassic / group } { #1 } \l__sdaps_classic_group_extra_tl
 
     \_sdaps_classic_question{#2}
+    \tl_if_empty:NTF \l__sdaps_classic_group_text_tl {
+      \sdaps_qobject_begin:nnn { optiongroup } { Head } { #2 }
+    } {
+      \sdaps_qobject_begin:nnV { optiongroup } { Head } \l__sdaps_classic_group_text_tl
+    }
+
+    \tl_if_empty:NF \l__sdaps_classic_group_var_tl {
+      \sdaps_qobject_append_var:V \l__sdaps_classic_group_var_tl
+    }
 
     % Undefine the question (and choice) commands in local scope so that they
     % can be redefined by optionarray without any issues.
@@ -1107,7 +1137,7 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
     \cs_set_eq:NN\question\tex_undefined:D
     \cs_set_eq:NN\choice\tex_undefined:D
 
-    \begin{optionarray}[#1]{#2}
+    \expandafter\optionarray\expandafter[\l__sdaps_classic_group_extra_tl]{#2}
       % XXX: This is a bit of a hack, set in global scope because the optionarray
       %      environment does evil things with scopes.
       \cs_gset_eq:NN\groupaddchoice\choice
@@ -1117,22 +1147,33 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
       \cs_gset_eq:NN\groupaddoption\undefined
       \cs_gset_eq:NN\optionline\undefined
 
-    \end{optionarray}
+    \endoptionarray
+    \sdaps_qobject_end:n { optiongroup }
   \group_end:
 }
 
 \newenvironment { markgroup } [ 2 ] []
 {
   \group_begin:
+    \keys_set_known:nnN { sdapsclassic / group } { #1 } \l__sdaps_classic_group_extra_tl
 
     \_sdaps_classic_question{#2}
+    \tl_if_empty:NTF \l__sdaps_classic_group_text_tl {
+      \sdaps_qobject_begin:nnn { markgroup } { Head } { #2 }
+    } {
+      \sdaps_qobject_begin:nnV { markgroup } { Head } \l__sdaps_classic_group_text_tl
+    }
+
+    \tl_if_empty:NF \l__sdaps_classic_group_var_tl {
+      \sdaps_qobject_append_var:V \l__sdaps_classic_group_var_tl
+    }
 
     % Undefine the range command in local scope so that it can be redefined
     % by rangearray without any issues.
     % Note that \cs_undefine:N works in global scope, so we cannot use it here.
     \cs_set_eq:NN\range\tex_undefined:D
 
-    \begin{rangearray}[#1]{#2}
+    \expandafter\rangearray\expandafter[\l__sdaps_classic_group_extra_tl]{#2}
       % XXX: This is a bit of a hack, set in global scope because the choicearray
       %      environment does evil things with scopes.
       \cs_gset_eq:NN\markline\range
@@ -1140,7 +1181,8 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 {
       \cs_gset_eq:NN\markline\undefined
 
-    \end{rangearray}
+    \endrangearray
+    \sdaps_qobject_end:n { markgroup }
   \group_end:
 }
 
