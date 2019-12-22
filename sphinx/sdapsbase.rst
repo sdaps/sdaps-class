@@ -310,7 +310,7 @@ fill                The colour to fill the checkbox with (default: `white`)
 draw_check          Whether to draw a checkmark on top of the box (default: `false`)
 centered_text       Text to overlay over the checkmark (default: `none`)
 text                Text to overlay over the checkmark using a minipage (default: `none`)
-text_align          The minipage alignment of the overlay (default: `c`)
+text_align          The minipage alignment of the overlay (default: `c`, valid are **c**enter, **t**op, **b**ottom or **s**pread)
 text_padding        The minipages padding from the outside border of the box (default: `2bp`)
 ellipse             Pass as a short form for `form=ellipse`
 box                 Pass as a short form for `form=box`
