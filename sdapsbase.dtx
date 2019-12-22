@@ -804,6 +804,7 @@
 \dim_new:N \l_sdaps_checkbox_height_dim
 \tl_new:N \l_sdaps_checkbox_form_tl
 \tl_new:N \l_sdaps_checkbox_fill_tl
+\tl_new:N \l_sdaps_checkbox_draw_tl
 \tl_new:N \l_sdaps_checkbox_var_tl
 \tl_new:N \l_sdaps_checkbox_value_tl
 \bool_new:N \l_sdaps_checkbox_draw_check_bool
@@ -833,6 +834,9 @@
 
   fill         .tl_set:N    = \l_sdaps_checkbox_fill_tl,
   fill         .initial:n   = { white },
+
+  draw         .tl_set:N    = \l_sdaps_checkbox_draw_tl,
+  draw         .initial:n   = { . },
 
   draw_check   .bool_set:N  = \l_sdaps_checkbox_draw_check_bool,
   draw_check   .default:n   = true,
@@ -898,10 +902,10 @@
 
     \tikz[baseline={0.5\l_sdaps_checkbox_height_dim-0.8ex}]{%
       \tl_if_eq:VnT \l_sdaps_checkbox_form_tl { box } {
-        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0.5\l_sdaps_checkbox_linewidth_dim) rectangle +($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim)-(\l_sdaps_checkbox_linewidth_dim,\l_sdaps_checkbox_linewidth_dim)$);%
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl,draw=\l_sdaps_checkbox_draw_tl] (0.5\l_sdaps_checkbox_linewidth_dim, 0.5\l_sdaps_checkbox_linewidth_dim) rectangle +($(\l_sdaps_checkbox_width_dim, \l_sdaps_checkbox_height_dim)-(\l_sdaps_checkbox_linewidth_dim,\l_sdaps_checkbox_linewidth_dim)$);%
       }
       \tl_if_eq:VnT \l_sdaps_checkbox_form_tl { ellipse } {
-        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl] (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) circle [x~radius=0.5\l_sdaps_checkbox_width_dim-0.5\l_sdaps_checkbox_linewidth_dim, y~radius=0.5\l_sdaps_checkbox_height_dim-0.5\l_sdaps_checkbox_linewidth_dim];%
+        \draw[line~width=\l_sdaps_checkbox_linewidth_dim,fill=\l_sdaps_checkbox_fill_tl,draw=\l_sdaps_checkbox_draw_tl] (0.5\l_sdaps_checkbox_width_dim, 0.5\l_sdaps_checkbox_height_dim) circle [x~radius=0.5\l_sdaps_checkbox_width_dim-0.5\l_sdaps_checkbox_linewidth_dim, y~radius=0.5\l_sdaps_checkbox_height_dim-0.5\l_sdaps_checkbox_linewidth_dim];%
       }
 
       % For the overlay we actually position the nodes relative to the checkbox
@@ -1016,6 +1020,7 @@
 \dim_new:N  \l_sdaps_textbox_linewidth_dim
 \tl_new:N   \l_sdaps_textbox_var_tl
 \tl_new:N   \l_sdaps_textbox_fill_tl
+\tl_new:N   \l_sdaps_textbox_draw_tl
 \tl_new:N   \l__sdaps_textbox_boxtype_tl
 
 
@@ -1026,6 +1031,9 @@
 
   fill         .tl_set:N    = \l_sdaps_textbox_fill_tl,
   fill         .initial:n   = { white },
+
+  draw         .tl_set:N    = \l_sdaps_textbox_draw_tl,
+  draw         .initial:n   = { . },
 
   % Simple node overlay
   centered_text  .tl_set:N    = \l_sdaps_overlay_centered_text_tl,
@@ -1174,7 +1182,7 @@
         \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_height}
 
         % Draw the rectangle
-        \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
+        \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl,draw=\l_sdaps_textbox_draw_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
         \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
@@ -1265,7 +1273,7 @@
       \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_height}
 
       % Draw the rectangle
-      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl,draw=\l_sdaps_textbox_draw_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
         \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}
@@ -1336,7 +1344,7 @@
     % The textbox (rendered on the background)
     \begin{tikzpicture}[overlay]
       % Draw the rectangle
-      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
+      \draw[line~width=\l_sdaps_textbox_linewidth_dim,fill=\l_sdaps_textbox_fill_tl,draw=\l_sdaps_textbox_draw_tl] ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5 * (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$) rectangle +($(\l_sdaps_width_dim, -\l_sdaps_height_dim) - (\l_sdaps_textbox_linewidth_dim, -\l_sdaps_textbox_linewidth_dim)$);
 
       \begin{scope}
           \seq_map_inline:Nn \g__sdaps_textbox_overlays_seq {##1}%

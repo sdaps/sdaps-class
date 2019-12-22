@@ -42,6 +42,7 @@ Completed box being shipped out [2]
 .......\special{pdf:code q }
 .......\special{pdf:code 1.0 w }
 .......\special{pdf:code 1 g }
+.......\special{pdf:code 0 G }
 .......\special{pdf:code -416.19833 13.6734 m }
 .......\special{pdf:code -416.19833 13.6734 m }
 .......\special{pdf:code -416.19833 -5.16933 l }
@@ -106,6 +107,7 @@ Completed box being shipped out [2]
 .......\special{pdf:code q }
 .......\special{pdf:code 1.0 w }
 .......\special{pdf:code 1 g }
+.......\special{pdf:code 0 G }
 .......\special{pdf:code -197.92775 13.6734 m }
 .......\special{pdf:code -197.92775 13.6734 m }
 .......\special{pdf:code -197.92775 -5.16933 l }

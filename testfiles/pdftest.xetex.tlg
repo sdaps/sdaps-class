@@ -57,6 +57,7 @@ Completed box being shipped out [2]
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
 .........\special{pdf:code 1 g }
+.........\special{pdf:code 0 G }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 9.42136 l }
@@ -136,6 +137,7 @@ Completed box being shipped out [2]
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
 .........\special{pdf:code 1 g }
+.........\special{pdf:code 0 G }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 9.42136 l }
@@ -215,6 +217,7 @@ Completed box being shipped out [2]
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
 .........\special{pdf:code 1 g }
+.........\special{pdf:code 0 G }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 9.42136 l }
@@ -294,6 +297,7 @@ Completed box being shipped out [2]
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
 .........\special{pdf:code 1 g }
+.........\special{pdf:code 0 G }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 9.42136 l }
@@ -393,6 +397,7 @@ Completed box being shipped out [2]
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
 .........\special{pdf:code 1 g }
+.........\special{pdf:code 0 G }
 .........\special{pdf:code -467.50603 112.88728 m }
 .........\special{pdf:code -467.50603 112.88728 m }
 .........\special{pdf:code -467.50603 0.5 l }
