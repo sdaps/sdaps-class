@@ -1127,7 +1127,7 @@
   % (i.e. it could still be an alignment character). Execute the alignment
   % code directly if the next character is &.
   \bool_if:NF \l_sdaps_sdapsarray_keepenv_bool {
-    \peek_charcode_remove:NT & { \sdaps_array_alignment: }
+    \peek_charcode_remove_ignore_spaces:NT & { \sdaps_array_alignment: }
   }
 }
 {
