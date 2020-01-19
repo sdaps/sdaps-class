@@ -28,8 +28,7 @@ uploadconfig = {
   repository  = "https://github.com/sdaps/sdaps-class/",
   bugtracker  = "https://github.com/sdaps/sdaps-class/issues",
   update      = true,
-  version     = "1.9.0",
-  note        = "This is not yet quite stable. Also, please note that this contains a renamed and relicensed code128.tex from the code128 package which is already on CTAN.",
+  version     = "1.9.8",
   description = [[
 This bundle contains LaTeX classes and packages to create machine readable
 questionnaires. Metadata is generated for the whole document and it is
