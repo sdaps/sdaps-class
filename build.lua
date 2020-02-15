@@ -4,9 +4,8 @@
 
 -- Identify the bundle and module: the module may be empty in the case where
 -- there is no subdivision
-bundle = "sdaps"
+bundle = ""
 module = "sdaps"
-modules = { "." }
 
 -- Location of main directory: use Unix-style path separators
 maindir = "."
@@ -30,7 +29,7 @@ uploadconfig = {
   update      = true,
   version     = "1.9.8",
   description = [[
-This bundle contains LaTeX classes and packages to create machine readable
+This module contains LaTeX classes and packages to create machine readable
 questionnaires. Metadata is generated for the whole document and it is
 possible to process created forms fully automatically using the SDAPS main
 program.
