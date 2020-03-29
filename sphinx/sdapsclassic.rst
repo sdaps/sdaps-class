@@ -11,6 +11,8 @@ Please note that the environments from the sdapslayout package cannot be used
 directly as using these environments will cause conflicting macro definitions.
 Instead one can simply use the aliases provided in this class.
 
+* The entire document should be wrapped using the :environ:`questionnaire` environment.
+
 The following question types exists for your use:
 
 * :macro:`\\singlemark`: A single range or mark question
@@ -191,6 +193,16 @@ other content!
 
 Environments
 ------------
+
+.. environ::
+    \begin{questionnaire}[kwargs]
+      content
+    \end{questionnaire}
+
+    :kwarg noinfo: Suppress the generation of the standard information text
+
+    This is the main environment. You should have exactly one of these
+    environments containing the entire document.
 
 .. environ::
     \begin{choicequestion}[kwargs]{text}
