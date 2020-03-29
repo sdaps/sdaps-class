@@ -77,6 +77,11 @@ function main(target,names)
        print("Version mismatch between README file and build.lua configuration")
       return errorlevel
     end
+    errorlevel = run('.', 'grep -q "SDAPSVersion=' .. uploadconfig['version']:gsub('%.', '\\.') .. '" sdapsbase.dtx')
+    if errorlevel ~=0 then
+       print("Version mismatch between README file and build.lua configuration")
+      return errorlevel
+    end
 
     errorlevel = call({ '.' }, "doc")
     if errorlevel ~=0 then
