@@ -7,7 +7,7 @@ This is the main class which currently should be used to create questionnaires.
 It builds on top of the other packages and adds new macros and environments
 which are similar to the ones from the original SDAPS LaTeX class.
 
-Pleaes note that the environments from the sdapslayout package cannot be used
+Please note that the environments from the sdapslayout package cannot be used
 directly as using these environments will cause conflicting macro definitions.
 Instead one can simply use the aliases provided in this class.
 
