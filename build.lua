@@ -72,6 +72,12 @@ installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
 function main(target,names)
   -- Seems like the ctan command does not ensure "doc" has been run
   if target == "ctan" then
+    errorlevel = run('.', 'grep -q "Version: ' .. uploadconfig['version']:gsub('%.', '\\.') .. '" README')
+    if errorlevel ~=0 then
+       print("Version mismatch between README file and build.lua configuration")
+      return errorlevel
+    end
+
     errorlevel = call({ '.' }, "doc")
     if errorlevel ~=0 then
        print("Failed to build documentation (required to build ctan package)")
