@@ -11,7 +11,7 @@ module = "sdaps"
 maindir = "."
 
 -- Non-standard settings
-cleanfiles   = {"*.pdf", "*.tex", "*.zip"}
+cleanfiles   = {"*.pdf", "*.zip"}
 packtdszip   = true
 unpackdeps   = { }
 
@@ -62,13 +62,51 @@ checkruns = 3
 -- No luatex support currently
 checkengines = { "pdftex", "xetex" }
 
+-- Don't typeset anything (in particular documentation)
+typesetfiles    = { }
+docfiles        = { "README", "sphinx/_build/html/*" }
 demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
 sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.dict" }
 installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
+
+function main(target,names)
+  -- Seems like the ctan command does not ensure "doc" has been run
+  if target == "ctan" then
+    errorlevel = call({ '.' }, "doc")
+    if errorlevel ~=0 then
+       print("Failed to build documentation (required to build ctan package)")
+      return errorlevel
+    end
+  end
+
+  if target == "doc" then
+    -- Building the sphinx documentation requires having unpacked everything
+    errorlevel = call({ '.' }, "unpack")
+    if errorlevel ~=0 then
+       print("Failed to unpack (required to build documentation)")
+      return errorlevel
+    end
+
+    -- Only build sphinx documentation, then return
+    -- Note that we build the "classic" theme, because matrial generates a huge tarball
+    -- And we force a clean rebuild, just to make sure things are correct
+    errorlevel = run('.', 'make -C sphinx clean')
+    if errorlevel ~=0 then
+      return errorlevel
+    end
+    errorlevel = run('.', 'make -C sphinx html SPHINXOPTS="-D html_theme=classic"')
+    --cp('html', 'sphinx/_build', typesetdir)
+
+    return errorlevel
+  elseif target == "clean" then
+    run('sphinx', 'make clean')
+  end
+  return stdmain(target,names)
+end
 
 kpse.set_program_name ("kpsewhich")
 if not release_date then
   l3build = kpse.lookup ("l3build.lua")
   assert (l3build, "l3build is not installed!")
-  dofile (kpse.lookup ("l3build.lua"))
+  dofile (l3build)
 end
