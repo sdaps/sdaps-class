@@ -11,7 +11,14 @@ Please note that the environments from the sdapslayout package cannot be used
 directly as using these environments will cause conflicting macro definitions.
 Instead one can simply use the aliases provided in this class.
 
-* The entire document should be wrapped using the :environ:`questionnaire` environment.
+The entire document should be wrapped using the :environ:`questionnaire` environment.
+
+The following macros and environments exist:
+
+ * :environ:`questionnaire`: Main environment wrapping everything
+ * :environ:`info`: Style definition for information block
+ * :macro:`\\addinfo`: Add metadata to the project
+ * :macro:`\\sdapsinfo`: Print the standard instructions for filling out
 
 The following question types exists for your use:
 
@@ -51,8 +58,54 @@ no_print_questionnaire_id   Disable printing of questionnaire IDs
 print_questionnaire_id      Enable printing of questionnaire IDs
 =========================== =========================
 
-Macros
-------
+General macros and environments
+-------------------------------
+
+.. environ::
+    \begin{questionnaire}[kwargs]
+      content
+    \end{questionnaire}
+
+    :kwarg noinfo: Suppress the generation of the standard information text
+
+    This is the main environment. You should have exactly one of these
+    environments containing the entire document.
+
+.. environ::
+    \begin{info}
+      content
+    \end{info}
+
+    A simple environment which places a line on top and below the content.
+
+.. macro:: \addinfo{key}{value}
+
+    Attach further metadata to the SDAPS project. This may be used for any
+    purpose and the information will also appear on the cover page when
+    generating a report using the main SDAPS program.
+
+.. macro:: \sdapsinfo
+
+    Print the instruction text that is printed at the top of the page
+    unless the `noinfo` keyword argument is given to :environ:`questionnaire`.
+
+    Place into a :environ:`info` block to get the same visual appearance as the
+    default information text.
+
+.. macro:: \sdapspagemark
+
+    This macro must be executed once for every page. By default it is placed
+    into the center footer and as such should not be executed unless the footer
+    is modified.
+
+    While this command is provided, use it at your own risk. No guarantees are
+    made on how the class uses this macro internally. If you use it, you need
+    to verify the behaviour whenever the class is updated and ensure that
+    everything is functioning appropriately. In particular, this macro must not
+    be executed twice per page.
+
+Question related macros
+-----------------------
 
 .. macro:: \checkbox*
 
@@ -191,18 +244,8 @@ other content!
         Almost empty document, look at the metadata to see what this is about.
 
 
-Environments
-------------
-
-.. environ::
-    \begin{questionnaire}[kwargs]
-      content
-    \end{questionnaire}
-
-    :kwarg noinfo: Suppress the generation of the standard information text
-
-    This is the main environment. You should have exactly one of these
-    environments containing the entire document.
+Question Environments
+---------------------
 
 .. environ::
     \begin{choicequestion}[kwargs]{text}
