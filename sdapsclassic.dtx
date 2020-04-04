@@ -925,33 +925,38 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
   noinfo       .meta:n  = { info=false },
 }
 
+\cs_new_protected_nopar:Nn \_sdaps_classic_info:
+{
+  \translate{infotext} \\[1ex]
+  \tl_if_eq:VnTF \g_sdaps_checkmode_tl { checkcorrect } {
+    \begin{tabularx}{\textwidth}{lXllll}
+      \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} & \hspace{1em} \correctedbox {} & \translate{info-corrected} \\
+      \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} & \hspace{1em} \correctedbox* {} & \translate{info-corrected} \\
+    \end{tabularx}
+  } {
+    \tl_if_eq:VnTF \g_sdaps_checkmode_tl { check } {
+      \begin{tabularx}{\textwidth}{lXll}
+        \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} \\
+        \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} \\
+      \end{tabularx}
+    } {
+      \tl_if_eq:VnTF \g_sdaps_checkmode_tl { fill } {
+        \begin{tabularx}{\textwidth}{lXll}
+          \checkbox & \strut \translate{info-multi} & \hspace{2em} \filledbox {} & \translate{info-fill} \\
+          \checkbox* & \strut \translate{info-single} & \hspace{2em} \filledbox* {} & \translate{info-fill} \\
+        \end{tabularx}
+      } {
+        \PackageError{sdaps}{Sorry, there is no help text for the checkmode you have choosen right now! Please pass the noinfo optional argument to the questionnaire environment!}\@ehb %
+      }
+    }
+  }
+}
+
 \cs_new_protected_nopar:Nn \_sdaps_classic_show_info:
 {
   \bool_if:NT \l__sdaps_questionnaire_info_bool {
     \begin{info}
-      \translate{infotext} \\[1ex]
-      \tl_if_eq:VnTF \g_sdaps_checkmode_tl { checkcorrect } {
-        \begin{tabularx}{\textwidth}{lXllll}
-          \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} & \hspace{1em} \correctedbox {} & \translate{info-corrected} \\
-          \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} & \hspace{1em} \correctedbox* {} & \translate{info-corrected} \\
-        \end{tabularx}
-      } {
-        \tl_if_eq:VnTF \g_sdaps_checkmode_tl { check } {
-          \begin{tabularx}{\textwidth}{lXll}
-            \checkbox & \strut \translate{info-multi} & \hspace{2em} \checkedbox {} & \translate{info-cross} \\
-            \checkbox* & \strut \translate{info-single} & \hspace{2em} \checkedbox* {} & \translate{info-cross} \\
-          \end{tabularx}
-        } {
-          \tl_if_eq:VnTF \g_sdaps_checkmode_tl { fill } {
-            \begin{tabularx}{\textwidth}{lXll}
-              \checkbox & \strut \translate{info-multi} & \hspace{2em} \filledbox {} & \translate{info-fill} \\
-              \checkbox* & \strut \translate{info-single} & \hspace{2em} \filledbox* {} & \translate{info-fill} \\
-            \end{tabularx}
-          } {
-            \PackageError{sdaps}{Sorry, there is no help text for the checkmode you have choosen right now! Please pass the noinfo optional argument to the questionnaire environment!}\@ehb %
-          }
-        }
-      }
+      \_sdaps_classic_info:
     \end{info}
   }
   \ignorespaces
@@ -1057,6 +1062,10 @@ you~can~get~similar~results~by~temporarily~changing~the~checkbox~style. }
 
 \def\sdapspagemark{
   \sdaps_page_end:
+}
+
+\def\sdapsinfo{
+  \_sdaps_classic_info:
 }
 
 %    \end{macrocode}
