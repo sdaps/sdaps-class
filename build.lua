@@ -106,7 +106,8 @@ function main(target,names)
       return errorlevel
     end
     errorlevel = run('.', 'make -C sphinx html SPHINXOPTS="-D html_theme=classic"')
-    --cp('html', 'sphinx/_build', typesetdir)
+    -- And remove the useless buildinfo file
+    os.remove('sphinx/_build/html/.buildinfo')
 
     return errorlevel
   elseif target == "clean" then
