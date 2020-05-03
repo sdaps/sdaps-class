@@ -7,7 +7,7 @@ possible, but it does require a more in depth understanding of LaTeX and
 the SDAPS packages.
 
 If you do this, please make sure to properly test the output. The easiest way
-of such testing is to use the ``anotate`` command that SDAPS provides, as it
+of such testing is to use the ``annotate`` command that SDAPS provides, as it
 visualises the view that SDAPS has of the questionnaire. Doing this testing is
 essential as small errors and even side effects of how LaTeX executes code may
 render the information about the questionnaire useless!
