@@ -311,6 +311,14 @@ Question Environments
 
     Alias for :environ:`choicequestion` which simply sets it into ``singlechoice`` mode by default.
 
+    .. sdaps:: A choicequestion
+        :sdapsclassic:
+
+        \begin{optionquestion}[cols=3,singlechoice]{This is a single choice question}
+          \choiceitem{First choice}
+          \choicemulticolitem{2}{Second choice with a lot of text}
+        \end{optionquestion}
+
 .. environ::
     \begin{info}
       content
