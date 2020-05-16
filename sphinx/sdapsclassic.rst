@@ -485,6 +485,30 @@ Question Environments
 
     Alias for :environ:`choicegroup` which simply sets it into ``singlechoice`` mode by default.
 
+    .. sdaps:: Example of a choicegroup environment
+        :sdapsclassic:
+
+        \begin{optiongroup}{A group of questions}
+          \choice{Choice 1}
+          \choice{Choice 2}
+          \question{Question one}
+          \question{Question two}
+        \end{optiongroup}
+
+        \begin{optiongroup}[align=something]{Another question}
+          \choice{Some choice 1}
+          \choice{Some choice 2}
+          \question{Question one}
+          \question{Question two}
+        \end{optiongroup}
+
+        \begin{choicegroup}[align=something,singlechoice]{Another group of questions which is automatically aligned to the previous}
+          \groupaddchoice{1}
+          \groupaddchoice{2}
+          \choiceline{Question one}
+          \choiceline{Question two}
+        \end{choicegroup}
+
 
 
 Complex typesetting and images
