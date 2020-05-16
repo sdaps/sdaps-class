@@ -31,5 +31,5 @@ With that done, you need to run the following to setup the project
 
 .. code-block:: shell
 
-    $ sdaps setup PROJECT_DIR questionnaire.tex --add images
+    $ sdaps setup tex PROJECT_DIR questionnaire.tex --add images
 
