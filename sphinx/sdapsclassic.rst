@@ -406,8 +406,15 @@ Question Environments
           \question{Question one}
           \question{Question two}
         \end{choicegroup}
-        
-        \begin{choicegroup}{Another group of questions which is automatically aligned to the first}
+
+        \begin{choicegroup}[align=something]{Another question}
+          \choice{Some choice 1}
+          \choice{Some choice 2}
+          \question{Question one}
+          \question{Question two}
+        \end{choicegroup}
+
+        \begin{choicegroup}[align=something]{Another group of questions which is automatically aligned to the previous}
           \groupaddchoice{1}
           \groupaddchoice{2}
           \choiceline{Question one}
