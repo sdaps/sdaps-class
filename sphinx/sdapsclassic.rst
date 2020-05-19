@@ -467,6 +467,7 @@ Question Environments
           \groupaddchoice{15}
           \groupaddchoice{16}
           \groupaddchoice{17}
+          \groupaddchoice{18}
           \groupaddchoice{19}
           \groupaddchoice{20}
           \groupaddchoice{21}
