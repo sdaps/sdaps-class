@@ -240,6 +240,8 @@ report.
 Codeboxes
 ---------
 
+.. _codeboxes::
+
 There is experimental support for code boxes, that is not yet available using a
 nice wrapper. This can be used to create QR code read fields.
 
