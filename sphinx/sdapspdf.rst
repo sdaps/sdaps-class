@@ -33,29 +33,39 @@ checkboxsymbol      The symbol to use for the checkmark (integer, see PDF specif
 .. sdaps:: Using PDF forms
     :preamble:
         \usepackage{sdapspdf}
+        % Define aliases for the commands we need to use, context_append
+        % expands settings, context_set sets them (for the current scope),
+        % possibly removing old settings.
+        \ExplSyntaxOn
+        \let\mycontextappend\sdaps_context_append:nn
+        \let\mycontextset\sdaps_context_set:nn
+        \let\mycheckbox\sdaps_checkbox:nn
+        \let\mytextboxvhstretch\sdaps_textbox_vhstretch:nnn
+        \ExplSyntaxOff
 
     \begin{Form}
-      \ExplSyntaxOn
-        % Set the pdf_form option for all boxes (*)
-        \sdaps_context_append:nn{*}{pdf_form=true}
+      % The \my* commands are aliases that are defined in the praemble
 
-        % Or for checkboxes and textboxes separately
-        %\sdaps_context_append:nn{checkbox}{pdf_form=true}
-        %\sdaps_context_append:nn{textbox}{pdf_form=true}
+      % Set the pdf_form option for all boxes (*)
+      \mycontextappend{*}{pdf_form=true}
 
-        \noindent A~checkbox:~\sdaps_checkbox:nn {} {} \newline
-        \sdaps_context_set:n{checkbox={default=true}}
-        A~checked~checkbox:~\sdaps_checkbox:nn {} {} \newline
-        \sdaps_context_set:n{checkbox={default=true,checkboxsymbol=5}}
-        A~checked~checkbox~with~different~symbol:~\sdaps_checkbox:nn {} {} \par
+      % Or for checkboxes and textboxes separately
+      %\mycontextappend{singlechoice}{pdf_form=true}
+      %\mycontextappend{multichoice}{pdf_form=true}
+      %\mycontextappend{textbox}{pdf_form=true}
 
-        Please~note~that~the~above~rendering~is~slightly~broken~as~the~poppler~
-        PDF~renderer~maps~the~checkboxsymbol~incorrectly.~Acrobat~will~show~the~
-        other~symbol.\par
+      \noindent A checkbox: \mycheckbox{}{} \newline
+      \mycontextappend{multichoice}{default=true}
+      A checked checkbox: \mycheckbox{}{} \newline
+      \mycontextappend{multichoice}{default=true,checkboxsymbol=5}
+      A checked checkbox with different symbol: \mycheckbox{}{}
 
-        \noindent A~non-stretching~textbox:
-        \sdaps_textbox_vhstretch:nnn { text } { 4cm } { 0 }
-      \ExplSyntaxOff
+      Please note that the above rendering is slightly broken as the poppler
+      PDF renderer maps the checkboxsymbol incorrectly. Acrobat will show the
+      other symbol.
+
+      \noindent A non stretching textbox:
+      \mytextboxvhstretch{text}{4cm}{0}
     \end{Form}
 
 
