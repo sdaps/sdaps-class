@@ -73,11 +73,11 @@
         %\sdaps_context_append:nn{textbox}{pdf_form=true}
 
         \noindent \sdaps_checkbox:nn {} {} {}~
-        \sdaps_context_set:n{checkbox={checkboxsymbol=5}}
+        \sdaps_context_set:n{multichoice={checkboxsymbol=5}}
         \sdaps_checkbox:nn {} {} {}~
-        \sdaps_context_set:n{checkbox={default=true}}
+        \sdaps_context_set:n{multichoice={default=true,fill=green}}
         \sdaps_checkbox:nn {} {} {}~
-        \sdaps_context_set:n{checkbox={default=true,checkboxsymbol=5}}
+        \sdaps_context_set:n{multichoice={default=true,checkboxsymbol=5}}
         \sdaps_checkbox:nn {} {} {}
 
         \sdaps_textbox_vhstretch:nnn { text } { 4cm } { 0 }
