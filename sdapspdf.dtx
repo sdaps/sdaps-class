@@ -126,7 +126,7 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_pdf_overlay_checkbox_form:
 {
-  \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } { \l_sdaps_parse_unknown_tl } %
+  \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } \l_sdaps_parse_unknown_tl %
 
   \bool_if:NT \l__sdaps_pdf_form_bool {
     \node[anchor=center,inner~sep=0pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
@@ -139,7 +139,7 @@
 
 \cs_new_protected_nopar:Nn \_sdaps_pdf_overlay_text_form:
 {
-  \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } { \l_sdaps_parse_unknown_tl } %
+  \keys_set_known:nV { sdaps / checkbox / overlay / pdfform } \l_sdaps_parse_unknown_tl %
 
   \bool_if:NT \l__sdaps_pdf_form_bool {
     \node[anchor=center,inner~sep=2pt,outer~sep=0pt] at ($(\l_sdaps_x_dim, \l_sdaps_y_dim) + 0.5*(\l_sdaps_width_dim, -\l_sdaps_height_dim)$) {
