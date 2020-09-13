@@ -4,7 +4,7 @@
 \OMIT
 \usepackage{sdapsbase}
 % To properly call \sdaps_page_end: for each page.
-\usepackage{scrpage2}
+\usepackage{scrlayer-scrpage}
 
 
 \def\logpos#1{\lognamedpos{#1}#1}
