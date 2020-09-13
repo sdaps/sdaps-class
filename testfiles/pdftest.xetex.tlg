@@ -216,7 +216,7 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code q }
 .........\special{pdf:code 1.0 w }
-.........\special{pdf:code 1 g }
+.........\special{pdf:code 0 1 0 rg }
 .........\special{pdf:code 0 G }
 .........\special{pdf:code 0.49998 0.49998 m }
 .........\special{pdf:code 0.49998 0.49998 m }
