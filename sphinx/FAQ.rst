@@ -73,3 +73,25 @@ With that done, you need to run the following to setup the project
 
     $ sdaps setup tex PROJECT_DIR questionnaire.tex --add images
 
+Adjusting corner mark positions
+-------------------------------
+
+It is possible to adjust the positions of the corner marks. Currently this
+needs to be done manually. You can override the positions and also update
+the default page margins using code like the following in the preamble.
+
+.. code-block:: tex
+
+    % Re-define the default margins (10mm -> 12mm, 12mm -> 15mm)
+    \ExplSyntaxOn
+    \dim_gset:Nn \g_sdaps_edge_left_margin_dim { 12mm }
+    \dim_gset:Nn \g_sdaps_edge_right_margin_dim { 12mm }
+    \dim_gset:Nn \g_sdaps_edge_top_margin_dim { 15mm }
+    \dim_gset:Nn \g_sdaps_edge_bottom_margin_dim { 15mm }
+    \ExplSyntaxOff
+
+    % Modify the top, bottom and left/right margins, these should be 2mm larger
+    \geometry{top=15mm}
+    \geometry{bottom=17mm}
+    \geometry{hmargin=14mm}
+
