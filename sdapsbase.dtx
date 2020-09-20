@@ -1788,6 +1788,14 @@
   \sdaps_info_write:x{GlobalID=\g_sdaps_global_id_tl}
   \sdaps_info_write:x{GlobalIDLabel=\g_sdaps_global_id_label_tl}
 
+  \sdaps_info_write:x{
+    CornerMarkMargin=
+      \dim_use:N\g_sdaps_edge_left_margin_dim,
+      \dim_use:N\g_sdaps_edge_right_margin_dim,
+      \dim_use:N\g_sdaps_edge_top_margin_dim,
+      \dim_use:N\g_sdaps_edge_bottom_margin_dim
+  }
+
   \int_gset:Nn \g_sdaps_page_int { 0 }
 }
 
