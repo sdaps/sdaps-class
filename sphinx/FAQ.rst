@@ -80,6 +80,8 @@ It is possible to adjust the positions of the corner marks. Currently this
 needs to be done manually. You can override the positions and also update
 the default page margins using code like the following in the preamble.
 
+This requires SDAPS version 1.9.10 or later.
+
 .. code-block:: tex
 
     % Re-define the default margins (10mm -> 12mm, 12mm -> 15mm)
