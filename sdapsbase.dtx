@@ -644,7 +644,7 @@
 
 \cs_new_protected_nopar:Nn \__sdaps_questionnaire_overrides_set:nn
 {
-  \str_if_eq_x:nnTF { #1 } { * } {
+  \str_if_eq:eeTF { #1 } { * } {
     \__sdaps_parse_overrides:n{ #2 }
   } {
     \prop_put:Nnn \g__sdaps_id_to_overrides_prop { #1 } { #2 }
