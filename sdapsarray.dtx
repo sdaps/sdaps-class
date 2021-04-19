@@ -711,11 +711,11 @@
   %       Unfortunately checking for an empty box does not work for some reason.
   \dim_set:Nn \l_tmpb_dim { \box_ht:N #1 }
   \sdaps_if_rtl:TF {
-    \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } }
+    \hcoffin_set:Nn \l_tmpb_coffin { \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_drop:N #1 } } \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } }
     \tl_set:Nn \l_tmpa_tl { l }
     \tl_set:Nn \l_tmpb_tl { r }
   } {
-    \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_clear:N #1 } } }
+    \hcoffin_set:Nn \l_tmpb_coffin { \skip_horizontal:n { \l_sdaps_sdapsarray_colsep_dim } \hbox_to_wd:nn \l_tmpa_dim { \hfil \vbox:n { \vbox_unpack_drop:N #1 } } }
     \tl_set:Nn \l_tmpa_tl { r }
     \tl_set:Nn \l_tmpb_tl { l }
   }
