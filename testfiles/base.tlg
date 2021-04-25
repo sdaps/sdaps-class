@@ -53,16 +53,16 @@ encoded: \startC ,32,49,89,23,00,03,97,\stop ,
 black-white: 21123223212121133121214131213121222212122341111323311120
 [3
 [14]QObject-Choice=3. A choice question
-[15]Box[3]=Checkbox,3,89.62619pt,746.31589pt,9.95845pt,14.22636pt,box,1.00374pt,3_1,1
+[15]Box[3]=Checkbox,3,89.62619pt,744.18193pt,9.95845pt,9.95845pt,box,1.00374pt,3_1,1
 [16]Box[3]=Checkbox,3,103.23462pt,753.42908pt,9.95845pt,28.45274pt,box,1.00374pt,testvar,2
 [17]Box[3]=Checkbox,3,116.84305pt,756.98567pt,9.95845pt,35.56593pt,box,1.00374pt,3_testvar,3
-[18]Box[3]=Checkbox,3,130.45148pt,760.54227pt,9.95845pt,42.67912pt,box,1.00374pt,testvar,testval
+[18]Box[3]=Checkbox,3,130.45148pt,760.54227pt,9.95845pt,42.67912pt,ellipse,1.00374pt,3,testval
 [19]Variable[3]=3
 [20]QObject-Choice=4. A choice question
 [21]Box[4]=Checkbox,3,89.62619pt,705.48206pt,9.95845pt,19.91692pt,box,1.00374pt,prefix_1,1
 [22]Box[4]=Checkbox,3,103.23462pt,709.74997pt,9.95845pt,28.45274pt,box,1.00374pt,prefix_testvar,2
 [23]Box[4]=Checkbox,3,116.84305pt,709.74997pt,9.95845pt,28.45274pt,box,1.00374pt,prefix_testvar,3
-[24]Box[4]=Checkbox,3,130.45148pt,716.86316pt,9.95845pt,42.67912pt,box,1.00374pt,prefix_testvar,testval
+[24]Box[4]=Checkbox,3,130.45148pt,716.86316pt,9.95845pt,42.67912pt,ellipse,1.00374pt,prefix,testval
 [25]Variable[4]=prefix
 [26]Pages=3
 ]
@@ -153,12 +153,12 @@ black-white: 21123223212121133121214131213121222212231222321123311120
 [64]QObject-Choice=8. A choice question
 [65]Box[8]=Checkbox,7,89.62619pt,758.29315pt,9.95845pt,9.95845pt,box,1.00374pt,8_1,1
 [66]Box[8]=Checkbox,7,99.58463pt,758.29315pt,9.95845pt,9.95845pt,box,2.00749pt,8_2,2
-[67]Box[8]=Checkbox,7,89.62619pt,744.69315pt,9.95845pt,9.95845pt,ellipse,1.00374pt,8_3,3
-[68]Box[8]=Checkbox,7,99.58463pt,744.69315pt,9.95845pt,9.95845pt,ellipse,2.00749pt,8_4,4
+[67]Box[8]=Checkbox,7,89.62619pt,744.69315pt,9.95845pt,9.95845pt,ellipse,1.00374pt,8,3
+[68]Box[8]=Checkbox,7,99.58463pt,744.69315pt,9.95845pt,9.95845pt,ellipse,2.00749pt,8,4
 [69]Box[8]=Checkbox,7,89.62619pt,731.09314pt,9.95845pt,9.95845pt,box,1.00374pt,8_5,5
 [70]Box[8]=Checkbox,7,99.58463pt,731.09314pt,9.95845pt,9.95845pt,box,1.00374pt,8_6,6
-[71]Box[8]=Checkbox,7,89.62619pt,717.49313pt,9.95845pt,9.95845pt,ellipse,1.00374pt,8_7,7
-[72]Box[8]=Checkbox,7,99.58463pt,717.49313pt,9.95845pt,9.95845pt,ellipse,2.00749pt,8_8,8
+[71]Box[8]=Checkbox,7,89.62619pt,717.49313pt,9.95845pt,9.95845pt,ellipse,1.00374pt,8,7
+[72]Box[8]=Checkbox,7,99.58463pt,717.49313pt,9.95845pt,9.95845pt,ellipse,2.00749pt,8,8
 [73]Variable[8]=8
 [74]Pages=7
 ]
