@@ -11,13 +11,16 @@
 import re
 from sphinx import addnodes
 from sphinx.domains import Domain, ObjType
-from sphinx.locale import l_, _
+from sphinx.locale import get_translation
 from sphinx.directives import ObjectDescription
 from sphinx.roles import XRefRole
 from sphinx.util.nodes import make_refnode
 from sphinx.util.docfields import Field, GroupedField, TypedField
 from docutils import nodes
 
+# Copied from sphinx.locale, and changed back __ to l_
+_ = get_translation('sphinx')
+l_ = get_translation('sphinx', 'console')
 
 class desc_texenvcontent(nodes.Part, nodes.TextElement):
     """Node for a general parameter list."""
