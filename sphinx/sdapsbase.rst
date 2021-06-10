@@ -233,20 +233,11 @@ There is only one command to set the overrides string:
 
     :arg overrides: A key=value argument with all the override definitions. 
 
-    Each of the override definitions will be appened to the items keys if it is
-    matching. Matching happens first based on the questionnaire ID with ``*``
-    being allowed as a wildcard, and then based on variable name and value. The
-    second level (name and value) is either just the variable name or the variable
-    name and value separated by an ``&`` character.
-
-    This gives six matches with increasing priority:
-
-    * wildcard questionnaire ID, wildcard target
-    * wildcard questionnaire ID, matching variable
-    * wildcard questionnaire ID, matching variable, matching value
-    * matching questionnaire ID, wildcard target
-    * matching questionnaire ID, matching variable
-    * matching questionnaire ID, matching variable, matching value
+    This only allows overriding a specific box based on the questoinnaire it is
+    on. On the first level, a match against the questionnaire ID happens
+    (or `*`). For single choice boxes, the boxes are addressed by using the
+    question variable and value separated by `&`. Otherwise they are addressed
+    using the variable only.
 
     .. sdaps:: Overriding checkbox color and pre-filled value based on
         questionnaire ID and variables.
@@ -257,12 +248,11 @@ There is only one command to set the overrides string:
             \sdaps_overrides_init:n{
                 % For all questoinnaires independent of their ID
                 *={
-                  % For all elements which use the overrides
-                  *={fill=green},
                   % Specific element with that variable name
                   flower_bob_alice={draw_check=true},
-                  % Specific element with variable "var" and value 1
-                  var&1={draw_check=true},
+
+                  % If we had a single choice (option) question:
+                  variable&1={draw_check=true},
                 },
                 % Specific questionnaire ID
                 testid={

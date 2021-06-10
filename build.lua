@@ -27,7 +27,7 @@ uploadconfig = {
   repository  = "https://github.com/sdaps/sdaps-class/",
   bugtracker  = "https://github.com/sdaps/sdaps-class/issues",
   update      = true,
-  version     = "1.9.9",
+  version     = "2.0",
   description = [[
 This module contains LaTeX classes and packages to create machine readable
 questionnaires. Metadata is generated for the whole document and it is

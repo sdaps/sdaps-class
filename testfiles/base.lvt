@@ -88,24 +88,21 @@
     \ExplSyntaxOn
       \sdaps_overrides_init:n{
         *={
-            *={},
             var1={},
             var2&val1={},
         },
         qid1={
-            *={},
             var1={},
             var2&val1={},
         },
         testoverrideqid={
-            *={height=5mm},
             testvar={height=10mm},
             3_testvar={height=12.5mm},
-            testvar&testval={height=15mm},
+            3&testval={height=15mm},
 
             prefix_1={height=7mm},
             prefix_testvar={height=10mm},
-            prefix_testvar&testval={height=15mm},
+            prefix&testval={height=15mm},
         },
       }
     \ExplSyntaxOff
@@ -190,6 +187,7 @@
 
         \sdaps_checkbox:nn { _testvar } {} {}~
 
+        \sdaps_context_set:n { checkboxtype=singlechoice }
         \sdaps_checkbox:nn { testvar } { testval } {}
       }
 
@@ -205,6 +203,7 @@
 
         \sdaps_checkbox:nn { _testvar } {} {}~
 
+        \sdaps_context_set:n { checkboxtype=singlechoice }
         \sdaps_checkbox:nn { testvar } { testval } {}
       }
 
