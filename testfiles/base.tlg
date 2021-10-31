@@ -11,7 +11,7 @@ TEST 1: Initialize SDAPS
 encoded: \startC ,32,49,89,23,00,01,85,\stop ,
 black-white: 21123223212121133121214131213121222222212212421123311120
 [1
-[1]SDAPSVersion=1.9.9
+[1]SDAPSVersion=1.9.10
 [2]Duplex=false
 [3]PrintQuestionnaireId=0
 [4]PageSize=597.50793pt,845.04694pt
