@@ -31,7 +31,6 @@ sys.path.insert(0, os.path.abspath('extensions'))
 # ones.
 extensions = [
     'sphinx.ext.todo',
-    'sphinx.ext.intersphinx',
     'sdapstex',
     'texdomain',
 ]
