@@ -69,56 +69,51 @@ demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
 sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.dict" }
 installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
 
-function main(target,names)
-  -- Seems like the ctan command does not ensure "doc" has been run
-  if target == "ctan" then
-    errorlevel = run('.', 'grep -q "Version: ' .. uploadconfig['version']:gsub('%.', '\\.') .. '" README')
-    if errorlevel ~=0 then
-       print("Version mismatch between README file and build.lua configuration")
-      return errorlevel
-    end
-    errorlevel = run('.', 'grep -q "SDAPSVersion=' .. uploadconfig['version']:gsub('%.', '\\.') .. '" sdapsbase.dtx')
-    if errorlevel ~=0 then
-       print("Version mismatch between README file and build.lua configuration")
-      return errorlevel
-    end
-
-    errorlevel = call({ '.' }, "doc")
-    if errorlevel ~=0 then
-       print("Failed to build documentation (required to build ctan package)")
-      return errorlevel
-    end
-  end
-
-  if target == "doc" then
-    -- Building the sphinx documentation requires having unpacked everything
-    errorlevel = call({ '.' }, "unpack")
-    if errorlevel ~=0 then
-       print("Failed to unpack (required to build documentation)")
-      return errorlevel
-    end
-
-    -- Only build sphinx documentation, then return
-    -- Note that we build the "classic" theme, because matrial generates a huge tarball
-    -- And we force a clean rebuild, just to make sure things are correct
-    errorlevel = run('.', 'make -C sphinx clean')
-    if errorlevel ~=0 then
-      return errorlevel
-    end
-    errorlevel = run('.', 'make -C sphinx html SPHINXOPTS="-D html_theme=classic"')
-    -- And remove the useless buildinfo file
-    os.remove('sphinx/_build/html/.buildinfo')
-
-    return errorlevel
-  elseif target == "clean" then
-    run('sphinx', 'make clean')
-  end
-  return stdmain(target,names)
-end
-
 kpse.set_program_name ("kpsewhich")
 if not release_date then
   l3build = kpse.lookup ("l3build.lua")
   assert (l3build, "l3build is not installed!")
   dofile (l3build)
+end
+
+target_list['ctan'].pre = function (names)
+  errorlevel = run('.', 'grep -q "Version: ' .. uploadconfig['version']:gsub('%.', '\\.') .. '" README')
+  if errorlevel ~=0 then
+    print("Version mismatch between README file and build.lua configuration")
+    return errorlevel
+  end
+
+  -- Seems like the ctan command does not ensure "doc" has been run
+  errorlevel = call({ '.' }, "doc")
+  if errorlevel ~=0 then
+     print("Failed to build documentation (required to build ctan package)")
+    return errorlevel
+  end
+end
+
+target_list['doc'].pre = function (names)
+  -- Building the sphinx documentation requires having unpacked everything
+  errorlevel = call({ '.' }, "unpack")
+  if errorlevel ~=0 then
+     print("Failed to unpack (required to build documentation)")
+    return errorlevel
+  end
+
+  -- Only build sphinx documentation, then return
+  -- Note that we build the "classic" theme, because matrial generates a huge tarball
+  -- And we force a clean rebuild, just to make sure things are correct
+  errorlevel = run('.', 'make -C sphinx clean')
+  if errorlevel ~=0 then
+    return errorlevel
+  end
+  errorlevel = run('.', 'make -C sphinx html SPHINXOPTS="-D html_theme=classic"')
+  -- And remove some unwanted files
+  os.remove('sphinx/_build/html/.buildinfo')
+  os.remove('sphinx/_build/html/objects.inv')
+
+  return errorlevel
+end
+
+target_list['clean'].pre = function (names)
+  run('sphinx', 'make clean')
 end
