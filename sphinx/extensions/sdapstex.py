@@ -443,6 +443,4 @@ def setup(app):
                  #latex=(latex_visit_sdaps, depart_sdaps)
                  )
     app.add_directive('sdaps', SDAPSDirective)
-    app.add_stylesheet('css/sdapstex.css')
-
-
+    app.add_css_file('css/sdapstex.css')
