@@ -64,7 +64,7 @@ checkengines = { "pdftex", "xetex" }
 
 -- Don't typeset anything (in particular documentation)
 typesetfiles    = { }
-docfiles        = { "README", "sphinx/_build/html/*" }
+docfiles        = { "README", "sdaps.html", "sphinx/_build/html/" }
 demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
 sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.dict" }
 installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
