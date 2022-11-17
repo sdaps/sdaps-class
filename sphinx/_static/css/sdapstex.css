@@ -53,6 +53,6 @@
 }
 
 .content-rendering img {
-  padding: 5px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 0px;
 }
