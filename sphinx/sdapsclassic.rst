@@ -360,10 +360,6 @@ Question Environments
           \markline{Second question}{a}{b}{c}
         \end{markgroup}
 
-.. todo::
-    The spacing in the "other" case is not sane, we need a larger default spacing in general.
-
-
 
 .. environ::
     \begin{choicegroup}[kwargs]{text}
