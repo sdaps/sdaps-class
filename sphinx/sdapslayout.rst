@@ -69,13 +69,51 @@ be created directly with sdapsarray.
     choice macro and each question using the question macro.
 
 .. environ::
-    \begin{optionarray}[]
+    \begin{optionarray}[kwargs]
     \end{optionarray}
 
-    .. todo:: Uh, document this.
+    Identical to :environ:`choicearray` with the singlechoice keyword arguemnt
+    set by default.
 
 .. environ::
-    \begin{rangearray}[]
+    \begin{rangearray}[kwargs]
     \end{rangearray}
 
-    .. todo:: Uh, document this.
+    :kwarg align:         named alignment group, set to a common name to align multiple environments to each other
+    :kwarg count:         the number of choices in the scale (default: 5)
+    :kwarg other:         whether to show an alternative answer outside of the scale
+    :kwarg layouter:      set the sdapsarray layouter (unlikely to be useful in this case)
+
+    The rangearray environment is used for a scale with lower/upper labels plus
+    optionally a further checkmark outside of the range.
+
+    Each question is added using the :macro:`\\range` macro.
+
+    .. macro:: \range[kwargs]{question}{lower}{upper}{other}
+
+        :param question: The question text.
+        :param lower: The text for the lower end label.
+        :param upper: The text for the upper end label.
+        :param upper: The text for the alternative choice (only valid if other
+                is passed to the environmet.
+        :kwarg var:         Variable name for this question (to be appended to context).
+        :kwarg text:       A replacement text for the metadata, if set fragile content is
+                permitted inside the `text` argument.
+        :kwarg upper:       A replacement text for the metadata, if set fragile content is
+                permitted inside the `upper` argument.
+        :kwarg lower:       A replacement text for the metadata, if set fragile content is
+                permitted inside the `lower` argument.
+        :kwarg other:       A replacement text for the metadata, if set fragile content is
+                permitted inside the `other` argument.
+
+    .. sdaps:: Example of a rangearray environment
+
+        \begin{rangearray}[count=7,other]
+          \range{Question one}{lower}{upper}{other}
+          \range{Question two}{bad}{good}{unsure}
+        \end{rangearray}
+
+        \begin{rangearray}
+          \range{Question three}{lower}{upper}
+          \range{Question four}{bad}{good}
+        \end{rangearray}

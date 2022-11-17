@@ -355,7 +355,7 @@ Question Environments
           \markline{Second question}{b}{d}
         \end{markgroup}
 
-        \begin{markgroup}[other]{Another further set of questions with an alternative answer}
+        \begin{markgroup}[count=7,other]{Another further set of questions with an alternative answer and 7 choices}
           \markline{First question}{lower}{upper}{other}
           \markline{Second question}{a}{b}{c}
         \end{markgroup}
