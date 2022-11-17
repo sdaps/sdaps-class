@@ -81,7 +81,7 @@ Managing context variables
 
 .. macro:: \sdaps_context_put:n { key }
 
-    Set the given variable (or key) to ``\\undefined``.
+    Set the given variable (or key) to ``\undefined``.
 
 .. macro:: \sdaps_context_put:nn { key } { value }
 
