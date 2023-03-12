@@ -56,7 +56,7 @@
   \ExplSyntaxOn
     % This needs to be before the document starts
     \pagestyle{scrheadings}
-    \clearscrheadings
+    \clearmainofpairofpagestyles
     \cfoot{\sdaps_page_end:}
   \ExplSyntaxOff
 
@@ -393,10 +393,6 @@
       \bool_if:NF \g__sdaps_last_page_bool { \ERROR }
     \ExplSyntaxOff
   \end{MYTEST}
-
-  \begin{MYTESTPAGE}{Flush out the last page (writes the page number)}
-    % Finish the last page
-  \end{MYTESTPAGE}
 
 \end{document}
 

@@ -216,8 +216,8 @@ POSITION Minipage: 9701052,28947983
 TEST 10: Finish the SDAPS document, only modifies global state
 ============================================================
 ============================================================
-============================================================
-TEST 11: Flush out the last page (writes the page number)
-============================================================
-============================================================
+LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
+(LaTeX3)     397.
+LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
+(LaTeX3)     397.
 (base.aux)
