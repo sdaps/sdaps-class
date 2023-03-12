@@ -6,6 +6,15 @@ TEST 1: PDF Forms
 Completed box being shipped out [2]
 \vbox(578.15999+0.0)x469.75499
 .\hbox(0.0+0.0)x0.0
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, glue set 72.26999fil, shifted 72.26999
+.....\kern -72.26999
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
 .\vbox(0.0+0.0)x0.0, glue set 1.00374fil
 ..\kern 0.0
 ..\kern 0.0
@@ -63,7 +72,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
@@ -83,7 +91,7 @@ Completed box being shipped out [2]
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
 ...............\hbox(9.95845+0.0)x9.95845
-................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(\376\377\0001)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /\ETC.}
 ................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
 .................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
 ..................\glue 0.0 plus 1.0fill
@@ -135,7 +143,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
@@ -155,7 +162,7 @@ Completed box being shipped out [2]
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
 ...............\hbox(9.95845+0.0)x9.95845
-................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(\376\377\0001)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /\ETC.}
 ................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
 .................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
 ..................\glue 0.0 plus 1.0fill
@@ -207,7 +214,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
@@ -227,7 +233,7 @@ Completed box being shipped out [2]
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
 ...............\hbox(9.95845+0.0)x9.95845
-................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(\376\377\0001)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /\ETC.}
 ................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
 .................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
 ..................\glue 0.0 plus 1.0fill
@@ -279,7 +285,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
@@ -299,7 +304,7 @@ Completed box being shipped out [2]
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
 ...............\hbox(9.95845+0.0)x9.95845
-................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(1)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /N <</Yes<<>>\ETC.}
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(\376\377\0001)/FT/Btn/Q 0/BS<</W 0/S/S>>/AP<< /\ETC.}
 ................\vbox(9.95845+0.0)x9.95845, glue set 9.95845fill
 .................\hbox(0.0+0.0)x9.95845, glue set 9.95845fill
 ..................\glue 0.0 plus 1.0fill
@@ -371,7 +376,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\pdfliteral{Q }
 .........\pdfliteral{q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\pdfliteral{q }
@@ -391,7 +395,7 @@ Completed box being shipped out [2]
 ...............\pdfliteral{0 G }
 ...............\pdfliteral{0 g }
 ...............\hbox(109.81102+0.0)x465.75499
-................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(text)/FT/Tx/Ff 4096/Q 0/BS<</W 0 /S /S>>/DA(/He\ETC.}
+................\pdfstartlink(*+*)x* action user{/Subtype/Widget/F 4/T(\376\377\000t\000e\000x\000t)/FT/Tx/Ff 4096/Q 0\ETC.}
 ................\vbox(109.81102+0.0)x465.75499, glue set 109.81102fill
 .................\hbox(0.0+0.0)x465.75499, glue set 465.75499fill
 ..................\glue 0.0 plus 1.0fill
@@ -433,4 +437,5 @@ Completed box being shipped out [2]
 ....\pdfcolorstack 0 push {0 g 0 G}
 ....\hbox(0.0+0.0)x469.75499
 ....\pdfcolorstack 0 pop
+.\kern 0.0
 ============================================================

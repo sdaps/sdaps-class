@@ -6,7 +6,16 @@ TEST 1: PDF Forms
 Completed box being shipped out [2]
 \vbox(578.15999+0.0)x469.75499
 .\hbox(0.0+0.0)x0.0
-..\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, glue set 72.26999fil, shifted 72.26999
+.....\kern -72.26999
+.....\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
 .\vbox(0.0+0.0)x0.0, glue set 1.00374fil
 ..\kern 0.0
 ..\kern 0.0
@@ -69,7 +78,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
@@ -149,7 +157,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
@@ -229,7 +236,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
@@ -309,7 +315,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
@@ -409,7 +414,6 @@ Completed box being shipped out [2]
 .........\glue 0.0
 .........\special{pdf:code Q }
 .........\special{pdf:code q }
-.........\glue 0.0
 .........\hbox(0.0+0.0)x0.0
 ..........\hbox(0.0+0.0)x0.0
 ...........\special{pdf:code q }
@@ -478,4 +482,5 @@ Completed box being shipped out [2]
 ....\special{color push gray 0}
 ....\hbox(0.0+0.0)x469.75499
 ....\special{color pop}
+.\kern 0.0
 ============================================================

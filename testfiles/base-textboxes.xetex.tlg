@@ -6,7 +6,16 @@ TEST 1: hstretch: visually check the outline does not overshoot
 Completed box being shipped out [2]
 \vbox(655.63496+0.0)x435.61176
 .\hbox(0.0+0.0)x0.0
-..\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, glue set 72.26999fil, shifted 72.26999
+.....\kern -72.26999
+.....\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
 .\glue -25.16531
 .\vbox(680.80028+0.0)x418.25555, shifted 17.3562
 ..\vbox(17.0+0.0)x418.25555, glue set 17.0fil
@@ -165,6 +174,7 @@ Completed box being shipped out [2]
 ...\special{color push gray 0}
 ...\hbox(0.0+0.0)x418.25555
 ...\special{color pop}
+.\kern 0.0
 [1]QObject-Text=1. 
 [2]Box[1]=Textbox,0,89.62619pt,760.54225pt,418.25555pt,19.9169pt,1.00374pt,text,
 [3]Box[1]=Textbox,0,89.62619pt,727.67535pt,199.16928pt,19.9169pt,1.00374pt,text,
@@ -294,4 +304,8 @@ If that doesn't work, type X <return> to quit.
 [42]Variable[1]=1
 ]
 ============================================================
+LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
+(LaTeX3)     293.
+LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
+(LaTeX3)     293.
 (base-textboxes.aux)
