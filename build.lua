@@ -66,7 +66,7 @@ checkengines = { "pdftex", "xetex" }
 typesetfiles    = { }
 docfiles        = { "README", "sdaps.html", "sphinx/_build/html/" }
 demofiles       = { "arraydemo.tex", "testclassic.tex", "test.tex"}
-sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.dict" }
+sourcefiles     = { "README", "*.ins", "*.dtx", "sdapscode128.tex", "dict/*.ini" }
 installfiles    = { "*.sty", "*.cls", "*.tex", "*.dict" }
 
 kpse.set_program_name ("kpsewhich")
@@ -75,6 +75,26 @@ if not release_date then
   assert (l3build, "l3build is not installed!")
   dofile (l3build)
 end
+
+-- I would love to override target_list['unpack'].func, or .post, but that
+-- does not work as "install" will call the original unpack
+orig_unpack = unpack
+unpack = function (names)
+  -- first run orignal unpack (as it cleans the directory)
+  errorlevel = orig_unpack(names)
+  if errorlevel ~=0 then
+    return errorlevel
+  end
+
+  -- Really, a weblate .dict plugin would make more sense than this
+  errorlevel = run('.', './generate-dictionaries.py')
+  if errorlevel ~=0 then
+    print("Failed to generate dictonaries from translation sources")
+  end
+
+  return errorlevel
+end
+target_list['unpack'].func = unpack
 
 target_list['ctan'].pre = function (names)
   errorlevel = run('.', 'grep -q "Version: ' .. uploadconfig['version']:gsub('%.', '\\.') .. '" README')
