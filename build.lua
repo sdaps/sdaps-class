@@ -109,6 +109,8 @@ target_list['ctan'].pre = function (names)
      print("Failed to build documentation (required to build ctan package)")
     return errorlevel
   end
+
+  return errorlevel
 end
 
 target_list['doc'].pre = function (names)
