@@ -87,7 +87,7 @@ unpack = function (names)
   end
 
   -- Really, a weblate .dict plugin would make more sense than this
-  errorlevel = run('.', './generate-dictionaries.py')
+  errorlevel = run('.', './generate-dictionaries.py ' .. unpackdir)
   if errorlevel ~=0 then
     print("Failed to generate dictonaries from translation sources")
   end
