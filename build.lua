@@ -8,7 +8,7 @@ bundle = ""
 module = "sdaps"
 
 -- Location of main directory: use Unix-style path separators
-maindir = "."
+maindir = maindir or "."
 
 -- Non-standard settings
 cleanfiles   = {"*.pdf", "*.zip"}
