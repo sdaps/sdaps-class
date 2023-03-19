@@ -35,6 +35,7 @@ def unicode_to_latex(string):
 
 
 dest_dir = 'build/unpacked'
+dicts = {}
 
 for infile in glob.glob('dict/*.ini'):
     for line in open(infile).readlines():
@@ -46,7 +47,10 @@ for infile in glob.glob('dict/*.ini'):
             break
     else:
         raise AssertionError("tex-language not found in dictonary")
+    assert name not in dicts
+    dicts[name] = infile
 
+for name, infile in dicts.items():
     print(f'Generating dictionary {name}')
 
     out = os.path.join(dest_dir, 'translator-sdaps-dictionary-%s.dict' % name)
