@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import latexmap
 import glob
 import os
@@ -34,7 +35,7 @@ def unicode_to_latex(string):
     return string
 
 
-dest_dir = 'build/unpacked'
+dest_dir = sys.argv[1]
 dicts = {}
 
 for infile in glob.glob('dict/*.ini'):
