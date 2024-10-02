@@ -172,7 +172,7 @@ Note that verbatim would require more code right now.
 
     So the same question as above, just with the {\bfseries vertical} option set and {\bfseries rotated} layouter.
 
-    \begin{choicegroup}[vertical,layouter=rotated,var=testchoice]{Which software do you prefere for the following tasks?}
+    \begin{choicegroup}[vertical,layouter=rotated]{Which software do you prefere for the following tasks?}
       % We have to add the possible choices at the start.
       \groupaddchoice[text=LaTeX,var=latex]{\LaTeX}
       \groupaddchoice[var=lo]{LibreOffice}
@@ -259,7 +259,7 @@ blub
 
 \newpage
 
-    \begin{rangearray}[var=testrange,other]{A test range question.}
+    \begin{rangearray}[other]{A test range question.}
       \range[var=a]{question}{lower}{upper}{other}
       \range[var=b,text=question sdaps,lower=lower sdaps,upper=upper sdaps]{question pdf}{lower pdf}{upper pdf}{}
       \range[var=c,other=other sdaps]{question}{lower3}{upper3}{other pdf}
