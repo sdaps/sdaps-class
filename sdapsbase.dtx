@@ -84,6 +84,20 @@
 \ExplSyntaxOn
 %    \end{macrocode}
 %
+% We first adress the fact that some primitives do not have the same name under Lua\LaTeX{} and earlier \LaTeX{}es.
+%    \begin{macrocode}
+\sys_if_engine_luatex:TF
+  {
+    \cs_set_eq:NN \__sdaps_savepos \savepos
+    \cs_set_eq:NN \__sdaps_lastxpos \lastxpos
+    \cs_set_eq:NN \__sdaps_lastypos \lastypos
+  }
+  {
+    \cs_set_eq:NN \__sdaps_savepos \pdfsavepos
+    \cs_set_eq:NN \__sdaps_lastxpos \pdflastxpos
+    \cs_set_eq:NN \__sdaps_lastypos \pdflastypos
+  }
+%    \end{macrocode}
 % And we need a number of other packages.
 %    \begin{macrocode}
 \ExplSyntaxOff
@@ -868,7 +882,7 @@
 {
   \mbox{
     \sdaps_if_rtl:T {\beginL}
-    \pdfsavepos
+    \__sdaps_savepos
 
      % Position of page and baseline offset
     \dim_set:Nn \l_sdaps_x_dim { \hoffset }
@@ -888,8 +902,8 @@
         \sdaps_info_write_x:x{
           Box[\l__sdaps_tmpa_tl]=Checkbox,
           \exp_not:n{\int_use:N\g_sdaps_page_int},
-          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_x_dim + \the\pdflastxpos sp} },
-          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_y_dim + \the\pdflastypos sp} },
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_x_dim + \the\__sdaps_lastxpos sp} },
+          \exp_not:n{\dim_eval:n} { \exp_not:f {\dim_use:N \l_sdaps_y_dim + \the\__sdaps_lastypos sp} },
           \dim_use:N \l_sdaps_width_dim,
           \dim_use:N \l_sdaps_height_dim,
           \tl_to_str:N\l_sdaps_checkbox_form_tl,
@@ -1313,7 +1327,7 @@
   \hcoffin_set:Nn \l_tmpa_coffin {
     \tex_vrule:D depth 0pt height \dim_eval:n { \l__sdaps_textbox_ht_dim + \l__sdaps_textbox_pad_dim } width 0pt
 
-    \pdfsavepos
+    \__sdaps_savepos
 
     \dim_set:Nn \l_sdaps_width_dim {\l__sdaps_textbox_wd_dim + 2\l__sdaps_textbox_pad_dim}
     \dim_set:Nn \l_sdaps_height_dim {\l__sdaps_textbox_ht_dim + \l__sdaps_textbox_dp_dim + 2\l__sdaps_textbox_pad_dim}
@@ -1328,8 +1342,8 @@
         \sdaps_info_write_x:x {
           Box[\l__sdaps_tmpa_tl]=\l__sdaps_textbox_boxtype_tl,
           \exp_not:n{\int_use:N\g_sdaps_page_int},
-          \exp_not:n{\dim_eval:n {\hoffset + \the\pdflastxpos sp}},
-          \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\pdflastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
+          \exp_not:n{\dim_eval:n {\hoffset + \the\__sdaps_lastxpos sp}},
+          \exp_not:n{\dim_eval:n} { \exp_not:n {\voffset + \the\__sdaps_lastypos sp} + \dim_use:N \l__sdaps_textbox_ht_dim +  \dim_use:N \l__sdaps_textbox_pad_dim },
           \dim_use:N \l_sdaps_width_dim,
           \dim_use:N \l_sdaps_height_dim,
           \dim_use:N \l_sdaps_textbox_linewidth_dim,

@@ -368,10 +368,10 @@
     \_sdaps_array_check_insert_header:N \g_tmpa_bool
 
     \hbox_set:Nn \l_tmpb_box {
-      \pdfsavepos
+      \__sdaps_savepos
       \iow_shipout_x:Nn \g__sdaps_array_info_iow {
         \thepage,
-        \the\pdflastxpos
+        \the\__sdaps_lastxpos
       }
       \box_use:N \l_tmpb_box
     }
